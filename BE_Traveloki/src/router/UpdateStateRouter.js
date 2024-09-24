@@ -1,7 +1,7 @@
 const express = require("express");
 const route = express.Router();
 
-const { UpdateState } = require("../Controller/UpdateStateController.js");
+const { UpdateState } = require("../controller/UpdateState.controller");
 
 route.post("/UpdateState/:id", UpdateState);
 
