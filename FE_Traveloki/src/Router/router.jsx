@@ -6,8 +6,8 @@ import SwaggerUI from "swagger-ui-react"
 import "swagger-ui-react/swagger-ui.css"
 
 import BookingCar from "../components/booking/BookingCar.jsx";
-import ListMain from "../components/listVehicle/ListVehicleComponent.jsx";
-import SignUp from "../pages/Auth/Register.jsx";
+// import ListMain from "../components/listVehicle/ListVehicleComponent.jsx";
+
 import BookingBus from "../components/booking/BookingBus.jsx";
 import BookingTrain from "../components/booking/BookingTrain.jsx";
 import DatChoCuaToi from "../components/datChoCuaToi/DatChoCuaToi.jsx";
@@ -21,7 +21,7 @@ import { RatingTau } from "../components/rating/RatingTau.jsx";
 import { ErrorPage } from "../pages/SystemPage/ErrorPage.jsx";
 import HomePage from "../pages/HomePage/HomePage.jsx";
 import Login from "../pages/Auth/LogIn.jsx";
-
+import SignUp from "../pages/Auth/Register.jsx";
 // const BookingCar = lazy(() => import('../components/booking/BookingCar.jsx'))
 // const ListMain = lazy(() => import('../components/listVehicle/ListVehicleComponent.jsx'))  
 // const SignUp = lazy(() => import('../pages/Auth/Register.jsx')) 
@@ -43,25 +43,26 @@ import Login from "../pages/Auth/LogIn.jsx";
 
 // layouts
 import MainLayout from '../layouts/index.jsx'
+import OnlyCanvas from '../layouts/secondLayout.jsx'
 const router = createBrowserRouter([
+  {
+    path: 'auth',
+    element: <OnlyCanvas />,
+    children: [
+      { path: 'login', element: <Login /> },
+      { path: 'register', element: <SignUp />}
+    ]
+  },
   {
     path: "/",
     element: <MainLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { path: '', element: <Navigate to="/auth/login" replace /> },
-      { path: '/auth/login', element: <Login /> },
+      { path: '', element: <Navigate to="/HomePage" replace /> },
       {
         path: "HomePage",
         element: <HomePage />,
         children: [
-          {
-            path: 'auth',
-            children: [
-              { path: 'login', element: <Login /> },
-              { path: 'register', element: <SignUp /> }
-            ]
-          },
           {
             path: 'user',
             children: [
@@ -84,9 +85,9 @@ const router = createBrowserRouter([
                 path: "rate",
                 children: [
                     { path: "rate", element:  <Navigate to="HomePage/user/rate/trips-car" replace /> },
-                    { path: "trips-car", element: <RatingCar /> },
-                    { path: "trips-bus", element: <RatingBus /> },
-                    { path: "trips-train", element: <RatingTau /> }
+                    { path: "HomePage/user/rate/trips-car", element: <RatingCar /> },
+                    { path: "HomePage/user/rate/trips-bus", element: <RatingBus /> },
+                    { path: "HomePage/user/rate/trips-train", element: <RatingTau /> }
                 ]
               }
             ]
@@ -98,21 +99,18 @@ const router = createBrowserRouter([
                 path: 'search',
                 children: [
                     { path: "search", element: <Navigate to="HomePage/booking/search/cars" replace />, },
-                    { path: "cars", element: <BookingCar />, },
-                    { path: "bus", element: <BookingBus />, },
-                    { path: "trains", element: <BookingTrain />, },
+                    { path: "HomePage/booking/search/cars", element: <BookingCar />, },
+                    { path: "HomePage/booking/search/bus", element: <BookingBus />, },
+                    { path: "HomePage/booking/search/trains", element: <BookingTrain />, },
                 ]
               }
             ],
           },
         ]
-      },
+      }
     ],
   },
-  {
-    path: 'swagger',
-    element: <SwaggerUI url="https://petstore.swagger.io/v2/swagger.json" />
-  }
+  { path: 'swagger', element: <SwaggerUI url="https://petstore.swagger.io/v2/swagger.json" /> }
 ]);
 
 export default router;
