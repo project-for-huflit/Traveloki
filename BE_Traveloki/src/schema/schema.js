@@ -161,6 +161,7 @@ const AppraiseBus = mongoose.model("AppraiseBus", AppraiseBusSchema);
 const LichSuDatXeOto = mongoose.model("LichSuDatXeOto", LichSuDatXeOtoSchema);
 const LichSuDatTau = mongoose.model("LichSuDatTau", LichSuDatTauSchema);
 const LichSuDatXeBus = mongoose.model("LichSuDatXeBus", LichSuDatXeBusSchema);
+
 const CounterLSB = mongoose.model("CounterLSB", counterSchema);
 const CounterTuyen = mongoose.model("CounterTuyen", counterSchema);
 const CounterPhuongTien = mongoose.model("CounterPhuongTien", counterSchema);
@@ -186,6 +187,7 @@ module.exports = {
   LichSuDatXeOto,
   LichSuDatTau,
   LichSuDatXeBus,
+
   CounterLSB,
   CounterTuyen,
   CounterPhuongTien,
