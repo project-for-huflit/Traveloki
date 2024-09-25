@@ -3,11 +3,15 @@
 require("dotenv").config();
 
 const express = require('express')
+// const session = require("express-session");
 const morgan = require('morgan')
 const compression = require('compression')
 const { default : helmet } = require('helmet')
+const cors = require("cors");
 const app = express()
 
+// Middewares
+app.use(cors());
 app.use(morgan("dev"))
 app.use(helmet())
 app.use(compression())
@@ -16,9 +20,11 @@ app.use(express.urlencoded({
     extended: true
 }))
 
+// database
 require('./db/init.mongodb')
 
-app.use('/', require('./routes'))
+// routes
+app.use('/', require('./router/index'))
 
 //hanlding errors
 app.use((req, res, next) => {
@@ -26,7 +32,7 @@ app.use((req, res, next) => {
     error.status = 404
     next(error)
   })
-  
+
   app.use((error, req, res, next) => {
     const statusCode = error.status || 500
     return res.status(statusCode).json({
@@ -36,5 +42,5 @@ app.use((req, res, next) => {
       message: error.message || 'Internal Server Error'
     })
   })
-  
+
   module.exports = app

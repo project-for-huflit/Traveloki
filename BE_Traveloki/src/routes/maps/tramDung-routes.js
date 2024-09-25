@@ -6,7 +6,7 @@ const {
   CreateTramDung,
   GetTramDungID,
   DeleteTramDung,
-} = require("../Controller/TramDungController.js");
+} = require("../controllers/TramDungController.js");
 
 route.get("/GetTramDung", GetTramDung);
 route.post("/CreateTramDung", CreateTramDung);

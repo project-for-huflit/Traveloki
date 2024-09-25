@@ -199,7 +199,7 @@ const SignUp = () => {
           </button>
           <p className="mt-4 text-sm text-center text-gray-600">
             Bạn đã có tài khoản?
-            <a href="/" className="text-blue-500 hover:underline">
+            <a href="/auth/login" className="text-blue-500 hover:underline">
               Đăng nhập
             </a>
           </p>
