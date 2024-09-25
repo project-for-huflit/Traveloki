@@ -7,7 +7,7 @@ const {
   GetLichSuDatXeOto,
   createHistory,
   DeleteLichSuDatXeOto,
-} = require("../controller/HistoryCar.controller");
+} = require("../../controllers/historyCar.controller");
 
 route.get("/GetLichSuDatXeOto", GetLichSuDatXeOto);
 route.post("/createHistory", createHistory);

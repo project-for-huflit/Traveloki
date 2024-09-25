@@ -1,6 +1,6 @@
 'use strict'
 
-const LichSuDatXeBus = require("../Schema/schema.js").LichSuDatXeBus;
+const LichSuDatXeBus = require("../models/schema.js").LichSuDatXeBus;
 
 const GetLichSuXeBus = async (req, res) => {
   try {

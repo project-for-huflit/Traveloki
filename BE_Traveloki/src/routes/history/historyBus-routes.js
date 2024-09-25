@@ -7,7 +7,7 @@ const {
   GetLichSuXeBus,
   CreateLichSuBus,
   DeleteLichSuXeBus,
-} = require("../Controller/HistoryBusController.js");
+} = require("../../controllers/historyBus.controller");
 
 route.get("/GetHistoryBus", GetLichSuXeBus);
 route.post("/CreateHistoryBus", CreateLichSuBus);

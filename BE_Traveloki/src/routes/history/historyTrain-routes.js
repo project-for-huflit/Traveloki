@@ -7,7 +7,7 @@ const {
   GetLichSuDatTau,
   DeleteLichSuDatTau,
   CreateHistoryTrain,
-} = require("../Controller/HistoryTrainController.js");
+} = require("../../controllers/historyTrain.controller");
 
 route.get("/GetLichSuDatTau", GetLichSuDatTau);
 route.post("/CreateHistoryTrain", CreateHistoryTrain);

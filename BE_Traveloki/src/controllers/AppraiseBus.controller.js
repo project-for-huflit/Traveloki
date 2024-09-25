@@ -1,6 +1,6 @@
 'use strict'
 
-const AppraiseBus = require("../Schema/schema").AppraiseBus;
+const AppraiseBus = require("../models/schema").AppraiseBus;
 
 const GetAppraiseBus = async (req, res) => {
   try {

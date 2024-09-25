@@ -2,7 +2,7 @@
 
 const express = require("express");
 const session = require("express-session");
-const { DanhSachSanBay, TramDung } = require("../Schema/schema.js");
+const { DanhSachSanBay, TramDung } = require("../models/schema.js");
 
 const app = express();
 

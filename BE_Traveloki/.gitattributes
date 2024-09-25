@@ -18,7 +18,7 @@
 *.zip binary
 *.exe binary
 
-# Nếu bạn sử dụng Git LFS (Large File Storage) để lưu trữ các tệp lớn
+# Nếu sử dụng Git LFS (Large File Storage) để lưu trữ các tệp lớn
 # Uncomment dòng dưới đây nếu có Git LFS
 # *.psd filter=lfs diff=lfs merge=lfs -text
 

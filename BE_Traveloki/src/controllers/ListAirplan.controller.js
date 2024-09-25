@@ -1,7 +1,7 @@
 'use strict'
 
-const DanhSachSanBay = require("../Schema/schema").DanhSachSanBay;
-const Counter = require("../Schema/schema").CounterLSB;
+const DanhSachSanBay = require("../models/schema").DanhSachSanBay;
+const Counter = require("../models/schema").CounterLSB;
 
 const GetDanhSachSanBay = async (req, res) => {
   try {

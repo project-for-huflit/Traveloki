@@ -1,8 +1,8 @@
 'use strict'
 
-const PhuongTien = require("../Schema/schema.js").PhuongTien;
-const Tuyen = require("../Schema/schema.js").Tuyen;
-const CounterPhuongTien = require("../Schema/schema").CounterPhuongTien;
+const PhuongTien = require("../models/schema.js").PhuongTien;
+const Tuyen = require("../models/schema.js").Tuyen;
+const CounterPhuongTien = require("../models/schema").CounterPhuongTien;
 
 const GetPhuongTien = async (req, res) => {
   try {
