@@ -1,3 +1,5 @@
+'use strict'
+
 const DanhSachSanBay = require("../Schema/schema").DanhSachSanBay;
 const Counter = require("../Schema/schema").CounterLSB;
 

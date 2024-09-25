@@ -7,7 +7,7 @@ const express = require('express')
 const morgan = require('morgan')
 const compression = require('compression')
 const { default : helmet } = require('helmet')
-const cors = require("cors");
+const cors = require('cors');
 const app = express()
 
 // Middewares
@@ -24,7 +24,7 @@ app.use(express.urlencoded({
 require('./db/init.mongodb')
 
 // routes
-app.use('/', require('./router/index'))
+app.use('/', require('./routes/index'))
 
 //hanlding errors
 app.use((req, res, next) => {
@@ -39,7 +39,7 @@ app.use((req, res, next) => {
       status: 'error',
       code: statusCode,
       stack: error.stack,
-      message: error.message || 'Internal Server Error'
+      message: error.message || 'Internal Server Error!'
     })
   })
 

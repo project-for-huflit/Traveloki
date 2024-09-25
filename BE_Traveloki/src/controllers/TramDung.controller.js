@@ -1,3 +1,5 @@
+'use strict'
+
 const Tuyen = require("../Schema/schema.js").Tuyen;
 const TramDung = require("../Schema/schema.js").TramDung;
 const CounterTramDung = require("../Schema/schema").CounterTramDung;

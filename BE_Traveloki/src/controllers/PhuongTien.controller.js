@@ -1,3 +1,5 @@
+'use strict'
+
 const PhuongTien = require("../Schema/schema.js").PhuongTien;
 const Tuyen = require("../Schema/schema.js").Tuyen;
 const CounterPhuongTien = require("../Schema/schema").CounterPhuongTien;

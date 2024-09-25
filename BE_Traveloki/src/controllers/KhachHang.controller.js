@@ -1,3 +1,5 @@
+'use strict'
+
 const KhachHang = require("../Schema/schema.js").KhachHang;
 
 const GetKhachHang = async (req, res) => {
