@@ -3,29 +3,30 @@
 const express = require('express')
 const router = express.Router()
 
-//================= DEMO ==================================
-// router.use('/v1/api/discount', require('./discount'))
-// router.use('/v1/api/checkout', require('./checkout'))
-// router.use('/v1/api/cart', require('./cart'))
-// router.use('/v1/api/product', require('./product'))
-// router.use('/v1/api', require('./access'))
-//=========================================================
+router.use("/api", require("./customers/khachHang-routes.js"));
 
-router.use("/api", require("./khachHang-routes.js"));
-router.use("/api", require("./listAirPlan-routes.js"));
+router.use("/api", require("./airports/listAirPlan-routes.js"));
+
 router.use("/api", require("./vehicles/phuongTien-routes.js"));
+
 router.use("/api", require("./maps/tramDung-routes.js"));
 router.use("/api", require("./maps/tuyen-routes.js"));
-router.use("/api", require("./detailCar-routes.js"));
+
+router.use("/api", require("./details/detailCar-routes.js"));
+
 router.use("/api", require("./search/search-routes.js"));
-router.use("/api", require("./AppraiseCarRoute.js"));
-router.use("/api", require("./AppraiseBusRoute.js"));
-router.use("/api", require("./BuyTicketTrainRoute.js"));
-router.use("/api", require("./BuyTicketBusRoute.js"));
-router.use("/api", require("./BookingCarRoute.js"));
-router.use("/api", require("./HistoryCar.js"));
-router.use("/api", require("./HistoryBusRoute.js"));
-router.use("/api", require("./HistoryTrainRoute.js"));
+
+router.use("/api", require("./feedback/appraiseCar-routes.js"));
+router.use("/api", require("./feedback/appraiseBus-routes.js"));
+
+router.use("/api", require("./booking/buyTicketTrain-routes.js"));
+router.use("/api", require("./booking/buyTicketBus-routes.js"));
+router.use("/api", require("./booking/bookingCar-routes.js"));
+
+router.use("/api", require("./history/historyCar-routes.js"));
+router.use("/api", require("./history/historyBus-routes.js"));
+router.use("/api", require("./history/historyTrain-routes.js"));
+
 router.use("/api", require("./updateState-routes.js"));
 
 module.exports = router

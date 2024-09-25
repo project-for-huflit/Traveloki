@@ -6,7 +6,7 @@ const route = express.Router();
 const {
   SuggestsAirpost,
   SuggestsTramDung,
-} = require("../controllers/SearchController.js");
+} = require("../../controllers/search.controller");
 
 route.get("/SuggestsAirpost", SuggestsAirpost);
 route.get("/SuggestsTramDung", SuggestsTramDung);

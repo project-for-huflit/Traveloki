@@ -1,8 +1,8 @@
 'use strict'
 
-const Tuyen = require("../Schema/schema.js").Tuyen;
-const TramDung = require("../Schema/schema.js").TramDung;
-const CounterTramDung = require("../Schema/schema").CounterTramDung;
+const Tuyen = require("../models/schema.js").Tuyen;
+const TramDung = require("../models/schema.js").TramDung;
+const CounterTramDung = require("../models/schema").CounterTramDung;
 
 const GetTramDung = async (req, res) => {
   try {

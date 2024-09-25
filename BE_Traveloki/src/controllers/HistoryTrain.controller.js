@@ -2,7 +2,7 @@
 
 const express = require("express");
 const router = express.Router();
-const { LichSuDatTau } = require("../Schema/schema.js");
+const { LichSuDatTau } = require("../models/schema.js");
 
 const GetLichSuDatTau = async (req, res) => {
   try {

@@ -8,7 +8,7 @@ const {
   CreateDanhSachSanBay,
   GetSanBayID,
   getSanBaybyTenSanBay,
-} = require("../controllers/ListAirplanController.js");
+} = require("../../controllers/listAirplan.controller");
 
 route.get("/GetDanhSachSanBay", GetDanhSachSanBay);
 route.get("/GetSanBayID/:id", GetSanBayID);

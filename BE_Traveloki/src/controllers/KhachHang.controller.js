@@ -1,6 +1,6 @@
 'use strict'
 
-const KhachHang = require("../Schema/schema.js").KhachHang;
+const KhachHang = require("../models/schema").KhachHang;
 
 const GetKhachHang = async (req, res) => {
   try {

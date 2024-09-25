@@ -1,9 +1,9 @@
 'use strict'
 
-const PhieuDatTau = require("../Schema/schema.js").PhieuDatTau;
-const CounterDatTau = require("../Schema/schema.js").CounterDatTau;
-const PhuongTien = require("../Schema/schema.js").PhuongTien;
-const lichSuDatTau = require("../Schema/schema.js").LichSuDatTau;
+const PhieuDatTau = require("../models/schema.js").PhieuDatTau;
+const CounterDatTau = require("../models/schema.js").CounterDatTau;
+const PhuongTien = require("../models/schema.js").PhuongTien;
+const lichSuDatTau = require("../models/schema.js").LichSuDatTau;
 
 const GetPhieusdattau = async (req, res) => {
   try {

@@ -1,11 +1,12 @@
 'use strict'
 
-const { LichSuDatXeOto } = require("../Schema/schema");
+const { LichSuDatXeOto } = require("../models/schema");
 
-const DatXeOto = require("../Schema/schema").DatXeOto; // Đảm bảo rằng bạn đã import mô hình DatXeOto
-const TramDung = require("../Schema/schema").TramDung; // Đảm bảo rằng bạn đã import mô hình TramDung
-const ChiTietXeOto = require("../Schema/schema").ChiTietXeOto;
-const CounterDatXeOto = require("../Schema/schema").CounterDatXe;
+const DatXeOto = require("../models/schema").DatXeOto; // Đảm bảo rằng bạn đã import mô hình DatXeOto
+const TramDung = require("../models/schema").TramDung; // Đảm bảo rằng bạn đã import mô hình TramDung
+const ChiTietXeOto = require("../models/schema").ChiTietXeOto;
+const CounterDatXeOto = require("../models/schema").CounterDatXe;
+
 const GetDatXeOto = async (req, res) => {
   try {
     const datXeOto = await DatXeOto.find({});

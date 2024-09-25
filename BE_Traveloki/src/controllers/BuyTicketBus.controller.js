@@ -1,8 +1,8 @@
 'use strict'
 
-const PhieuDatXeBus = require("../Schema/schema.js").PhieuDatXeBus;
-const CounterDatBuyt = require("../Schema/schema.js").CounterDatBuyt;
-const lichSuDatXeBus = require("../Schema/schema.js").LichSuDatXeBus;
+const PhieuDatXeBus = require("../models/schema.js").PhieuDatXeBus;
+const CounterDatBuyt = require("../models/schema.js").CounterDatBuyt;
+const lichSuDatXeBus = require("../models/schema.js").LichSuDatXeBus;
 
 const GetBuyTicketBus = async (req, res) => {
   try {

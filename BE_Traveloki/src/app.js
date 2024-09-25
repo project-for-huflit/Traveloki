@@ -21,7 +21,7 @@ app.use(express.urlencoded({
 }))
 
 // database
-require('./db/init.mongodb')
+require('./data/init.mongodb')
 
 // routes
 app.use('/', require('./routes/index'))
