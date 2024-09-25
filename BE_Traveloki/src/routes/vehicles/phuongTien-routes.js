@@ -6,7 +6,7 @@ const {
   SearchFindPhuongTien,
   DeletePhuongTien,
   GetPhuongTienID,
-} = require("../Controller/PhuongTienController.js");
+} = require("../controllers/PhuongTienController.js");
 
 route.get("/GetPhuongTien", GetPhuongTien);
 route.get("/SearchFindPhuongTien/:type", SearchFindPhuongTien);

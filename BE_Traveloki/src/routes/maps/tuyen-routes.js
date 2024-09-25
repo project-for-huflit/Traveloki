@@ -6,7 +6,7 @@ const {
   TuyenDiemSanBay,
   DeleteTuyen,
   TuyenIDTuyen,
-} = require("../Controller/TuyenControler.js");
+} = require("../controllers/TuyenControler.js");
 
 route.get("/GetTuyen", GetTuyen);
 route.get("/TuyenID/:id", TuyenIDTuyen);

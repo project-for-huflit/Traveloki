@@ -5,7 +5,7 @@ const {
   PhieuDatXeBus,
   LichSuDatTau,
   PhieuDatTau,
-} = require("../Schema/schema");
+} = require("../models/schema");
 
 const UpdateState = async (req, res) => {
   try {
