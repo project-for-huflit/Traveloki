@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 const SignUp = () => {
   const [username, setUserName] = useState("");
@@ -199,9 +200,9 @@ const SignUp = () => {
           </button>
           <p className="mt-4 text-sm text-center text-gray-600">
             Bạn đã có tài khoản?
-            <a href="/" className="text-blue-500 hover:underline">
+            <Link to={"/auth/login"} className="text-blue-500 hover:underline">
               Đăng nhập
-            </a>
+            </Link>
           </p>
         </form>
         {error && <p className="mb-4 text-center text-red-500">{error}</p>}
