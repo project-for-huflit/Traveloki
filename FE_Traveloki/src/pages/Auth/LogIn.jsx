@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "../../Router/UserContext";
+import {Link} from "react-router-dom";
 
 const Login = () => {
   const { login } = useContext(UserContext);
@@ -88,6 +89,7 @@ const Login = () => {
           >
             Đăng Nhập
           </button>
+          <Link to={"/auth/register"} className="text-blue-600 mt-2 flex justify-center hover: underline">Đăng ký</Link>
         </form>
         {error && <p className="mt-4 text-center text-red-500">{error}</p>}
         {success && (
