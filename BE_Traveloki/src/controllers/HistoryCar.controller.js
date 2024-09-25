@@ -1,3 +1,5 @@
+'use strict'
+
 const LichSuDatXeOto = require("../Schema/schema.js").LichSuDatXeOto;
 
 const GetLichSuDatXeOto = async (req, res) => {

@@ -1,3 +1,5 @@
+'use strict'
+
 const AppraiseTrain = require("../Schema/schema").AppraiseTrain;
 
 const GetAppraiseTrain = async (req, res) => {

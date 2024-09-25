@@ -1,3 +1,5 @@
+'use strict'
+
 const { LichSuDatXeOto } = require("../Schema/schema");
 
 const DatXeOto = require("../Schema/schema").DatXeOto; // Đảm bảo rằng bạn đã import mô hình DatXeOto
