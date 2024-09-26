@@ -6,6 +6,8 @@ const CounterPhuongTien = require("../models/schema.js").CounterPhuongTien;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
+const asyncHandler = require('../helpers/asyncHandler')
+
 const GetPhuongTien = async (req, res) => {
   try {
     const phuongTien = await PhuongTien.find({});

@@ -6,6 +6,8 @@ const { LichSuDatTau } = require("../models/schema.js");
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
+const asyncHandler = require('../helpers/asyncHandler')
+
 const GetLichSuDatTau = async (req, res) => {
   try {
     const lichSuDatTau = await LichSuDatTau.find({});

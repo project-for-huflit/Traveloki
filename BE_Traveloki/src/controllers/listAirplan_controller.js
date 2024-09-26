@@ -5,6 +5,8 @@ const Counter = require("../models/schema").CounterLSB;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
+const asyncHandler = require('../helpers/asyncHandler')
+
 const GetDanhSachSanBay = async (req, res) => {
   try {
     const danhSachSanBay = await DanhSachSanBay.find({});
