@@ -2,7 +2,7 @@
 
 const { Schema, model } = require('mongoose');
 
-const PhieuDatTauSchema = new mongoose.Schema({
+const PhieuDatTauSchema = new Schema({
   MaVeTau: { type: String, required: true, maxlength: 5 },
   MaPT: { type: String, ref: "PhuongTien" },
   MaTram: { type: String, ref: "TramDung" },
@@ -15,9 +15,8 @@ const PhieuDatTauSchema = new mongoose.Schema({
   TrangThai: { type: Boolean, required: true },
 });
 
-const PhieuDatTau = mongoose.model("PhieuDatTau", PhieuDatTauSchema);
+const PhieuDatTau = model("PhieuDatTau", PhieuDatTauSchema);
 
 module.exports = {
   PhieuDatTau,
-
 };

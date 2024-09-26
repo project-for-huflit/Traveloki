@@ -2,7 +2,7 @@
 
 const { Schema, model } = require('mongoose');
 
-const ChiTietXeOtoSchema = new mongoose.Schema({
+const ChiTietXeOtoSchema = new Schema({
   MaDetailCar: { type: String, required: true },
   TenHangXe: { type: String, required: true, maxlength: 100 },
   TenChuSoHuu: { type: String, required: true, maxlength: 100 },
@@ -16,7 +16,7 @@ const ChiTietXeOtoSchema = new mongoose.Schema({
   MaSB: { type: String, ref: "DanhSachSanBay" },
 });
 
-const ChiTietXeOto = mongoose.model("ChiTietXeOto", ChiTietXeOtoSchema);
+const ChiTietXeOto = model("ChiTietXeOto", ChiTietXeOtoSchema);
 
 module.exports = {
   ChiTietXeOto,

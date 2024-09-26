@@ -2,7 +2,7 @@
 
 const { Schema, model } = require('mongoose');
 
-const PhuongTienSchema = new mongoose.Schema({
+const PhuongTienSchema = new Schema({
   MaPT: { type: String, required: true, maxlength: 5 },
   MaTuyen: { type: String, required: true, ref: "Tuyen" },
   MaLoai: { type: Boolean, required: true },
@@ -12,7 +12,7 @@ const PhuongTienSchema = new mongoose.Schema({
   TenCty: { type: String, required: true, maxlength: 100 },
 });
 
-const PhuongTien = mongoose.model("PhuongTien", PhuongTienSchema);
+const PhuongTien = model("PhuongTien", PhuongTienSchema);
 
 module.exports = {
   PhuongTien,

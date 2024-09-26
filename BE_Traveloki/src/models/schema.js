@@ -1,8 +1,8 @@
 'use strict'
 
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const KhachHangSchema = new mongoose.Schema({
+const KhachHangSchema = new Schema({
   MaCus: {
     type: String,
     required: true,
@@ -19,13 +19,13 @@ const KhachHangSchema = new mongoose.Schema({
   },
 });
 
-const DanhSachSanBaySchema = new mongoose.Schema({
+const DanhSachSanBaySchema = new Schema({
   MaSB: { type: String, required: true },
   TenSanBay: { type: String, required: true, maxlength: 100 },
   ThanhPho: { type: String, required: true, maxlength: 100 },
 });
 
-const TuyenSchema = new mongoose.Schema({
+const TuyenSchema = new Schema({
   MaTuyen: { type: String, required: true, maxlength: 5 },
   DiemSanBay: { type: String, ref: "DanhSachSanBay", required: true },
   DiemKetThuc: { type: String, maxlength: 300, required: true },
@@ -33,7 +33,7 @@ const TuyenSchema = new mongoose.Schema({
   ThoiGianKetThuc: { type: Date, required: true },
 });
 
-const PhuongTienSchema = new mongoose.Schema({
+const PhuongTienSchema = new Schema({
   MaPT: { type: String, required: true, maxlength: 5 },
   MaTuyen: { type: String, required: true, ref: "Tuyen" },
   MaLoai: { type: Boolean, required: true },
@@ -43,7 +43,7 @@ const PhuongTienSchema = new mongoose.Schema({
   TenCty: { type: String, required: true, maxlength: 100 },
 });
 
-const TramDungSchema = new mongoose.Schema({
+const TramDungSchema = new Schema({
   MaTram: { type: String, required: true, maxlength: 5 },
   MaTuyen: { type: String, ref: "Tuyen" },
   DiaChi: { type: String, required: true, maxlength: 100 },
@@ -52,7 +52,7 @@ const TramDungSchema = new mongoose.Schema({
   GiaTienVeTau: { type: Number, required: true },
 });
 
-const ChiTietXeOtoSchema = new mongoose.Schema({
+const ChiTietXeOtoSchema = new Schema({
   MaDetailCar: { type: String, required: true },
   TenHangXe: { type: String, required: true, maxlength: 100 },
   TenChuSoHuu: { type: String, required: true, maxlength: 100 },
@@ -66,7 +66,7 @@ const ChiTietXeOtoSchema = new mongoose.Schema({
   MaSB: { type: String, ref: "DanhSachSanBay" },
 });
 
-const DatXeOtoSchema = new mongoose.Schema({
+const DatXeOtoSchema = new Schema({
   MaDX: { type: String, required: true, maxlength: 5 },
   MaDetailCar: { type: String, ref: "ChiTietXeOto" },
   Sdt: { type: String, ref: "KhachHang" },
@@ -79,14 +79,14 @@ const DatXeOtoSchema = new mongoose.Schema({
   Description: { type: String, maxlength: 500 },
 });
 
-const AppraiseCarSchema = new mongoose.Schema({
+const AppraiseCarSchema = new Schema({
   MaDX: { type: String, ref: "DatXeOto" },
   MaCus: { type: String, ref: "KhachHang" },
   SoSao: { type: Number, required: true },
   NoiDung: { type: String, required: true, maxlength: 500 },
 });
 
-const PhieuDatTauSchema = new mongoose.Schema({
+const PhieuDatTauSchema = new Schema({
   MaVeTau: { type: String, required: true, maxlength: 5 },
   MaPT: { type: String, ref: "PhuongTien" },
   MaTram: { type: String, ref: "TramDung" },
@@ -99,14 +99,14 @@ const PhieuDatTauSchema = new mongoose.Schema({
   TrangThai: { type: Boolean, required: true },
 });
 
-const AppraiseTrainSchema = new mongoose.Schema({
+const AppraiseTrainSchema = new Schema({
   MaTau: { type: String, ref: "PhieuDatTau" },
   MaCus: { type: String, ref: "KhachHang" },
   SoSao: { type: Number, required: true },
   NoiDung: { type: String, required: true, maxlength: 500 },
 });
 
-const PhieuDatXeBusSchema = new mongoose.Schema({
+const PhieuDatXeBusSchema = new Schema({
   MaVeBus: { type: String, required: true, maxlength: 5 },
   MaPT: { type: String, ref: "PhuongTien" },
   MaTram: { type: String, ref: "TramDung" },
@@ -118,60 +118,60 @@ const PhieuDatXeBusSchema = new mongoose.Schema({
   TrangThai: { type: Boolean, required: true },
 });
 
-const AppraiseBusSchema = new mongoose.Schema({
+const AppraiseBusSchema = new Schema({
   MaBus: { type: String, ref: "PhieuDatXeBus" },
   MaCus: { type: String, ref: "KhachHang" },
   SoSao: { type: Number, require: true },
   NoiDung: { type: String, require: true, maxlength: 500 },
 });
 
-const LichSuDatXeOtoSchema = new mongoose.Schema({
+const LichSuDatXeOtoSchema = new Schema({
   MaKH: { type: String, required: true },
   MaDX: { type: String, ref: "DatXeOto" },
   Date: { type: String },
 });
 
-const LichSuDatTauSchema = new mongoose.Schema({
+const LichSuDatTauSchema = new Schema({
   MaKH: { type: String, required: true },
   MaDX: { type: String, ref: "PhieuDatTau" },
   Date: { type: Date },
 });
 
-const LichSuDatXeBusSchema = new mongoose.Schema({
+const LichSuDatXeBusSchema = new Schema({
   MaKH: { type: String, required: true },
   MaDX: { type: String, ref: "PhieuDatXeBus" },
   Date: { type: String },
 });
 
-const counterSchema = new mongoose.Schema({
+const counterSchema = new Schema({
   _id: String,
   seq: Number,
 });
 
-const KhachHang = mongoose.model("KhachHang", KhachHangSchema);
-const DanhSachSanBay = mongoose.model("DanhSachSanBay", DanhSachSanBaySchema);
-const Tuyen = mongoose.model("Tuyen", TuyenSchema);
-const PhuongTien = mongoose.model("PhuongTien", PhuongTienSchema);
-const TramDung = mongoose.model("TramDung", TramDungSchema);
-const ChiTietXeOto = mongoose.model("ChiTietXeOto", ChiTietXeOtoSchema);
-const DatXeOto = mongoose.model("DatXeOto", DatXeOtoSchema);
-const AppraiseCar = mongoose.model("AppraiseCar", AppraiseCarSchema);
-const PhieuDatTau = mongoose.model("PhieuDatTau", PhieuDatTauSchema);
-const AppraiseTrain = mongoose.model("AppraiseTrain", AppraiseTrainSchema);
-const PhieuDatXeBus = mongoose.model("PhieuDatXeBus", PhieuDatXeBusSchema);
-const AppraiseBus = mongoose.model("AppraiseBus", AppraiseBusSchema);
-const LichSuDatXeOto = mongoose.model("LichSuDatXeOto", LichSuDatXeOtoSchema);
-const LichSuDatTau = mongoose.model("LichSuDatTau", LichSuDatTauSchema);
-const LichSuDatXeBus = mongoose.model("LichSuDatXeBus", LichSuDatXeBusSchema);
+const KhachHang = model("KhachHang", KhachHangSchema);
+const DanhSachSanBay = model("DanhSachSanBay", DanhSachSanBaySchema);
+const Tuyen = model("Tuyen", TuyenSchema);
+const PhuongTien = model("PhuongTien", PhuongTienSchema);
+const TramDung = model("TramDung", TramDungSchema);
+const ChiTietXeOto = model("ChiTietXeOto", ChiTietXeOtoSchema);
+const DatXeOto = model("DatXeOto", DatXeOtoSchema);
+const AppraiseCar = model("AppraiseCar", AppraiseCarSchema);
+const PhieuDatTau = model("PhieuDatTau", PhieuDatTauSchema);
+const AppraiseTrain = model("AppraiseTrain", AppraiseTrainSchema);
+const PhieuDatXeBus = model("PhieuDatXeBus", PhieuDatXeBusSchema);
+const AppraiseBus = model("AppraiseBus", AppraiseBusSchema);
+const LichSuDatXeOto = model("LichSuDatXeOto", LichSuDatXeOtoSchema);
+const LichSuDatTau = model("LichSuDatTau", LichSuDatTauSchema);
+const LichSuDatXeBus = model("LichSuDatXeBus", LichSuDatXeBusSchema);
 
-const CounterLSB = mongoose.model("CounterLSB", counterSchema);
-const CounterTuyen = mongoose.model("CounterTuyen", counterSchema);
-const CounterPhuongTien = mongoose.model("CounterPhuongTien", counterSchema);
-const CounterChitietxe = mongoose.model("CounterChitietxe", counterSchema);
-const CounterTramDung = mongoose.model("CounterTramDung", counterSchema);
-const CounterDatXe = mongoose.model("CounterDatXe", counterSchema);
-const CounterDatTau = mongoose.model("CounterDatTau", counterSchema);
-const CounterDatBuyt = mongoose.model("CounterDatBuyt", counterSchema);
+const CounterLSB = model("CounterLSB", counterSchema);
+const CounterTuyen = model("CounterTuyen", counterSchema);
+const CounterPhuongTien = model("CounterPhuongTien", counterSchema);
+const CounterChitietxe = model("CounterChitietxe", counterSchema);
+const CounterTramDung = model("CounterTramDung", counterSchema);
+const CounterDatXe = model("CounterDatXe", counterSchema);
+const CounterDatTau = model("CounterDatTau", counterSchema);
+const CounterDatBuyt = model("CounterDatBuyt", counterSchema);
 
 module.exports = {
   KhachHang,

@@ -2,7 +2,7 @@
 
 const { Schema, model } = require('mongoose');
 
-const TuyenSchema = new mongoose.Schema({
+const TuyenSchema = new Schema({
   MaTuyen: { type: String, required: true, maxlength: 5 },
   DiemSanBay: { type: String, ref: "DanhSachSanBay", required: true },
   DiemKetThuc: { type: String, maxlength: 300, required: true },
@@ -10,7 +10,7 @@ const TuyenSchema = new mongoose.Schema({
   ThoiGianKetThuc: { type: Date, required: true },
 });
 
-const Tuyen = mongoose.model("Tuyen", TuyenSchema);
+const Tuyen = model("Tuyen", TuyenSchema);
 
 module.exports = {
   Tuyen,
