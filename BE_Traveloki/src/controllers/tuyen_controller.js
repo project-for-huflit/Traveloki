@@ -6,6 +6,8 @@ const CounterTuyen = require("../models/schema.js").CounterTuyen;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
+const asyncHandler = require('../helpers/asyncHandler')
+
 const GetTuyen = async (req, res) => {
   try {
     const tuyen = await Tuyen.find({});

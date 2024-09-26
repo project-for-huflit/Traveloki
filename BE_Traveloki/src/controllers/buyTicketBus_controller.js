@@ -6,6 +6,8 @@ const lichSuDatXeBus = require("../models/schema.js").LichSuDatXeBus;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
+const asyncHandler = require('../helpers/asyncHandler')
+
 const GetBuyTicketBus = async (req, res) => {
   try {
     const buyTicketBus = await PhieuDatXeBus.find();

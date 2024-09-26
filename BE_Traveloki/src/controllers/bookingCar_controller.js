@@ -7,6 +7,8 @@ const TramDung = require("../models/schema").TramDung; // Đảm bảo rằng b�
 const ChiTietXeOto = require("../models/schema").ChiTietXeOto;
 const CounterDatXeOto = require("../models/schema").CounterDatXe;
 
+const asyncHandler = require('../helpers/asyncHandler')
+
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 const GetDatXeOto = async (req, res) => {

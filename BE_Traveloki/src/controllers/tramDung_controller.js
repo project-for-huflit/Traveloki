@@ -6,6 +6,8 @@ const CounterTramDung = require("../models/schema.js").CounterTramDung;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
+const asyncHandler = require('../helpers/asyncHandler')
+
 const GetTramDung = async (req, res) => {
   try {
     const tramDung = await TramDung.find({});

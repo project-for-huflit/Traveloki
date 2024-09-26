@@ -5,6 +5,8 @@ const CounterChitietxe = require("../models/schema.js").CounterChitietxe;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
+const asyncHandler = require('../helpers/asyncHandler')
+
 const GetChiTietXeOto = async (req, res) => {
   try {
     const chiTietXeOto = await ChiTietXeOto.find({});

@@ -11,6 +11,8 @@ const {
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
+const asyncHandler = require('../helpers/asyncHandler')
+
 const UpdateState = async (req, res) => {
   try {
     const { id } = req.params;
