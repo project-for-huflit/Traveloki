@@ -3,6 +3,8 @@
 const DanhSachSanBay = require("../models/schema").DanhSachSanBay;
 const Counter = require("../models/schema").CounterLSB;
 
+const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+
 const GetDanhSachSanBay = async (req, res) => {
   try {
     const danhSachSanBay = await DanhSachSanBay.find({});

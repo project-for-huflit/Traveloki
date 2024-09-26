@@ -2,6 +2,8 @@
 
 const KhachHang = require("../models/schema").KhachHang;
 
+const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+
 const GetKhachHang = async (req, res) => {
   try {
     const khachHang = await KhachHang.find({});

@@ -2,6 +2,8 @@
 
 const LichSuDatXeOto = require("../models/schema.js").LichSuDatXeOto;
 
+const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+
 const GetLichSuDatXeOto = async (req, res) => {
   try {
     const lichSuDatXeOto = await LichSuDatXeOto.find({});

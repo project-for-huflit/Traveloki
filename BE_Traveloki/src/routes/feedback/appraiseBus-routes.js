@@ -7,7 +7,7 @@ const {
   GetAppraiseBus,
   CreateAppraiseBus,
   DeleteAppraiseBus,
-} = require("../../controllers/appraiseBus.controller");
+} = require("../../controllers/appraiseBus_controller");
 
 route.get("/GetAppraiseBus", GetAppraiseBus);
 route.post("/CreateAppraiseBus", CreateAppraiseBus);

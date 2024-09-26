@@ -10,7 +10,7 @@ const {
   UpdateChiTietXeOto,
   DeleteChiTietXeOto,
   FinDetailCarID,
-} = require("../../controllers/detailCar.controller");
+} = require("../../controllers/detailCar_controller");
 
 route.get("/GetDetailCar", GetChiTietXeOto);
 route.get("/GetDetailCarID/:id", GetChiTietXeOtoID);

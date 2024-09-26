@@ -2,7 +2,9 @@
 
 const Tuyen = require("../models/schema.js").Tuyen;
 const DanhSachSanBay = require("../models/schema.js").DanhSachSanBay;
-const CounterTuyen = require("../models/schema").CounterTuyen;
+const CounterTuyen = require("../models/schema.js").CounterTuyen;
+
+const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 const GetTuyen = async (req, res) => {
   try {

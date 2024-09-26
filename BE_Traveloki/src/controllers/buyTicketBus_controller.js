@@ -4,6 +4,8 @@ const PhieuDatXeBus = require("../models/schema.js").PhieuDatXeBus;
 const CounterDatBuyt = require("../models/schema.js").CounterDatBuyt;
 const lichSuDatXeBus = require("../models/schema.js").LichSuDatXeBus;
 
+const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+
 const GetBuyTicketBus = async (req, res) => {
   try {
     const buyTicketBus = await PhieuDatXeBus.find();
