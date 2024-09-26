@@ -2,7 +2,9 @@
 
 const Tuyen = require("../models/schema.js").Tuyen;
 const TramDung = require("../models/schema.js").TramDung;
-const CounterTramDung = require("../models/schema").CounterTramDung;
+const CounterTramDung = require("../models/schema.js").CounterTramDung;
+
+const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 const GetTramDung = async (req, res) => {
   try {

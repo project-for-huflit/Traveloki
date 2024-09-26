@@ -1,46 +1,47 @@
 'use strict'
 
-const AppraiseCar = require("../models/schema").AppraiseCar;
+const AppraiseTrain = require("../models/schema").AppraiseTrain;
+const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-const GetAppraiseCar = async (req, res) => {
+const GetAppraiseTrain = async (req, res) => {
   try {
-    const appraiseCar = await AppraiseCar.find({});
-    res.status(200).json({ appraiseCar });
+    const appraiseTrain = await AppraiseTrain.find({});
+    res.status(200).json({ appraiseTrain });
   } catch (e) {
     res.status(500).json("not get appraise car");
   }
 };
 
-const CreateAppraiseCar = async (req, res) => {
+const CreateAppraiseTrain = async (req, res) => {
   try {
     const { MaXe, MaKH, Rating, Comment } = req.body;
     if (!MaXe || !MaKH || !Rating || !Comment) {
       return res.status(400).json("Thiếu thông tin");
     }
-    const appraiseCar = new AppraiseCar({
+    const appraiseTrain = new AppraiseTrain({
       MaXe,
       MaKH,
       Rating,
       Comment,
     });
-    await appraiseCar.save();
-    res.status(200).json({ appraiseCar });
+    await appraiseTrain.save();
+    res.status(200).json({ appraiseTrain });
   } catch (e) {
     res.status(500).json("not create appraise car");
   }
 };
 
-const DeleteAppraiseCar = async (req, res) => {
+const DeleteAppraiseTrain = async (req, res) => {
   try {
     const { MaXe } = req.body;
     if (!MaXe) {
       return res.status(400).json("Thiếu thông tin");
     }
-    await AppraiseCar.deleteOne({ MaXe });
+    await AppraiseTrain.deleteOne({ MaXe });
     res.status(200).json("delete appraise car success");
   } catch (e) {
     res.status(500).json("not delete appraise car");
   }
 };
 
-module.exports = { GetAppraiseCar, CreateAppraiseCar, DeleteAppraiseCar };
+module.exports = { GetAppraiseTrain, CreateAppraiseTrain, DeleteAppraiseTrain };

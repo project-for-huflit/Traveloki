@@ -1,7 +1,9 @@
 'use strict'
 
 const ChiTietXeOto = require("../models/schema.js").ChiTietXeOto;
-const CounterChitietxe = require("../models/schema").CounterChitietxe;
+const CounterChitietxe = require("../models/schema.js").CounterChitietxe;
+
+const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 const GetChiTietXeOto = async (req, res) => {
   try {

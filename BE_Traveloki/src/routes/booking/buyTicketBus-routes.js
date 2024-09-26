@@ -9,7 +9,7 @@ const {
   BuyTicketBus,
   SchedularChange,
   CancelBookingBus,
-} = require("../../controllers/buyTicketBus.controller");
+} = require("../../controllers/buyTicketBus_controller");
 
 route.post("/GetBuyTicketBus", GetBuyTicketBus);
 route.post("/BuyTicketBus", BuyTicketBus);

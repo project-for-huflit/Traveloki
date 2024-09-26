@@ -12,7 +12,6 @@
 
 import pick from './.internal/pick'
 
-
 const getInfoData = ({ fields = [], object = {} }) => {
     return pick( object, fields )
 }
