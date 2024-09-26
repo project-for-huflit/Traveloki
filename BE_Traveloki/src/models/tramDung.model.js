@@ -2,7 +2,7 @@
 
 const { Schema, model } = require('mongoose');
 
-const TramDungSchema = new mongoose.Schema({
+const TramDungSchema = new Schema({
   MaTram: { type: String, required: true, maxlength: 5 },
   MaTuyen: { type: String, ref: "Tuyen" },
   DiaChi: { type: String, required: true, maxlength: 100 },
@@ -11,7 +11,7 @@ const TramDungSchema = new mongoose.Schema({
   GiaTienVeTau: { type: Number, required: true },
 });
 
-const TramDung = mongoose.model("TramDung", TramDungSchema);
+const TramDung = model("TramDung", TramDungSchema);
 
 
 module.exports = {

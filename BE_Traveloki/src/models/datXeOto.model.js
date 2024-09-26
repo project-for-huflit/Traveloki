@@ -2,7 +2,7 @@
 
 const { Schema, model } = require('mongoose');
 
-const DatXeOtoSchema = new mongoose.Schema({
+const DatXeOtoSchema = new Schema({
   MaDX: { type: String, required: true, maxlength: 5 },
   MaDetailCar: { type: String, ref: "ChiTietXeOto" },
   Sdt: { type: String, ref: "KhachHang" },
@@ -15,7 +15,7 @@ const DatXeOtoSchema = new mongoose.Schema({
   Description: { type: String, maxlength: 500 },
 });
 
-const DatXeOto = mongoose.model("DatXeOto", DatXeOtoSchema);
+const DatXeOto = model("DatXeOto", DatXeOtoSchema);
 
 module.exports = {
   DatXeOto,
