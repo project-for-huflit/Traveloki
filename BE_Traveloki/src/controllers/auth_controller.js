@@ -54,7 +54,6 @@ const register = async (req, res, next) => {
       // Mã hóa mật khẩu
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
-      // undìined
       // Lưu newUser
       const newUser = new Account({
         username,
