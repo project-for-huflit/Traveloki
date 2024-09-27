@@ -1,8 +1,9 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { Account } = require('../models/account.model');
+const { NotFoundError, AuthFailureError } = require('../middlewares/error.response')
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { username, password } = req.body;
   try {
     // Check username
@@ -21,13 +22,30 @@ const login = async (req, res) => {
     } else {
       return res.status(404).json({ message: 'Tài khoản không tồn tại!!!' });
     }
+    // if (!user) {
+    //   throw new NotFoundError(`Tài khoản không tồn tại!!!`)
+    // }
+
+    // const isMatch = await bcrypt.compare(password, user.password);
+
+    // if (isMatch) {
+    //   throw new AuthFailureError(`Sai mật khẩu`)
+    // }
+
+    // // Tạo và gửi token JWT về cho client
+    // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    //   expiresIn: '2d',
+    // });
+
+    // res.json({ token });
+    next();
   } catch (err) {
     console.error('Lỗi đăng nhập:', err);
     res.status(500).json({ message: 'Lỗi server' });
   }
 };
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   const { username, password } = req.body;
   try {
     // Check tài khoản đã tồn tại hay chưa
@@ -59,8 +77,9 @@ const register = async (req, res) => {
     } else {
       return res.status(400).json({ message: 'Tài khoản đã tồn tại!!!' });
     }
+    next();
   } catch (err) {
-    console.error('Lỗi đăng nhập:', err);
+    console.error('Lỗi đăng ki:', err);
     res.status(500).json({ message: 'Lỗi server' });
   }
 };
