@@ -1,6 +1,8 @@
+require("dotenv").config();
+
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import UseFetch from "../../Router/UseFetch";
 
 const DanhSachSanBay = () => {
