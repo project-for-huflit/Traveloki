@@ -14,7 +14,6 @@ const AccountSchema = new Schema({
     type: String,
     required: [true, 'Mat khau khach hang phai co do dai tu 8-30 ky tu'],
     minlength: 8,
-    maxlength: 30,
     validate: {
       validator: (pass) => {
         return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/.test(
