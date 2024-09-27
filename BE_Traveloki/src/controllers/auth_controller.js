@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { Account } = require('../models/account.model');
+const Account = require('../models/account.model');
 
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -29,19 +29,21 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
   const { username, password } = req.body;
+  console.log(password);
   try {
     // Check tài khoản đã tồn tại hay chưa
     const user = await Account.findOne({ username });
     if (!user) {
       // Mã hóa mật khẩu
-      const salt = await bcrypt.genSalt(5);
-      password = await bcrypt.hash(password, salt);
-
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      // undìined
       // Lưu newUser
-      new Account({
+      const newUser = new Account({
         username,
-        password,
-      })
+        password: hashedPassword, 
+      });
+      await newUser
         .save()
         .then(() =>
           res.status(200).json({
@@ -60,8 +62,9 @@ const register = async (req, res) => {
       return res.status(400).json({ message: 'Tài khoản đã tồn tại!!!' });
     }
   } catch (err) {
-    console.error('Lỗi đăng nhập:', err);
+    console.error('Lỗi đăng ký: ', err);
     res.status(500).json({ message: 'Lỗi server' });
   }
 };
+
 module.exports = { login, register };
