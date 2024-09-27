@@ -8,6 +8,10 @@ const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.respon
 
 const asyncHandler = require('../helpers/asyncHandler')
 
+class Vehicle {
+
+}
+
 const GetPhuongTien = async (req, res) => {
   try {
     const phuongTien = await PhuongTien.find({});
@@ -16,6 +20,7 @@ const GetPhuongTien = async (req, res) => {
     res.status(500).json("not get phuong tien");
   }
 };
+
 const GetPhuongTienID = async (req, res) => {
   try {
     const { id } = req.params;

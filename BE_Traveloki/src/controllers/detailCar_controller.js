@@ -7,6 +7,10 @@ const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.respon
 
 const asyncHandler = require('../helpers/asyncHandler')
 
+class DetailVehicle {
+
+}
+
 const GetChiTietXeOto = async (req, res) => {
   try {
     const chiTietXeOto = await ChiTietXeOto.find({});

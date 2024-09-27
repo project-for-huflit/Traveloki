@@ -7,6 +7,10 @@ const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.respon
 
 const asyncHandler = require('../helpers/asyncHandler')
 
+class Airport {
+
+}
+
 const GetDanhSachSanBay = async (req, res) => {
   try {
     const danhSachSanBay = await DanhSachSanBay.find({});

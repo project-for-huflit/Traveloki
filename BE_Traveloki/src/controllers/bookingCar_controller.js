@@ -11,6 +11,22 @@ const asyncHandler = require('../helpers/asyncHandler')
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
+class BookingVehicle {
+
+}
+
+class _BookingCar extends BookingVehicle {
+
+}
+
+class _BookingBus extends BookingVehicle {
+
+}
+
+class _BookingTrain extends BookingVehicle {
+
+}
+
 const GetDatXeOto = async (req, res) => {
   try {
     const datXeOto = await DatXeOto.find({});

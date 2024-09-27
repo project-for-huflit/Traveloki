@@ -11,7 +11,6 @@ const LichSuDatTauSchema = new Schema({
 
 const LichSuDatTau = model("LichSuDatTau", LichSuDatTauSchema);
 
-
 module.exports = {
   LichSuDatTau,
 
