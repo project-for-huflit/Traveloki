@@ -18,8 +18,15 @@ const partnerSchema = new Schema({
   phone: {
     type: String,
   },
-  address: {
-    type: String,
+  isPartner: {
+    type: Boolean,
+    require: true,
+    default: false
+  },
+  servicesActivePartner: {
+    type: Array,
+    required: true,
+    default: []
   },
   email: {
     type: String,

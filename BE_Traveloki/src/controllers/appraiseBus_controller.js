@@ -4,6 +4,7 @@ const AppraiseBus = require("../models/schema").AppraiseBus;
 const asyncHandler = require('../helpers/asyncHandler')
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 const { BadRequestError } = require('../middlewares/error.response')
+
 // class AppraiseVehicle { }
 
 // class _AppraiseBus extends AppraiseVehicle { }
@@ -18,6 +19,10 @@ class AppraiseBusController {
   }
 
   createAppraiseBus = async ( req, res, next ) => {
+
+  }
+
+  deleteAppraiseBus = async (req, res, next) => {
 
   }
 }
@@ -35,6 +40,12 @@ class AppraiseBusService {
       MaBus, MaCus, SoSao, NoiDung
     });
     return await appraiseBus.save();
+  }
+
+  static async deleteAppraiseBus({ MaXe }) {
+    if (!MaXe) {
+      throw new BadRequestError(`Missing information!`)
+    }
   }
 }
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 function RightContent() {
-  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
+  const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const [lichSuCar, setLichSuCar] = useState([]);
   const currentMaKH = "KHthanh"; //TODO thay thế mã bằng giá trị động từ khách hàng đăng nhập
   const filteredLichSuCar = lichSuCar.filter(

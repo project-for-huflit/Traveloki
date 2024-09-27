@@ -39,7 +39,7 @@ const BookingCar = () => {
   const fetchDetailCar = async () => {
     try {
       const res = await fetch(
-        `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetDetailCarID/${id}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/GetDetailCarID/${id}`
       );
       if (!res.ok) {
         throw new Error("Network response was not ok");
@@ -287,7 +287,7 @@ const BookingCar = () => {
                 <tr className="bg-green-400">
                   <th className="border px-4 py-2">Công ty</th>
                   <th className="border px-4 py-2">Số ghế tối đa</th>
-                  <th className="border px-4 py-2">Số tiền/km</th>  
+                  <th className="border px-4 py-2">Số tiền/km</th>
                   <th className="border px-4 py-2">Mã Sân Bay</th>
                 </tr>
               </thead>
