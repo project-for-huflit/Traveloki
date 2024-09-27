@@ -6,6 +6,22 @@ const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.respon
 
 const asyncHandler = require('../helpers/asyncHandler')
 
+class HistoryVehicle {
+
+}
+
+class HistoryCar extends HistoryVehicle {
+
+}
+
+class HistoryBus extends HistoryVehicle {
+
+}
+
+class HistoryTrain extends HistoryVehicle {
+
+}
+
 const GetLichSuDatXeOto = async (req, res) => {
   try {
     const lichSuDatXeOto = await LichSuDatXeOto.find({});

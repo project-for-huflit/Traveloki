@@ -3,6 +3,40 @@
 const AppraiseBus = require("../models/schema").AppraiseBus;
 const asyncHandler = require('../helpers/asyncHandler')
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+const { BadRequestError } = require('../middlewares/error.response')
+// class AppraiseVehicle { }
+
+// class _AppraiseBus extends AppraiseVehicle { }
+
+// class _AppraiseCar extends AppraiseVehicle { }
+
+// class _AppraiseTrain extends AppraiseVehicle { }
+
+class AppraiseBusController {
+  getAppraiseBus = async ( req, res, next ) => {
+
+  }
+
+  createAppraiseBus = async ( req, res, next ) => {
+
+  }
+}
+
+class AppraiseBusService {
+  static async getAppraiseBus() {
+    return await AppraiseBus.find({});
+  }
+
+  static async createAppraiseBus({ MaBus, MaCus, SoSao, NoiDung }) {
+    if (!MaBus || !MaCus || !SoSao || !NoiDung) {
+      throw new BadRequestError(`Missing information!`)
+    }
+    const appraiseBus = new AppraiseBus({
+      MaBus, MaCus, SoSao, NoiDung
+    });
+    return await appraiseBus.save();
+  }
+}
 
 const GetAppraiseBus = async (req, res) => {
   try {
@@ -19,12 +53,8 @@ const CreateAppraiseBus = async (req, res) => {
     if (!MaBus || !MaCus || !SoSao || !NoiDung) {
       return res.status(400).json("Thiếu thông tin");
     }
-    const appraiseBus = new AppraiseBus({
-      MaBus,
-      MaCus,
-      SoSao,
-      NoiDung,
-    });
+
+    const appraiseBus = new AppraiseBus({ MaBus, MaCus, SoSao, NoiDung });
     await appraiseBus.save();
     res.status(200).json({ appraiseBus });
   } catch (e) {
@@ -45,4 +75,8 @@ const DeleteAppraiseBus = async (req, res) => {
   }
 };
 
-module.exports = { GetAppraiseBus, CreateAppraiseBus, DeleteAppraiseBus };
+module.exports = {
+  GetAppraiseBus,
+  CreateAppraiseBus,
+  DeleteAppraiseBus
+};

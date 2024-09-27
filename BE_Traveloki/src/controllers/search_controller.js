@@ -10,6 +10,10 @@ const asyncHandler = require('../helpers/asyncHandler')
 
 const app = express();
 
+class SearchVehicle {
+
+}
+
 const SuggestsAirpost = async (req, res) => {
   try {
     const { query } = req.query;

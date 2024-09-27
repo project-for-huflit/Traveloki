@@ -2,7 +2,7 @@
 
 // _.pick
 /**
- ** {exp}
+ * @example
  * const _ = require('lodash')
 
    const getInfoData = ({ fields = [], object = {} }) => {
