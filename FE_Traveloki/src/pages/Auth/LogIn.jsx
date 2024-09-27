@@ -1,10 +1,12 @@
 import { useState, useContext } from "react";
 import axios from "axios";
-import { UserContext } from "../../Router/UserContext";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {AuthContext} from "../../components/context/authContext.jsx";
+import {loginAPi} from "../../services/api/auth/auth_api.js";
 
 const Login = () => {
-  const { login } = useContext(UserContext);
+  const { setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -21,19 +23,20 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post(
-        "https://api.htilssu.com/api/v1/auth/login",
-        {
-          username: email,
-          password,
-        }
-      );
+      const response = await loginAPi(email, password);
 
       if (response.status === 200) {
         const { token, user } = response.data;
-        login(user, token);
+        // login(user, token);
         setSuccess("Đăng nhập thành công!");
-        window.location.href = "/HomePage";
+        setUser({
+          isAuthenticated: true,
+          user: {
+            email: response?.user?.email ?? "",
+            name: response?.user?.name ?? "",
+          }
+        })
+        navigate("/HomePage");
       } else {
         throw new Error("Đăng nhập không thành công.");
       }

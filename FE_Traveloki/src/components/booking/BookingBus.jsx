@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "react-router-dom";
+import {getTramDungId} from "../../services/api/booking/api.bookingBus.js";
 // import {
 //   faPlaneArrival,
 //   faCalendarDays,
 // } from "@fontawesome/free-solid-svg-icons";
 
 const BookingBus = () => {
-  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
+  const url = `${import.meta.env.VITE_BACKEND_URL}/api/`;
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay");
   const dateParam = searchParams.get("Date");
@@ -40,7 +41,7 @@ const BookingBus = () => {
 
   const fetchPhuongTien = async () => {
     try {
-      const res = await fetch(`${url}/GetPhuongTienID/${id}`);
+      const res = await fetchPhuongTien(id);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -53,7 +54,7 @@ const BookingBus = () => {
 
   const fetchTram = async () => {
     try {
-      const res = await fetch(`${url}/GetTramDungID/${IDTram}`);
+      const res = await getTramDungId(IDTram);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }

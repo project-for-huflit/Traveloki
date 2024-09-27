@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -12,7 +11,7 @@ import backgroundImage from "../../assets/introPic.png";
 import { getSanBaybyTenSanBay, getTuyenDiemSanBay, suggestsAirportAPI, suggestsTramDungAPI, tramDungByDiaChi } from "../../services/api/search/api.search";
 
 const SearchBar = () => {
-  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
+  const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const [diemSanBay, setDiemKhoiHanh] = useState("");
   const [diemKetThuc, setDiemKetThuc] = useState("");
   const [selectedHour, setSelectedHour] = useState("");
