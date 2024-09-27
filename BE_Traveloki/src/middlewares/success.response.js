@@ -27,12 +27,14 @@ class SuccessResponse {
   }
 }
 
+// 200
 class OK extends SuccessResponse {
   constructor ({ message, metadata }){
     super({ message, metadata })
   }
 }
 
+// 201
 class CREATED extends SuccessResponse {
   constructor ({
     message,
