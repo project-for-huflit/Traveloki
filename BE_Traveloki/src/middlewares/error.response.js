@@ -24,6 +24,7 @@ class ErrorResponse extends Error {
   }
 }
 
+// 403
 class ConflictRequestError extends ErrorResponse {
 
   constructor(
@@ -34,6 +35,7 @@ class ConflictRequestError extends ErrorResponse {
   }
 }
 
+// 403
 class BadRequestError extends ErrorResponse {
 
   constructor(
@@ -44,6 +46,7 @@ class BadRequestError extends ErrorResponse {
   }
 }
 
+// 401
 class AuthFailureError extends ErrorResponse {
 
   constructor(
@@ -54,6 +57,7 @@ class AuthFailureError extends ErrorResponse {
   }
 }
 
+// 404
 class NotFoundError extends ErrorResponse {
 
   constructor(
@@ -64,6 +68,7 @@ class NotFoundError extends ErrorResponse {
   }
 }
 
+// 403
 class ForbidenError extends ErrorResponse {
 
   constructor(
