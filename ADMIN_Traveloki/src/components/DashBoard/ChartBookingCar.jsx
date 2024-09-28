@@ -1,15 +1,8 @@
-import React from "react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
-import { Chart } from "chart.js/auto";
 import {
-  Bar,
-  Doughnut,
   Line,
-  Pie,
-  PolarArea,
-  Radar,
-  Scatter,
 } from "react-chartjs-2";
 
 export const ChartBookingCar = () => {
@@ -48,7 +41,7 @@ export const ChartBookingCar = () => {
             },
         ],
     };
-      
+
     const options = {
         options: {
         scales: {
@@ -56,8 +49,7 @@ export const ChartBookingCar = () => {
                 beginAtZero: true
             }
         }
-    }
-    };
+    }};
 
     function generateRandomData(n) {
         const data = []
@@ -65,9 +57,7 @@ export const ChartBookingCar = () => {
             data.push(Math.round(Math.random() * 10))
         }
         return data
-    }  
-
-
+    }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
