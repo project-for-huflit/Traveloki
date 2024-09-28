@@ -25,3 +25,5 @@
 # Chỉ định rõ các tệp log và data không cần version control
 *.log -text
 *.sql -text
+
+.env
