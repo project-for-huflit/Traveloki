@@ -11,7 +11,13 @@ const {
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-const asyncHandler = require('../helpers/asyncHandler')
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
+
+class StateBookingController {
+
+}
+
+// module.exports = new StateBookingController()
 
 const UpdateState = async (req, res) => {
   try {

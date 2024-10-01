@@ -6,11 +6,13 @@ const CounterPhuongTien = require("../models/schema.js").CounterPhuongTien;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-const asyncHandler = require('../helpers/asyncHandler')
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
 
-class Vehicle {
+class VehicleController {
 
 }
+// module.exports = new VehicleController()
+
 
 const GetPhuongTien = async (req, res) => {
   try {

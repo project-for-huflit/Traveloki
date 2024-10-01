@@ -7,32 +7,43 @@ const TramDung = require("../models/schema").TramDung; // Đảm bảo rằng b�
 const ChiTietXeOto = require("../models/schema").ChiTietXeOto;
 const CounterDatXeOto = require("../models/schema").CounterDatXe;
 
-const asyncHandler = require('../helpers/asyncHandler')
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-class BookingVehicle {
+class BookingCarController {
+  getDatXeOto = async ( req, res, next ) => {
 
+  }
+
+  BookingCar = async ( req, res, next ) => {
+
+  }
+
+  schedularChange = async ( req, res, next ) => {
+
+  }
+
+  cancelBooking = async ( req, res, next ) => {
+
+  }
+
+  findBookingCarID = async ( req, res, next ) => {
+
+  }
+
+  findBookingCarMaDX = async ( req, res, next ) => {
+
+  }
 }
-
-class _BookingCar extends BookingVehicle {
-
-}
-
-class _BookingBus extends BookingVehicle {
-
-}
-
-class _BookingTrain extends BookingVehicle {
-
-}
+// module.exports = new BookingCarController()
 
 const GetDatXeOto = async (req, res) => {
   try {
     const datXeOto = await DatXeOto.find({});
     res.status(200).json({ datXeOto });
   } catch (e) {
-    res.status(500).json("not get dat xe o to");
+    res.status(500).json("Can not get booking car!");
   }
 };
 
@@ -54,11 +65,11 @@ const BookingCar = async (req, res) => {
     const chiTietXe = await ChiTietXeOto.findById(MaDetailCar);
 
     if (!chiTietXe) {
-      return res.status(404).json({ message: "Chi tiết xe không tồn tại" });
+      return res.status(404).json({ message: "Vehicle details do not exist!!" });
     }
 
     if (!tramDung) {
-      return res.status(404).json({ message: "Trạm dừng không tồn tại" });
+      return res.status(404).json({ message: "Waypoint do not exist" });
     }
 
     const CounterDatXe = await CounterDatXeOto.findOneAndUpdate(
@@ -87,8 +98,8 @@ const BookingCar = async (req, res) => {
 
     res.status(200).json(result); // Đảm bảo result chứa trường Sdt
   } catch (e) {
-    console.error("Lỗi khi tạo DatXeOto:", e);
-    res.status(500).json({ error: "Không thể tạo DatXeOto" });
+    console.error("Can not create booking car:", e);
+    res.status(500).json({ error: "Can not create booking car!!" });
   }
 };
 
@@ -109,8 +120,8 @@ const SchedularChange = async (req, res) => {
     });
     res.status(200).json({ message: "Đã cập nhật Ngày giờ đặt thành công." });
   } catch (e) {
-    console.error("Lỗi khi cập nhật DatXeOto:", e);
-    res.status(500).json({ error: "Không thể cập nhật Ngày giờ đặt." });
+    console.error("Can not update DatXeOto:", e);
+    res.status(500).json({ error: "Can not update schedule booking car!" });
   }
 };
 
@@ -118,16 +129,16 @@ const CancelBooking = async (req, res) => {
   try {
     const { MaDX } = req.params;
     if (!MaDX) {
-      return res.status(400).json("Thiếu thông tin");
+      return res.status(400).json("Missing information");
     }
 
     await DatXeOto.deleteOne({ MaDX });
     await LichSuDatXeOto.deleteOne({ MaDX });
 
-    res.status(200).json({ message: "DatXeOto đã được hủy thành công." });
+    res.status(200).json({ message: "Cancel booking successfully!." });
   } catch (e) {
-    console.error("Lỗi khi hủy DatXeOto:", e);
-    res.status(500).json({ error: "Không thể hủy đặt xe." });
+    console.error("Can not cancel DatXeOto:", e);
+    res.status(500).json({ error: "Can not cancel booking" });
   }
 };
 

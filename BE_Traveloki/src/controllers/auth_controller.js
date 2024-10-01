@@ -2,6 +2,31 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Account = require('../models/account.model');
 
+const AuthJWTService = require('../services/authen.service')
+const AuthSSOService = require('../services/authen.service')
+
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
+
+class AuthController {
+  login = async (req, res, next) => {
+
+  }
+
+  loginSSO = async (req, res, next) => {
+
+  }
+
+  register = async (req, res, next) => {
+
+  }
+
+  registerSSO = async (req, res, next) => {
+
+  }
+}
+// module.exports = new AuthController()
+
+
 const login = async (req, res, next) => {
   const { username, password } = req.body;
   try {
@@ -16,10 +41,10 @@ const login = async (req, res, next) => {
         });
         res.json({ token });
       } else {
-        return res.status(401).json({ message: 'Sai mật khẩu' });
+        return res.status(401).json({ message: 'Password incorrect!' });
       }
     } else {
-      return res.status(404).json({ message: 'Tài khoản không tồn tại!!!' });
+      return res.status(404).json({ message: 'Account is not exist!!!' });
     }
     // if (!user) {
     //   throw new NotFoundError(`Tài khoản không tồn tại!!!`)
@@ -39,8 +64,8 @@ const login = async (req, res, next) => {
     // res.json({ token });
     next();
   } catch (err) {
-    console.error('Lỗi đăng nhập:', err);
-    res.status(500).json({ message: 'Lỗi server' });
+    console.error('login error:', err);
+    res.status(500).json({ message: 'Error server!' });
   }
 };
 
@@ -75,12 +100,12 @@ const register = async (req, res, next) => {
           });
         });
     } else {
-      return res.status(400).json({ message: 'Tài khoản đã tồn tại!!!' });
+      return res.status(400).json({ message: 'Account is exist!!!' });
     }
     next();
   } catch (err) {
-    console.error('Lỗi đăng ký: ', err);
-    res.status(500).json({ message: 'Lỗi server' });
+    console.error('Register error: ', err);
+    res.status(500).json({ message: 'Error server' });
   }
 };
 
