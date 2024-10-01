@@ -38,13 +38,19 @@ class Database {
       });
   }
 
+  // singleton pattern
   static getInstance() {
     if (!Database.instance) {
       Database.instance = new Database();
     }
     return Database.instance;
   }
+
+  static getConnect() {
+    return this.getInstance();
+  }
 }
 
 const instanceMongoDB = Database.getInstance();
+const cloudMongoDB = Database.getConnect()
 module.exports = instanceMongoDB;

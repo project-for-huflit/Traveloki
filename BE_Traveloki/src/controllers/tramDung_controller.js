@@ -6,11 +6,12 @@ const CounterTramDung = require("../models/schema.js").CounterTramDung;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-const asyncHandler = require('../helpers/asyncHandler')
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
 
-class WayPoint {
+class WayPointController {
 
 }
+// module.exports = new WayPointController()
 
 const GetTramDung = async (req, res) => {
   try {

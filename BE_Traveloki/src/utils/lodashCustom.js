@@ -1,5 +1,7 @@
 'use strict'
 
+import pick from './.internal/pick'
+
 // _.pick
 /**
  * @example
@@ -9,9 +11,6 @@
        return _.pick( object, fields)
    }
  */
-
-import pick from './.internal/pick'
-
 const getInfoData = ({ fields = [], object = {} }) => {
     return pick( object, fields )
 }

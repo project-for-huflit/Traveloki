@@ -6,7 +6,12 @@ const { LichSuDatTau } = require("../models/schema.js");
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-const asyncHandler = require('../helpers/asyncHandler')
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
+
+class HistoryTrainController {
+
+}
+// module.exports = HistoryTrainController()
 
 const GetLichSuDatTau = async (req, res) => {
   try {
