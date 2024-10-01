@@ -1,6 +1,4 @@
-'use strict'
-
-const { Schema, model } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 
 const partnerSchema = new Schema({
   name: {
@@ -8,15 +6,9 @@ const partnerSchema = new Schema({
     trim: true,
     maxLength: 150
   },
-  description: {
+  password: {
     type: String,
-  },
-  image: {
-    type: String,
-    default: null,
-  },
-  phone: {
-    type: String,
+    required:true,
   },
   isPartner: {
     type: Boolean,
@@ -27,16 +19,6 @@ const partnerSchema = new Schema({
     type: Array,
     required: true,
     default: []
-  },
-  email: {
-    type: String,
-    trim: true,
-    required: true,
-    unique: [true, "Email already exists!"],
-  },
-  password: {
-    type: String,
-    required:true,
   },
   privateKey: {
     type: String,
@@ -49,6 +31,10 @@ const partnerSchema = new Schema({
     enum: ['active', 'inactive'],
     default: 'inactive'
   },
+  partnerDetail: {
+    type: Schema.Types.ObjectId,
+    ref: 'PartnerDetail', // Ref schema partner_detail
+  }
 }, {
     timestamps: true,
 });

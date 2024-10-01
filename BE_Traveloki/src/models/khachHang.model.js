@@ -1,5 +1,3 @@
-'use strict'
-
 const { Schema, model } = require('mongoose');
 
 const KhachHangSchema = new Schema({
@@ -17,6 +15,8 @@ const KhachHangSchema = new Schema({
     type: String,
     maxlength: 10,
   },
+},{
+  timestamps: true
 });
 
 const KhachHang = model("KhachHang", KhachHangSchema);
