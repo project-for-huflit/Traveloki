@@ -17,7 +17,7 @@ const partnerDetailSchema = new Schema({
   },
   partner: {
     type: Schema.Types.ObjectId,
-    ref: 'Partner', // Ref tới schema partner
+    ref: 'partner', // Ref tới schema partner
     required: true,
   },
 }, {
