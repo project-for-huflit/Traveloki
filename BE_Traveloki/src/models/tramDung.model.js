@@ -1,5 +1,3 @@
-'use strict'
-
 const { Schema, model } = require('mongoose');
 
 const TramDungSchema = new Schema({
@@ -9,6 +7,8 @@ const TramDungSchema = new Schema({
   SoKM: { type: Number, required: true },
   GiaTienVe: { type: Number, required: true },
   GiaTienVeTau: { type: Number, required: true },
+},{
+  timestamps: true
 });
 
 const TramDung = model("TramDung", TramDungSchema);

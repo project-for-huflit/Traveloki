@@ -1,5 +1,3 @@
-'use strict'
-
 const { Schema, model } = require('mongoose');
 
 const AppraiseTrainSchema = new Schema({
@@ -7,6 +5,8 @@ const AppraiseTrainSchema = new Schema({
   MaCus: { type: String, ref: "KhachHang" },
   SoSao: { type: Number, required: true },
   NoiDung: { type: String, required: true, maxlength: 500 },
+},{
+  timestamps: true
 });
 
 const AppraiseTrain = model("AppraiseTrain", AppraiseTrainSchema);

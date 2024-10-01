@@ -1,5 +1,3 @@
-'use strict'
-
 const { Schema, model } = require("mongoose");
 
 const KhachHangSchema = new Schema({

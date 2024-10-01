@@ -1,5 +1,3 @@
-'use strict'
-
 const { Schema, model } = require('mongoose');
 
 const TuyenSchema = new Schema({
@@ -8,6 +6,8 @@ const TuyenSchema = new Schema({
   DiemKetThuc: { type: String, maxlength: 300, required: true },
   ThoiGianKhoiHanh: { type: Date, required: true },
   ThoiGianKetThuc: { type: Date, required: true },
+},{
+  timestamps: true
 });
 
 const Tuyen = model("Tuyen", TuyenSchema);

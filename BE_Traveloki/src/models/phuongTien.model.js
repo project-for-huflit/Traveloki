@@ -1,5 +1,3 @@
-'use strict'
-
 const { Schema, model } = require('mongoose');
 
 const PhuongTienSchema = new Schema({
@@ -10,6 +8,8 @@ const PhuongTienSchema = new Schema({
   SoGheToiDa: { type: Number, required: true },
   image: { type: String, required: true },
   TenCty: { type: String, required: true, maxlength: 100 },
+},{
+  timestamps: true
 });
 
 const PhuongTien = model("PhuongTien", PhuongTienSchema);
