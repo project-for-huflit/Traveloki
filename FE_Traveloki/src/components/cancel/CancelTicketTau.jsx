@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const CancelTicketTrain = () => {
-  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
+  const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const MaDX = searchParams.get("MaDX");

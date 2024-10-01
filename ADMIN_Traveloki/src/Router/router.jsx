@@ -1,19 +1,19 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App.jsx";
-import DanhSachSanBay from "../AdminPage/ListSanBay/DanhSachSanBay.jsx";
-import CreateDanhSachSanBay from "../AdminPage/ListSanBay/CreateDanhSachSanBay.jsx";
-import DanhSachTuyenXe from "../AdminPage/TuyenXe/DanhSachTuyenXe.jsx";
-import CreateTuyenXe from "../AdminPage/TuyenXe/CreateTuyenXe.jsx";
-import PhuongTien from "../AdminPage/PhuongTien/DanhSachPhuongTien.jsx";
-import CreatePhuongTien from "../AdminPage/PhuongTien/CreatePhuongTien.jsx";
-import DanhSachTramDung from "../AdminPage/TramDung/DanhSachTramDung.jsx";
-import CreateTramDung from "../AdminPage/TramDung/CreateTramDung.jsx";
-import ListDetailCar from "../AdminPage/DetailCar/ListDetailCar.jsx";
-import CreateDetailCar from "../AdminPage/DetailCar/CreateDetailCar.jsx";
-import GetDetailCar from "../AdminPage/DetailCar/GetDetailCar.jsx";
-import EditDetailCar from "../AdminPage/DetailCar/UpdateDetail.jsx";
+import App from '../App.jsx';
+import DanhSachSanBay from "../components/ListSanBay/DanhSachSanBay.jsx";
+import CreateDanhSachSanBay from "../components/ListSanBay/CreateDanhSachSanBay.jsx";
+import DanhSachTuyenXe from "../components/TuyenXe/DanhSachTuyenXe.jsx";
+import CreateTuyenXe from "../components/TuyenXe/CreateTuyenXe.jsx";
+import PhuongTien from "../components/PhuongTien/DanhSachPhuongTien.jsx";
+import CreatePhuongTien from "../components/PhuongTien/CreatePhuongTien.jsx";
+import DanhSachTramDung from "../components/TramDung/DanhSachTramDung.jsx";
+import CreateTramDung from "../components/TramDung/CreateTramDung.jsx";
+import ListDetailCar from "../components/DetailCar/ListDetailCar.jsx";
+import CreateDetailCar from "../components/DetailCar/CreateDetailCar.jsx";
+import GetDetailCar from "../components/DetailCar/GetDetailCar.jsx";
+import EditDetailCar from "../components/DetailCar/UpdateDetail.jsx";
 import ErrorPage from "./ErrorPage.jsx";
-import {Dashboard} from "../AdminPage/DashBoard/DashBoard.jsx";
+import {Dashboard} from "../components/DashBoard/DashBoard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +23,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        path: "DashBoard",
         element: <Dashboard/>,
       },
       {
