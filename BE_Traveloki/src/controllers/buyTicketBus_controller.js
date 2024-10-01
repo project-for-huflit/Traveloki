@@ -1,5 +1,3 @@
-'use strict'
-
 const PhieuDatXeBus = require("../models/schema.js").PhieuDatXeBus;
 const CounterDatBuyt = require("../models/schema.js").CounterDatBuyt;
 const lichSuDatXeBus = require("../models/schema.js").LichSuDatXeBus;
