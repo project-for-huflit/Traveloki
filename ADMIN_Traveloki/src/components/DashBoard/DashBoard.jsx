@@ -1,67 +1,71 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { ChartBookingCar } from "./ChartBookingCar";
+import {fetchHistoryCar, fetchHistoryBus, fetchHistoryTrain} from "../../services/api/apiDashboard.js";
 
 export const Dashboard = () => {
-    const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
+    // const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
     const [isLoading, setIsLoading] = useState(true);
     const [slCar,setSlCar] = useState([]);
     const [slTrain,setSlTrain] = useState([]);
     const [slBus,setSlBus] = useState([]);
     const [error, setError] = useState(null);
-    
+
     //get History
     useEffect(() => {
         //get HistoryCar
-        const fetchHistoryCar = async () => {
+        const historyCar = async() => {
             try {
-              const response = await fetch(`${url}/GetLichSuDatXeOto`);
-              if (!response.ok) {
+              const res = await fetchHistoryCar();
+              if (!res.ok) {
                 throw new Error('Network response was not ok');
               }
-              const result = await response.json();
+              const result = await res.json();
               setSlCar(result.lichSuDatXeOto || []);
             } catch (error) {
               setError("Không thể lấy dữ liệu từ máy chủ");
             }finally {
                 setIsLoading(false);
-            } 
+            }
         };
+
         //get HistoryTrain
-        const fetchHistoryTrain = async () => {
+        const historyTrain = async () => {
             try {
-              const response = await fetch(`${url}/GetLichSuDatTau`);
-              if (!response.ok) {
+              const res = await fetchHistoryTrain();
+              if (!res.ok) {
                 throw new Error('Network response was not ok');
               }
-              const result = await response.json();
+              const result = await res.json();
               setSlTrain(result.lichSuDatTau || []);
             } catch (error) {
               setError("Không thể lấy dữ liệu từ máy chủ");
             }finally {
                 setIsLoading(false);
-            } 
+            }
         };
+
         //get HistoryBus
-        const fetchHistoryBus = async () => {
+        const historyBus = async () => {
             try {
-              const response = await fetch(`${url}/GetHistoryBus`);
-              if (!response.ok) {
+              const res = await fetchHistoryBus();
+              if (!res.ok) {
                 throw new Error('Network response was not ok');
               }
-              const result = await response.json();
+              const result = await res.json();
               setSlBus(result.lichSuDatXeBus || []);
             } catch (error) {
               setError("Không thể lấy dữ liệu từ máy chủ");
             }finally {
                 setIsLoading(false);
-            } 
+            }
         };
-        fetchHistoryCar();
-        fetchHistoryTrain();
-        fetchHistoryBus();
-    }, []); 
+
+      historyCar();
+      historyBus();
+      historyTrain();
+    }, []);
 
     //Tính sl đã đặt
     const totalBookingsCar = slCar.length;
@@ -80,10 +84,11 @@ export const Dashboard = () => {
             Error: {error}
           </div>
         );
+
   return (
     <main className="">
       <div className="p-6">
-      <h1 className="text-4xl font-semibold mb-6">Dashboard</h1>  
+      <h1 className="text-4xl font-semibold mb-6">Dashboard</h1>
         {/*Responsive dòng 1*/}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
           {/* Bảng 1 */}
@@ -209,7 +214,7 @@ export const Dashboard = () => {
               {/* Tổng số lượng xe đã đặt */}
                 <div className="text-2xl font-semibold mb-1">{totalBookingsCar}</div>
                 <div className="text-sm font-medium text-gray-400">
-                  Số lượng đặt xe 
+                  Số lượng đặt xe
                 </div>
               </div>
               <div className="dropdown">
@@ -275,7 +280,7 @@ export const Dashboard = () => {
               {/* Tổng số lượng xe đã đặt */}
                 <div className="text-2xl font-semibold mb-1">{totalBookingsBus}</div>
                 <div className="text-sm font-medium text-gray-400">
-                  Số lượng đặt Bus 
+                  Số lượng đặt Bus
                 </div>
               </div>
               <div className="dropdown">
@@ -628,7 +633,7 @@ export const Dashboard = () => {
                         <div className="font-medium">Manage Services</div>
                         <div className="dropdown">
                             <button type="button" className="dropdown-toggle text-gray-400 hover:text-gray-600"><FontAwesomeIcon icon={faCaretDown} /></button>
-                            
+
                         </div>
                     </div>
                     <form action="" className="flex items-center mb-4">
@@ -667,7 +672,7 @@ export const Dashboard = () => {
                                     <td className="py-2 px-4 border-b border-b-gray-50">
                                         <div className="dropdown">
                                             <button type="button" className="dropdown-toggle text-gray-400 hover:text-gray-600 text-sm w-6 h-6 rounded flex items-center justify-center bg-gray-50"><FontAwesomeIcon icon={faCaretDown} /></button>
-                                            
+
                                         </div>
                                     </td>
                                 </tr>
@@ -687,7 +692,7 @@ export const Dashboard = () => {
                                     <td className="py-2 px-4 border-b border-b-gray-50">
                                         <div className="dropdown">
                                             <button type="button" className="dropdown-toggle text-gray-400 hover:text-gray-600 text-sm w-6 h-6 rounded flex items-center justify-center bg-gray-50"><FontAwesomeIcon icon={faCaretDown} /></button>
-                                            
+
                                         </div>
                                     </td>
                                 </tr>
@@ -707,7 +712,7 @@ export const Dashboard = () => {
                                     <td className="py-2 px-4 border-b border-b-gray-50">
                                         <div className="dropdown">
                                             <button type="button" className="dropdown-toggle text-gray-400 hover:text-gray-600 text-sm w-6 h-6 rounded flex items-center justify-center bg-gray-50"><FontAwesomeIcon icon={faCaretDown} /></button>
-                                            
+
                                         </div>
                                     </td>
                                 </tr>
@@ -777,8 +782,8 @@ export const Dashboard = () => {
             </div>
         </div>
         <ChartBookingCar />
-        
-    </div>  
+
+    </div>
     </main>
   );
 };
