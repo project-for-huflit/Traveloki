@@ -1,5 +1,3 @@
-'use strict'
-
 const ChiTietXeOto = require("../models/schema.js").ChiTietXeOto;
 const CounterChitietxe = require("../models/schema.js").CounterChitietxe;
 

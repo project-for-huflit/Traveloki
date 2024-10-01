@@ -1,5 +1,3 @@
-'use strict'
-
 const AppraiseBus = require("../models/schema").AppraiseBus;
 const asyncHandler = require('../middlewares/asyncHandler.middeware')
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")

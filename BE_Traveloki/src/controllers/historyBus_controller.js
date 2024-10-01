@@ -1,5 +1,3 @@
-'use strict'
-
 const LichSuDatXeBus = require("../models/schema.js").LichSuDatXeBus;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")

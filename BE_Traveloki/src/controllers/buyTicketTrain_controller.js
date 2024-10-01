@@ -1,5 +1,3 @@
-'use strict'
-
 const PhieuDatTau = require("../models/schema.js").PhieuDatTau;
 const CounterDatTau = require("../models/schema.js").CounterDatTau;
 const PhuongTien = require("../models/schema.js").PhuongTien;

@@ -1,5 +1,3 @@
-'use strict'
-
 const DanhSachSanBay = require("../models/schema").DanhSachSanBay;
 const Counter = require("../models/schema").CounterLSB;
 

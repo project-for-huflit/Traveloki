@@ -1,5 +1,3 @@
-'use strict'
-
 const KhachHang = require("../models/schema").KhachHang;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
