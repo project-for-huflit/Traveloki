@@ -33,7 +33,7 @@ const partnerSchema = new Schema({
   },
   partnerDetail: {
     type: Schema.Types.ObjectId,
-    ref: 'PartnerDetail', // Ref schema partner_detail
+    ref: 'detail-partner', // Ref schema partner_detail
   }
 }, {
     timestamps: true,
