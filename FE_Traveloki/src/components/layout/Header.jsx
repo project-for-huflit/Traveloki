@@ -3,6 +3,8 @@ import icVN from "../../assets/iconVN.png";
 import icPercent from "../../assets/iconPercent.png";
 import backgroundImage from "../../assets/introPic.png";
 import { Link } from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUser} from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
   return (
@@ -23,15 +25,15 @@ const Header = () => {
           <div className="flex items-center">
             <nav className="hidden md:flex space-x-8">
               <a
-                href="#"
-                className="hover:text-gray-300 flex items-center space-x-2"
+                  href="#"
+                  className="hover:text-gray-300 flex items-center space-x-2"
               >
-                <img src={icVN} alt="Vietnam Flag" />
+                <img src={icVN} alt="Vietnam Flag"/>
                 <span>VI | VND</span>
               </a>
               <a
-                href="#"
-                className="hover:text-gray-300  flex items-center mr-10"
+                  href="#"
+                  className="hover:text-gray-300  flex items-center mr-10"
               >
                 Hỗ trợ
               </a>
@@ -39,18 +41,32 @@ const Header = () => {
                 Hợp tác với chúng tôi
               </a>
               <a
-                href="/my-booking"
-                className="hover:text-gray-300  flex items-center"
+                  href="/HomePage/user/my-booking"
+                  className="hover:text-gray-300  flex items-center"
               >
                 Đặt chỗ của tôi
               </a>
               <a
-                href="#"
-                className="hover:text-gray-300 flex items-center space-x-2"
+                  href="#"
+                  className="hover:text-gray-300 flex items-center space-x-2"
               >
-                <img src={icPercent} alt="icon Percent" />
+                <img src={icPercent} alt="icon Percent"/>
                 <span>Khuyến mãi</span>
               </a>
+              <Link
+                  to={"/auth/login"}
+                  className="hover:text-gray-300 flex items-center space-x-2 border border-white rounded-md p-1 cursor-pointer"
+              >
+                <FontAwesomeIcon icon={faUser}/>
+                <span>Đăng nhập</span>
+              </Link>
+              <Link
+                  to={"/auth/register"}
+                  className="hover:text-gray-300 flex items-center space-x-2 border border-white rounded-md p-1 cursor-pointer"
+              >
+                <FontAwesomeIcon icon={faUser}/>
+                <span>Đăng ký</span>
+              </Link>
             </nav>
           </div>
         </div>

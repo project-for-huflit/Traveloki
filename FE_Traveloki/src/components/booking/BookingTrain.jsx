@@ -9,7 +9,7 @@ import {
 
 const BookingTrain = () => {
   const navigate = useNavigate();
-  const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
+  const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay");
   const dateParam = searchParams.get("Date");

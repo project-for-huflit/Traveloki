@@ -5,7 +5,7 @@ import CarIcon from '../../assets/car-7056617.svg'
 import BusIcon from '../../assets/bus-7190.svg'
 import TrainIcon from '../../assets/train-7037789.svg'
 
-// const API_BASE_URL = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com";
+// const API_BASE_URL = `${import.meta.env.VITE_BACKEND_URL}`;
 function ModalFilter(checkedItems, handleChange) {
     const [showModal, setShowModal] = useState(false);
     // Mặc định hiển thị cả 3
@@ -51,9 +51,9 @@ function ModalFilter(checkedItems, handleChange) {
     //     };
     //     fetchVehicle();
     // }, [checkedItems]);
-    return ( 
+    return (
         <>
-            <a onClick={() => setShowModal(true)}>  
+            <a onClick={() => setShowModal(true)}>
                 <div className="w-[140px] shadow bg-[#EDEDED] rounded-lg">
                     <div className="inline-flex justify-center items-center pl-4 pt-2">
                         <div className="mr-4">
@@ -84,9 +84,9 @@ function ModalFilter(checkedItems, handleChange) {
                                     <div className="inline-flex justify-between">
                                         <div className="inline-flex">
                                             <div className="">
-                                                <input 
+                                                <input
                                                 type="checkbox"
-                                                name="car" 
+                                                name="car"
                                                 checked={checkedItems.car}
                                                 onChange={handleChange}
                                                 className="form-checkbox h-5 w-5 text-blue-600"/>
@@ -101,9 +101,9 @@ function ModalFilter(checkedItems, handleChange) {
                                     <div className="inline-flex justify-between">
                                         <div className="inline-flex">
                                             <div className="">
-                                                <input 
+                                                <input
                                                 type="checkbox"
-                                                name="train" 
+                                                name="train"
                                                 checked={checkedItems.train}
                                                 onChange={handleChange}
                                                 className="form-checkbox h-5 w-5 text-blue-600"/>
@@ -119,9 +119,9 @@ function ModalFilter(checkedItems, handleChange) {
                                     <div className="inline-flex justify-between">
                                         <div className="inline-flex">
                                             <div className="">
-                                                <input 
-                                                type="checkbox" 
-                                                name="bus" 
+                                                <input
+                                                type="checkbox"
+                                                name="bus"
                                                 checked={checkedItems.bus}
                                                 onChange={handleChange}
                                                 className="form-checkbox h-5 w-5 text-blue-600" />
