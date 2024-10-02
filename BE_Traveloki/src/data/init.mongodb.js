@@ -23,19 +23,31 @@ class Database {
 
   // connect
   connect(type = 'mongodb') {
-      if(1 === 0){
-          mongoose.set('debug', true)
-          mongoose.set('debug', { color: true })
-      }
+    if(1 === 0){
+        mongoose.set('debug', true)
+        mongoose.set('debug', { color: true })
+    }
 
-      mongoose
-          .connect(connectString, { maxPoolSize: 50 })
-          .then(() => {
-              console.log("Connected to MongoDB!", countConnect());
-          })
-          .catch((e) => {
-              console.error("Did not connect to MongoDB", e);
-          });
+    mongoose
+        .connect(connectString, { maxPoolSize: 50 })
+        .then(() => {
+            console.log("Connected to MongoDB!", countConnect());
+        })
+        .catch((e) => {
+            console.error("Did not connect to MongoDB", e);
+        });
+
+    mongoose.connection.on('reconnected', () => {
+      console.log('Connection Restablished')
+    })
+
+    mongoose.connection.on('disconnected', () => {
+      console.log('Connection Disconnected')
+    })
+
+    mongoose.connection.on('close', () => {
+      console.log('Connection Closed')
+    })
   }
 
   // singleton pattern
