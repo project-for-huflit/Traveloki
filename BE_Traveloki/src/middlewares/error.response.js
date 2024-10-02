@@ -1,5 +1,3 @@
-'use strict'
-
 const { StatusCodes, ReasonPhrases } = require('../utils/httpStatusCode')
 const { logger0 } = require('../utils/logger')
 
