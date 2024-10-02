@@ -1,7 +1,7 @@
 // router.js
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
-import { lazy } from "react";
+// import { lazy } from "react";
 import SwaggerUI from "swagger-ui-react"
 import "swagger-ui-react/swagger-ui.css"
 
@@ -22,28 +22,13 @@ import { ErrorPage } from "../pages/SystemPage/ErrorPage.jsx";
 import HomePage from "../pages/HomePage/HomePage.jsx";
 import Login from "../pages/Auth/LogIn.jsx";
 import SignUp from "../pages/Auth/Register.jsx";
-// const BookingCar = lazy(() => import('../components/booking/BookingCar.jsx'))
-// const ListMain = lazy(() => import('../components/listVehicle/ListVehicleComponent.jsx'))  
-// const SignUp = lazy(() => import('../pages/Auth/Register.jsx')) 
-// const BookingBus = lazy(() => import('../components/booking/BookingBus.jsx'))
-// const BookingTrain = lazy(() => import('../components/booking/BookingTrain.jsx'))
-// const DatChoCuaToi = lazy(() => import('../components/datChoCuaToi/DatChoCuaToi.jsx'))
-// const LichSuDatCho = lazy(() => import('../components/datChoCuaToi/LichSuDatCho.jsx'))
-// const CancelTicketBus = lazy(() => import('../components/cancel/CancelTicketBus.jsx'))
-// const CancelTicketTrain = lazy(() => import('../components/cancel/CancelTicketTau.jsx'))
-// const CancelTicket = lazy(() => import('../components/cancel/CancelTicket.jsx'))
-// const RatingCar = lazy(() => import('../components/rating/RatingCar.jsx'))
-// const RatingBus = lazy(() => import('../components/rating/RatingBus.jsx'))
-// const RatingTau = lazy(() => import('../components/rating/RatingTau.jsx'))
-// const ErrorPage = lazy(() => import('../pages/SystemPage/ErrorPage.jsx'))
-// const HomePage = lazy(() => import('../pages/HomePage/HomePage.jsx'))
-// const Login = lazy(() => import('../pages/Auth/LogIn.jsx'))
 
-// import { TextEditorReact } from "../Customer/Rating/TextEditorReact.jsx"; 
+// import { TextEditorReact } from "../Customer/Rating/TextEditorReact.jsx";
 
 // layouts
-import MainLayout from '../layouts/index.jsx'
-import OnlyCanvas from '../layouts/secondLayout.jsx'
+import MainLayout from '../layouts/mainLayout.jsx'
+import SecondLayout from "../layouts/secondLayout.jsx"
+import OnlyCanvas from '../layouts/centerLayout.jsx'
 const router = createBrowserRouter([
   {
     path: 'auth',
@@ -54,60 +39,56 @@ const router = createBrowserRouter([
     ]
   },
   {
-    path: "/",
+    path: '/',
     element: <MainLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { path: '', element: <Navigate to="/HomePage" replace /> },
+      { path: '', element: <Navigate to="/home" replace /> },
       {
-        path: "HomePage",
-        element: <HomePage />,
+        path: "home",
+        element: <HomePage />
+      }
+    ],
+  },
+  {
+    path: 'user',
+    element: <SecondLayout />,
+    children: [
+      { path: "history-booking", element: <LichSuDatCho /> },
+      {
+        path: "my-booking",
+        element: <DatChoCuaToi />,
+      },
+      {
+        path: "rate",
+        element: <SecondLayout />,
         children: [
-          {
-            path: 'user',
-            children: [
-              { path: "history-booking", element: <LichSuDatCho /> },
-              {
-                path: "my-booking",
-                element: <DatChoCuaToi />,
-                children: [
-                  {
-                    path: "cancel",
-                    children: [
-                      { path: "ticket", element: <CancelTicket />, },
-                      { path: "ticket-train", element: <CancelTicketTrain />, },
-                      { path: "ticket-bus", element: <CancelTicketBus />, },
-                    ]
-                  }
-                ]
-              },
-              {
-                path: "rate",
-                children: [
-                    { path: "rate", element:  <Navigate to="HomePage/user/rate/trips-car" replace /> },
-                    { path: "HomePage/user/rate/trips-car", element: <RatingCar /> },
-                    { path: "HomePage/user/rate/trips-bus", element: <RatingBus /> },
-                    { path: "HomePage/user/rate/trips-train", element: <RatingTau /> }
-                ]
-              }
-            ]
-          },
-          {
-            path: 'booking',
-            children: [
-              {
-                path: 'search',
-                children: [
-                    { path: "search", element: <Navigate to="HomePage/booking/search/cars" replace />, },
-                    { path: "HomePage/booking/search/cars", element: <BookingCar />, },
-                    { path: "HomePage/booking/search/bus", element: <BookingBus />, },
-                    { path: "HomePage/booking/search/trains", element: <BookingTrain />, },
-                ]
-              }
-            ],
-          },
+            { path: "trips-car", element: <RatingCar /> },
+            { path: "trips-bus", element: <RatingBus /> },
+            { path: "trips-train", element: <RatingTau /> }
         ]
       }
+    ]
+  },
+  {
+    path: "user/my-booking/cancel",
+    element: <OnlyCanvas />,
+    children: [
+      { path: "ticket", element: <CancelTicket />, },
+      { path: "ticket-train", element: <CancelTicketTrain />, },
+      { path: "ticket-bus", element: <CancelTicketBus />, },
+    ]
+  },
+
+  // ======================================================================================================
+  {
+    path: 'airport-transfer/search',
+    element: <SecondLayout />,
+    children: [
+      { path: "search", element: <Navigate to="cars" replace />, },
+      { path: "cars", element: <BookingCar />, },
+      { path: "bus", element: <BookingBus />, },
+      { path: "trains", element: <BookingTrain />, },
     ],
   },
   { path: 'swagger', element: <SwaggerUI url="https://petstore.swagger.io/v2/swagger.json" /> }
