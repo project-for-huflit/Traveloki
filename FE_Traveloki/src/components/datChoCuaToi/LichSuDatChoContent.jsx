@@ -79,7 +79,7 @@ function LichSuDatChoContent() {
     });
   };
   return (
-    <div className="w-[70%] mt-10 overflow-y-auto">
+    <div className="w-[70%] mt-4 overflow-y-auto mr-2">
       <div className="w-full shadow bg-[#EDEDED] rounded-lg mb-6">
         <div className="inline-flex items-center p-4">
           <div className="mr-4">
@@ -100,9 +100,9 @@ function LichSuDatChoContent() {
       <div className="inline-flex justify-end  w-full">
         <PickRangeTimeToFilter />
         <div className="w-[1px] bg-gray-300 mx-4"></div>
-        <ModalFilter 
-            checkedItems={checkedItems} 
-            handleChange={handleChange} 
+        <ModalFilter
+            checkedItems={checkedItems}
+            handleChange={handleChange}
         />
       </div>
       {filteredData.map((vehicle, index) => (
