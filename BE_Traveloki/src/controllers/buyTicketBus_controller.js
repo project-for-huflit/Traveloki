@@ -6,7 +6,12 @@ const lichSuDatXeBus = require("../models/schema.js").LichSuDatXeBus;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-const asyncHandler = require('../helpers/asyncHandler')
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
+
+class BookingBusController {
+
+}
+// module.exports = new BookingBusController()
 
 const GetBuyTicketBus = async (req, res) => {
   try {
@@ -19,19 +24,10 @@ const GetBuyTicketBus = async (req, res) => {
 
 const BuyTicketBus = async (req, res) => {
   try {
-    const { MaPT, MaTram, SLVe, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } =
-      req.body;
+    const { MaPT, MaTram, SLVe, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } = req.body;
 
-    if (
-      !MaPT ||
-      !MaTram ||
-      !SLVe ||
-      !DiemDon ||
-      !DiemTra ||
-      !NgayGioKhoiHanh ||
-      !ThanhTien
-    ) {
-      return res.status(400).json("Thiếu thông tin");
+    if ( !MaPT || !MaTram || !SLVe || !DiemDon || !DiemTra || !NgayGioKhoiHanh || !ThanhTien ) {
+      return res.status(400).json("Missing information");
     }
 
     if (SLVe <= 0) {
@@ -62,7 +58,7 @@ const BuyTicketBus = async (req, res) => {
     res.status(200).json({ buyTicketBus });
   } catch (e) {
     console.error(e);
-    res.status(500).json("not create buy ticket bus");
+    res.status(500).json("Can not create buy ticket bus");
   }
 };
 
@@ -99,8 +95,8 @@ const SchedularChange = async (req, res) => {
     });
     res.status(200).json({ message: "Đã cập nhật Ngày giờ đặt thành công." });
   } catch (e) {
-    console.error("Lỗi khi cập nhật PhieuDatXeBus:", e);
-    res.status(500).json({ error: "Không thể cập nhật Ngày giờ đặt." });
+    console.error("Can not update PhieuDatXeBus:", e);
+    res.status(500).json({ error: "Can not update schedule booking bus!" });
   }
 };
 
@@ -108,7 +104,7 @@ const CancelBookingBus = async (req, res) => {
   const { MaVeBus } = req.params;
 
   if (!MaVeBus) {
-    return res.status(400).json({ message: "Thiếu thông tin" });
+    return res.status(400).json({ message: "Missing information" });
   }
 
   try {

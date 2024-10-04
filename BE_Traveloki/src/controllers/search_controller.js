@@ -6,13 +6,16 @@ const { DanhSachSanBay, TramDung } = require("../models/schema.js");
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-const asyncHandler = require('../helpers/asyncHandler')
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
 
 const app = express();
 
-class SearchVehicle {
+class SearchController {
 
 }
+
+// module.exports = new SearchController()
+
 
 const SuggestsAirpost = async (req, res) => {
   try {

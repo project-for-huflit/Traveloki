@@ -79,10 +79,22 @@ class ForbidenError extends ErrorResponse {
   }
 }
 
+// 421
+class MisdirectedRequest extends ErrorResponse {
+
+  constructor(
+    message = ReasonPhrases.MISDIRECTED_REQUEST,
+    statusCode = StatusCodes.MISDIRECTED_REQUEST
+  ) {
+    super( message, statusCode )
+  }
+}
+
 module.exports = {
   ConflictRequestError,
   BadRequestError,
   AuthFailureError,
   NotFoundError,
-  ForbidenError
+  ForbidenError,
+  MisdirectedRequest
 }

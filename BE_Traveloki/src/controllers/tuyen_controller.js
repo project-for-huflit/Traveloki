@@ -6,11 +6,12 @@ const CounterTuyen = require("../models/schema.js").CounterTuyen;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-const asyncHandler = require('../helpers/asyncHandler')
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
 
-class RoadVehicle {
+class RoadVehicleController {
 
 }
+// module.exports = new RoadVehicleController()
 
 //. . .
 

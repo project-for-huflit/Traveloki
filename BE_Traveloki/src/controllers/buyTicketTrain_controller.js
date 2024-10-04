@@ -7,7 +7,13 @@ const lichSuDatTau = require("../models/schema.js").LichSuDatTau;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-const asyncHandler = require('../helpers/asyncHandler')
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
+
+class BookingTrainController {
+
+}
+// module.exports = new BookingTrainController()
+
 
 const GetPhieusdattau = async (req, res) => {
   try {

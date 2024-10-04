@@ -4,23 +4,12 @@ const LichSuDatXeOto = require("../models/schema.js").LichSuDatXeOto;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-const asyncHandler = require('../helpers/asyncHandler')
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
 
-class HistoryVehicle {
-
-}
-
-class HistoryCar extends HistoryVehicle {
+class HistoryCarController {
 
 }
-
-class HistoryBus extends HistoryVehicle {
-
-}
-
-class HistoryTrain extends HistoryVehicle {
-
-}
+// module.exports = new HistoryCarController()
 
 const GetLichSuDatXeOto = async (req, res) => {
   try {

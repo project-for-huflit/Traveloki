@@ -5,11 +5,12 @@ const Counter = require("../models/schema").CounterLSB;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-const asyncHandler = require('../helpers/asyncHandler')
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
 
-class Airport {
+class AirportController {
 
 }
+// module.exports = new AirportController()
 
 const GetDanhSachSanBay = async (req, res) => {
   try {

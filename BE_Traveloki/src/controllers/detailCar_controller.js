@@ -5,11 +5,13 @@ const CounterChitietxe = require("../models/schema.js").CounterChitietxe;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-const asyncHandler = require('../helpers/asyncHandler')
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
 
-class DetailVehicle {
+class DetailCarController {
 
 }
+// module.exports = new DetailCarController()
+
 
 const GetChiTietXeOto = async (req, res) => {
   try {
