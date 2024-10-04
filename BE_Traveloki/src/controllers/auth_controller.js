@@ -2,36 +2,27 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Account = require('../models/account.model');
 
-const AuthJWTService = require('../services/authen.service')
-const AuthSSOService = require('../services/authen.service')
+const AuthJWTService = require('../services/authen.service');
+const AuthSSOService = require('../services/authen.service');
 
-const asyncHandler = require('../middlewares/asyncHandler.middeware')
+const asyncHandler = require('../middlewares/asyncHandler.middeware');
 
 class AuthController {
-  login = async (req, res, next) => {
+  login = async (req, res, next) => {};
 
-  }
+  loginSSO = async (req, res, next) => {};
 
-  loginSSO = async (req, res, next) => {
+  register = async (req, res, next) => {};
 
-  }
-
-  register = async (req, res, next) => {
-
-  }
-
-  registerSSO = async (req, res, next) => {
-
-  }
+  registerSSO = async (req, res, next) => {};
 }
 // module.exports = new AuthController()
 
-
 const login = async (req, res, next) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   try {
-    // Check username
-    const user = await Account.findOne({ username });
+    // Check email
+    const user = await Account.findOne({ email });
     if (user) {
       const isMatch = await bcrypt.compare(password, user.password);
       if (isMatch) {
@@ -44,7 +35,7 @@ const login = async (req, res, next) => {
         return res.status(401).json({ message: 'Password incorrect!' });
       }
     } else {
-      return res.status(404).json({ message: 'Account is not exist!!!' });
+      return res.status(404).json({ message: 'Email is not exist!!!' });
     }
     // if (!user) {
     //   throw new NotFoundError(`Tài khoản không tồn tại!!!`)
@@ -62,7 +53,6 @@ const login = async (req, res, next) => {
     // });
 
     // res.json({ token });
-    next();
   } catch (err) {
     console.error('login error:', err);
     res.status(500).json({ message: 'Error server!' });
@@ -70,19 +60,20 @@ const login = async (req, res, next) => {
 };
 
 const register = async (req, res, next) => {
-  const { username, password } = req.body;
+  const { email, password, ...accountData } = req.body;
   console.log(password);
   try {
     // Check tài khoản đã tồn tại hay chưa
-    const user = await Account.findOne({ username });
+    const user = await Account.findOne({ email });
     if (!user) {
       // Mã hóa mật khẩu
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
       // Lưu newUser
       const newUser = new Account({
-        username,
+        email,
         password: hashedPassword,
+        ...accountData,
       });
       await newUser
         .save()
@@ -102,7 +93,6 @@ const register = async (req, res, next) => {
     } else {
       return res.status(400).json({ message: 'Account is exist!!!' });
     }
-    next();
   } catch (err) {
     console.error('Register error: ', err);
     res.status(500).json({ message: 'Error server' });
