@@ -2,35 +2,28 @@ const lichSuDatTau = require('../models/lichSuDatTau.model');
 const lichSuDatXeBus = require('../models/lichSuDatXeBus.model');
 const lichSuDatOto = require('../models/lichSuDatXeOto.model');
 
-router.put('/update-schedule', async (req, res) => {
+const changeSchedule = async (req, res) => {
   try {
-    const { bookingId, newDepartureDate, newReturnDate } = req.body;
-
+    const { MaDX, newDate } = req.body;
     let updated = false;
 
-    // Kiểm tra xem có trong lịch sử đặt tàu không
-    const tauBooking = await lichSuDatTau.findById(bookingId);
+    const tauBooking = await lichSuDatTau.findById(MaDX);
     if (tauBooking) {
-      tauBooking.departureDate = newDepartureDate;
-      tauBooking.returnDate = newReturnDate;
+      tauBooking.Date = newDate;
       await tauBooking.save();
       updated = true;
     }
 
-    // Kiểm tra xem có trong lịch sử đặt xe buýt không
-    const busBooking = await lichSuDatXeBus.findById(bookingId);
+    const busBooking = await lichSuDatXeBus.findById(MaDX);
     if (busBooking) {
-      busBooking.departureDate = newDepartureDate;
-      busBooking.returnDate = newReturnDate;
+      busBooking.Date = newDate;
       await busBooking.save();
       updated = true;
     }
 
-    // Kiểm tra xem có trong lịch sử đặt ô tô không
-    const otoBooking = await lichSuDatOto.findById(bookingId);
+    const otoBooking = await lichSuDatOto.findById(MaDX);
     if (otoBooking) {
-      otoBooking.departureDate = newDepartureDate;
-      otoBooking.returnDate = newReturnDate;
+      otoBooking.Date = newDate;
       await otoBooking.save();
       updated = true;
     }
@@ -45,6 +38,6 @@ router.put('/update-schedule', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Error', error: error.message });
   }
-});
+};
 
-module.exports = router;
+module.exports = changeSchedule;
