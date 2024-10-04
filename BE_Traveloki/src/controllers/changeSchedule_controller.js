@@ -1,32 +1,33 @@
-const lichSuDatTau = require('../models/lichSuDatTau.model');
-const lichSuDatXeBus = require('../models/lichSuDatXeBus.model');
-const lichSuDatOto = require('../models/lichSuDatXeOto.model');
+console.log('controllers');
+const { LichSuDatTau } = require('../models/lichSuDatTau.model.js');
+// console.log('controllers2');
+// const { LichSuDatXeBus } = require('../models/lichSuDatXeBus.model.js');
+// console.log('controllers3');
+// const { LichSuDatOto } = require('../models/lichSuDatXeOto.model.js');
 
 const changeSchedule = async (req, res) => {
   try {
     const { MaDX, newDate } = req.body;
     let updated = false;
 
-    const tauBooking = await lichSuDatTau.findById(MaDX);
-    if (tauBooking) {
-      tauBooking.Date = newDate;
-      await tauBooking.save();
-      updated = true;
-    }
+    // const tauBooking = await lichSuDatTau.findOne(MaDX);
+    // if (tauBooking) {
 
-    const busBooking = await lichSuDatXeBus.findById(MaDX);
-    if (busBooking) {
-      busBooking.Date = newDate;
-      await busBooking.save();
-      updated = true;
-    }
+    // }
 
-    const otoBooking = await lichSuDatOto.findById(MaDX);
-    if (otoBooking) {
-      otoBooking.Date = newDate;
-      await otoBooking.save();
-      updated = true;
-    }
+    // const busBooking = await lichSuDatXeBus.findOneAndUpdate(MaDX);
+    // if (busBooking) {
+    //   busBooking.Date = newDate;
+    //   await busBooking.save();
+    //   updated = true;
+    // }
+
+    // const otoBooking = await lichSuDatOto.findOneAndUpdate(MaDX);
+    // if (otoBooking) {
+    //   otoBooking.Date = newDate;
+    //   await otoBooking.save();
+    //   updated = true;
+    // }
 
     if (updated) {
       res

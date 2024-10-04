@@ -26,7 +26,7 @@ router.use('/api', require('./booking/bookingCar-routes.js'));
 router.use('/api', require('./history/historyCar-routes.js'));
 router.use('/api', require('./history/historyBus-routes.js'));
 router.use('/api', require('./history/historyTrain-routes.js'));
-// router.use('/api', require('./history/changeSchedule-routes.js'));
+router.use('/api', require('./history/changeSchedule-routes.js'));
 
 router.use('/api', require('./updateState-routes.js'));
 

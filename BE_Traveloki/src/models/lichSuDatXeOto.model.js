@@ -1,17 +1,15 @@
-'use strict'
+'use strict';
 
 const { Schema, model } = require('mongoose');
 
-
 const LichSuDatXeOtoSchema = new Schema({
   MaKH: { type: String, required: true },
-  MaDX: { type: String, ref: "DatXeOto" },
-  Date: { type: String },
+  MaDX: { type: String, ref: 'DatXeOto' },
+  Date: { type: Date },
 });
 
-const LichSuDatXeOto = model("LichSuDatXeOto", LichSuDatXeOtoSchema);
+const LichSuDatXeOto = model('LichSuDatXeOto', LichSuDatXeOtoSchema);
 
 module.exports = {
   LichSuDatXeOto,
-
 };
