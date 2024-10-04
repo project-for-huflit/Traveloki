@@ -1,15 +1,17 @@
 const { Schema, model } = require('mongoose');
+const COLLECTION_NAME = 'DanhSachSanBays'
 
 const DanhSachSanBaySchema = new Schema({
   MaSB: { type: String, required: true },
   TenSanBay: { type: String, required: true, maxlength: 100 },
   ThanhPho: { type: String, required: true, maxlength: 100 },
 },{
-  timestamps: true
+  timestamps: true,
+  collection: COLLECTION_NAME
 });
 
-const DanhSachSanBay = model("DanhSachSanBay", DanhSachSanBaySchema);
+
 
 module.exports = {
-  DanhSachSanBay,
+  DanhSachSanBay: model("DanhSachSanBay", DanhSachSanBaySchema)
 };

@@ -1,4 +1,5 @@
 const { Schema, model, Types } = require("mongoose");
+const COLLECTION_NAME = 'partners'
 
 const partnerSchema = new Schema({
   name: {
@@ -37,6 +38,7 @@ const partnerSchema = new Schema({
   }
 }, {
     timestamps: true,
+    collection: COLLECTION_NAME
 });
 
 module.exports = model('partner', partnerSchema);

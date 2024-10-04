@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const COLLECTION_NAME = 'Tuyens'
 
 const TuyenSchema = new Schema({
   MaTuyen: { type: String, required: true, maxlength: 5 },
@@ -7,11 +8,10 @@ const TuyenSchema = new Schema({
   ThoiGianKhoiHanh: { type: Date, required: true },
   ThoiGianKetThuc: { type: Date, required: true },
 },{
-  timestamps: true
+  timestamps: true,
+  collection: COLLECTION_NAME
 });
 
-const Tuyen = model("Tuyen", TuyenSchema);
-
 module.exports = {
-  Tuyen,
+  Tuyen: model("Tuyen", TuyenSchema)
 };

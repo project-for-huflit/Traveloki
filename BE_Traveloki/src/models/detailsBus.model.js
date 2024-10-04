@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose');
 
+const COLLECTION_NAME = 'ChiTietXeBuses'
+
 const ChiTietXeBusSchema = new Schema({
   MaDetailBus: { type: String, required: true },
   TenHangXe: { type: String, required: true, maxlength: 100 },
@@ -19,6 +21,9 @@ const ChiTietXeBusSchema = new Schema({
     max: [5, 'Rating must be above 5.0'],
     set: (val) => Math.round(val * 10) / 10
   },
+},{
+  timestamps: true,
+  collection: COLLECTION_NAME
 });
 
 const ChiTietXeBus = model("ChiTietXeBus", ChiTietXeBusSchema);
