@@ -45,14 +45,14 @@ const DeleteLichSuDatXeOto = async (req, res) => {
 };
 
 const updateOneLichSuDatXeOto = async (req, res) => {
-  const { MaKH } = req.params;
+  const { MaKH, MaDX } = req.params;
   const { fieldToUpdate, newValue } = req.body;
   try {
     const update = {};
     update[fieldToUpdate] = newValue;
 
     const result = await LichSuDatXeOto.findOneAndUpdate(
-      { MaKH: MaKH },
+      { MaKH: MaKH, MaDX: MaDX },
       { $set: update },
       { new: true }
     );
@@ -61,19 +61,22 @@ const updateOneLichSuDatXeOto = async (req, res) => {
       return res.status(404).json({ message: 'Không tìm thấy lịch sử với MaKH này' });
     }
 
-    res.status(200).json({ message: "LichSuDatXeOto updated one successfully!" });
+    res.status(200).json({
+      message: "LichSuDatXeOto updated one successfully!",
+      data: result
+    });
   } catch (e) {
     res.status(500).json("not update one lich su dat xe o to");
   }
 };
 
 const updateManyLichSuDatXeOto = async (req, res) => {
-  const { MaKH } = req.params;
+  const { MaKH, MaDX } = req.params;
   const fieldsToUpdate = req.body;
 
   try {
     const result = await LichSuDatXeOto.findOneAndUpdate(
-      { MaKH: MaKH },
+      { MaKH: MaKH, MaDX: MaDX },
       { $set: fieldsToUpdate },
       { new: true }
     );
@@ -82,7 +85,10 @@ const updateManyLichSuDatXeOto = async (req, res) => {
       return res.status(404).json({ message: 'Không tìm thấy lịch sử với MaKH này' });
     }
 
-    res.status(200).json({ message: "LichSuDatXeOto updated many successfully!" });
+    res.status(200).json({
+      message: "LichSuDatXeOto updated many successfully!",
+      data: result
+    });
   } catch (e) {
     res.status(500).json("not update many lich su dat xe o to");
   }
