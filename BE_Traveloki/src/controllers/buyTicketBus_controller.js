@@ -1,6 +1,6 @@
-const { PhieuDatXeBus } = require("../models/phieuDatXeBus.model");
-const CounterDatBuyt = require("../models/counter.model").CounterDatBuyt;
-const { LichSuDatXeBus } = require("../models/lichSuDatXeBus.model");
+const PhieuDatXeBus = require("../models/schema.js").PhieuDatXeBus;
+const CounterDatBuyt = require("../models/schema.js").CounterDatBuyt;
+const lichSuDatXeBus = require("../models/schema.js").LichSuDatXeBus;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
@@ -107,7 +107,7 @@ const CancelBookingBus = async (req, res) => {
 
   try {
     const deletedBooking = await PhieuDatXeBus.deleteOne({ MaVeBus });
-    const deletedHistory = await LichSuDatXeBus.deleteOne({ MaDX: MaVeBus });
+    const deletedHistory = await lichSuDatXeBus.deleteOne({ MaDX: MaVeBus });
 
     if (!deletedBooking) {
       return res.status(404).json({ message: "Không tìm thấy PhieuDatXeBus" });

@@ -1,18 +1,18 @@
 import bird from "../../assets/bird-removebg-preview.png";
-import bannerTopFooter from "../../assets/topFooter.png";
+// import bannerTopFooter from "../../assets/topFooter.png";
 import pay1 from "../../assets/Pay1.png";
 import pay2 from "../../assets/Pay2.png";
 import pay3 from "../../assets/Pay3.png";
-import pay4 from "../../assets/Pay4.png";
+// import pay4 from "../../assets/Pay4.png";
 import pay5 from "../../assets/Pay5.png";
 import pay6 from "../../assets/Pay6.png";
 import pay7 from "../../assets/Pay7.png";
-import pay8 from "../../assets/Pay8.png";
+// import pay8 from "../../assets/Pay8.png";
 import btnHopTac from "../../assets/btnHopTac.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-white py-10">
+    <footer className="bg-white py-10 mt-6">
       {/* <div>
         <img src={bannerTopFooter} alt="banner" className="w-full" />
       </div> */}

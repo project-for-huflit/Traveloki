@@ -18,7 +18,7 @@ const Header = () => {
         }}
       >
         <div className="container max-w-screen-xl translate-x-1/4 flex  items-center">
-          <Link to="/HomePage" className="flex">
+          <Link to="/home" className="flex">
             <span className="text-2xl font-bold mt-5">Traveloke</span>
             <img src={bird} alt="Traveloki Logo" className="h-16 w-16" />
           </Link>
@@ -41,7 +41,7 @@ const Header = () => {
                 Hợp tác với chúng tôi
               </a>
               <a
-                  href="/HomePage/user/my-booking"
+                  href="/user/my-booking"
                   className="hover:text-gray-300  flex items-center"
               >
                 Đặt chỗ của tôi

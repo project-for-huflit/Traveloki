@@ -3,7 +3,7 @@
 const winston = require('winston')
 
 const { combine, timestamp, json, align, printf } = winston.format
-// luu vao mot file de de quan lys : combined.log
+// luu vao mot file de de quan ly : combined.log
 
 const logger0 = winston.createLogger({
   level: process.env.LOG_LEVEL || 'debug',

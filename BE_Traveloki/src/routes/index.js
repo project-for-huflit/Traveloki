@@ -29,6 +29,6 @@ router.use("/api", require("./history/historyTrain-routes.js"));
 
 router.use("/api", require("./updateState-routes.js"));
 
-// router.use("/api", require("./auth/auth.js"))
+router.use("/api", require("./auth/auth.js"))
 
 module.exports = router

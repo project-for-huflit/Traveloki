@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const COLLECTION_NAME = 'TramDungs'
 
 const TramDungSchema = new Schema({
   MaTram: { type: String, required: true, maxlength: 5 },
@@ -9,11 +8,12 @@ const TramDungSchema = new Schema({
   GiaTienVe: { type: Number, required: true },
   GiaTienVeTau: { type: Number, required: true },
 },{
-  timestamps: true,
-  collection: COLLECTION_NAME
-})
+  timestamps: true
+});
+
+const TramDung = model("TramDung", TramDungSchema);
 
 
 module.exports = {
-  TramDung: model("TramDung", TramDungSchema)
+  TramDung,
 };

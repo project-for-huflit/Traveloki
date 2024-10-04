@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const COLLECTION_NAME = 'PhieuDatXeBuses'
 
 const PhieuDatXeBusSchema = new Schema({
   MaVeBus: { type: String, required: true, maxlength: 5 },
@@ -12,8 +11,7 @@ const PhieuDatXeBusSchema = new Schema({
   ThanhTien: { type: Number, required: true },
   TrangThai: { type: Boolean, required: true },
 },{
-  timestamps: true,
-  collection: COLLECTION_NAME
+  timestamps: true
 });
 
 const PhieuDatXeBus = model("PhieuDatXeBus", PhieuDatXeBusSchema);

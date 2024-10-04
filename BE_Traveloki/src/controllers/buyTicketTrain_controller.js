@@ -1,7 +1,7 @@
-const { PhieuDatTau } = require("../models/phieuDatTau.model");
-const CounterDatTau = require("../models/counter.model").CounterDatTau;
-const { PhuongTien } = require("../models/phuongTien.model.js");
-const { LichSuDatTau } = require("../models/lichSuDatTau.model");
+const PhieuDatTau = require("../models/schema.js").PhieuDatTau;
+const CounterDatTau = require("../models/schema.js").CounterDatTau;
+const PhuongTien = require("../models/schema.js").PhuongTien;
+const lichSuDatTau = require("../models/schema.js").LichSuDatTau;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
@@ -136,7 +136,7 @@ const CancelTicketTrain = async (req, res) => {
       return res.status(404).json({ message: "Booking not found" });
     }
 
-    const deleteHistoryResult = await LichSuDatTau.deleteOne({ MaDX: MaVeTau });
+    const deleteHistoryResult = await lichSuDatTau.deleteOne({ MaDX: MaVeTau });
 
     if (!deleteHistoryResult) {
       return res.status(404).json({ message: "Booking history not found" });

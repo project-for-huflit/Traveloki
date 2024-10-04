@@ -1,7 +1,7 @@
 const { Schema, model, Types } = require('mongoose'); // Erase if already required
-const COLLECTION_NAME = 'detail-partners'
 
-// Declare the Schema of the Mongo model
+// const COLLECTION_NAME =
+
 const partnerDetailSchema = new Schema({
   description: String,
   slug: String,
@@ -23,7 +23,7 @@ const partnerDetailSchema = new Schema({
   },
 }, {
   timestamps: true,
-  collection: COLLECTION_NAME
+  // collection: COLLECTION_NAME
 });
 
 //Export the model

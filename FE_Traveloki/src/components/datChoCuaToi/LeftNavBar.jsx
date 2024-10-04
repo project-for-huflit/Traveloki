@@ -1,23 +1,33 @@
-import React, { useContext } from "react";
+// import React, { useContext } from "react";
 import Avatar from "../../assets/NiceService.png";
 import listIcon from "../../assets/user-booking-ic.svg";
 import OnButtonIcon from "../../assets/On_button.svg";
 import HistoryBookingIcon from "../../assets/history-booking-ic.svg";
-import { UserContext } from "../../Router/UserContext";
+// import { UserContext } from "../../Router/UserContext";
 import { useNavigate } from "react-router-dom";
 
+
+
 function LeftNavBar() {
-  const { user, logout } = useContext(UserContext);
+
+  // const user = [
+  //   {
+  //    firstName: 'Nguyen',
+  //    lastName: 'Quan',
+  //   }
+  //  ]
+
+  // const { user, logout } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleLogout = (event) => {
-    event.preventDefault();
-    logout();
-    navigate("/login");
-  };
+  // const handleLogout = (event) => {
+  //   event.preventDefault();
+  //   logout();
+  //   navigate("/login");
+  // };
 
   return (
-    <div className="w-[40%] mt-10 mr-[24px]">
+    <div className="w-[40%] mt-4 mr-[24px] ml-2">
       <div className="bg-[#EDEDED] border-2 rounded-lg shadow border-slate-400">
         <div className="p-4">
           <div className="">
@@ -31,7 +41,7 @@ function LeftNavBar() {
               </div>
               <div className="w-[60%] text-2xl font-bold">
                 <h1>
-                  {user ? `${user.firstName} ${user.lastName}` : "Nguyễn Quân"}
+                  {/* {user ? `${user.firstName} ${user.lastName}` : "Nguyễn Quân"} */}Nguyễn Quân
                 </h1>
               </div>
             </div>
@@ -47,7 +57,7 @@ function LeftNavBar() {
                 />
               </div>
               <div
-                onClick={() => navigate("/my-booking")}
+                onClick={() => navigate("/user/my-booking")}
                 className="text-lg font-semibold cursor-pointer"
               >
                 Đặt chỗ của tôi
@@ -55,9 +65,9 @@ function LeftNavBar() {
             </div>
           </div>
           <a
-            href="/my-booking/history-booking"
+            href="/user/history-booking"
             onClick={(event) =>
-              event.preventDefault() || navigate("/my-booking/history-booking")
+              event.preventDefault() || navigate("/user/history-booking")
             }
           >
             <div className="w-full hover:bg-slate-100">
@@ -83,7 +93,7 @@ function LeftNavBar() {
                   className="w-[32px] h-[32px] rounded-full"
                 />
               </div>
-              <button className="text-lg font-semibold" onClick={handleLogout}>
+              <button className="text-lg font-semibold">
                 Đăng xuất
               </button>
             </div>

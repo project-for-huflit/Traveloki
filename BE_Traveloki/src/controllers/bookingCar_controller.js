@@ -1,9 +1,9 @@
-const { LichSuDatXeOto } = require("../models/lichSuDatXeOto.model");
+const { LichSuDatXeOto } = require("../models/schema");
 
-const { DatXeOto } = require("../models/datXeOto.model"); // Đảm bảo rằng bạn đã import mô hình DatXeOto
-const { TramDung } = require("../models/tramDung.model"); // Đảm bảo rằng bạn đã import mô hình TramDung
-const { ChiTietXeOto } = require("../models/detailsCar.model");
-const CounterDatXeOto = require("../models/counter.model").CounterDatXe;
+const DatXeOto = require("../models/schema").DatXeOto; // Đảm bảo rằng bạn đã import mô hình DatXeOto
+const TramDung = require("../models/schema").TramDung; // Đảm bảo rằng bạn đã import mô hình TramDung
+const ChiTietXeOto = require("../models/schema").ChiTietXeOto;
+const CounterDatXeOto = require("../models/schema").CounterDatXe;
 
 const asyncHandler = require('../middlewares/asyncHandler.middeware')
 

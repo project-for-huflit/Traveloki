@@ -1,5 +1,5 @@
-const { DanhSachSanBay } = require("../models/danhSachSanBay.model");
-const Counter = require("../models/counter.model").CounterLSB;
+const DanhSachSanBay = require("../models/schema").DanhSachSanBay;
+const Counter = require("../models/schema").CounterLSB;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
