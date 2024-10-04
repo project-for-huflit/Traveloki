@@ -19,6 +19,7 @@ import AltRouteIcon from '@mui/icons-material/AltRoute';
 import EmojiTransportationIcon from '@mui/icons-material/EmojiTransportation';
 import AddLocationIcon from '@mui/icons-material/AddLocation';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import ScheduleIcon from '@mui/icons-material/Schedule';
 
 const drawerWidth = 240;
 
@@ -78,69 +79,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 const SideNav = () => {
-  const navigate = useNavigate();
   const theme = useTheme();
   //const [open, setOpen] = useState(false);
   const open = useAppStore((state) => state.dopen);
 
   return (
-    // <div className="bg-custom-gradient w-1/4 p-0 m-0 min-h-screen">
-    //   <h1 className="font-extrabold text-white text-center pt-4">
-    //     DANH MỤC QUẢN LÝ
-    //   </h1>
-    //   <div className="p-4">
-    //     <ul>
-    //       <li>
-    //         <a
-    //           href="/DashBoard"
-    //           className="route text-white text-xl font-extrabold hover:text-black"
-    //         >
-    //           <FontAwesomeIcon icon={faChartLine} /> DashBoard
-    //         </a>
-    //       </li>
-    //       <li className="pt-6">
-    //         <a
-    //           href="/DanhSachSanBay"
-    //           className="route text-white text-xl font-extrabold hover:text-black"
-    //         >
-    //           <FontAwesomeIcon icon={faPlane} /> Danh sách sân bay
-    //         </a>
-    //       </li>
-    //       <li className="pt-6">
-    //         <a
-    //           href="/DanhSachTuyenXe"
-    //           className="route text-white text-xl font-extrabold hover:text-black"
-    //         >
-    //           <FontAwesomeIcon icon={faRoute} /> Danh sách tuyến xe
-    //         </a>
-    //       </li>
-    //       <li className="pt-6">
-    //         <a
-    //           href="/PhuongTien"
-    //           className="route text-white text-xl font-extrabold hover:text-black"
-    //         >
-    //           <FontAwesomeIcon icon={faBus} /> Danh sách phương tiện
-    //         </a>
-    //       </li>
-    //       <li className="pt-6">
-    //         <a
-    //           href="/DanhSachTramDung"
-    //           className="route text-white text-xl font-extrabold hover:text-black"
-    //         >
-    //           <FontAwesomeIcon icon={faMapLocationDot} /> Danh sách Trạm Dừng
-    //         </a>
-    //       </li>
-    //       <li className="pt-6">
-    //         <a
-    //           href="/ListDetailCar"
-    //           className="route text-white text-xl font-extrabold hover:text-black"
-    //         >
-    //           <FontAwesomeIcon icon={faCar} /> Danh sách Chi Tiết Xe
-    //         </a>
-    //       </li>
-    //     </ul>
-    //   </div>
-    // </div>
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <Box height={30}/>
@@ -322,8 +265,37 @@ const SideNav = () => {
               >
                 <DirectionsCarIcon />
               </ListItemIcon>
-              <ListItemText primary="Danh sách Chi Tiết Xe" sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText primary="Danh sách Xe" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
+            </NavLink>
+          </ListItem>
+          <ListItem  disablePadding sx={{ display: 'block' }}>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-blue-500 bg-gray-200' // Màu khi active
+                  : 'text-gray-700 hover:bg-gray-100'
+              }
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    justifyContent: 'center',
+                    mr: open ? 3 : "auto",
+                  }}
+                >
+                  <ScheduleIcon />
+                </ListItemIcon>
+                <ListItemText primary="Lịch chạy" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
             </NavLink>
           </ListItem>
         </List>
