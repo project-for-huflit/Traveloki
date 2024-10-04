@@ -1,4 +1,4 @@
-const KhachHang = require("../models/schema").KhachHang;
+const { customer } = require("../models/khachHang.model");
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
@@ -11,7 +11,7 @@ class CustomerController {
 
 const GetKhachHang = async (req, res) => {
   try {
-    const khachHang = await KhachHang.find({});
+    const khachHang = await customer.find({});
     res.status(200).json({ khachHang });
   } catch (e) {
     res.status(500).json("not get khach hang");

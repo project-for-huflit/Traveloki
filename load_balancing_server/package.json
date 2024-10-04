@@ -1,0 +1,25 @@
+{
+  "name": "load_balancing_server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Quan",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cluster": "^0.7.7",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "express-session": "^1.18.0",
+    "helmet": "^8.0.0",
+    "http-proxy-middleware": "^3.0.2",
+    "https": "^1.0.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.7"
+  }
+}

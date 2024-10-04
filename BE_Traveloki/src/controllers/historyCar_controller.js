@@ -1,4 +1,4 @@
-const LichSuDatXeOto = require("../models/schema.js").LichSuDatXeOto;
+const LichSuDatXeOto = require("../models/lichSuDatXeOto.model").LichSuDatXeOto;
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 

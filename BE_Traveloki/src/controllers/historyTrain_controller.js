@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { LichSuDatTau } = require("../models/schema.js");
+const { LichSuDatTau } = require("../models/lichSuDatTau.model");
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
