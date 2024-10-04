@@ -1,10 +1,10 @@
 const { Schema, model } = require('mongoose');
-const COLLECTION_NAME = 'KhachHangs'
 
 const KhachHangSchema = new Schema({
   MaCus: {
     type: String,
     required: true,
+
     maxlength: 5,
   },
   TenKH: {
@@ -16,10 +16,11 @@ const KhachHangSchema = new Schema({
     maxlength: 10,
   },
 },{
-  timestamps: true,
-  collection: COLLECTION_NAME
+  timestamps: true
 });
 
+const KhachHang = model("KhachHang", KhachHangSchema);
+
 module.exports = {
-  customer: model("KhachHang", KhachHangSchema)
-}
+  KhachHang
+};

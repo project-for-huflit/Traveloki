@@ -1,26 +1,11 @@
 const {
   LichSuDatXeOto,
-} = require("../models/lichSuDatXeOto.model");
-
-const {
   DatXeOto,
-} = require("../models/datXeOto.model");
-
-const {
   LichSuDatXeBus,
-} = require("../models/lichSuDatXeBus.model");
-
-const {
   PhieuDatXeBus,
-} = require("../models/phieuDatXeBus.model");
-
-const {
   LichSuDatTau,
-} = require("../models/lichSuDatTau.model");
-
-const {
   PhieuDatTau,
-} = require("../models/phieuDatTau.model");
+} = require("../models/schema");
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
