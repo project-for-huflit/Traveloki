@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import UseFetch from "../../Router/UseFetch";
+// import UseFetch from "../../Router/UseFetch";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import {createDetailCar} from "../../services/api/DetailCar/apiCreateDetailCar.js";
+import {fetchAllSanBay} from "../../services/api/ListSanBay/apiDanhSachSanBay.js";
 
 const CreateDetailCar = () => {
   const [sanBays, setSanBays] = useState([]);
@@ -22,24 +24,39 @@ const CreateDetailCar = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const {
-    data,
-    error: fetchError,
-    isLoading: fetchLoading,
-  } = UseFetch(
-    "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetDanhSachSanBay",
-    "danhSachSanBay"
-  );
+  // const {
+  //   data,
+  //   error: fetchError,
+  //   isLoading: fetchLoading,
+  // } = UseFetch(
+  //   "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetDanhSachSanBay",
+  //   "danhSachSanBay"
+  // );
 
   useEffect(() => {
-    if (data) {
-      setSanBays(data);
-      setIsLoading(fetchLoading);
+    const danhSachSanBay = async () => {
+      try {
+        const res = await fetchAllSanBay();
+        // if (!res.ok) {
+        //   throw new Error("Không thể lấy dữ liệu từ máy chủ");
+        // }
+        setSanBays(res.data || []);
+      } catch (error) {
+        setError("Không thể lấy dữ liệu từ máy chủ");
+      }
     }
-    if (fetchError) {
-      setError("Không thể lấy dữ liệu từ máy chủ");
-    }
-  }, [data, fetchError, fetchLoading]);
+    danhSachSanBay();
+  },[])
+
+  //useEffect(() => {
+  //   if (data) {
+  //     setSanBays(data);
+  //     setIsLoading(fetchLoading);
+  //   }
+  //   if (fetchError) {
+  //     setError("Không thể lấy dữ liệu từ máy chủ");
+  //   }
+  // }, [data, fetchError, fetchLoading]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,24 +75,24 @@ const CreateDetailCar = () => {
     }
 
     try {
-      const res = await fetch(
-        "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/CreateDetailCar",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(detailCar),
-        }
-      );
+      // const res = await fetch(
+      //   "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/CreateDetailCar",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(detailCar),
+      //   }
+      // );
 
-      const responseData = await res.json();
+      const res = await createDetailCar(detailCar)
 
       if (res.status === 201) {
         alert("Thêm chi tiết xe thành công");
         navigate("/ListDetailCar");
       } else {
-        console.error(responseData);
+        console.error(res);
         alert("Đã xảy ra lỗi khi thêm chi tiết xe");
       }
     } catch (error) {
@@ -84,18 +101,18 @@ const CreateDetailCar = () => {
     }
   };
 
-  if (isLoading)
-    return (
-      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-        Loading...
-      </div>
-    );
-  if (error)
-    return (
-      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-        Error: {error}
-      </div>
-    );
+  // if (isLoading)
+  //   return (
+  //     <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
+  //       Loading...
+  //     </div>
+  //   );
+  // if (error)
+  //   return (
+  //     <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
+  //       Error: {error}
+  //     </div>
+  //   );
 
   return (
     <div className="w-full h-full bg-white p-4">

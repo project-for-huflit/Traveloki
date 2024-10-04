@@ -1,27 +1,39 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import UseFetch from "../../Router/UseFetch";
+// import UseFetch from "../../Router/UseFetch";
+import {useEffect, useState} from "react";
+import {deleteSanBay, fetchAllSanBay} from "../../services/api/ListSanBay/apiDanhSachSanBay.js";
 
 const DanhSachSanBay = () => {
-  const {
-    data: sanbay,
-    error,
-    isLoading,
-  } = UseFetch(
-    "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetDanhSachSanBay",
-    "danhSachSanBay"
-  );
+  const [sanbay, setSanBay] = useState([]);
+  // const {
+  //   data: sanbay,
+  //   error,
+  //   isLoading,
+  // } = UseFetch(
+  //   "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetDanhSachSanBay",
+  //   "danhSachSanBay"
+  // );
+
+  useEffect(() => {
+    const danhSachSanBay = async () => {
+      try {
+        const res = await fetchAllSanBay();
+        if (!res.ok) {
+          throw new Error("Không thể lấy dữ liệu từ máy chủ");
+        }
+        setSanBay(res.data || []);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    danhSachSanBay();
+  },[])
 
   const handleDeleteSanBay = async (_id) => {
     try {
-      const res = await fetch(
-        `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/DeleteDanhSachSanBay/${_id}`,
-        {
-          method: "DELETE",
-        }
-      );
-      const { status } = await res.json();
+      const res = await deleteSanBay(_id);
       if (res.status == 200) {
         alert("Xóa thành công");
         window.location.reload();
@@ -34,23 +46,23 @@ const DanhSachSanBay = () => {
     }
   };
 
-  if (isLoading)
-    return (
-      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-        Loading...
-      </div>
-    );
-  if (error)
-    return (
-      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-        Error: {error}
-      </div>
-    );
+  // if (isLoading)
+  //   return (
+  //     <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
+  //       Loading...
+  //     </div>
+  //   );
+  // if (error)
+  //   return (
+  //     <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
+  //       Error: {error}
+  //     </div>
+  //   );
 
   return (
     <div className="w-auto h-full bg-white">
-      {isLoading && <div>Loading...</div>}
-      {error && <div>Error: {error}</div>}
+      {/*{isLoading && <div>Loading...</div>}*/}
+      {/*{error && <div>Error: {error}</div>}*/}
       <div className="flex w-auto">
         <h1 className="text-black w-1/2 p-4 text-4xl">Danh sách sân bay</h1>
         <div className="flex w-1/2 mr-2 justify-end">

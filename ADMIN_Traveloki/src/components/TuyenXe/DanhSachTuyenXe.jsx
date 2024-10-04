@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import {deleteTuyenXe, fetchAllTuyenXe} from "../../services/api/TuyenXe/apiDanhSachTuyenXe";
 
 const DanhSachTuyenXe = () => {
   const [tuyenxe, setTuyenxe] = useState([]);
@@ -20,12 +21,10 @@ const DanhSachTuyenXe = () => {
 
   const fetchTuyenXe = async () => {
     try {
-      const res = await fetch(
-        "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetTuyen"
-      );
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
+      const res = await fetchAllTuyenXe();
+      // if (!res.ok) {
+      //   throw new Error("Network response was not ok");
+      // }
       const result = await res.json();
       setTuyenxe(result.tuyen || []);
     } catch (error) {
@@ -36,17 +35,12 @@ const DanhSachTuyenXe = () => {
   };
 
   useEffect(() => {
-    fetchTuyenXe();
+    fetchAllTuyenXe();
   }, []);
 
   const handleDeleteTuyenXe = async (_id) => {
     try {
-      const res = await fetch(
-        `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/DeleteTuyen/${_id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await deleteTuyenXe(_id)
       if (res.ok) {
         alert("Xóa thành công");
         // Fetch lại danh sách tuyến sau khi xóa

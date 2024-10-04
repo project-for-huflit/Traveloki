@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import {deletePhuongTien, fetchAllPhuongTien} from "../../services/api/PhuongTien/apiDanhSachPhuongTien.js";
 
 const DanhSachPhuongTien = () => {
   const [phuongtien, setPhuongTien] = useState([]);
@@ -9,14 +10,12 @@ const DanhSachPhuongTien = () => {
 
   const fetchPhuongTien = async () => {
     try {
-      const res = await fetch(
-        "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetPhuongTien"
-      );
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await res.json();
-      setPhuongTien(result.phuongTien || []);
+      const res = await fetchAllPhuongTien();
+      // if (!res.ok) {
+      //   console.log(res)
+      //   throw new Error("Network response was not ok");
+      // }
+      setPhuongTien(res.phuongTien || []);
     } catch (error) {
       setError("Không thể lấy dữ liệu từ máy chủ");
     } finally {
@@ -30,12 +29,7 @@ const DanhSachPhuongTien = () => {
 
   const handleDeletePhuongTien = async (_id) => {
     try {
-      const res = await fetch(
-        `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/DeletePhuongTien/${_id}`, // Cập nhật URL nếu cần
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await deletePhuongTien(_id)
       if (res.ok) {
         alert("Xóa thành công");
         fetchPhuongTien();

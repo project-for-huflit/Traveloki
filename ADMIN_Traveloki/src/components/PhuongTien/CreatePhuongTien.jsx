@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import {fetchAllTuyenXe} from "../../services/api/TuyenXe/apiDanhSachTuyenXe.js";
+import {createPhuongTien} from "../../services/api/PhuongTien/createPhuongTien.js";
 
 const CreatePhuongTien = () => {
   const [phuongtien, setPhuongTien] = useState({
@@ -20,14 +22,11 @@ const CreatePhuongTien = () => {
 
   const fetchPhuongTien = async () => {
     try {
-      const res = await fetch(
-        "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetTuyen"
-      );
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await res.json();
-      setTuyenXes(result.tuyen || []);
+      const res = await fetchAllTuyenXe()
+      // if (!res.ok) {
+      //   throw new Error("Network response was not ok");
+      // }
+      setTuyenXes(res.tuyen || []);
     } catch (error) {
       setError("Không thể lấy dữ liệu từ máy chủ");
     } finally {
@@ -68,24 +67,12 @@ const CreatePhuongTien = () => {
       return;
     }
     try {
-      const res = await fetch(
-        "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/CreatePhuongTien",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(phuongtien),
-        }
-      );
-
-      const data = await res.json();
-
+      const res = await createPhuongTien(phuongtien);
       if (res.status === 200) {
         alert("Thêm danh sách phương tiện thành công");
         navigate("/PhuongTien");
       } else {
-        console.error("Error data:", data);
+        console.error("Error data:", res);
         alert("Đã xảy ra lỗi khi thêm phương tiện");
       }
     } catch (error) {

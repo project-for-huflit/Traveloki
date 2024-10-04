@@ -1,7 +1,7 @@
-import axios from "../axiosCustomize.js"
+import axios from "../../axiosCustomize.js"
 
 const fetchHistoryCar = async () => {
-  const URL_BACKEND = "/api/GetHistoryCar";
+  const URL_BACKEND = "/api/GetLichSuDatXeOto";
   return axios.get(URL_BACKEND);
 }
 
