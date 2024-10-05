@@ -46,16 +46,17 @@ const DeleteLichSuDatXeOto = async (req, res) => {
 
 const updateOneLichSuDatXeOto = async (req, res) => {
   const { MaKH, MaDX } = req.params;
-  const { fieldToUpdate, newValue } = req.body;
+  const { Date } = req.body
   try {
-    const update = {};
-    update[fieldToUpdate] = newValue;
+    const query = req.params.MaKH
+    const update = {
+      $set: {
+        Date: Date
+      }
+    };
+    const options = { new: true }
 
-    const result = await LichSuDatXeOto.findOneAndUpdate(
-      { MaKH: MaKH, MaDX: MaDX },
-      { $set: update },
-      { new: true }
-    );
+    const result = await LichSuDatXeOto.findOneAndUpdate(query, update, options);
 
     if (!result) {
       return res.status(404).json({ message: 'Không tìm thấy lịch sử với MaKH này' });
@@ -70,34 +71,9 @@ const updateOneLichSuDatXeOto = async (req, res) => {
   }
 };
 
-const updateManyLichSuDatXeOto = async (req, res) => {
-  const { MaKH, MaDX } = req.params;
-  const fieldsToUpdate = req.body;
-
-  try {
-    const result = await LichSuDatXeOto.findOneAndUpdate(
-      { MaKH: MaKH, MaDX: MaDX },
-      { $set: fieldsToUpdate },
-      { new: true }
-    );
-
-    if (!result) {
-      return res.status(404).json({ message: 'Không tìm thấy lịch sử với MaKH này' });
-    }
-
-    res.status(200).json({
-      message: "LichSuDatXeOto updated many successfully!",
-      data: result
-    });
-  } catch (e) {
-    res.status(500).json("not update many lich su dat xe o to");
-  }
-};
-
 module.exports = {
   GetLichSuDatXeOto,
   createHistory,
   DeleteLichSuDatXeOto,
   updateOneLichSuDatXeOto,
-  updateManyLichSuDatXeOto
 };
