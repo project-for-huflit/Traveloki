@@ -57,7 +57,7 @@ const updateLichSuDatXeOto = async (req, res) => {
 
     if (!Date) return res.status(404).json({ message: 'Not found date in history car!' });
 
-    const result = await LichSuDatXeOto.findOneAndUpdate( id, update, option );
+    const result = await LichSuDatXeOto.findByIdAndUpdate( id, update, option );
 
     if (!result) {
       return res.status(404).json({ message: 'Không tìm thấy lịch sử với MaKH này' });
