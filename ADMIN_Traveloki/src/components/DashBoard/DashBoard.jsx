@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { ChartBookingCar } from "./ChartBookingCar";
-import {fetchHistoryCar, fetchHistoryBus, fetchHistoryTrain} from "../../services/api/apiDashboard.js";
+import {fetchHistoryCar, fetchHistoryBus, fetchHistoryTrain} from "../../services/api/Dashboard/apiDashboard.js";
 
 export const Dashboard = () => {
     // const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
@@ -21,8 +21,7 @@ export const Dashboard = () => {
               if (!res.ok) {
                 throw new Error('Network response was not ok');
               }
-              const result = await res.json();
-              setSlCar(result.lichSuDatXeOto || []);
+              setSlCar(res.lichSuDatXeOto || []);
             } catch (error) {
               setError("Không thể lấy dữ liệu từ máy chủ");
             }finally {
@@ -37,8 +36,7 @@ export const Dashboard = () => {
               if (!res.ok) {
                 throw new Error('Network response was not ok');
               }
-              const result = await res.json();
-              setSlTrain(result.lichSuDatTau || []);
+              setSlTrain(res.lichSuDatTau || []);
             } catch (error) {
               setError("Không thể lấy dữ liệu từ máy chủ");
             }finally {
@@ -53,8 +51,7 @@ export const Dashboard = () => {
               if (!res.ok) {
                 throw new Error('Network response was not ok');
               }
-              const result = await res.json();
-              setSlBus(result.lichSuDatXeBus || []);
+              setSlBus(res.lichSuDatXeBus || []);
             } catch (error) {
               setError("Không thể lấy dữ liệu từ máy chủ");
             }finally {

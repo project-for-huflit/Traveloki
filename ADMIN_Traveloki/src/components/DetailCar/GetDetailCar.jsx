@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {deleteDetailCar, getDetailCar} from "../../services/api/DetailCar/apiGetDetailCar.js";
 
 const ListDetailCar = () => {
   const { id } = useParams();
@@ -12,14 +13,11 @@ const ListDetailCar = () => {
   const navigate = useNavigate();
   const fetchDetailCar = async () => {
     try {
-      const res = await fetch(
-        `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetDetailCarID/${id}`
-      );
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await res.json();
-      setDetail(result);
+      const res = await getDetailCar(id);
+      // if (!res.ok) {
+      //   throw new Error("Network response was not ok");
+      // }
+      setDetail(res);
     } catch (error) {
       setError("Không thể lấy dữ liệu từ máy chủ");
     } finally {
@@ -33,12 +31,7 @@ const ListDetailCar = () => {
 
   const handleDeleteDetailCar = async () => {
     try {
-      const res = await fetch(
-        `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/DeleteDetailCar/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await deleteDetailCar(id);
       if (res.ok) {
         alert("Xóa thành công");
         navigate("/ListDetailCar");

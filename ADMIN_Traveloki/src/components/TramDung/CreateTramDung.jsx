@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import {fetchAllTuyenXe} from "../../services/api/TuyenXe/apiDanhSachTuyenXe.js";
+import {createTramDung} from "../../services/api/TramDung/apiCreateTramDung.js";
 
 const CreateTramDung = () => {
   const [MaTuyen, setMaTuyen] = useState("");
@@ -18,12 +20,10 @@ const CreateTramDung = () => {
   useEffect(() => {
     const fetchTuyen = async () => {
       try {
-        const res = await fetch(
-          "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetTuyen"
-        );
-        if (!res.ok) throw new Error("Network response was not ok");
-        const result = await res.json();
-        setTuyenList(result.tuyen || []);
+        const res = await fetchAllTuyenXe();
+        // if (!res.ok) throw new Error("Network response was not ok");
+
+        setTuyenList(res.tuyen || []);
       } catch (error) {
         setError("Không thể lấy dữ liệu từ máy chủ");
       } finally {
@@ -43,21 +43,13 @@ const CreateTramDung = () => {
     }
 
     try {
-      const res = await fetch("https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/CreateTramDung", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          MaTuyen,
-          DiaChi,
-          GiaTienVe: parseFloat(GiaTienVe),
-          SoKM: parseFloat(SoKM),
-          GiaTienVeTau: parseFloat(GiaTienVeTau),
-        }),
-      });
-
-      const data = await res.json();
+      const res = await createTramDung(
+        MaTuyen,
+        DiaChi,
+        parseFloat(GiaTienVe),
+        parseFloat(SoKM),
+        parseFloat(GiaTienVeTau)
+      );
 
       if (res.ok) {
         alert("Thêm trạm dừng thành công!");
@@ -68,7 +60,7 @@ const CreateTramDung = () => {
         setGiaTienVeTrain("");
         navigate("/DanhSachTramDung");
       } else {
-        alert(`Thêm thất bại: ${data.message}`);
+        alert(`Thêm thất bại: ${res.message}`);
       }
     } catch (error) {
       console.error("Error adding tram dung:", error);
