@@ -1,6 +1,6 @@
-const Tuyen = require("../models/schema.js").Tuyen;
-const TramDung = require("../models/schema.js").TramDung;
-const CounterTramDung = require("../models/schema.js").CounterTramDung;
+const {Tuyen} = require("../models/tuyen.model");
+const {TramDung} = require("../models/tramDung.model");
+const {CounterTramDung} = require("../models/counter.model");
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 

@@ -9,8 +9,6 @@ const AppraiseTrainSchema = new Schema({
   timestamps: true
 });
 
-const AppraiseTrain = model("AppraiseTrain", AppraiseTrainSchema);
-
 module.exports = {
-  AppraiseTrain,
+  AppraiseTrain: model("AppraiseTrain", AppraiseTrainSchema)
 };

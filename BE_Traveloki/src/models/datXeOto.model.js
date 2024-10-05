@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const COLLECTION_NAME = 'DatXeOtos'
 
 const DatXeOtoSchema = new Schema({
   MaDX: { type: String, required: true, maxlength: 5 },
@@ -11,10 +12,11 @@ const DatXeOtoSchema = new Schema({
   ThanhTien: { type: Number, required: true },
   Trangthai: { type: Boolean, required: true },
   Description: { type: String, maxlength: 500 },
+},{
+  timestamps: true,
+  collection: COLLECTION_NAME
 });
 
-const DatXeOto = model("DatXeOto", DatXeOtoSchema);
-
 module.exports = {
-  DatXeOto,
+  DatXeOto: model("DatXeOto", DatXeOtoSchema)
 };

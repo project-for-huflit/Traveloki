@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const COLLECTION_NAME = 'ChiTietXeTrains'
 
 const ChiTietTrainSchema = new Schema({
   MaDetailTrain: { type: String, required: true },
@@ -19,10 +20,11 @@ const ChiTietTrainSchema = new Schema({
     max: [5, 'Rating must be above 5.0'],
     set: (val) => Math.round(val * 10) / 10
   },
+},{
+  timestamps: true,
+  collection: COLLECTION_NAME
 });
 
-const ChiTietTrain = model("ChiTietXeTrain", ChiTietXeTrainSchema);
-
 module.exports = {
-  ChiTietXeTrain,
+  ChiTietXeTrain: model("ChiTietXeTrain", ChiTietXeTrainSchema)
 };

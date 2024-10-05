@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const COLLECTION_NAME = 'PhuongTiens'
 
 const PhuongTienSchema = new Schema({
   MaPT: { type: String, required: true, maxlength: 5 },
@@ -9,11 +10,10 @@ const PhuongTienSchema = new Schema({
   image: { type: String, required: true },
   TenCty: { type: String, required: true, maxlength: 100 },
 },{
-  timestamps: true
+  timestamps: true,
+  collection: COLLECTION_NAME
 });
 
-const PhuongTien = model("PhuongTien", PhuongTienSchema);
-
 module.exports = {
-  PhuongTien,
+  PhuongTien: model("PhuongTien", PhuongTienSchema)
 };
