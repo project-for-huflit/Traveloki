@@ -23,8 +23,14 @@ const CreateDanhSachSanBay = async (req, res) => {
   try {
     const { TenSanBay, ThanhPho } = req.body;
 
-    if (!TenSanBay || !ThanhPho) {
-      return res.status(400).json({ message: "Thiếu thông tin bắt buộc." });
+    console.log({ TenSanBay, ThanhPho })
+
+    if (!TenSanBay) {
+      return res.status(400).json({ message: "TenSanBay is required!" });
+    }
+
+    if (!ThanhPho) {
+      return res.status(400).json({ message: "ThanhPho is required!" });
     }
 
     const counter = await Counter.findOneAndUpdate(
@@ -38,6 +44,7 @@ const CreateDanhSachSanBay = async (req, res) => {
     }
 
     const MaSB = `SB${counter.seq}`;
+
     const newDanhSachSanBay = new DanhSachSanBay({
       MaSB: MaSB,
       TenSanBay,
@@ -48,9 +55,10 @@ const CreateDanhSachSanBay = async (req, res) => {
     res.status(201).json({ newDanhSachSanBay });
   } catch (e) {
     console.error(e);
-    res
-      .status(500)
-      .json({ message: "Không thể tạo danh sách sân bay.", error: e.message });
+    res.status(500).json({
+      message: "Không thể tạo danh sách sân bay.",
+      error: e.message
+    });
   }
 };
 
