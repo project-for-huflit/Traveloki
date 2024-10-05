@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import {getDetailCar} from "../../services/api/DetailCar/apiGetDetailCar.js";
+import {updateDetailCar} from "../../services/api/DetailCar/apiUpdateDetailCar.js";
 
 const EditDetailCar = () => {
   const { id } = useParams();
@@ -18,12 +20,10 @@ const EditDetailCar = () => {
 
   const fetchDetailCar = async () => {
     try {
-      const res = await fetch(
-        `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetDetailCarID/${id}`
-      );
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
+      const res = await getDetailCar(id);
+      // if (!res.ok) {
+      //   throw new Error("Network response was not ok");
+      // }
       const result = await res.json();
       setFormData({
         TenChuSoHuu: result.TenChuSoHuu,
@@ -51,22 +51,13 @@ const EditDetailCar = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(
-        `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/UpdateDetailCar/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const res = await updateDetailCar(id, formData)
+
       if (res.ok) {
         alert("Cập nhật thành công");
         navigate("/ListDetailCar"); // Sử dụng navigate để điều hướng
       } else {
-        const { message } = await res.json();
-        alert(`Cập nhật thất bại: ${message}`);
+        alert(`Cập nhật thất bại: ${res.message}`);
       }
     } catch (error) {
       console.error("Error updating detail car:", error);

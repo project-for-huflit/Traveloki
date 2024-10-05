@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import {createDanhSachSanBay} from "../../services/api/ListSanBay/apiCreateDanhSachSanBay.js";
 
 const CreateDanhSachSanBay = () => {
   const [danhSachSanBay, setDanhSachSanBay] = useState({});
@@ -16,19 +17,7 @@ const CreateDanhSachSanBay = () => {
     }
 
     try {
-      const res = await fetch(
-        "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/CreateDanhSachSanBay",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(danhSachSanBay),
-        }
-      );
-
-      const data = await res.json();
-
+      const res = await createDanhSachSanBay(danhSachSanBay)
       if (res.status === 200 || res.status === 201) {
         alert("Thêm sân bay thành công");
         navigate("/");

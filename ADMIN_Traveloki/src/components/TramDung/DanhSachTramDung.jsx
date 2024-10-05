@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import {deleteTramDung, fetchAllTramDung} from "../../services/api/TramDung/apiDanhSachTramDung.js";
 
 const DanhSachTramDung = () => {
   const [tramDung, setTramDung] = useState([]);
@@ -9,14 +10,12 @@ const DanhSachTramDung = () => {
 
   const fetchTramDung = async () => {
     try {
-      const res = await fetch(
-        "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetTramDung"
-      );
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await res.json();
-      setTramDung(result.tramDung || []);
+      const res = await fetchAllTramDung()
+      // if (!res.ok) {
+      //   throw new Error("Network response was not ok");
+      // }
+
+      setTramDung(res.tramDung || []);
     } catch (error) {
       setError("Không thể lấy dữ liệu từ máy chủ");
     } finally {
@@ -30,12 +29,7 @@ const DanhSachTramDung = () => {
 
   const handleDeleteTramDung = async (_id) => {
     try {
-      const res = await fetch(
-        `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/DeleteTramDung/${_id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await deleteTramDung(_id);
       if (res.ok) {
         alert("Xóa thành công");
         fetchTramDung();
