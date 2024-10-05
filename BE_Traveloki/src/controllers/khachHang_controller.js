@@ -1,4 +1,4 @@
-const KhachHang = require("../models/schema").KhachHang;
+const { KhachHang } = require("../models/khachHang.model");
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 

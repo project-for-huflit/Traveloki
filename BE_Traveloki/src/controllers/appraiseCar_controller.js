@@ -1,4 +1,4 @@
-const AppraiseCar = require("../models/schema").AppraiseCar;
+const { AppraiseCar } = require("../models/appraiseCar.model");
 const asyncHandler = require('../middlewares/asyncHandler.middeware')
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 

@@ -1,7 +1,7 @@
 const { Schema, model, Types } = require('mongoose'); // Erase if already required
+const COLLECTION_NAME = 'detail-partners'
 
-// const COLLECTION_NAME =
-
+// Declare the Schema of the Mongo model
 const partnerDetailSchema = new Schema({
   description: String,
   slug: String,
@@ -23,8 +23,9 @@ const partnerDetailSchema = new Schema({
   },
 }, {
   timestamps: true,
-  // collection: COLLECTION_NAME
+  collection: COLLECTION_NAME
 });
-
 //Export the model
-module.exports = model('detail-partner', partnerDetailSchema);
+module.exports = {
+  ChiTietDoiTac: model('detail-partner', partnerDetailSchema)
+}
