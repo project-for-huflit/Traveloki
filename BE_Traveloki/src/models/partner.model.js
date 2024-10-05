@@ -16,11 +16,6 @@ const partnerSchema = new Schema({
     require: true,
     default: false
   },
-  servicesActivePartner: {
-    type: Array,
-    required: true,
-    default: []
-  },
   privateKey: {
     type: String,
   },

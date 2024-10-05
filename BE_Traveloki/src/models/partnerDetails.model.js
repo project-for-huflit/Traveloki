@@ -21,6 +21,11 @@ const partnerDetailSchema = new Schema({
     ref: 'partner', // Ref tới schema partner
     required: true,
   },
+  servicesActivePartner: {
+    type: Array,
+    required: true,
+    default: []
+  },
 }, {
   timestamps: true,
   collection: COLLECTION_NAME
