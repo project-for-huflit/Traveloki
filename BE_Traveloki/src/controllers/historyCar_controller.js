@@ -42,8 +42,39 @@ const DeleteLichSuDatXeOto = async (req, res) => {
   }
 };
 
+const updateLichSuDatXeOto = async (req, res) => {
+  const { id } = req.params;
+  const { Date } = req.body;
+  try {
+    const update = {
+      $set: {
+        Date: Date
+      }
+    },
+    option = {
+      new: true
+    };
+
+    if (!Date) return res.status(404).json({ message: 'Not found date in history car!' });
+
+    const result = await LichSuDatXeOto.findOneAndUpdate( id, update, option );
+
+    if (!result) {
+      return res.status(404).json({ message: 'Không tìm thấy lịch sử với MaKH này' });
+    }
+
+    res.status(200).json({
+      message: "LichSuDatXeOto updated one successfully!",
+      data: result
+    });
+  } catch (e) {
+    res.status(500).json("not update one lich su dat xe o to");
+  }
+};
+
 module.exports = {
   GetLichSuDatXeOto,
   createHistory,
   DeleteLichSuDatXeOto,
+  updateLichSuDatXeOto
 };

@@ -12,5 +12,6 @@ const {
 route.get("/GetLichSuDatXeOto", GetLichSuDatXeOto);
 route.post("/createHistory", createHistory);
 route.delete("/DeleteLichSuDatXeOto", DeleteLichSuDatXeOto);
+route.patch("/update-history-car/:id")
 
 module.exports = route;
