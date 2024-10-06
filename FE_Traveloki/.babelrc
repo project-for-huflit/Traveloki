@@ -1,0 +1,5 @@
+{
+  "libraryName" : "@material-ui/core" ,
+  "libraryDirectory" : "components" ,
+  "camel2DashComponentName" : false
+}
