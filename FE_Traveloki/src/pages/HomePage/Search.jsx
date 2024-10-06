@@ -7,7 +7,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import debounce from "lodash/debounce";
 import "react-datepicker/dist/react-datepicker.css";
+
 import backgroundImage from "../../assets/introPic.png";
+
 import { getSanBaybyTenSanBay, getTuyenDiemSanBay, suggestsAirportAPI, suggestsTramDungAPI, tramDungByDiaChi } from "../../services/api/search/api.search";
 
 const SearchBar = () => {
@@ -179,7 +181,7 @@ const SearchBar = () => {
 
   return (
     <div
-      className="h-auto bg-cover w-full flex justify-center"
+      className="h-[80vh] bg-cover w-full flex justify-center"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <div className="mx-auto pt-12 flex justify-center w-full container pb-24">
@@ -194,6 +196,7 @@ const SearchBar = () => {
                   <FontAwesomeIcon icon={faPlaneDeparture} />
                 </span>
                 <input
+                  className="w-full bg-slate-100 outline-none pl-8 border-black rounded-lg p-2"
                   type="text"
                   value={diemSanBay}
                   onChange={(e) => {
@@ -202,7 +205,6 @@ const SearchBar = () => {
                     setShowAirportSuggestions(true);
                   }}
                   onClick={handleInputClick}
-                  className="w-full bg-slate-100 outline-none pl-8 border-black rounded-lg p-2"
                   placeholder="Sân bay khởi hành"
                   onFocus={handleAirportInputFocus}
                 />
@@ -235,6 +237,7 @@ const SearchBar = () => {
                   <FontAwesomeIcon icon={faLocationDot} />
                 </span>
                 <input
+                  className="w-full bg-slate-100 outline-none pl-8 z-30 border-black rounded-lg p-2"
                   type="text"
                   value={diemKetThuc}
                   onChange={(e) => {
@@ -242,7 +245,6 @@ const SearchBar = () => {
                     debouncedFetchTramDungSuggestions(e.target.value);
                     setShowTramDungSuggestions(true);
                   }}
-                  className="w-full bg-slate-100 outline-none pl-8 z-30 border-black rounded-lg p-2"
                   placeholder="Đến khu vực địa chỉ tòa nhà"
                   onFocus={handleTramDungInputFocus}
                 />
@@ -268,14 +270,15 @@ const SearchBar = () => {
             </label>
             <div className="items-center h-fit w-3/4 px-2 py-[6px] mx-2 bg-gray-200 shadow rounded-lg">
               <input
+                className="bg-transparent w-full h-fit outline-none text-center"
                 type="date"
                 min={today}
-                className="bg-transparent w-full h-fit outline-none text-center"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
               />
             </div>
           </div>
+
           <div className="mt-5 col-span-1 sm:col-span-2">
             <label className="text-black pl-2 font-bold flex mb-2 items-center space-x-2">
               Giờ khởi hành

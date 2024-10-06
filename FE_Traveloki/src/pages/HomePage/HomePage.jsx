@@ -14,7 +14,8 @@ import buoc3 from "../../assets/Buoc3.png";
 import buoc4 from "../../assets/Buoc4.png";
 import buoc5 from "../../assets/Buoc5.png";
 import buoc6 from "../../assets/Buoc6.png";
-import SearchBar from "../../components/search/Search";
+// import SearchBar from "./Search";
+import SearchBar2 from "./Search2";
 
 const HomePage = () => {
   const reasons = [
@@ -40,7 +41,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <SearchBar />
+      <SearchBar2 />
       <section
         className=" py-12 bg-white -mt-14 rounded-tl-3xl rounded-tr-3xl"
         style={{ backgroundImage: `url(${bgMain})`, backgroundSize: "cover" }}
