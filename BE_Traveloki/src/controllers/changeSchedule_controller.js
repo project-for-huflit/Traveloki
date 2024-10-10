@@ -10,28 +10,41 @@ const changeSchedule = async (req, res, next) => {
     const { MaDX, newDate } = req.body;
     let updated = false;
     console.log('dattau');
-    const tauBooking = await LichSuDatTau.findOne(MaDX);
-    if (tauBooking) {
-      tauBooking.Date = newDate;
-      await tauBooking.save();
-      updated = true;
-    }
+    const tauBooking = await LichSuDatTau.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
     console.log('datbus');
 
-    const busBooking = await LichSuDatXeBus.findOne(MaDX);
-    if (busBooking) {
-      busBooking.Date = newDate;
-      await busBooking.save();
-      updated = true;
-    }
-    console.log('datoto');
+    const busBooking = await LichSuDatXeBus.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
-    const otoBooking = await LichSuDatOto.findOne(MaDX);
-    if (otoBooking) {
-      otoBooking.Date = newDate;
-      await otoBooking.save();
-      updated = true;
-    }
+    console.log('datoto');
+    const otoBooking = await LichSuDatOto.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    console.log(otoBooking);
+    // if (otoBooking) {
+    //   otoBooking.Date = newDate;
+    //   await otoBooking.save();
+    //   updated = true;
+    // }
 
     if (updated) {
       res
