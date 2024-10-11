@@ -20,7 +20,8 @@ import { RatingBus } from "../components/rating/RatingBus.jsx";
 import { RatingTau } from "../components/rating/RatingTau.jsx";
 import { ErrorPage } from "../pages/SystemPage/ErrorPage.jsx";
 import HomePage from "../pages/HomePage/HomePage.jsx";
-import Login from "../pages/Auth/LogIn.jsx";
+// import Login from "../pages/Auth/LogIn.jsx";
+import LoginDuc from "../pages/Auth/LogIn-Duc";
 import SignUp from "../pages/Auth/Register.jsx";
 
 // import { TextEditorReact } from "../Customer/Rating/TextEditorReact.jsx";
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
     path: 'auth',
     element: <OnlyCanvas />,
     children: [
-      { path: 'login', element: <Login /> },
+      { path: 'login', element: <LoginDuc /> },
       { path: 'register', element: <SignUp />}
     ]
   },

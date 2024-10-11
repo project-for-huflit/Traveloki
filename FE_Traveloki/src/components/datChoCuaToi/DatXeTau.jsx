@@ -48,7 +48,7 @@ function RightContent() {
 
   const handleSubmitCar = (maDX, id) => {
     navigate(
-      `/CancelTicketTau?MaDX=${encodeURIComponent(
+      `/user/my-booking/cancel/ticket-train?MaDX=${encodeURIComponent(
         maDX
       )}&id=${encodeURIComponent(id)}`
     );

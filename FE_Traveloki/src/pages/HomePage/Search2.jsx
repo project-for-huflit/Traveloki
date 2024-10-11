@@ -23,10 +23,9 @@ import brand1 from '../../assets/Brand1.png';
 import brand2 from '../../assets/Brand2.png';
 import brand3 from '../../assets/Brand3.png';
 
-const API_BASE_URL = 'https://cnpm-api-thanh-3cf82c42b226.herokuapp.com';
+const API_BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api`;
 
 const SearchBar = () => {
-  const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const [diemSanBay, setDiemKhoiHanh] = useState('');
   const [diemKetThuc, setDiemKetThuc] = useState('');
   const [selectedHour, setSelectedHour] = useState('');
