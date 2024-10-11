@@ -1,15 +1,13 @@
-console.log('controllers');
 const {
   LichSuDatTau,
   LichSuDatXeBus,
   LichSuDatOto,
 } = require('../models/schema');
-const changeSchedule = async (req, res, next) => {
+const changeSchedule = async (req, res) => {
   console.log('vo dc controller');
   try {
     const { MaDX, newDate } = req.body;
     let updated = false;
-    console.log('dattau');
     const tauBooking = await LichSuDatTau.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -18,9 +16,6 @@ const changeSchedule = async (req, res, next) => {
         runValidators: true,
       }
     );
-
-    console.log('datbus');
-
     const busBooking = await LichSuDatXeBus.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -29,8 +24,6 @@ const changeSchedule = async (req, res, next) => {
         runValidators: true,
       }
     );
-
-    console.log('datoto');
     const otoBooking = await LichSuDatOto.findByIdAndUpdate(
       req.params.id,
       req.body,

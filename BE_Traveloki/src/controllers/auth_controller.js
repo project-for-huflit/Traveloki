@@ -37,22 +37,6 @@ const login = async (req, res, next) => {
     } else {
       return res.status(404).json({ message: 'Email is not exist!!!' });
     }
-    // if (!user) {
-    //   throw new NotFoundError(`Tài khoản không tồn tại!!!`)
-    // }
-
-    // const isMatch = await bcrypt.compare(password, user.password);
-
-    // if (isMatch) {
-    //   throw new AuthFailureError(`Sai mật khẩu`)
-    // }
-
-    // // Tạo và gửi token JWT về cho client
-    // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    //   expiresIn: '2d',
-    // });
-
-    // res.json({ token });
   } catch (err) {
     console.error('login error:', err);
     res.status(500).json({ message: 'Error server!' });
