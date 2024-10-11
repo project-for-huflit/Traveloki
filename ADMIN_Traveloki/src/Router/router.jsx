@@ -23,45 +23,50 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        path: "DashBoard",
+        path: "home",
         element: <Dashboard/>,
       },
       {
-        path: "CreateDanhSachSanBay",
+        path: "airport/list",
+        element: <DanhSachSanBay />,
+      },
+      {
+        path: "airport/list/create",
         element: <CreateDanhSachSanBay />,
       },
       {
-        path: "DanhSachTuyenXe",
+        path: "road/list",
         element: <DanhSachTuyenXe />,
       },
       {
-        path: "CreateTuyenXe",
+        path: "road/list/create",
         element: <CreateTuyenXe />,
       },
       {
-        path: "PhuongTien",
+        path: "vehicle/list",
         element: <PhuongTien />,
       },
       {
-        path: "CreatePhuongTien",
+        path: "vehicle/list/create",
         element: <CreatePhuongTien />,
       },
       {
-        path: "DanhSachTramDung",
+        path: "waypoint/list",
         element: <DanhSachTramDung />,
       },
       {
-        path: "CreateTramDung",
+        path: "waypoint/list/create",
         element: <CreateTramDung />,
       },
       {
-        path: "ListDetailCar",
+        path: "detail-car/list",
         element: <ListDetailCar />,
       },
       {
-        path: "CreateDetailCar",
+        path: "detail-car/list/create",
         element: <CreateDetailCar />,
       },
+
       {
         path: `GetDetailCar/:id`,
         element: <GetDetailCar />,
@@ -69,10 +74,6 @@ const router = createBrowserRouter([
       {
         path: `EditDetailCar/:id`,
         element: <EditDetailCar />,
-      },
-      {
-        path: "DanhSachSanBay",
-        element: <DanhSachSanBay />,
       },
     ],
   },

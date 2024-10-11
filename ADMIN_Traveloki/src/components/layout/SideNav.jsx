@@ -1,4 +1,4 @@
-import {useNavigate, NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -97,7 +97,7 @@ const SideNav = () => {
         <List>
           <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/DashBoard"
+              to="/home"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -126,7 +126,7 @@ const SideNav = () => {
           </ListItem>
           <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/DanhSachSanBay"
+              to="/airport/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -155,7 +155,7 @@ const SideNav = () => {
           </ListItem>
           <ListItem  disablePadding sx={{ display: 'block' }} >
             <NavLink
-              to="/DanhSachTuyenXe"
+              to="/road/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -184,7 +184,7 @@ const SideNav = () => {
           </ListItem>
           <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/PhuongTien"
+              to="/vehicle/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -213,7 +213,7 @@ const SideNav = () => {
           </ListItem>
           <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/DanhSachTramDung"
+              to="/waypoint/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -242,7 +242,7 @@ const SideNav = () => {
           </ListItem>
           <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/ListDetailCar"
+              to="/detail-car/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active

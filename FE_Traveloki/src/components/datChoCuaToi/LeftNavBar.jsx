@@ -64,6 +64,7 @@ function LeftNavBar() {
               </div>
             </div>
           </div>
+
           <a
             href="/user/history-booking"
             onClick={(event) =>
@@ -83,6 +84,67 @@ function LeftNavBar() {
               </div>
             </div>
           </a>
+
+          <a
+            href="/user/rate/trips-car"
+            onClick={(event) =>
+              event.preventDefault() || navigate("/user/rate/trips-car")
+            }
+          >
+            <div className="w-full hover:bg-slate-100">
+              <div className="inline-flex items-center px-4 py-2">
+                <div className="mr-2">
+                  <img
+                    src={HistoryBookingIcon}
+                    alt="History Booking"
+                    className="w-[32px] h-[32px] rounded-full"
+                  />
+                </div>
+                <div className="text-lg font-semibold">Đánh giá chuyến đi - car</div>
+              </div>
+            </div>
+          </a>
+
+          <a
+            href="/user/rate/trips-bus"
+            onClick={(event) =>
+              event.preventDefault() || navigate("/user/rate/trips-bus")
+            }
+          >
+            <div className="w-full hover:bg-slate-100">
+              <div className="inline-flex items-center px-4 py-2">
+                <div className="mr-2">
+                  <img
+                    src={HistoryBookingIcon}
+                    alt="History Booking"
+                    className="w-[32px] h-[32px] rounded-full"
+                  />
+                </div>
+                <div className="text-lg font-semibold">Đánh giá chuyến đi - bus</div>
+              </div>
+            </div>
+          </a>
+
+          <a
+            href="/user/rate/trips-train"
+            onClick={(event) =>
+              event.preventDefault() || navigate("/user/rate/trips-train")
+            }
+          >
+            <div className="w-full hover:bg-slate-100">
+              <div className="inline-flex items-center px-4 py-2">
+                <div className="mr-2">
+                  <img
+                    src={HistoryBookingIcon}
+                    alt="History Booking"
+                    className="w-[32px] h-[32px] rounded-full"
+                  />
+                </div>
+                <div className="text-lg font-semibold">Đánh giá chuyến đi - train</div>
+              </div>
+            </div>
+          </a>
+
           <hr className="my-4 border-t-2 border-slate-400 w-full" />
           <div className="w-full hover:bg-slate-100">
             <div className="inline-flex items-center px-4 py-2">

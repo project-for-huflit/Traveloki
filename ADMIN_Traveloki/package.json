@@ -11,6 +11,8 @@
     "start": "node server.cjs"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.13.0",
+    "@cloudinary/url-gen": "^1.21.0",
     "@devexpress/analytics-core": "24.1.4",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
