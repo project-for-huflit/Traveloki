@@ -1,10 +1,7 @@
-// const {
-//   LichSuDatTau,
-//   LichSuDatXeBus,
-//   LichSuDatXeOto,
-// } = require('../models/schema');
-
 const LichSuDatTau = require('../models/lichSuDatTau.model');
+const LichSuDatXeBus = require('../models/lichSuDatXeBus.model');
+const LichSuDatXeOto = require('../models/lichSuDatXeOto.model');
+
 const changeSchedule = async (req, res) => {
   try {
     const { newDate } = req.body;

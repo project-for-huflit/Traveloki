@@ -1,25 +1,26 @@
-'use strict'
+'use strict';
 
-const ChiTietXeOto = require("../models/schema.js").ChiTietXeOto;
-const CounterChitietxe = require("../models/schema.js").CounterChitietxe;
+const ChiTietXeOto = require('../models/chiTietXeOto.model.js').ChiTietXeOto;
+const CounterChitietxe = require('../models/counter.model.js').CounterChitietxe;
 
-const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+const {
+  OK,
+  CREATED,
+  SuccessResponse,
+} = require('../middlewares/success.response');
 
-const asyncHandler = require('../middlewares/asyncHandler.middeware')
+const asyncHandler = require('../middlewares/asyncHandler.middeware');
 
-class DetailCarController {
-
-}
+class DetailCarController {}
 // module.exports = new DetailCarController()
-
 
 const GetChiTietXeOto = async (req, res) => {
   try {
     const chiTietXeOto = await ChiTietXeOto.find({});
     res.status(200).json({ chiTietXeOto });
   } catch (e) {
-    console.error("Error fetching ChiTietXeOto:", e);
-    res.status(500).json({ message: "Unable to get ChiTietXeOto" });
+    console.error('Error fetching ChiTietXeOto:', e);
+    res.status(500).json({ message: 'Unable to get ChiTietXeOto' });
   }
 };
 
@@ -50,17 +51,17 @@ const CreateChiTietXeOto = async (req, res) => {
       !Image ||
       !MaSB
     ) {
-      return res.status(400).json({ message: "All fields are required" });
+      return res.status(400).json({ message: 'All fields are required' });
     }
 
     const counterChiTietXe = await CounterChitietxe.findOneAndUpdate(
-      { _id: "ChiTietXeCounter" },
+      { _id: 'ChiTietXeCounter' },
       { $inc: { seq: 1 } },
       { new: true, upsert: true }
     );
 
     if (!counterChiTietXe) {
-      return res.status(500).json({ message: "Failed to retrieve counter" });
+      return res.status(500).json({ message: 'Failed to retrieve counter' });
     }
 
     const MaDetailCar = `DTC${counterChiTietXe.seq}`;
@@ -82,10 +83,10 @@ const CreateChiTietXeOto = async (req, res) => {
     await createChiTietXeOto.save();
     res.status(201).json({ createChiTietXeOto });
   } catch (e) {
-    console.error("Error creating ChiTietXeOto:", e);
+    console.error('Error creating ChiTietXeOto:', e);
     res
       .status(500)
-      .json({ message: "Unable to create ChiTietXeOto", error: e.message });
+      .json({ message: 'Unable to create ChiTietXeOto', error: e.message });
   }
 };
 
@@ -97,13 +98,13 @@ const UpdateChiTietXeOto = async (req, res) => {
     });
 
     if (!updated) {
-      return res.status(404).json({ message: "ChiTietXeOto not found" });
+      return res.status(404).json({ message: 'ChiTietXeOto not found' });
     }
 
-    res.status(200).json({ message: "ChiTietXeOto updated successfully" });
+    res.status(200).json({ message: 'ChiTietXeOto updated successfully' });
   } catch (e) {
-    console.error("Error updating ChiTietXeOto:", e);
-    res.status(500).json({ message: "Unable to update ChiTietXeOto" });
+    console.error('Error updating ChiTietXeOto:', e);
+    res.status(500).json({ message: 'Unable to update ChiTietXeOto' });
   }
 };
 
@@ -113,13 +114,13 @@ const GetChiTietXeOtoID = async (req, res) => {
     const chiTietXeOto = await ChiTietXeOto.findById(id);
 
     if (!chiTietXeOto) {
-      return res.status(404).json({ message: "ChiTietXeOto not found" });
+      return res.status(404).json({ message: 'ChiTietXeOto not found' });
     }
 
     res.status(200).json(chiTietXeOto);
   } catch (e) {
-    console.error("Error fetching ChiTietXeOto by ID:", e);
-    res.status(500).json({ message: "Internal server error" });
+    console.error('Error fetching ChiTietXeOto by ID:', e);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -129,13 +130,13 @@ const DeleteChiTietXeOto = async (req, res) => {
     const deleted = await ChiTietXeOto.findByIdAndDelete(id);
 
     if (!deleted) {
-      return res.status(404).json({ message: "ChiTietXeOto not found" });
+      return res.status(404).json({ message: 'ChiTietXeOto not found' });
     }
 
-    res.status(200).json({ message: "ChiTietXeOto deleted successfully" });
+    res.status(200).json({ message: 'ChiTietXeOto deleted successfully' });
   } catch (e) {
-    console.error("Error deleting ChiTietXeOto:", e);
-    res.status(500).json({ message: "Unable to delete ChiTietXeOto" });
+    console.error('Error deleting ChiTietXeOto:', e);
+    res.status(500).json({ message: 'Unable to delete ChiTietXeOto' });
   }
 };
 
@@ -143,24 +144,24 @@ const FinDetailCarID = async (req, res) => {
   const { MaSB } = req.query;
 
   if (!MaSB) {
-    return res.status(400).json({ message: "MaSB is required" });
+    return res.status(400).json({ message: 'MaSB is required' });
   }
 
   try {
     const detailCars = await ChiTietXeOto.find({
-      MaSB: { $regex: MaSB, $options: "i" },
+      MaSB: { $regex: MaSB, $options: 'i' },
     });
 
     if (!detailCars.length) {
       return res
         .status(404)
-        .json({ message: "No cars found with the given MaSB" });
+        .json({ message: 'No cars found with the given MaSB' });
     }
 
     res.status(200).json({ detailCars });
   } catch (error) {
-    console.error("Error finding cars by MaSB:", error);
-    res.status(500).json({ message: "Error finding cars", error });
+    console.error('Error finding cars by MaSB:', error);
+    res.status(500).json({ message: 'Error finding cars', error });
   }
 };
 

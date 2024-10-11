@@ -1,26 +1,27 @@
-'use strict'
+'use strict';
 
-const PhieuDatTau = require("../models/schema.js").PhieuDatTau;
-const CounterDatTau = require("../models/schema.js").CounterDatTau;
-const PhuongTien = require("../models/schema.js").PhuongTien;
-const lichSuDatTau = require("../models/schema.js").LichSuDatTau;
+const PhieuDatTau = require('../models/phieuDatTau.model.js').PhieuDatTau;
+const CounterDatTau = require('../models/counter.model.js').CounterDatTau;
+const PhuongTien = require('../models/phuongTien.model.js').PhuongTien;
+const lichSuDatTau = require('../models/lichSuDatTau.model.js').LichSuDatTau;
 
-const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+const {
+  OK,
+  CREATED,
+  SuccessResponse,
+} = require('../middlewares/success.response');
 
-const asyncHandler = require('../middlewares/asyncHandler.middeware')
+const asyncHandler = require('../middlewares/asyncHandler.middeware');
 
-class BookingTrainController {
-
-}
+class BookingTrainController {}
 // module.exports = new BookingTrainController()
-
 
 const GetPhieusdattau = async (req, res) => {
   try {
     const phieudattau = await PhieuDatTau.find({});
     res.status(200).json({ phieudattau });
   } catch (e) {
-    res.status(500).json("not get phieu dat tau");
+    res.status(500).json('not get phieu dat tau');
   }
 };
 
@@ -47,22 +48,22 @@ const BuyTicketTrain = async (req, res) => {
       !NgayGioKhoiHanh ||
       !ThanhTien
     ) {
-      return res.status(400).json({ error: "Thiếu thông tin" });
+      return res.status(400).json({ error: 'Thiếu thông tin' });
     }
 
     const phuongTien = await PhuongTien.findById(MaPT);
     if (!phuongTien) {
-      return res.status(400).json({ message: "Không tìm thấy phương tiện" });
+      return res.status(400).json({ message: 'Không tìm thấy phương tiện' });
     }
 
     if (SLVeNguoiLon <= 0) {
       return res
         .status(400)
-        .json({ message: "Số lượng vé người lớn phải lớn hơn 0." });
+        .json({ message: 'Số lượng vé người lớn phải lớn hơn 0.' });
     }
 
     const countterdattau = await CounterDatTau.findOneAndUpdate(
-      { _id: "datbuytCounter" },
+      { _id: 'datbuytCounter' },
       { $inc: { seq: 1 } },
       { new: true, upsert: true }
     );
@@ -84,7 +85,7 @@ const BuyTicketTrain = async (req, res) => {
     await phieuDatTau.save();
     res.status(200).json({ phieuDatTau });
   } catch (e) {
-    res.status(500).json("Không tạo được phiếu đặt tàu");
+    res.status(500).json('Không tạo được phiếu đặt tàu');
   }
 };
 
@@ -94,13 +95,13 @@ const FindBuyTicketTrainMaDX = async (req, res) => {
     const buyTicketTrain = await PhieuDatTau.findOne({ MaVeTau });
 
     if (!buyTicketTrain) {
-      return res.status(404).json({ message: "Train ticket not found" });
+      return res.status(404).json({ message: 'Train ticket not found' });
     }
 
     res.status(200).json({ buyTicketTrain });
   } catch (e) {
-    console.error("Error fetching train ticket by MaVeTau:", e);
-    res.status(500).json({ message: "Internal server error" });
+    console.error('Error fetching train ticket by MaVeTau:', e);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -112,17 +113,17 @@ const SchedularChange = async (req, res) => {
     const newNgayGioDat = new Date(NgayGioDat);
     if (newNgayGioDat < new Date()) {
       return res.status(400).json({
-        message: "Ngày giờ đặt phải lớn hơn hoặc bằng ngày hiện tại.",
+        message: 'Ngày giờ đặt phải lớn hơn hoặc bằng ngày hiện tại.',
       });
     }
 
     await PhieuDatTau.findByIdAndUpdate(id, {
       $set: { NgayGioDat: newNgayGioDat },
     });
-    res.status(200).json({ message: "Đã cập nhật Ngày giờ đặt thành công." });
+    res.status(200).json({ message: 'Đã cập nhật Ngày giờ đặt thành công.' });
   } catch (e) {
-    console.error("Lỗi khi cập nhật PhieuDatTau:", e);
-    res.status(500).json({ error: "Không thể cập nhật Ngày giờ đặt." });
+    console.error('Lỗi khi cập nhật PhieuDatTau:', e);
+    res.status(500).json({ error: 'Không thể cập nhật Ngày giờ đặt.' });
   }
 };
 
@@ -130,24 +131,24 @@ const CancelTicketTrain = async (req, res) => {
   try {
     const { MaVeTau } = req.params;
     if (!MaVeTau) {
-      return res.status(400).json({ message: "Thiếu thông tin" });
+      return res.status(400).json({ message: 'Thiếu thông tin' });
     }
 
     const deleteBookingResult = await PhieuDatTau.deleteOne({ MaVeTau });
     if (deleteBookingResult.deletedCount === 0) {
-      return res.status(404).json({ message: "Booking not found" });
+      return res.status(404).json({ message: 'Booking not found' });
     }
 
     const deleteHistoryResult = await lichSuDatTau.deleteOne({ MaDX: MaVeTau });
 
     if (!deleteHistoryResult) {
-      return res.status(404).json({ message: "Booking history not found" });
+      return res.status(404).json({ message: 'Booking history not found' });
     }
 
-    return res.status(200).json({ message: "Delete phieu dat tau success" });
+    return res.status(200).json({ message: 'Delete phieu dat tau success' });
   } catch (e) {
-    console.error("Error deleting phieu dat tau:", e);
-    return res.status(500).json({ message: "Error deleting phieu dat tau" });
+    console.error('Error deleting phieu dat tau:', e);
+    return res.status(500).json({ message: 'Error deleting phieu dat tau' });
   }
 };
 

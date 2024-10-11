@@ -8,6 +8,6 @@ const LichSuDatTauSchema = new mongoose.Schema({
   Date: { type: Date },
 });
 
-module.exports = {
-  LichSuDatTaus: mongoose.model('LichSuDatTau', LichSuDatTauSchema)
-};
+const LichSuDatTau = mongoose.model('LichSuDatTau', LichSuDatTauSchema);
+
+module.exports = LichSuDatTau;

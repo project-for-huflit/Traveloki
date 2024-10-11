@@ -1,5 +1,4 @@
 'use strict';
-
 const express = require('express');
 const router = express.Router();
 const LichSuDatTau = require('../models/lichSuDatTau.model');

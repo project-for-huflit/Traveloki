@@ -1,27 +1,29 @@
-'use strict'
+'use strict';
 
-const express = require("express");
-const session = require("express-session");
-const { DanhSachSanBay, TramDung } = require("../models/schema.js");
+const express = require('express');
+const session = require('express-session');
+const DanhSachSanBay = require('../models/danhSachSanBay.model');
+const TramDung = require('../models/tramDung.model');
 
-const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+const {
+  OK,
+  CREATED,
+  SuccessResponse,
+} = require('../middlewares/success.response');
 
-const asyncHandler = require('../middlewares/asyncHandler.middeware')
+const asyncHandler = require('../middlewares/asyncHandler.middeware');
 
 const app = express();
 
-class SearchController {
-
-}
+class SearchController {}
 
 // module.exports = new SearchController()
-
 
 const SuggestsAirpost = async (req, res) => {
   try {
     const { query } = req.query;
     const suggestions = await DanhSachSanBay.find({
-      TenSanBay: { $regex: query, $options: "i" },
+      TenSanBay: { $regex: query, $options: 'i' },
     }).limit(10);
 
     const tramdungtuongung = await TramDung.find({
@@ -34,7 +36,7 @@ const SuggestsAirpost = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      message: "Có lỗi xảy ra khi lấy gợi ý sân bay.",
+      message: 'Có lỗi xảy ra khi lấy gợi ý sân bay.',
       error: err.message,
     });
   }
@@ -44,7 +46,7 @@ const SuggestsTramDung = async (req, res) => {
   try {
     const { query } = req.query;
     const tramDungSuggestions = await TramDung.find({
-      DiaChi: { $regex: query, $options: "i" },
+      DiaChi: { $regex: query, $options: 'i' },
     }).limit(10);
 
     const maTuyens = tramDungSuggestions.map((tramDung) => tramDung.MaTuyen);
@@ -59,7 +61,7 @@ const SuggestsTramDung = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      message: "Có lỗi xảy ra khi lấy gợi ý trạm dừng.",
+      message: 'Có lỗi xảy ra khi lấy gợi ý trạm dừng.',
       error: err.message,
     });
   }

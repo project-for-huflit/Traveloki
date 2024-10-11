@@ -1,9 +1,13 @@
-'use strict'
-
-const AppraiseBus = require("../models/schema").AppraiseBus;
-const asyncHandler = require('../middlewares/asyncHandler.middeware')
-const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
-const { BadRequestError } = require('../middlewares/error.response')
+'use strict';
+console.log('controllers1');
+const AppraiseBus = require('../models/appraiseBus.model').AppraiseBus;
+const asyncHandler = require('../middlewares/asyncHandler.middeware');
+const {
+  OK,
+  CREATED,
+  SuccessResponse,
+} = require('../middlewares/success.response');
+const { BadRequestError } = require('../middlewares/error.response');
 
 // class AppraiseVehicle { }
 
@@ -14,35 +18,40 @@ const { BadRequestError } = require('../middlewares/error.response')
 // class _AppraiseTrain extends AppraiseVehicle { }
 
 class AppraiseBusController {
-  getAppraiseBus = async ( req, res, next ) => {
+  getAppraiseBus = async (req, res, next) => {
     try {
-      const appraiseBus = AppraiseBusService.getAppraiseBus()
+      const appraiseBus = AppraiseBusService.getAppraiseBus();
       res.status(200).json({ appraiseBus });
     } catch (e) {
-      res.status(500).json("not get appraise bus");
+      res.status(500).json('not get appraise bus');
     }
-  }
+  };
 
-  createAppraiseBus = async ( req, res, next ) => {
+  createAppraiseBus = async (req, res, next) => {
     try {
       const { MaBus, MaCus, SoSao, NoiDung } = req.body;
-      const appraiseBus = AppraiseBusService.createAppraiseBus({ MaBus, MaCus, SoSao, NoiDung })
+      const appraiseBus = AppraiseBusService.createAppraiseBus({
+        MaBus,
+        MaCus,
+        SoSao,
+        NoiDung,
+      });
       await appraiseBus.save();
       res.status(200).json({ appraiseBus });
     } catch (e) {
-      res.status(500).json("not create appraise bus");
+      res.status(500).json('not create appraise bus');
     }
-  }
+  };
 
   deleteAppraiseBus = async (req, res, next) => {
     try {
       const { MaXe } = req.body;
-      AppraiseBusService.deleteAppraiseBus({ MaXe })
-      res.status(200).json("delete appraise bus success");
+      AppraiseBusService.deleteAppraiseBus({ MaXe });
+      res.status(200).json('delete appraise bus success');
     } catch (e) {
-      res.status(500).json("not delete appraise bus");
+      res.status(500).json('not delete appraise bus');
     }
-  }
+  };
 }
 // module.exports = new AppraiseBusController()
 
@@ -51,7 +60,7 @@ const GetAppraiseBus = async (req, res) => {
     const appraiseBus = await AppraiseBus.find({});
     res.status(200).json({ appraiseBus });
   } catch (e) {
-    res.status(500).json("not get appraise car");
+    res.status(500).json('not get appraise car');
   }
 };
 
@@ -59,14 +68,14 @@ const CreateAppraiseBus = async (req, res) => {
   try {
     const { MaBus, MaCus, SoSao, NoiDung } = req.body;
     if (!MaBus || !MaCus || !SoSao || !NoiDung) {
-      return res.status(400).json("Missing information!");
+      return res.status(400).json('Missing information!');
     }
 
     const appraiseBus = new AppraiseBus({ MaBus, MaCus, SoSao, NoiDung });
     await appraiseBus.save();
     res.status(200).json({ appraiseBus });
   } catch (e) {
-    res.status(500).json("not create appraise car");
+    res.status(500).json('not create appraise car');
   }
 };
 
@@ -74,17 +83,17 @@ const DeleteAppraiseBus = async (req, res) => {
   try {
     const { MaXe } = req.body;
     if (!MaXe) {
-      return res.status(400).json("Missing information!");
+      return res.status(400).json('Missing information!');
     }
     await AppraiseBus.deleteOne({ MaXe });
-    res.status(200).json("Delete appraise car success");
+    res.status(200).json('Delete appraise car success');
   } catch (e) {
-    res.status(500).json("Can not delete appraise car");
+    res.status(500).json('Can not delete appraise car');
   }
 };
 
 module.exports = {
   GetAppraiseBus,
   CreateAppraiseBus,
-  DeleteAppraiseBus
+  DeleteAppraiseBus,
 };

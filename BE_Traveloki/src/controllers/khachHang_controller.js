@@ -1,14 +1,16 @@
-'use strict'
+'use strict';
 
-const KhachHang = require("../models/schema").KhachHang;
+const KhachHang = require('../models/khachHang.model').KhachHang;
 
-const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+const {
+  OK,
+  CREATED,
+  SuccessResponse,
+} = require('../middlewares/success.response');
 
-const asyncHandler = require('../middlewares/asyncHandler.middeware')
+const asyncHandler = require('../middlewares/asyncHandler.middeware');
 
-class CustomerController {
-
-}
+class CustomerController {}
 // module.exports = new CustomerController()
 
 const GetKhachHang = async (req, res) => {
@@ -16,7 +18,7 @@ const GetKhachHang = async (req, res) => {
     const khachHang = await KhachHang.find({});
     res.status(200).json({ khachHang });
   } catch (e) {
-    res.status(500).json("not get khach hang");
+    res.status(500).json('not get khach hang');
   }
 };
 

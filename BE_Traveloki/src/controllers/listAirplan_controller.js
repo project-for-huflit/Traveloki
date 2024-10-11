@@ -1,15 +1,17 @@
-'use strict'
+'use strict';
 
-const DanhSachSanBay = require("../models/schema").DanhSachSanBay;
-const Counter = require("../models/schema").CounterLSB;
+const DanhSachSanBay = require('../models/danhSachSanBay.model').DanhSachSanBay;
+const Counter = require('../models/counter.model').CounterLSB;
 
-const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+const {
+  OK,
+  CREATED,
+  SuccessResponse,
+} = require('../middlewares/success.response');
 
-const asyncHandler = require('../middlewares/asyncHandler.middeware')
+const asyncHandler = require('../middlewares/asyncHandler.middeware');
 
-class AirportController {
-
-}
+class AirportController {}
 // module.exports = new AirportController()
 
 const GetDanhSachSanBay = async (req, res) => {
@@ -18,7 +20,7 @@ const GetDanhSachSanBay = async (req, res) => {
     res.status(200).json({ danhSachSanBay });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ message: "Error retrieving danh sach san bay" });
+    res.status(500).json({ message: 'Error retrieving danh sach san bay' });
   }
 };
 const CreateDanhSachSanBay = async (req, res) => {
@@ -26,17 +28,17 @@ const CreateDanhSachSanBay = async (req, res) => {
     const { TenSanBay, ThanhPho } = req.body;
 
     if (!TenSanBay || !ThanhPho) {
-      return res.status(400).json({ message: "Thiếu thông tin bắt buộc." });
+      return res.status(400).json({ message: 'Thiếu thông tin bắt buộc.' });
     }
 
     const counter = await Counter.findOneAndUpdate(
-      { _id: "sanBayCounter" },
+      { _id: 'sanBayCounter' },
       { $inc: { seq: 1 } },
       { new: true, upsert: true }
     );
 
     if (!counter) {
-      return res.status(500).json({ message: "Lỗi khi lấy bộ đếm." });
+      return res.status(500).json({ message: 'Lỗi khi lấy bộ đếm.' });
     }
 
     const MaSB = `SB${counter.seq}`;
@@ -52,7 +54,7 @@ const CreateDanhSachSanBay = async (req, res) => {
     console.error(e);
     res
       .status(500)
-      .json({ message: "Không thể tạo danh sách sân bay.", error: e.message });
+      .json({ message: 'Không thể tạo danh sách sân bay.', error: e.message });
   }
 };
 
@@ -62,13 +64,13 @@ const DeleteDanhSachSanBay = async (req, res) => {
     const result = await DanhSachSanBay.findByIdAndDelete(id);
 
     if (!result) {
-      return res.status(404).json({ message: "DanhSachSanBay not found" });
+      return res.status(404).json({ message: 'DanhSachSanBay not found' });
     }
 
-    res.status(200).json({ message: "DanhSachSanBay deleted successfully" });
+    res.status(200).json({ message: 'DanhSachSanBay deleted successfully' });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ message: "Error deleting danh sach san bay" });
+    res.status(500).json({ message: 'Error deleting danh sach san bay' });
   }
 };
 
@@ -78,13 +80,13 @@ const GetSanBayID = async (req, res) => {
     const danhSachSanBay = await DanhSachSanBay.findById(id);
 
     if (!danhSachSanBay) {
-      return res.status(404).json({ message: "Sân bay không tồn tại" });
+      return res.status(404).json({ message: 'Sân bay không tồn tại' });
     }
 
     res.status(200).json(danhSachSanBay);
   } catch (e) {
     console.error(e);
-    res.status(500).json({ message: "Error retrieving sân bay" });
+    res.status(500).json({ message: 'Error retrieving sân bay' });
   }
 };
 
@@ -92,24 +94,24 @@ const getSanBaybyTenSanBay = async (req, res) => {
   const { TenSanBay } = req.query;
 
   if (!TenSanBay) {
-    return res.status(400).json({ message: "sanbay is required" });
+    return res.status(400).json({ message: 'sanbay is required' });
   }
 
   try {
     const sanbays = await DanhSachSanBay.find({
-      TenSanBay: { $regex: TenSanBay, $options: "i" },
+      TenSanBay: { $regex: TenSanBay, $options: 'i' },
     });
 
     if (!sanbays.length) {
       return res
         .status(404)
-        .json({ message: "No sanbays found with the given TenSanBay" });
+        .json({ message: 'No sanbays found with the given TenSanBay' });
     }
 
     res.status(200).json({ sanbays });
   } catch (error) {
-    console.error("Error finding SanBay:", error);
-    res.status(500).json({ message: "Error finding SanBay", error });
+    console.error('Error finding SanBay:', error);
+    res.status(500).json({ message: 'Error finding SanBay', error });
   }
 };
 

@@ -1,21 +1,22 @@
-'use strict'
+'use strict';
+
+const LichSuDatXeOto = require('../models/lichSuDatXeOto.model');
+const LichSuDatXeBus = require('../models/lichSuDatXeBus.model');
+const LichSuDatTau = require('../models/lichSuDatTau.model');
+
+const DatXeOto = require('../models/datXeOto.model');
+const PhieuDatXeBus = require('../models/phieuDatXeBus.model');
+const PhieuDatTau = require('../models/phieuDatTau.model');
 
 const {
-  LichSuDatXeOto,
-  DatXeOto,
-  LichSuDatXeBus,
-  PhieuDatXeBus,
-  LichSuDatTau,
-  PhieuDatTau,
-} = require("../models/schema");
+  OK,
+  CREATED,
+  SuccessResponse,
+} = require('../middlewares/success.response');
 
-const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+const asyncHandler = require('../middlewares/asyncHandler.middeware');
 
-const asyncHandler = require('../middlewares/asyncHandler.middeware')
-
-class StateBookingController {
-
-}
+class StateBookingController {}
 
 // module.exports = new StateBookingController()
 
@@ -32,13 +33,13 @@ const UpdateState = async (req, res) => {
 
     if (updatedBooking) {
       await LichSuDatXeOto.create({
-        MaKH: "KHthanh",
+        MaKH: 'KHthanh',
         MaDX: updatedBooking.MaDX,
         Date: updatedBooking.NgayGioDat,
       });
       return res
         .status(200)
-        .json({ message: "Đã cập nhật trạng thái đặt xe ô tô thành công." });
+        .json({ message: 'Đã cập nhật trạng thái đặt xe ô tô thành công.' });
     }
 
     // Cập nhật trạng thái đặt xe bus
@@ -51,12 +52,12 @@ const UpdateState = async (req, res) => {
     if (updatedBooking) {
       await LichSuDatXeBus.create({
         MaDX: updatedBooking.MaVeBus,
-        MaKH: "KHthanh",
+        MaKH: 'KHthanh',
         Date: updatedBooking.NgayGioKhoiHanh,
       });
       return res
         .status(200)
-        .json({ message: "Đã cập nhật trạng thái đặt xe bus thành công." });
+        .json({ message: 'Đã cập nhật trạng thái đặt xe bus thành công.' });
     }
 
     // Cập nhật trạng thái đặt tàu
@@ -68,19 +69,19 @@ const UpdateState = async (req, res) => {
 
     if (updatedBooking) {
       await LichSuDatTau.create({
-        MaKH: "KHthanh",
+        MaKH: 'KHthanh',
         MaDX: updatedBooking.MaVeTau,
         Date: updatedBooking.NgayGioKhoiHanh,
       });
       return res
         .status(200)
-        .json({ message: "Đã cập nhật trạng thái đặt tàu thành công." });
+        .json({ message: 'Đã cập nhật trạng thái đặt tàu thành công.' });
     }
 
-    return res.status(404).json({ message: "Booking không tồn tại" });
+    return res.status(404).json({ message: 'Booking không tồn tại' });
   } catch (e) {
-    console.error("Lỗi khi cập nhật trạng thái:", e);
-    res.status(500).json({ error: "Không thể cập nhật trạng thái đặt xe." });
+    console.error('Lỗi khi cập nhật trạng thái:', e);
+    res.status(500).json({ error: 'Không thể cập nhật trạng thái đặt xe.' });
   }
 };
 
