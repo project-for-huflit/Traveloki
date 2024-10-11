@@ -29,7 +29,10 @@ const SearchBar = () => {
   const [diemSanBay, setDiemKhoiHanh] = useState('');
   const [diemKetThuc, setDiemKetThuc] = useState('');
   const [selectedHour, setSelectedHour] = useState('');
+
+  // Date
   const [selectedDate, setSelectedDate] = useState('');
+
   const [suggestions, setSuggestions] = useState({
     sanBays: [],
     tramDungs: [],
@@ -312,13 +315,11 @@ const SearchBar = () => {
               className="bg-transparent outline-none mx-2 w-52"
             /> */}
               <DatePicker
-                className=""
                 minDate={today}
-                selected={selectedDate}
                 dateFormat="dd/MM/yyyy"
-                // value={selectedDate}
                 showYearDropdown
-                onChange={(e) => setSelectedDate(e.target.value)}
+                selected={selectedDate}
+                onChange={(e) => setSelectedDate(e)} // .target.value
               />
             </div>
           </div>
