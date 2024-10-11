@@ -1,5 +1,4 @@
 'use strict';
-console.log('controllers1');
 const AppraiseBus = require('../models/appraiseBus.model').AppraiseBus;
 const asyncHandler = require('../middlewares/asyncHandler.middeware');
 const {

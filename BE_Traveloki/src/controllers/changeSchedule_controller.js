@@ -7,9 +7,10 @@ const changeSchedule = async (req, res) => {
   try {
     const { newDate } = req.body;
     let updated = false;
-    let booking = null;
 
-    booking =
+    const newDepartureTime = moment(newDate, 'DD/MM/YYYY - HH:mm');
+
+    let booking =
       (await LichSuDatTau.findById(req.params.id)) ||
       (await LichSuDatXeBus.findById(req.params.id)) ||
       (await LichSuDatXeOto.findById(req.params.id));
@@ -22,15 +23,15 @@ const changeSchedule = async (req, res) => {
     }
 
     const currentTime = moment();
-    const departureTime = moment(booking.Date); /// Thời gian khởi hành
+    const departureTime = moment(booking.Date);
     const timeDifference = departureTime.diff(currentTime, 'minutes');
 
     if (timeDifference >= 180) {
-      booking.Date = newDate;
+      booking.Date = newDepartureTime.toDate();
       await booking.save();
       updated = true;
     } else if (timeDifference >= 30) {
-      booking.Date = newDate;
+      booking.Date = newDepartureTime.toDate();
       booking.fee = booking.price * 0.03; // Tính phí 3%
       await booking.save();
       updated = true;

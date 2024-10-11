@@ -13,5 +13,3 @@ const LichSuDatXeBus = model('LichSuDatXeBus', LichSuDatXeBusSchema);
 module.exports = {
   LichSuDatXeBus,
 };
-
-console.log('modal');
