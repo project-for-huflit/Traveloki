@@ -2,7 +2,7 @@ console.log('controllers');
 const {
   LichSuDatTau,
   LichSuDatXeBus,
-  LichSuDatOto,
+  LichSuDatXeOto,
 } = require('../models/schema');
 const changeSchedule = async (req, res, next) => {
   console.log('vo dc controller');
@@ -26,7 +26,7 @@ const changeSchedule = async (req, res, next) => {
     }
     console.log('datoto');
 
-    const otoBooking = await LichSuDatOto.findOne(MaDX);
+    const otoBooking = await LichSuDatXeOto.findOne(MaDX);
     if (otoBooking) {
       otoBooking.Date = newDate;
       await otoBooking.save();
