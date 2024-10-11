@@ -1,3 +1,4 @@
+const moment = require('moment');
 const LichSuDatTau = require('../models/lichSuDatTau.model');
 const LichSuDatXeBus = require('../models/lichSuDatXeBus.model');
 const LichSuDatXeOto = require('../models/lichSuDatXeOto.model');
@@ -38,31 +39,6 @@ const changeSchedule = async (req, res) => {
         .status(400)
         .json({ message: 'Quá thời gian để thay đổi lịch' });
     }
-
-    // const tauBooking = await LichSuDatTau.findByIdAndUpdate(
-    //   req.params.id,
-    //   req.body,
-    //   {
-    //     new: true,
-    //     runValidators: true,
-    //   }
-    // );
-    // const busBooking = await LichSuDatXeBus.findByIdAndUpdate(
-    //   req.params.id,
-    //   req.body,
-    //   {
-    //     new: true,
-    //     runValidators: true,
-    //   }
-    // );
-    // const otoBooking = await LichSuDatOto.findByIdAndUpdate(
-    //   req.params.id,
-    //   req.body,
-    //   {
-    //     new: true,
-    //     runValidators: true,
-    //   }
-    // );
 
     if (updated) {
       res
