@@ -49,15 +49,20 @@ const DeleteLichSuDatXeOto = async (req, res) => {
 
 const updateOneLichSuDatXeOto = async (req, res) => {
   const { MaKH, MaDX } = req.params;
-  const { fieldToUpdate, newValue } = req.body;
+  const { Date } = req.body;
   try {
-    const update = {};
-    update[fieldToUpdate] = newValue;
+    const query = req.params.MaKH;
+    const update = {
+      $set: {
+        Date: Date,
+      },
+    };
+    const options = { new: true };
 
     const result = await LichSuDatXeOto.findOneAndUpdate(
-      { MaKH: MaKH, MaDX: MaDX },
-      { $set: update },
-      { new: true }
+      query,
+      update,
+      options
     );
 
     if (!result) {
