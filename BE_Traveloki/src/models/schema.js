@@ -129,18 +129,22 @@ const LichSuDatXeOtoSchema = new Schema({
   MaKH: { type: String, required: true },
   MaDX: { type: String, ref: 'DatXeOto' },
   Date: { type: Date },
+  Price: { type: Number },
 });
 
 const LichSuDatTauSchema = new Schema({
   MaKH: { type: String, required: true },
   MaDX: { type: String, ref: 'PhieuDatTau' },
   Date: { type: Date },
+  Price: { type: Number },
+  
 });
 
 const LichSuDatXeBusSchema = new Schema({
   MaKH: { type: String, required: true },
   MaDX: { type: String, ref: 'PhieuDatXeBus' },
   Date: { type: Date },
+  price: { type: Number },
 });
 
 const counterSchema = new Schema({

@@ -2,23 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Account = require('../models/account.model');
 
-const AuthJWTService = require('../services/authen.service');
-const AuthSSOService = require('../services/authen.service');
-
-const asyncHandler = require('../middlewares/asyncHandler.middeware');
-
-class AuthController {
-  login = async (req, res, next) => {};
-
-  loginSSO = async (req, res, next) => {};
-
-  register = async (req, res, next) => {};
-
-  registerSSO = async (req, res, next) => {};
-}
-// module.exports = new AuthController()
-
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     // Check email
@@ -43,7 +27,7 @@ const login = async (req, res, next) => {
   }
 };
 
-const register = async (req, res, next) => {
+const register = async (req, res) => {
   const { email, password, ...accountData } = req.body;
   console.log(password);
   try {
