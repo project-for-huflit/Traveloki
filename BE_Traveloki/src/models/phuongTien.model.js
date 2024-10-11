@@ -4,11 +4,11 @@ const COLLECTION_NAME = 'PhuongTiens'
 const PhuongTienSchema = new Schema({
   MaPT: { type: String, required: true, maxlength: 5 },
   MaTuyen: { type: String, required: true, ref: "Tuyen" },
-  MaLoai: { type: Boolean, required: true },
+  LoaiPT: { type: String, required: true, maxlength: 100 },
   TenPhuongTien: { type: String, required: true, maxlength: 100 },
   SoGheToiDa: { type: Number, required: true },
-  image: { type: String, required: true },
-  TenCty: { type: String, required: true, maxlength: 100 },
+  Image: { type: String, required: true },
+  // TenCty: { type: String, required: true, maxlength: 100 },
 },{
   timestamps: true,
   collection: COLLECTION_NAME
