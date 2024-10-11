@@ -1,24 +1,8 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Account = require('../models/account.model');
 
-const AuthJWTService = require('../services/authen.service');
-const AuthSSOService = require('../services/authen.service');
-
-const asyncHandler = require('../middlewares/asyncHandler.middeware');
-
-class AuthController {
-  login = async (req, res, next) => {};
-
-  loginSSO = async (req, res, next) => {};
-
-  register = async (req, res, next) => {};
-
-  registerSSO = async (req, res, next) => {};
-}
-// module.exports = new AuthController()
-
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     // Check email
@@ -37,29 +21,13 @@ const login = async (req, res, next) => {
     } else {
       return res.status(404).json({ message: 'Email is not exist!!!' });
     }
-    // if (!user) {
-    //   throw new NotFoundError(`Tài khoản không tồn tại!!!`)
-    // }
-
-    // const isMatch = await bcrypt.compare(password, user.password);
-
-    // if (isMatch) {
-    //   throw new AuthFailureError(`Sai mật khẩu`)
-    // }
-
-    // // Tạo và gửi token JWT về cho client
-    // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    //   expiresIn: '2d',
-    // });
-
-    // res.json({ token });
   } catch (err) {
     console.error('login error:', err);
     res.status(500).json({ message: 'Error server!' });
   }
 };
 
-const register = async (req, res, next) => {
+const register = async (req, res) => {
   const { email, password, ...accountData } = req.body;
   console.log(password);
   try {

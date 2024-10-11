@@ -1,37 +1,71 @@
-console.log('controllers');
-const {
-  LichSuDatTau,
-  LichSuDatXeBus,
-  LichSuDatXeOto,
-} = require('../models/schema');
-const changeSchedule = async (req, res, next) => {
-  console.log('vo dc controller');
+// const {
+//   LichSuDatTau,
+//   LichSuDatXeBus,
+//   LichSuDatXeOto,
+// } = require('../models/schema');
+
+const LichSuDatTau = require('../models/lichSuDatTau.model');
+const changeSchedule = async (req, res) => {
   try {
-    const { MaDX, newDate } = req.body;
+    const { newDate } = req.body;
     let updated = false;
-    console.log('dattau');
-    const tauBooking = await LichSuDatTau.findOne(MaDX);
-    if (tauBooking) {
-      tauBooking.Date = newDate;
-      await tauBooking.save();
-      updated = true;
-    }
-    console.log('datbus');
+    let booking = null;
 
-    const busBooking = await LichSuDatXeBus.findOne(MaDX);
-    if (busBooking) {
-      busBooking.Date = newDate;
-      await busBooking.save();
-      updated = true;
-    }
-    console.log('datoto');
+    booking =
+      (await LichSuDatTau.findById(req.params.id)) ||
+      (await LichSuDatXeBus.findById(req.params.id)) ||
+      (await LichSuDatXeOto.findById(req.params.id));
 
-    const otoBooking = await LichSuDatXeOto.findOne(MaDX);
-    if (otoBooking) {
-      otoBooking.Date = newDate;
-      await otoBooking.save();
-      updated = true;
+    if (!booking) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Bạn chưa đặt vé!',
+      });
     }
+
+    const currentTime = moment();
+    const departureTime = moment(booking.Date); /// Thời gian khởi hành
+    const timeDifference = departureTime.diff(currentTime, 'minutes');
+
+    if (timeDifference >= 180) {
+      booking.Date = newDate;
+      await booking.save();
+      updated = true;
+    } else if (timeDifference >= 30) {
+      booking.Date = newDate;
+      booking.fee = booking.price * 0.03; // Tính phí 3%
+      await booking.save();
+      updated = true;
+    } else {
+      return res
+        .status(400)
+        .json({ message: 'Quá thời gian để thay đổi lịch' });
+    }
+
+    // const tauBooking = await LichSuDatTau.findByIdAndUpdate(
+    //   req.params.id,
+    //   req.body,
+    //   {
+    //     new: true,
+    //     runValidators: true,
+    //   }
+    // );
+    // const busBooking = await LichSuDatXeBus.findByIdAndUpdate(
+    //   req.params.id,
+    //   req.body,
+    //   {
+    //     new: true,
+    //     runValidators: true,
+    //   }
+    // );
+    // const otoBooking = await LichSuDatOto.findByIdAndUpdate(
+    //   req.params.id,
+    //   req.body,
+    //   {
+    //     new: true,
+    //     runValidators: true,
+    //   }
+    // );
 
     if (updated) {
       res

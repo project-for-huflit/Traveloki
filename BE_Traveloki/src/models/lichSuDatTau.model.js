@@ -1,15 +1,13 @@
 'use strict';
 
-const { Schema, model } = require('mongoose');
+const mongoose = require('mongoose');
 
-const LichSuDatTauSchema = new Schema({
+const LichSuDatTauSchema = new mongoose.Schema({
   MaKH: { type: String, required: true },
   MaDX: { type: String, ref: 'PhieuDatTau' },
   Date: { type: Date },
 });
 
-const LichSuDatTau = model('LichSuDatTau', LichSuDatTauSchema);
-
 module.exports = {
-  LichSuDatTau,
+  LichSuDatTaus: mongoose.model('LichSuDatTau', LichSuDatTauSchema)
 };
