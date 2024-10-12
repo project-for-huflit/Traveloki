@@ -62,9 +62,11 @@ AND
 
 ## 8 - Xử lý Lỗi
 
+```json
 {
     error: "Invalid API key"
 }
+```
 
 ## 9 - Return
 
@@ -74,6 +76,18 @@ POST / collection: trả về đối tượng tài nguyên mới được tạo
 PUT / collection / resource: trả về đối tượng tài nguyên hoàn chỉnh
 PATCH / collection / resource: trả về đối tượng tài nguyên hoàn chỉnh
 DELETE / collection / resource: trả về một tài liệu trống
+
+## 10 - HATEOAS [Hypermedia as the engine of application state]
+
+* Ví dụ
+
+```http
+GET https://api.github.com
+```
+
+<https://www.youtube.com/watch?v=ngqwsfMMEEA>
+
+<https://en.wikipedia.org/wiki/HATEOAS>
 
 ## DOCS
 
