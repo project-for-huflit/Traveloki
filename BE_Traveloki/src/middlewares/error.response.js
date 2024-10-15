@@ -3,7 +3,8 @@ const { logger0 } = require('../utils/logger')
 
 const StatusCode = {
   FORBIDEN: 403,
-  CONFLICT: 409
+  CONFLICT: 409,
+  BADRQUEST: 400
 }
 
 const ReasonStatusCode = {
@@ -33,12 +34,12 @@ class ConflictRequestError extends ErrorResponse {
   }
 }
 
-// 403
+// 400
 class BadRequestError extends ErrorResponse {
 
   constructor(
     message = ReasonStatusCode.CONFLICT,
-    statusCode = StatusCode.FORBIDEN
+    statusCode = StatusCode.BADRQUEST
   ) {
     super(message, statusCode)
   }

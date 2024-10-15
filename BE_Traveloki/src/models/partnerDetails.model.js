@@ -10,12 +10,6 @@ const partnerDetailSchema = new Schema({
     default: null,
   },
   phone: Number,
-  email: {
-    type: String,
-    trim: true,
-    required: true,
-    unique: [true, "Email already exists!"],
-  },
   partner: {
     type: Schema.Types.ObjectId,
     ref: 'partner', // Ref tới schema partner

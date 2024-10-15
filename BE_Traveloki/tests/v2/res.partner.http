@@ -1,0 +1,84 @@
+HTTP/1.1 201 Created
+Access-Control-Allow-Origin: *
+Content-Security-Policy: default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Resource-Policy: same-origin
+Origin-Agent-Cluster: ?1
+Referrer-Policy: no-referrer
+Strict-Transport-Security: max-age=15552000; includeSubDomains
+X-Content-Type-Options: nosniff
+X-DNS-Prefetch-Control: off
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 0
+Content-Type: application/json; charset=utf-8
+ETag: W/"4fb-SE6SYZM+3ZKmfT69oePnB5UXQG4"
+Vary: Accept-Encoding
+Content-Encoding: gzip
+Date: Tue, 15 Oct 2024 09:13:01 GMT
+Connection: close
+Transfer-Encoding: chunked
+
+{
+  "message": "Register with pointer OK!",
+  "status": 201,
+  "metadata": {
+    "code": 201,
+    "metadata": {
+      "partner": {
+        "_id": "670e321d5eeccea1ec467462",
+        "name": "partner1",
+        "email": "partner1@gmail.com"
+      },
+      "tokens": {
+        "accessToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJ0bmVySWQiOiI2NzBlMzIxZDVlZWNjZWExZWM0Njc0NjIiLCJlbWFpbCI6InBhcnRuZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcyODk4MzU4MSwiZXhwIjoxNzI5MTU2MzgxfQ.d3T_5-BuD2URLrEZqAD83JbfwT0FIn1C20RO-oxKSiT2Pm3gVOmw5PvYd8El6LsaToGAEwVsOGkt88gPL-Oy2DWemKuPQ2kSEpUurNBnOrd90i65PHbDme8Y7LNxwD0VVN8vRxoaBDDbjjX8Ot-6zl6tNKlOC8e8dSZ0j8ru0OpDrGgYDS8cj5KRDwW5yv2_JiCh6RhBAi1l1FcjET3cUix237d-nXdCdWVFXiHXrbxMG1kK9Nb4z03VgdezX4B4FI76XtJD6tZOQYYm7GDU0BFBgWMpz5fpOvNHRXIkelWxCNL7gvJ_x3Xov0f8SCD6lFmAnq3nbz6c_y9NGFt18A",
+        "refreshToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJ0bmVySWQiOiI2NzBlMzIxZDVlZWNjZWExZWM0Njc0NjIiLCJlbWFpbCI6InBhcnRuZXIxQGdtYWlsLmNvbSIsImlhdCI6MTcyODk4MzU4MSwiZXhwIjoxNzI5NTg4MzgxfQ.ndXhmk7WqvqsJrFadO20YrjU1aLf7GXwt5vI6DqjKx1hL_ZKKJ3kDwn5_KVxzHOef3RzOjQKO7m7tOoE0KFUdogtggxQrwo6BS-goGMt088RA7JuitVLOpRwe-gwVymSdWLpHaMCEr3NDtHJyM1OmyuVrUZB9WprIxPjQuDMqZE8m4Hjtr9ktmMHxwdApqJt1XU4Q3URCHb4SeQEwc4i0xVY2yw384nyAwJtUWCE_w9JWhpFfyWEjpbTNQfN08CBKXGgNQHpvOuhqF-bvJXo7V4imjCYlnGbokHv1YUj7iQvfVAmdsAFwNO39mAwk1UJcid7o5YnnpUmwgRQMznuVw"
+      }
+    }
+  },
+  "option": {}
+}
+
+
+HTTP/1.1 201 Created
+Access-Control-Allow-Origin: *
+Content-Security-Policy: default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Resource-Policy: same-origin
+Origin-Agent-Cluster: ?1
+Referrer-Policy: no-referrer
+Strict-Transport-Security: max-age=15552000; includeSubDomains
+X-Content-Type-Options: nosniff
+X-DNS-Prefetch-Control: off
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 0
+Content-Type: application/json; charset=utf-8
+ETag: W/"4fb-BNm7WDz3Ddk0JrqhwxvBhIuaE3I"
+Vary: Accept-Encoding
+Content-Encoding: gzip
+Date: Tue, 15 Oct 2024 09:16:10 GMT
+Connection: close
+Transfer-Encoding: chunked
+
+{
+  "message": "Register with pointer OK!",
+  "status": 201,
+  "metadata": {
+    "code": 201,
+    "metadata": {
+      "partner": {
+        "_id": "670e32d987e4b635e5b4b0d8",
+        "name": "partner2",
+        "email": "partner2@gmail.com"
+      },
+      "tokens": {
+        "accessToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJ0bmVySWQiOiI2NzBlMzJkOTg3ZTRiNjM1ZTViNGIwZDgiLCJlbWFpbCI6InBhcnRuZXIyQGdtYWlsLmNvbSIsImlhdCI6MTcyODk4Mzc3MCwiZXhwIjoxNzI5MTU2NTcwfQ.PbP2pkIT95nvtJBpdXH-23II5kfnt2l8-FOwhQUji8T9gcIGqsiQyxsceahQYq_KU3pM6ixxxxYBgivWrUHN_xBMpNngsFe_XhIJFlO_NHmN8E3wKti30uDyfoQMrVbsC98MXNF2c0OXHMPKY2_4nqI0_Ktr8aJd3fmZbEc1tZ38rCW9OYV74F8t6I7CBce6wPvp4FPKrkkow5NoHe2kXxrcKW-S8Q7lAIzXnxEhjdtm8o55aQC3ufylNn3MqYq8hgWMK6MTd9psT5PEI6LEhjFqNa-9xRUh0khQ15j35nSbqpl0DNuC5hzDBni91rEhlZhxoKpmeMpGpRLYaUa3yw",
+        "refreshToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJ0bmVySWQiOiI2NzBlMzJkOTg3ZTRiNjM1ZTViNGIwZDgiLCJlbWFpbCI6InBhcnRuZXIyQGdtYWlsLmNvbSIsImlhdCI6MTcyODk4Mzc3MCwiZXhwIjoxNzI5NTg4NTcwfQ.kDpbJdO9F_5U4oysXbLNnVe_eheOZChOHFEA-zS1o7dAvNtmx-YnhANvZrEOthtEI0HAFjDL9Ew72mxjuzU9GKPXitp9H3r6FgXFPh3jnet8Q5hjdu6PkRp1eLZVeC7zpULjXgdG9ZGEaBLo_Nc-DRio-xw-bR0Ru0NnWta5nLiqdttKHkBD7xGMp_tJIXZmXmG1PgFlANyBMoYvxQ-OYuxWsbxIyIunUl9m6t8an4lojuQGaFt5X3vxy-AyoqkjE8DW48aWaXT2OF8KxU9m35Yn_cLvAzVzjEvk0eFa-MKh8Tc7lVAbwmSAAe8CsJ1E5dlH3K7-S3grtVTNXlPP0A"
+      }
+    }
+  },
+  "option": {}
+}

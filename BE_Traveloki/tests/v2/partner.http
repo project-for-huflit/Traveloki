@@ -1,0 +1,40 @@
+@url_dev=http://localhost:3053/api/v2
+
+### register
+
+POST {{url_dev}}/auth/register-pointer
+Content-Type: application/json
+x-api-key: d997754b37cc50aceec228113080565c3f781cd18b27cc4fdd956aedd0eae03578cf66e59c795dbc38f69fdf4ebdd616b0bb199fd34325af4f06d19a1a9058aa
+
+{
+  "name": "partner2",
+  "email": "partner2@gmail.com",
+  "password": "abc1234"
+}
+
+### login partner
+POST {{url_dev}}/auth/partner/login
+Content-Type: application/json
+
+{
+    "email": "user2@gmail.com",
+    "password": "abc123"
+}
+### login with pointer
+
+POST {{url_dev}}/auth/login-pointer
+Content-Type: application/json
+
+{
+    "email": "user2@gmail.com",
+    "password": "abc123"
+}
+
+### logout
+POST {{url_dev}}/auth/logout-pointer
+Content-Type: application/json
+x-api-key: d997754b37cc50aceec228113080565c3f781cd18b27cc4fdd956aedd0eae03578cf66e59c795dbc38f69fdf4ebdd616b0bb199fd34325af4f06d19a1a9058aa
+x-client-id:
+
+
+

@@ -3,7 +3,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const { countConnect } = require('../helpers/check.connect')
-const connectString = process.env.MONGODB_URI_2
+const connectString = process.env.MONGODB_URI
 
 // mongoose
 //   .connect(process.env.MONGODB_URI)

@@ -6,10 +6,17 @@ const COLLECTION_NAME = 'Keys';
 // Declare the Schema of the Mongo model
 const keyTokenSchema = new Schema(
   {
-    user: {
+    userId: {
       type: Schema.Types.ObjectId,
-      required: true,
-      ref: 'Shop',
+      ref: 'user',
+    },
+    partnerId: {
+      type: Schema.Types.ObjectId,
+      ref: 'partner',
+    },
+    adminId: {
+      type: Schema.Types.ObjectId,
+      ref: 'admin',
     },
     privateKey: {
       type: String,
@@ -25,7 +32,7 @@ const keyTokenSchema = new Schema(
     },
     refreshToken: {
       type: String,
-      require: true,
+      required: true,
     },
   },
   {
@@ -33,6 +40,22 @@ const keyTokenSchema = new Schema(
     timestamps: true,
   }
 );
+
+
+// Pre-save hook để đảm bảo mỗi bản ghi chỉ có một trong ba trường userId, partnerId, adminId
+// keyTokenSchema.pre('save', function (next) {
+//   const token = this;
+//   if (token.userId && token.partnerId) {
+//     return next(new Error('Cannot have both userId and partnerId in the same record'));
+//   }
+//   if (token.userId && token.adminId) {
+//     return next(new Error('Cannot have both userId and adminId in the same record'));
+//   }
+//   if (token.partnerId && token.adminId) {
+//     return next(new Error('Cannot have both partnerId and adminId in the same record'));
+//   }
+//   next();
+// });
 
 //Export the model
 module.exports = model(DOCUMENT_NAME, keyTokenSchema);
