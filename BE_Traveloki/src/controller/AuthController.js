@@ -2,6 +2,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { Account } = require("../Schema/schema");
 
+const { SuccessResponse } = require('../middlewares/success.response')
+const { AuthJWTService, AuthSSOService } = require('../services/authen.service')
+
 // Đăng nhập
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -31,9 +34,11 @@ const login = async (req, res) => {
   }
 };
 
+
+
 // Đăng xuất
 const logout = (req, res) => {
   res.json({ message: "Đăng xuất thành công" });
 };
 
-module.exports = { login, logout };
+module.exports = { login, logout, loginPointer };

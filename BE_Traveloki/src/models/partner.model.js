@@ -7,6 +7,12 @@ const partnerSchema = new Schema({
     trim: true,
     maxLength: 150
   },
+  email: {
+    type: String,
+    trim: true,
+    required: true,
+    unique: [true, "Email already exists!"],
+  },
   password: {
     type: String,
     required:true,
@@ -25,7 +31,7 @@ const partnerSchema = new Schema({
   status:{
     type: String,
     enum: ['active', 'inactive'],
-    default: 'inactive'
+    default: 'active'
   },
   partnerDetail: {
     type: Schema.Types.ObjectId,

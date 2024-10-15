@@ -13,3 +13,7 @@
 # Host service
 
 <https://tinohost.com>
+
+# Tham so HEADER:
+
+* x-api-key = secret key

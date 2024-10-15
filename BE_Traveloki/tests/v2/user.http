@@ -1,0 +1,24 @@
+@url_dev=http://localhost:3053/api/v2
+
+### register
+
+POST {{url_dev}}/auth/register
+Content-Type: application/json
+x-api-key: 6f19e1f1713cf5d201f64bde7011ab4244b28c4e834be897e441e9d23951f722ed1a5baf0565523f14158a4df5ba33374684da4bd507014ce6a7468a173a4afd
+
+{
+  "name": "admin4",
+  "email": "admin4@gmail.com",
+  "password": "abc123"
+}
+
+### login
+
+# POST {{url_dev}}/auth/login
+# Content-Type: application/json
+
+# {
+#     "email": "user2@gmail.com",
+#     "password": "abc123"
+# }
+
