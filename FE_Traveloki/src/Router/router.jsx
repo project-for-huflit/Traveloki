@@ -86,7 +86,7 @@ const router = createBrowserRouter([
     path: 'airport-transfer/search',
     element: <SecondLayout />,
     children: [
-      { path: "search", element: <Navigate to="cars" replace />, },
+      // { path: "search", element: <Navigate to="cars" replace />, },
       { path: "cars", element: <BookingCar />, },
       { path: "bus", element: <BookingBus />, },
       { path: "trains", element: <BookingTrain />, },

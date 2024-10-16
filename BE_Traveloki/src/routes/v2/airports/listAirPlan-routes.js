@@ -8,9 +8,10 @@ const {
   getSanBaybyTenSanBay,
 } = require("../../controllers/listAirplan_controller");
 
-route.get("/GetDanhSachSanBay", GetDanhSachSanBay);
-route.get("/GetSanBayID/:id", GetSanBayID);
-route.post("/CreateDanhSachSanBay", CreateDanhSachSanBay);
-route.delete("/DeleteDanhSachSanBay/:id", DeleteDanhSachSanBay);
-route.get("/getSanBaybyTenSanBay", getSanBaybyTenSanBay);
+route.get("/airports", GetDanhSachSanBay);
+route.post("/airports", CreateDanhSachSanBay);
+
+route.get("/airports/:id", GetSanBayID);
+route.get("/airports/name", getSanBaybyTenSanBay);
+route.delete("/airports/:id", DeleteDanhSachSanBay);
 module.exports = route;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,13 +23,10 @@ import brand1 from '../../assets/Brand1.png';
 import brand2 from '../../assets/Brand2.png';
 import brand3 from '../../assets/Brand3.png';
 
-const API_BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api`;
-
 const SearchBar = () => {
   const [diemSanBay, setDiemKhoiHanh] = useState('');
   const [diemKetThuc, setDiemKetThuc] = useState('');
   const [selectedHour, setSelectedHour] = useState('');
-
   // Date
   const [selectedDate, setSelectedDate] = useState('');
 
@@ -236,9 +233,19 @@ const SearchBar = () => {
                   onFocus={handleAirportInputFocus}
                 />
               </div>
+              {/** @LOQ-burh
+              * region showAirportSuggestions
+               */}
               {showAirportSuggestions && (
-                <ul className="w-1/4 p-2 top-56 bg-gray-100 z-0 h-fit min:h-1/4 absolute overflow-auto mt-6 rounded-lg">
-                  {suggestions.sanBays.map((sanBay, index) => (
+                <ul className="w-[296px] max-w-[296px] p-2 top-[5rem] bg-gray-100 z-0 h-fit min-h-2.5 absolute overflow-auto mt-6 rounded-lg">
+                  {/* {suggestions.sanBays.length > 0 ? (
+
+                  ) : (
+                    <li className=" hover:bg-blue-100 p-2 border-b-gray-400 border-0 border-b-[1px] w-full">
+                    Không tìm thấy sân bay nào
+                    </li>
+                  )} */
+                    suggestions.sanBays.map((sanBay, index) => (
                     <li
                       className=" hover:bg-blue-100 p-2 rounded-md border-b-gray-400 border-0 border-b-2 "
                       key={index}
@@ -246,7 +253,9 @@ const SearchBar = () => {
                     >
                       {sanBay}
                     </li>
-                  ))}
+                  ))
+                  }
+
                 </ul>
               )}
             </div>
@@ -288,8 +297,15 @@ const SearchBar = () => {
                 />
               </div>
               {showTramDungSuggestions && (
-                <ul className="w-1/4 p-2 top-56 bg-gray-100 z-0 h-fit min:h-1/4 absolute overflow-auto mt-6 rounded-lg">
-                  {suggestions.tramDungs.map((suggestion, index) => (
+                <ul className="w-[304px] max-w-[304px] p-2 top-[5rem] bg-gray-100 z-0 h-fit min:h-1/4 absolute overflow-auto mt-6 rounded-lg">
+                  {/* {suggestions.tramDungs.length > 0 ? (
+
+                  ) : (
+                    <li className=" hover:bg-blue-100 p-2 border-b-gray-400 border-0 border-b-[1px] w-full">
+                    Không tìm thấy trạm dừng nào
+                    </li>
+                  )} */
+                    suggestions.tramDungs.map((suggestion, index) => (
                     <li
                       className=" hover:bg-blue-100 p-2 rounded-md border-b-gray-400 border-0 border-b-2 "
                       key={index}
@@ -297,7 +313,9 @@ const SearchBar = () => {
                     >
                       {suggestion}
                     </li>
-                  ))}
+                  ))
+                  }
+
                 </ul>
               )}
             </div>

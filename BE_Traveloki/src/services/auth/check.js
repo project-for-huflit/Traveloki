@@ -52,7 +52,28 @@ const permission = ( permission ) => {
     }
 }
 
+const checkRole = async (role) => {
+  return (req, res, next) => {
+    if(req.user.role !== role) {
+      // AuthFailureError: 401
+      return res.status(401).send(`Not allowed with ${role}`)
+    }
+    return next()
+  }
+}
+
+// neu U va P nhan vao chuc nang lien quan toi nghiep vu thi chuyen huong sang dang nhap
+const isUserAndPartner = async () => {
+
+}
+
+// Gan quyen admin khi dang ki o dashboard
+const isAdmin = async () => {
+
+}
+
 module.exports = {
     apiKey,
-    permission
+    permission,
+    checkRole
 }

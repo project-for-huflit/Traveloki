@@ -6,42 +6,20 @@ const COLLECTION_NAME = 'Keys';
 // Declare the Schema of the Mongo model
 const keyTokenSchema = new Schema(
   {
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: 'user',
-    },
-    partnerId: {
-      type: Schema.Types.ObjectId,
-      ref: 'partner',
-    },
-    adminId: {
-      type: Schema.Types.ObjectId,
-      ref: 'admin',
-    },
-    privateKey: {
-      type: String,
-      required: true,
-    },
-    publicKey: {
-      type: String,
-      required: true,
-    },
-    refreshTokensUsed: {
-      type: Array,
-      default: [],
-    },
-    refreshToken: {
-      type: String,
-      required: true,
-    },
+    userId: { type: Schema.Types.ObjectId,ref: 'user' },
+    partnerId: { type: Schema.Types.ObjectId, ref: 'partner' },
+    adminId: { type: Schema.Types.ObjectId, ref: 'admin' },
+    privateKey: { type: String, required: true },
+    publicKey: { type: String, required: true },
+    refreshTokensUsed: { type: Array, default: [], },
+    refreshToken: { type: String, required: true },
   },
   {
     collection: COLLECTION_NAME,
     timestamps: true,
   }
 );
-
-
+module.exports = model(DOCUMENT_NAME, keyTokenSchema);
 // Pre-save hook để đảm bảo mỗi bản ghi chỉ có một trong ba trường userId, partnerId, adminId
 // keyTokenSchema.pre('save', function (next) {
 //   const token = this;
@@ -57,5 +35,4 @@ const keyTokenSchema = new Schema(
 //   next();
 // });
 
-//Export the model
-module.exports = model(DOCUMENT_NAME, keyTokenSchema);
+
