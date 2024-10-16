@@ -88,9 +88,9 @@ const router = createBrowserRouter([
     element: <SecondLayout />,
     children: [
       { path: "list", element: <ListVehicle/>, },
-      { path: "cars", element: <BookingCar />, },
-      { path: "bus", element: <BookingBus />, },
-      { path: "trains", element: <BookingTrain />, },
+      { path: "list/cars", element: <BookingCar />, },
+      { path: "list/bus", element: <BookingBus />, },
+      { path: "list/trains", element: <BookingTrain />, },
     ],
   },
   { path: 'swagger', element: <SwaggerUI url="https://petstore.swagger.io/v2/swagger.json" /> }

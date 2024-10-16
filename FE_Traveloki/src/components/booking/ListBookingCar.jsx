@@ -38,7 +38,7 @@ const ListBookingCar = () => {
 
   const handleSubmit = (detailCarID) => {
     navigate(
-      `/airport-transfer/search/cars/BookingCar?SanBay=${encodeURIComponent(
+      `/airport-transfer/search/list/cars?SanBay=${encodeURIComponent(
         SanBay
       )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
         Time
