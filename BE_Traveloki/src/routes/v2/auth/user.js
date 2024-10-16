@@ -4,6 +4,11 @@ const route = express.Router();
 const authController = require('../../../controllers/auth_controller')
 const asyncHandler = require('../../../middlewares/asyncHandler.middeware')
 const { authenticationUser } = require('../../../services/auth/utils')
+const { checkRole } = require('../../../services/auth/check')
+
+// import ROLES from '../../../data/enum/'
+// route.post('/auth/register',checkRole(ROLES.USER),asyncHandler(authController.register))
+
 
 // region JWT SERVICE
 route.post('/auth/register', asyncHandler(authController.register))

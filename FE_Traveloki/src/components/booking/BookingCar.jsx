@@ -52,7 +52,7 @@ const BookingCar = () => {
         ThanhTien: result.SoTien_1km * (tram?.SoKM || 0),
       }));
     } catch (error) {
-      setError("Không thể lấy dữ liệu từ máy chủ detail");
+      setError("Không thể lấy dữ liệu từ máy chủ detail car");
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +63,7 @@ const BookingCar = () => {
       console.log("IDTram:", IDTram);
       console.log("BookingCar parameters:", { SanBay, Date, Time, IDTram });
       const res = await fetch(
-        `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetTramDungID/${IDTram}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/GetTramDungID/${IDTram}`
       );
       if (!res.ok) {
         throw new Error("Network response was not ok");
