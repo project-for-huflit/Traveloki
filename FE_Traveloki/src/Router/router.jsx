@@ -24,7 +24,7 @@ import HomePage from "../pages/HomePage/HomePage.jsx";
 // import Login from "../pages/Auth/LogIn.jsx";
 import LoginDuc from "../pages/Auth/LogIn-Duc";
 import SignUp from "../pages/Auth/Register.jsx";
-
+import Loading from '../pages/loading/index.jsx'
 // import { TextEditorReact } from "../Customer/Rating/TextEditorReact.jsx";
 
 // layouts
@@ -37,7 +37,8 @@ const router = createBrowserRouter([
     element: <OnlyCanvas />,
     children: [
       { path: 'login', element: <LoginDuc /> },
-      { path: 'register', element: <SignUp />}
+      { path: 'register', element: <SignUp />},
+      { path: "loading  ", element: <Loading />}
     ]
   },
   {

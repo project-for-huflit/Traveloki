@@ -43,6 +43,7 @@
     "react-dom": "18.3.1",
     "react-router-dom": "6.25.1",
     "serve": "^14.2.3",
+    "styled-components": "^6.1.13",
     "swagger-ui-react": "^5.17.14"
   },
   "devDependencies": {
