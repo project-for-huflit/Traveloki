@@ -159,7 +159,7 @@ const SearchBar = () => {
       } else {
         const IDTramS = tramDung._id;
         navigate(
-          `/airport-transfer/search/cars?SanBay=${encodeURIComponent(
+          `/airport-transfer/search/list?SanBay=${encodeURIComponent(
             diemSanBay
           )}&Date=${encodeURIComponent(selectedDate)}&Time=${encodeURIComponent(
             selectedHour

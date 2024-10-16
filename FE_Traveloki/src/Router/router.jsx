@@ -6,6 +6,7 @@ import SwaggerUI from "swagger-ui-react"
 import "swagger-ui-react/swagger-ui.css"
 
 import BookingCar from "../components/booking/BookingCar.jsx";
+import ListVehicle from "../components/booking/ListMain.jsx";
 // import ListMain from "../components/listVehicle/ListVehicleComponent.jsx";
 
 import BookingBus from "../components/booking/BookingBus.jsx";
@@ -86,7 +87,7 @@ const router = createBrowserRouter([
     path: 'airport-transfer/search',
     element: <SecondLayout />,
     children: [
-      // { path: "search", element: <Navigate to="cars" replace />, },
+      { path: "list", element: <ListVehicle/>, },
       { path: "cars", element: <BookingCar />, },
       { path: "bus", element: <BookingBus />, },
       { path: "trains", element: <BookingTrain />, },

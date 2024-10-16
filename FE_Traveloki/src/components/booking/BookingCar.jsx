@@ -52,7 +52,7 @@ const BookingCar = () => {
         ThanhTien: result.SoTien_1km * (tram?.SoKM || 0),
       }));
     } catch (error) {
-      setError("Không thể lấy dữ liệu từ máy chủ detail car");
+      setError("Không thể lấy dữ liệu từ máy chủ detail cars");
     } finally {
       setIsLoading(false);
     }
