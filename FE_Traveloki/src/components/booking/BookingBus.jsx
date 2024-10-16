@@ -153,8 +153,8 @@ const BookingBus = () => {
                 CustomerCode: "1000000024",
                 Description: `Dịch vụ mua vé bus từ ${DiemDon} đến ${DiemTra}`,
                 LinkHome:
-                  "https://cnpm-fe-thanh-b1c064a3f59c.herokuapp.com/HomePage",
-                LinkReturnSuccess: `https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/UpdateState/${buyTicketBus._id}`,
+                  `${import.meta.env.VITE_FE_URL}/home`,
+                LinkReturnSuccess: `${import.meta.env.VITE_BACKEND_URL}/api/UpdateState/${buyTicketBus._id}`,
               }),
             }
           );
