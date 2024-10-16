@@ -137,7 +137,7 @@ const BookingCar = () => {
     try {
       // Gửi yêu cầu đến server
       const res = await fetch(
-        "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/BookingCar",
+        `${import.meta.env.VITE_BACKEND_URL}/api/BookingCar`,
         {
           method: "POST",
           headers: {

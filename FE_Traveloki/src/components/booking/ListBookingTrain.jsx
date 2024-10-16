@@ -84,7 +84,7 @@ const ListBookingBus = () => {
 
   const handleSubmit = (TrainID) => {
     navigate(
-      `/BookingTrain?SanBay=${encodeURIComponent(
+      `//airport-transfer/search/list/train?SanBay=${encodeURIComponent(
         SanBay
       )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
         Time
