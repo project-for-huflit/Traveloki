@@ -56,6 +56,17 @@ const Login = () => {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => { event.preventDefault(); };
+
+  // const OldDirect = 'https://sso-pointer.vercel.app/authorize?clientId=66f38b1441aea9e24920e456'
+  const newDirect = `https://sso-pointer.vercel.app/authorize?callbackUrl=${import.meta.env.VITE_FE_URL_HOME}`
+  // Navigate to Pointer
+  const redirectToSSOPointer = () => {
+    // Nếu muốn điều hướng nội bộ trước
+    navigate('/load');
+
+    // Sau đó chuyển hướng ra ngoài
+    window.location.href = newDirect;
+  };
   //Đức
   return (
     <div
@@ -129,7 +140,7 @@ const Login = () => {
           <button
             type="button"
             className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 mb-2"
-            onClick={() => alert('Login with SSO-Pointer')}
+            onClick={redirectToSSOPointer}
           >
             Login with SSO-Pointer
           </button>
