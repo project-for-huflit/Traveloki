@@ -3,7 +3,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 export const StarRating = ({ rating, setRating }) => {
   return (
-    <div className="gird gird-cols-5 place-content-center">
+    <div className="flex items-center justify-center place-content-center">
       {[1, 2, 3, 4, 5].map((star) => (
         <FontAwesomeIcon
           key={star}
