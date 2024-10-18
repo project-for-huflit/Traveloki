@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {StarRating} from "./StarRating";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,7 +16,7 @@ export const RatingBus = () => {
     <div className="max-w-md mx-auto mt-10 h-[20rem] translate-y-[30%]">
       <div className='flex '>
         <FontAwesomeIcon className='text-yellow-400 h-[32px] w-[32px]' icon={faStar}></FontAwesomeIcon>
-        <h2 className="text-[24px] font-bold text-center mb-4 leading-[32px] ml-6">How did we do?</h2>
+        <h2 className="text-[24px] font-[20px] font-bold text-center mb-4 leading-[32px] ml-6">How did we do (bus)?</h2>
       </div>
         <form onSubmit={handleSubmit} className="mt-4">
           <textarea

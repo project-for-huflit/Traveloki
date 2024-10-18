@@ -58,7 +58,7 @@ function RightContent() {
             </div>
             <div className="flex">
               <div className="bg-blue-900 text-white rounded-full my-1 py-1 px-4">
-                Trạng thái thanh toán
+                Thanh toán
               </div>
               <div
                 className="ml-auto font-semibold text-blue-800 cursor-pointer hover:text-blue-800"

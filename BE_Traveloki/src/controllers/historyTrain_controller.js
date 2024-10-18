@@ -1,22 +1,18 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { LichSuDatTau } = require("../models/lichSuDatTau.model");
+const { LichSuDatTau } = require('../models/lichSuDatTau.model');
 
-const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+const asyncHandler = require('../middlewares/asyncHandler.middeware');
 
-const asyncHandler = require('../middlewares/asyncHandler.middeware')
-
-class HistoryTrainController {
-
-}
+class HistoryTrainController {}
 // module.exports = HistoryTrainController()
 
 const GetLichSuDatTau = async (req, res) => {
   try {
-    const lichSuDatTau = await LichSuDatTau.find({});
+    const lichSuDatTau = await LichSuDatTau.find(req.query);
     res.status(200).json({ lichSuDatTau });
   } catch (e) {
-    res.status(500).json("Không thể lấy lịch sử đặt tàu");
+    res.status(500).json('Không thể lấy lịch sử đặt tàu');
   }
 };
 
@@ -25,7 +21,7 @@ const CreateHistoryTrain = async (req, res) => {
     const { MaKH, MaDX, Date } = req.body;
 
     if (!MaKH || !MaDX) {
-      return res.status(400).json({ message: "MaKH và MaDX là bắt buộc" });
+      return res.status(400).json({ message: 'MaKH và MaDX là bắt buộc' });
     }
 
     const newBooking = new LichSuDatTau({ MaKH, MaDX, Date });
@@ -34,7 +30,7 @@ const CreateHistoryTrain = async (req, res) => {
 
     res.status(201).json({ newBooking });
   } catch (error) {
-    res.status(500).json({ message: "Lỗi khi tạo đặt tàu", error });
+    res.status(500).json({ message: 'Lỗi khi tạo đặt tàu', error });
   }
 };
 
@@ -42,9 +38,9 @@ const DeleteLichSuDatTau = async (req, res) => {
   try {
     const { MaDX } = req.params;
     await LichSuDatTau.findOneAndDelete({ MaDX });
-    res.status(200).json({ message: "Lịch sử đặt tàu đã bị xóa thành công" });
+    res.status(200).json({ message: 'Lịch sử đặt tàu đã bị xóa thành công' });
   } catch (e) {
-    res.status(500).json("Không thể xóa lịch sử đặt tàu");
+    res.status(500).json('Không thể xóa lịch sử đặt tàu');
   }
 };
 
