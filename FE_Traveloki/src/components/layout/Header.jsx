@@ -41,7 +41,7 @@ const Header = () => {
                 Hợp tác với chúng tôi
               </a>
               <a
-                  href="/HomePage/user/my-booking"
+                  href="/HomePage/history-booking"
                   className="hover:text-gray-300  flex items-center"
               >
                 Đặt chỗ của tôi

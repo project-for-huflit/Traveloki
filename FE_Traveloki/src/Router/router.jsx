@@ -1,7 +1,5 @@
 // router.js
 import { createBrowserRouter, Navigate } from "react-router-dom";
-
-import { lazy } from "react";
 import SwaggerUI from "swagger-ui-react"
 import "swagger-ui-react/swagger-ui.css"
 
@@ -63,9 +61,7 @@ const router = createBrowserRouter([
         path: "HomePage",
         element: <HomePage />,
         children: [
-          {
-            path: 'user',
-            children: [
+          
               { path: "history-booking", element: <LichSuDatCho /> },
               {
                 path: "my-booking",
@@ -90,8 +86,8 @@ const router = createBrowserRouter([
                     { path: "HomePage/user/rate/trips-train", element: <RatingTau /> }
                 ]
               }
-            ]
-          },
+            
+          ,
           {
             path: 'booking',
             children: [
