@@ -322,17 +322,42 @@ class AuthSSOService {
       tokens
     }
   }
-  static async loginWithPointer(accessToken) {
+  static async loginWithPointer(code) {
     const getPartnerId = await PartnerService.getPartnerId({ _id })
     if(!getPartnerId) throw new BadRequestError('Partner not registered!')
 
-    const pointer = new PointerStrategy({
-      clientId: getPartnerId._id,
-      clientSecret: SECRET_POINTER,
-      callbackUrl: ".",
-    });
+    // const pointer = new PointerStrategy({
+    //   clientId: getPartnerId._id,
+    //   clientSecret: SECRET_POINTER,
+    //   callbackUrl: ".",
+    // });
+    const pointer = new PointerStrategy("123");
 
-    const getAT = await pointer.getAccessToken(accessToken);
+    const getAccessToken = async () => {
+      try {
+        const rs = await pointer.getAccessToken("dd34c58f8000a0e4e573e8eb");
+        console.log(rs);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const { accessToken } = getAccessToken();
+
+    const verifyToken = async () => {
+      try {
+        const rs = await pointer.verifyAccessToken({
+          accessToken: accessToken,
+          // Synchronizes login sessions between apps but increases response time
+          session: false, //option
+        });
+        console.log(rs);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    verifyToken();
+    
+    const getAT = await pointer.getAccessToken(code);
     const parter = await pointer.getUser(getAT.accessToken);
 
     // const userId = user?._id;

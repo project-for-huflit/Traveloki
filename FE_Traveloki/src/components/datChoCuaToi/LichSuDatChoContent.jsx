@@ -3,7 +3,7 @@ import listIcon from "../../assets/user-booking-ic.svg";
 import axios from "axios";
 import PickRangeTimeToFilter from "./PickRangeTimeToFilter";
 import ModalFilter from "./ModalFilter";
-const API_BASE_URL = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com";
+const API_BASE_URL = `${import.meta.env.VITE_BACKEND_URL}`;
 
 function LichSuDatChoContent() {
   // Mặc định hiển thị cả 3
