@@ -3,8 +3,8 @@ import axios from 'axios';
 import NProgress from "nprogress";
 
 //NProgress là thư viện giúp tạo hiệu ứng loading khi chuyển trang
-NProgress.configure({ 
-    showSpinner: false, 
+NProgress.configure({
+    showSpinner: false,
     trickleSpeed: 100,
   });
 
@@ -13,8 +13,14 @@ const instance = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL
 });
 
+export const axiosPrivate = axios.create({
+  baseURL: import.meta.env.VITE_BACKEND_URL,
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true
+});
+
 //Alter defaults after instance has been created
-// instance.defaults.headers.common["Authorization"] = AUTH_TOKEN; 
+// instance.defaults.headers.common["Authorization"] = AUTH_TOKEN;
 
 // instance.interceptors.request.use(function (config) {
 //     NProgress.start();
@@ -48,7 +54,7 @@ const instance = axios.create({
 //     //khi có lỗi thì trả ra data từ backend gửi lên
 //     if (error.response && error.response.data) {
 //       return error.response.data;
-//     } 
+//     }
 //     return Promise.reject(error);
 //   });
 export default instance;
