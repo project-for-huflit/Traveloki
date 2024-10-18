@@ -10,28 +10,35 @@ import MaterialUISwitch from './CustomSwitch.jsx';
 
 const Login = () => {
   const { setUser } = useContext(AuthContext);
+
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
+
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [service, setService] = useState('');
+
   const [isPartner, setIsPartner] = useState(false);
+
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [service, setService] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
 
-    if (!username || !password) {
-      setError('Vui lòng nhập tên người dùng và mật khẩu.');
+    if (!email || !password) {
+      setError('Vui lòng nhập email và mật khẩu.');
       return;
     }
 
     try {
-      const response = await loginAPi(username, password);
+      const response = await loginAPi(email, password);
+
+      console.log(JSON.stringify(response?.data));
 
       if (response.status === 200) {
+        // const accessToken = response?.data?.accessToken;
         const { token, user } = response.data;
         setSuccess('Đăng nhập thành công!');
         setUser({
@@ -41,7 +48,9 @@ const Login = () => {
             name: response?.user?.name ?? '',
           },
         });
-        navigate('/HomePage');
+        setEmail()
+        setPassword()
+        navigate('/home');
       } else {
         throw new Error('Đăng nhập không thành công.');
       }
@@ -51,20 +60,17 @@ const Login = () => {
   };
 
   // Show/hide pass
-  const [showPassword, setShowPassword] = React.useState(false);
+  // const [showPassword, setShowPassword] = React.useState(false);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  // const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (event) => { event.preventDefault(); };
+  // const handleMouseDownPassword = (event) => { event.preventDefault(); };
 
   // const OldDirect = 'https://sso-pointer.vercel.app/authorize?clientId=66f38b1441aea9e24920e456'
   const newDirect = `https://sso-pointer.vercel.app/authorize?callbackUrl=${import.meta.env.VITE_FE_URL_HOME}`
   // Navigate to Pointer
   const redirectToSSOPointer = () => {
-    // Nếu muốn điều hướng nội bộ trước
     navigate('/load');
-
-    // Sau đó chuyển hướng ra ngoài
     window.location.href = newDirect;
   };
   //Đức
@@ -88,9 +94,9 @@ const Login = () => {
                 Email
               </span>
               <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
                 placeholder="you@example.com"
                 required
@@ -148,6 +154,7 @@ const Login = () => {
           <button
             type="submit"
             className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+            onClick={handleLogin}
           >
             Đăng Nhập
           </button>
