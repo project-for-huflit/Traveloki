@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Ads from "./ads";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCar, faBus, faTrain } from "@fortawesome/free-solid-svg-icons";
