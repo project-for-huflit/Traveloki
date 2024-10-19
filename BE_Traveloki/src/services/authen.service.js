@@ -1,7 +1,7 @@
 'use strict'
 // lib
 require('dotenv').config()
-const { PointerStrategy } = require("sso-pointer");
+// const { PointerStrategy } = require("sso-pointer");
 const crypto = require('node:crypto');
 const bcrypt = require('bcrypt')
 // const { type } = require("node:os");

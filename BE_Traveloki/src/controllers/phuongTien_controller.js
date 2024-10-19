@@ -5,6 +5,7 @@ const CounterPhuongTien = require("../models/counter.model").CounterPhuongTien;
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 const asyncHandler = require('../middlewares/asyncHandler.middeware')
+const {getAllPhuongTienService, createPhuongTienService} = require("../services/phuongTien.service");
 
 class VehicleController {
 
@@ -13,12 +14,8 @@ class VehicleController {
 
 
 const GetPhuongTien = async (req, res) => {
-  try {
-    const phuongTien = await PhuongTien.find({});
-    res.status(200).json({ phuongTien });
-  } catch (e) {
-    res.status(500).json("not get phuong tien");
-  }
+  const data = await getAllPhuongTienService()
+  return res.status(200).json(data)
 };
 
 const GetPhuongTienID = async (req, res) => {
@@ -40,58 +37,9 @@ const GetPhuongTienID = async (req, res) => {
 };
 
 const CreatePhuongTien = async (req, res) => {
-  try {
-    const { MaTuyen, MaLoai, TenPhuongTien, SoGheToiDa, image, TenCty } =
-      req.body;
-
-    if (
-      !MaTuyen ||
-      MaLoai === undefined ||
-      !TenPhuongTien ||
-      !SoGheToiDa ||
-      !image ||
-      !TenCty
-    ) {
-      return res.status(400).json({ message: "Thiếu thông tin bắt buộc." });
-    }
-
-    if (Number(SoGheToiDa) <= 7) {
-      return res.status(400).json({ message: "Số ghế tối đa phải lớn hơn 7." });
-    }
-
-    const counterPhuongTien = await CounterPhuongTien.findOneAndUpdate(
-      { _id: "phuongTienCounter" },
-      { $inc: { seq: 1 } },
-      { new: true, upsert: true }
-    );
-
-    if (!counterPhuongTien) {
-      return res.status(500).json({ message: "Lỗi khi lấy bộ đếm." });
-    }
-
-    const MaPT = `PT${counterPhuongTien.seq}`;
-
-    const checkMaTuyen = await Tuyen.exists({ MaTuyen });
-    if (!checkMaTuyen) {
-      return res.status(400).json({ message: "Mã tuyến không tồn tại." });
-    }
-
-    const createPhuongTien = new PhuongTien({
-      MaPT,
-      MaTuyen,
-      MaLoai,
-      TenPhuongTien,
-      SoGheToiDa,
-      image,
-      TenCty,
-    });
-
-    const result = await createPhuongTien.save();
-    res.status(200).json({ result });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ message: "Không thể tạo phương tiện" });
-  }
+  const {TenPhuongTien, LoaiPT, SoGheToiDa, MaSoXe, Image, MaSB} = req.body;
+  const data = await createPhuongTienService(LoaiPT, TenPhuongTien,MaSoXe, SoGheToiDa, Image, MaSB);
+  return res.status(200).json(data);
 };
 
 const DeletePhuongTien = async (req, res) => {
