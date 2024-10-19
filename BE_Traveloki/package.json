@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "jest": "^29.7.0",
+    "pointer-wallet": "^1.0.3",
     "rootpath": "^0.1.2",
     "slugify": "^1.6.6",
     "winston": "^3.14.2"

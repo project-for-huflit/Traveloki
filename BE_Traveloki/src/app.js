@@ -10,7 +10,11 @@ const cors = require('cors');
 const app = express()
 
 // Middewares
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5175', // Domain client
+  credentials: true, // Cho phép credentials (cookies, headers...)
+}));
 app.use(morgan("dev"))
 
 // app.use(morgan("combined")); // Log HTTP requests

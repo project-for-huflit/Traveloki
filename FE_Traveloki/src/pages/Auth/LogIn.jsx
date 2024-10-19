@@ -5,7 +5,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 // import { AuthContext } from '../../components/context/authContext.jsx';
-// import { loginAPi } from '../../services/api/auth/auth_api.js';
+import { loginApi } from '../../services/api/auth/auth_api.js';
 import MaterialUISwitch from './CustomSwitch.jsx';
 import axios from '../../services/axios.customize.js';
 
@@ -37,12 +37,14 @@ const Login = () => {
 
   /**
    * @author LOQ-burh
+   * @description Xử lý logic login
    */
   const [credentials, setCredentials] = useState({
     email: '',
     password: ''
   });
   const handleChange = (e) => {
+    e.preventDefault();
     setCredentials({
       ...credentials,
       [e.target.name]: e.target.value
@@ -52,16 +54,25 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/api/login', credentials);
-      const { token, refreshToken } = response.data;
-
+      const response = await loginApi(credentials)
+      const { accessToken, refreshToken } = response.metadata.tokens;
       // Store the tokens in localStorage or secure cookie for later use
-      localStorage.setItem('token', token);
+      console.log(response?.metadata);
+      console.log(response?.metadata.tokens.accessToken);
+      console.log(response?.metadata.tokens.refreshToken);
+      console.log(JSON.stringify(response))
+
+      localStorage.setItem('token', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('user', JSON.stringify(response.metadata.user));
 
       // Redirect or perform other actions upon successful login
-      setSuccess('Đăng nhập thành công!');
-      navigate('/home');
+      if(response.status == 200) {
+        // setSuccess('Đăng nhập thành công!');
+        navigate('/home');
+      } else {
+        throw new Error("Response was not ok");
+      }
     } catch (error) {
       setError('Có lỗi xảy ra trong quá trình đăng nhập. Vui lòng thử lại.');
     }
@@ -76,7 +87,7 @@ const Login = () => {
     >
       <div className="w-full max-w-md p-6 mx-auto bg-white rounded-md shadow-md">
         <h2 className="mb-4 text-2xl font-bold text-center">Đăng Nhập</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} method='post'>
           <div className="mb-4">
             <label className="block"> </label>
           </div>
@@ -106,7 +117,6 @@ const Login = () => {
                 type="password"
                 name='password'
                 value={credentials.password}
-                // onChange={(e) => setPassword(e.target.value)}
                 onChange={handleChange}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
                 placeholder="nhập mật khẩu của bạn"

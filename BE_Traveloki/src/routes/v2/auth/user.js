@@ -17,6 +17,6 @@ route.post('/auth/login', asyncHandler(authController.login))
 // route.use(authenticationUser)
 // ==============
 route.post('/auth/logout', asyncHandler(authController.logout))
-route.post('/auth/handle-refresh-token-user', asyncHandler(authController.register))
+route.post('/auth/handle-refresh-token-user', asyncHandler(authController.handlerRefreshTokenUser))
 
 module.exports = route;

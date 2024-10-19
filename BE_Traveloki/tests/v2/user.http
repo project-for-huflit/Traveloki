@@ -1,4 +1,4 @@
-@url_dev=http://localhost:3061/api/v2
+@url_dev=http://localhost:3062/api/v2
 
 ### register
 
@@ -23,3 +23,41 @@ x-api-key: 6f19e1f1713cf5d201f64bde7011ab4244b28c4e834be897e441e9d23951f722ed1a5
     "password": "abc123"
 }
 
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: http://localhost:5175
+Vary: Origin, Accept-Encoding
+Access-Control-Allow-Credentials: true
+Content-Security-Policy: default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Resource-Policy: same-origin
+Origin-Agent-Cluster: ?1
+Referrer-Policy: no-referrer
+Strict-Transport-Security: max-age=15552000; includeSubDomains
+X-Content-Type-Options: nosniff
+X-DNS-Prefetch-Control: off
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 0
+Content-Type: application/json; charset=utf-8
+ETag: W/"4ad-oj0WYqj0pqIddmbyybj7hgTQs84"
+Content-Encoding: gzip
+Date: Sat, 19 Oct 2024 03:08:18 GMT
+Connection: close
+Transfer-Encoding: chunked
+
+{
+  "message": "Success",
+  "status": 200,
+  "metadata": {
+    "user": {
+      "_id": "670d5f05cecdd858f053e32f",
+      "name": "User 2",
+      "email": "user2@gmail.com"
+    },
+    "tokens": {
+      "accessToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzBkNWYwNWNlY2RkODU4ZjA1M2UzMmYiLCJlbWFpbCI6InVzZXIyQGdtYWlsLmNvbSIsImlhdCI6MTcyOTMwNzI5OCwiZXhwIjoxNzI5NDgwMDk4fQ.VADZdWdRGHUOS3yL10ZiHdxtxO3h9kSYarXssg7oU8tG1j3xJserGDAVxFMbzRnNfccF5f317IkyWBT-KV4HpkietjixA7Pe4u3zeqczvV98LrzTfBPlJgN_tVhXWuhNhtSRhdr408RSd2_8O5q5Xfqso9uu2dQfBop4nOKiEbVOsCRosGyVNJkewgj654IiLh-rCaWI5iU_BMINmO6JvzwuomsflzRHzP17SejHGKqNlyaQwVF8jTsK4dNjZALG43UASp--D9capy9bJwzlJYXFM9QRAFL7mcjmHQ315uuFlOZg7eIo7mTNSFMyBO3UB-CrOJdIiiGRWpP6L0vbHA",
+      "refreshToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzBkNWYwNWNlY2RkODU4ZjA1M2UzMmYiLCJlbWFpbCI6InVzZXIyQGdtYWlsLmNvbSIsImlhdCI6MTcyOTMwNzI5OCwiZXhwIjoxNzI5OTEyMDk4fQ.TnS2AHVhqp-m-wfkbjNH-JdrNgka3l93qfs6z16QwwK1PZ7ksPSEosis7kCWoYyhuAupnA62PD3QJ203SNUzX9kQcaHXSXtBN1uqd10RTezOu6jeBPV9xy-t_yOyqQaHUQ8acpcXvYSlVeX6n8CM3_pxzrFTrEuvYHIw5B6R74kCm9W7Z8RDav4Qc9CZjkIYLgSfCrMLJv_iRas7rAeyzldl1b3TAtUVjNszfEUT68JccQGlznvrNf_7nMvYmSa6K5Eq6kGpFhVKiOVmw0AYZRuWVS5YwfvwStMp050yblO11Z4nOqSNC6evBxWGCKV05xaWrSVcGh2U_RsSn3_jYw"
+    }
+  }
+}

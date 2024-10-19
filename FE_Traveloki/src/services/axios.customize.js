@@ -12,10 +12,12 @@ NProgress.configure({
 const instance = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'x-api-key': import.meta.env.VITE_SECRET_API_KEY
     },
 });
-
+instance.defaults.withCredentials = true
+axios.defaults.withCredentials = true
 // Add a request interceptor
 instance.interceptors.request.use(
   (config) => {
