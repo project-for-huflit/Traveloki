@@ -20,5 +20,5 @@ const buyTicketBus = (data) => {
   return axios.post(URL_BACKEND, data)
 }
 export {
-    bookingBusAPI, fetchPhuongTien, getTramDungId
+    bookingBusAPI, fetchPhuongTien, getTramDungId, buyTicketBus
 }
