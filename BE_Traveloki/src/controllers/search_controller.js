@@ -1,6 +1,6 @@
 const express = require("express");
 const session = require("express-session");
-const { DanhSachSanBay } = require("../models/danhSachSanBay.model");
+const { DanhSachSanBay } = require("../models/sanBay.model");
 const { TramDung } = require("../models/tramDung.model");
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")

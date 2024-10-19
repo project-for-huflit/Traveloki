@@ -3,12 +3,16 @@ const COLLECTION_NAME = 'PhuongTiens'
 
 const PhuongTienSchema = new Schema({
   MaPT: { type: String, required: true, maxlength: 5 },
-  MaTuyen: { type: String, required: true, ref: "Tuyen" },
-  LoaiPT: { type: String, required: true, maxlength: 100 },
+  LoaiPT: { type: String, required: true, enum: ['bus', 'train'], maxlength: 100 },
+  MaSoXe: { type: String,  maxlength: 20 },
   TenPhuongTien: { type: String, required: true, maxlength: 100 },
   SoGheToiDa: { type: Number, required: true },
   Image: { type: String, required: true },
-  // TenCty: { type: String, required: true, maxlength: 100 },
+  MaSB: {
+    type: Schema.Types.ObjectId,
+    ref: 'SanBay',
+    required: true
+  }
 },{
   timestamps: true,
   collection: COLLECTION_NAME
