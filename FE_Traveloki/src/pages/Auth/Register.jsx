@@ -1,78 +1,73 @@
 import React, { useState } from "react";
-import axios from "axios";
-import {Link} from "react-router-dom";
+import axios from "../../services/axios.customize";
+import {Link, useNavigate} from "react-router-dom";
+import { registerApi } from '../../services/api/auth/auth_api.js';
 
 const SignUp = () => {
-  const [username, setUserName] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [dob, setDob] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+
+  /**
+   * @author LOQ-burh
+   * @description Xử lý logic register
+   */
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const navigate = useNavigate();
+
+  const [credentials, setCredentials] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: "",
+  });
+  const handleChange = (e) => {
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value
+    });
+  };
   const handleSignUp = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    // setError("");
+    // setSuccess("");
     setIsLoading(true);
 
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    if (!credentials.name || !credentials.email || !credentials.password || !credentials.confirmPassword) {
       setError("Vui lòng điền đầy đủ thông tin.");
       setIsLoading(false);
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (credentials.password !== credentials.confirmPassword) {
       setError("Mật khẩu và xác nhận mật khẩu không khớp.");
       setIsLoading(false);
       return;
     }
 
-    // Email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError("Địa chỉ email không hợp lệ.");
-      setIsLoading(false);
-      return;
-    }
-
-    // Password strength validation
-    if (password.length < 6) {
-      setError("Mật khẩu phải có ít nhất 6 ký tự.");
-      setIsLoading(false);
-      return;
-    }
-
     try {
-      const response = await axios.post(
-        "https://api.htilssu.com/api/v1/auth/register",
-        {
-          firstName,
-          lastName,
-          password,
-          email,
-          dob,
-          phoneNumber,
-        },
-        {
-          headers: {
-            Authorization: `Bearer YOUR_API_TOKEN`,
-          },
-        }
-      );
+      const response = await registerApi(credentials)
+      const { accessToken, refreshToken } = response.metadata.tokens;
 
-      if (response.status === 200) {
+      console.log(response?.metadata);
+      console.log(response?.metadata.tokens.accessToken);
+      console.log(response?.metadata.tokens.refreshToken);
+      console.log(JSON.stringify(response))
+
+      // Store the tokens in localStorage or secure cookie for later use
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('user', JSON.stringify(response.metadata.user));
+
+      if (response.status === 201 || response.status === 200) {
         setSuccess("Đăng ký thành công!");
-        window.location.href = "/HomePage";
+        navigate('/home');
       } else {
-        throw new Error("Network response was not ok");
+        throw new Error("Response was not ok");
       }
     } catch (e) {
+      console.log(e);
       setError("Có lỗi xảy ra trong quá trình đăng ký. Vui lòng thử lại.");
     } finally {
       setIsLoading(false);
@@ -93,57 +88,16 @@ const SignUp = () => {
           <div className="mb-4">
             <label className="block">
               <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                Họ
+                Tên người dùng
               </span>
             </label>
             <input
-              placeholder="Họ của bạn"
+              placeholder=". . ."
               type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block">
-              <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
-                Tên
-              </span>
-            </label>
-            <input
-              placeholder="Tên của bạn"
-              type="text"
-              value={lastName}
+              value={credentials.name}
               onChange={(e) => setLastName(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
               required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block">
-              <span className="block text-sm font-medium text-slate-700">
-                Ngày sinh
-              </span>
-            </label>
-            <input
-              type="date"
-              value={dob}
-              onChange={(e) => setDob(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block">
-              <span className="block text-sm font-medium text-slate-700">
-                Số điện thoại
-              </span>
-            </label>
-            <input
-              type="tel"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
             />
           </div>
           <div className="mb-4">
@@ -153,7 +107,7 @@ const SignUp = () => {
               </span>
               <input
                 type="email"
-                value={email}
+                value={credentials.email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
                 placeholder="you@example.com"
@@ -163,12 +117,25 @@ const SignUp = () => {
           </div>
           <div className="mb-4">
             <label className="block">
+              <span className="block text-sm font-medium text-slate-700">
+                Số điện thoại
+              </span>
+            </label>
+            <input
+              type="tel"
+              value={credentials.phone}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block">
               <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
                 Mật khẩu
               </span>
               <input
                 type="password"
-                value={password}
+                value={credentials.password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
                 placeholder="Mật khẩu của bạn"
@@ -183,7 +150,7 @@ const SignUp = () => {
               </span>
               <input
                 type="password"
-                value={confirmPassword}
+                value={credentials.confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
                 placeholder="Xác nhận mật khẩu"
