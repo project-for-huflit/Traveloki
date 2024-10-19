@@ -5,6 +5,9 @@ const {CounterTramDung} = require("../models/counter.model");
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 const asyncHandler = require('../middlewares/asyncHandler.middeware')
+const {getAllTramDungService, createTramDungService,
+  deleteTramDungService
+} = require("../services/tramDung.service");
 
 class WayPointController {
 
@@ -12,79 +15,14 @@ class WayPointController {
 // module.exports = new WayPointController()
 
 const GetTramDung = async (req, res) => {
-  try {
-    const tramDung = await TramDung.find({});
-    res.status(200).json({ tramDung });
-  } catch (e) {
-    res.status(500).json("not get tram dung");
-  }
+  const data = await getAllTramDungService();
+  return res.status(200).json(data);
 };
 
 const CreateTramDung = async (req, res) => {
-  try {
-    const { MaTuyen, DiaChi, GiaTienVe, SoKM, GiaTienVeTau } = req.body;
-
-    // Validate required fields
-    if (!MaTuyen || !DiaChi || !GiaTienVe || !SoKM || !GiaTienVeTau) {
-      return res.status(400).json({ message: "Thiếu thông tin bắt buộc." });
-    }
-
-    // Check if MaTuyen exists
-    const tuyenExists = await Tuyen.exists({ MaTuyen });
-    if (!tuyenExists) {
-      return res.status(400).json({ message: "Mã tuyến không tồn tại." });
-    }
-
-    // Check if DiaChi already exists
-    const diaChiExists = await TramDung.exists({ DiaChi });
-    if (diaChiExists) {
-      return res.status(400).json({ message: "Địa chỉ đã tồn tại." });
-    }
-
-    // Validate numerical values
-    if (GiaTienVe <= 0) {
-      return res.status(400).json({ message: "Giá tiền vé phải lớn hơn 0." });
-    }
-    if (GiaTienVeTau <= 0) {
-      return res
-        .status(400)
-        .json({ message: "Giá tiền vé tàu phải lớn hơn 0." });
-    }
-    if (SoKM <= 0) {
-      return res.status(400).json({ message: "Số KM phải lớn hơn 0." });
-    }
-
-    // Increment counter and create new TramDung
-    const counterTramdung = await CounterTramDung.findOneAndUpdate(
-      { _id: "tramDungCounter" },
-      { $inc: { seq: 1 } },
-      { new: true, upsert: true }
-    );
-
-    if (!counterTramdung) {
-      return res.status(500).json({ message: "Lỗi khi lấy bộ đếm." });
-    }
-
-    const MaTram = `TD${counterTramdung.seq}`;
-
-    const newTramDung = new TramDung({
-      MaTram,
-      MaTuyen,
-      DiaChi,
-      SoKM,
-      GiaTienVe,
-      GiaTienVeTau,
-    });
-
-    await newTramDung.save();
-
-    res.status(201).json({ newTramDung });
-  } catch (e) {
-    console.error("Lỗi khi tạo trạm dừng:", e.message);
-    res
-      .status(500)
-      .json({ message: "Không thể tạo trạm dừng.", error: e.message });
-  }
+  const { DiaChi, TenTramDung } = req.body;
+  const data = await createTramDungService(DiaChi, TenTramDung);
+  return res.status(200).json(data);
 };
 
 const GetTramDungID = async (req, res) => {
@@ -106,14 +44,12 @@ const GetTramDungID = async (req, res) => {
 };
 
 const DeleteTramDung = async (req, res) => {
-  try {
-    const { id } = req.params;
-    await TramDung.findByIdAndDelete(id);
-    res.status(200).json({ message: "TramDung deleted successfully" });
-  } catch (e) {
-    res.status(500).json("not delete tram dung");
-  }
+  const { id } = req.params;
+  console.log("ID received:", id); // Kiểm tra ID nhận được
+  const data = await deleteTramDungService(id);
+  return res.status(200).json(data);
 };
+
 const getTramDungByDiaChi = async (req, res) => {
   const { diaChi } = req.query;
 
