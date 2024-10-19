@@ -1,17 +1,15 @@
-const mongoose = require('mongoose');
+const { Schema, model} = require('mongoose');
 const COLLECTION_NAME = 'LichChays'
 
-const LichChaySchema = new mongoose.Schema({
+const LichChaySchema = new Schema({
     MaPT:{
-      type: String,
+      type: Schema.Types.ObjectId,
       required: true,
-      maxlength: 5,
       ref: 'PhuongTien'
     },
     MaTuyen:{
-      type: String,
+      type: Schema.Types.ObjectId,
       required: true,
-      maxlength: 5,
       ref: 'Tuyen'
     },
     ngayKhoiHanh: {
@@ -22,10 +20,13 @@ const LichChaySchema = new mongoose.Schema({
       type: String,
       required: true
     },
+    gioKetThuc: {
+      type: String,
+      required: true
+    },
     trangThai: {
       type: String,
       enum: ["Đã lên lịch", "Đang hoạt động", "Bị trì hoãn", "Đã hoàn thành", "Đã hủy", "Bảo trì"],
-      required: true
     }
   },{
     timestamps: true,
@@ -33,8 +34,8 @@ const LichChaySchema = new mongoose.Schema({
   }
 )
 
-const LichChay = mongoose.model("LichChay", LichChaySchema);
-
-module.exports = LichChay;
+module.exports = {
+  LichChay: model('LichChay', LichChaySchema)
+};
 
 
