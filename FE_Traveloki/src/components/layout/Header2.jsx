@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate  } from "react-router-dom";
 import logoTravelokiWhite from "../../assets/logoTravelokiWhite.png";
 import icVN from "../../assets/iconVN.png";
@@ -10,12 +10,13 @@ import api from '../../services/axios.customize'
 
 import DirectToAuthPage from './directToAuthPage'
 import ShowProfile from './showProfile';
-import showProfile from './showProfile';
+
+import { AuthContext } from "../../context/auth.provider";
 
 const Header2 = () => {
-    // const handleButtonClickMyBooking = () => {
-    //   window.location.href = '/my-booking'; // URL của trang my booking
-    // };
+  // const handleButtonClickMyBooking = () => {
+  //   window.location.href = '/my-booking'; // URL của trang my booking
+  // };
 
   // const history = useNavigate ();
   // const navigateToLoginPage = () => history('/auth/login');
@@ -25,19 +26,15 @@ const Header2 = () => {
    * @author LOQ-burh
    * @description xử lý logic show profile client
    */
-  const [user, setUser] = useState(null);
+  const { handleContextLogin, isLogin, handleContextLogout } = useContext(AuthContext);
+  const [user, setUser] = useState('');
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await api.get('/profile');
-        setUser(response.data);
-      } catch (error) {
-        // Handle error or redirect to login
-      }
-    };
+    const user = JSON.parse(localStorage.getItem('user'));
 
-    fetchProfile();
+    if (user) {
+      setUser(user.name);
+    }
   }, []);
 
   // if (!user) {

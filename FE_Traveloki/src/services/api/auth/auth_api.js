@@ -1,29 +1,100 @@
-import axios from "../../axios.customize.js";
+import axios from '../../axios.customize.js';
 
-const loginAPi = async (email, password) => {
-    const URL_API = "/api/v2/auth/login";
-    // const  data = {email, password};
-    const data = JSON.stringify({ email, password })
-
-    return await axios.post(URL_API, data,
+// region user
+const loginApi = async (body) => {
+  return await axios.post(
+    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/login',
+    body,
     {
-      headers: { 'Content-Type': 'application/json' },
-      withCredentials: true
-    });
+      withCredentials: true,
+    }
+  );
+};
 
-    // return axios.post(API_URL + "signin", {
-    //   username,
-    //   password
-    // })
-    // .then(response => {
-    //   if (response.data.accessToken) {
-    //     localStorage.setItem("user", JSON.stringify(response.data));
-    //   }
+const registerApi = async (body) => {
+  return await axios.post(
+    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/register',
+    body,
+    {
+      withCredentials: true,
+    }
+  );
+};
 
-    //   return response.data;
-    // });
-}
+const logoutApi = async (body) => {
+  return await axios.post(
+    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/logout',
+    body,
+    {
+      withCredentials: true,
+    }
+  );
+};
+
+const handlerRefreshTokenUserApi = async (body) => {
+  return await axios.post(
+    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/handle-refresh-token-user',
+    body,
+    {
+      withCredentials: true,
+    }
+  );
+};
+//#endregion user
+
+//#region partner
+const loginPartnerApi = async (body) => {
+  return await axios.post(
+    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/partner/login',
+    body,
+    {
+      withCredentials: true,
+    }
+  );
+};
+
+const regisPartnerApi = async (body) => {
+  return await axios.post(
+    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/partner/register',
+    body,
+    {
+      withCredentials: true,
+    }
+  );
+};
+
+const pointerApi = async (body) => {
+  return await axios.post(
+    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/partner/continue-with-pointer',
+    body,
+    {
+      withCredentials: true,
+    }
+  );
+};
+
+const logoutPartnerApi = async (body) => {
+  return await axios.post(
+    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/partner/logout',
+    body,
+    {
+      withCredentials: true,
+    }
+  );
+};
+
+const handlerRefreshTokenPointerApi = async (body) => {
+  return await axios.post(
+    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/handle-refresh-token-pointer',
+    body,
+    {
+      withCredentials: true,
+    }
+  );
+};
+//#endregion partner
 
 export {
-    loginAPi
-};
+  loginApi, registerApi, logoutApi, handlerRefreshTokenUserApi,
+  pointerApi, loginPartnerApi, regisPartnerApi, logoutPartnerApi, handlerRefreshTokenPointerApi
+ };

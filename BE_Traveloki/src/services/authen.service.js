@@ -65,20 +65,14 @@ class  AuthJWTService {
       const passwordHash = await bcrypt.hash(password, 10)
 
       const newUser = await Account.create({
-        name, email, password: passwordHash, roles: [Role.USER]
+        name, email, password: passwordHash, phone, roles: [Role.USER]
       })
 
       if (newUser) {
         const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
           modulusLength: 2048,
-          publicKeyEncoding: {
-            type: "pkcs1",
-            format: "pem"
-          },
-          privateKeyEncoding: {
-            type: "pkcs1",
-            format: "pem"
-          }
+          publicKeyEncoding: { type: "pkcs1", format: "pem" },
+          privateKeyEncoding: { type: "pkcs1", format: "pem" }
         })
 
         console.log({ privateKey, publicKey })
@@ -356,7 +350,7 @@ class AuthSSOService {
       }
     };
     verifyToken();
-    
+
     const getAT = await pointer.getAccessToken(code);
     const parter = await pointer.getUser(getAT.accessToken);
 
