@@ -16,6 +16,7 @@ import LichSuDatCho from "../components/datChoCuaToi/LichSuDatCho.jsx";
 import CancelTicketBus from "../components/cancel/CancelTicketBus.jsx";
 import CancelTicketTrain from "../components/cancel/CancelTicketTau.jsx";
 import CancelTicket from "../components/cancel/CancelTicket.jsx";
+import Paymentsuccess from "../components/success/Paymentsuccess.jsx";
 import { RatingCar } from "../components/rating/RatingCar.jsx";
 import { RatingBus } from "../components/rating/RatingBus.jsx";
 import { RatingTau } from "../components/rating/RatingTau.jsx";
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
             { path: "trips-bus", element: <RatingBus /> },
             { path: "trips-train", element: <RatingTau /> }
         ]
+      },
+      {
+        path: "payment",
+        element: <Paymentsuccess />,
       }
     ]
   },
