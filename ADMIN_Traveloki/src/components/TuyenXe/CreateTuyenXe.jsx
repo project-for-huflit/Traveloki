@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// import UseFetch from "../../Router/UseFetch";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import {fetchAllSanBay} from "../../services/api/ListSanBay/apiDanhSachSanBay.js";
+import { fetchAllSanBay } from "../../services/api/ListSanBay/apiDanhSachSanBay.js";
+import { createTuyenXe } from "../../services/api/TuyenXe/apiCreateTuyenXe.js";
 
 const CreateTuyenXe = () => {
   const [tuyenxe, setTuyenXe] = useState({
@@ -14,35 +14,24 @@ const CreateTuyenXe = () => {
     ThoiGianKetThuc: "",
   });
   const [sanBays, setSanBays] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
   const navigate = useNavigate();
 
   useEffect(() => {
     const danhSachSanBay = async () => {
       try {
         const res = await fetchAllSanBay();
-        if (!res.ok) {
+        console.log(res);
+        if (res && res.data) {
+          setSanBays(res.data);
+        } else {
           throw new Error("Không thể lấy dữ liệu từ máy chủ");
         }
-        setSanBays(res.data || []);
       } catch (error) {
-        console.log(error)
+        console.log("Lỗi:", error);
       }
-    }
+    };
     danhSachSanBay();
-  },[])
-
-  // useEffect(() => {
-  //   if (data) {
-  //     setSanBays(data);
-  //     setIsLoading(fetchLoading);
-  //   }
-  //   if (fetchError) {
-  //     setError("Không thể lấy dữ liệu từ máy chủ");
-  //   }
-  // }, [data, fetchError, fetchLoading]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,11 +43,8 @@ const CreateTuyenXe = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      !tuyenxe.DiemSanBay ||
-      !tuyenxe.DiemKetThuc ||
-      !tuyenxe.ThoiGianKhoiHanh
-    ) {
+    if (!tuyenxe.DiemSanBay || !tuyenxe.DiemKetThuc || !tuyenxe.ThoiGianKhoiHanh || !tuyenxe.ThoiGianKetThuc)
+    {
       alert("Vui lòng nhập đầy đủ thông tin");
       return;
     }
@@ -76,31 +62,18 @@ const CreateTuyenXe = () => {
     }
 
     try {
-      const res = await fetch(
-        "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/CreateTuyen",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            DiemSanBay: tuyenxe.DiemSanBay,
-            DiemKetThuc: tuyenxe.DiemKetThuc,
-            ThoiGianKhoiHanh: thoiGianKhoiHanh.toISOString(),
-            ThoiGianKetThuc: new Date(
-              thoiGianKhoiHanh.getTime() + 1 * 60 * 60 * 1000
-            ),
-          }),
-        }
-      );
+      const res = await createTuyenXe({
+        DiemSanBay: tuyenxe.DiemSanBay,
+        DiemKetThuc: tuyenxe.DiemKetThuc,
+        ThoiGianKhoiHanh: thoiGianKhoiHanh.toISOString(),
+        ThoiGianKetThuc: thoiGianKetThuc.toISOString(),
+      });
 
-      const data = await res.json();
-
-      if (res.status === 200) {
+      if (res && res.EC === 0) {
         alert("Thêm danh sách tuyến xe thành công");
         navigate("/DanhSachTuyenXe");
       } else {
-        console.error(data);
+        console.error(res.data);
         alert("Điểm kết thúc đã tồn tại vui lòng nhập điểm mới");
       }
     } catch (error) {
@@ -108,19 +81,6 @@ const CreateTuyenXe = () => {
       alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
     }
   };
-
-  if (isLoading)
-    return (
-      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-        Loading...
-      </div>
-    );
-  if (error)
-    return (
-      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-        Error: {error}
-      </div>
-    );
 
   return (
     <div className="w-full h-full bg-white">
@@ -137,15 +97,11 @@ const CreateTuyenXe = () => {
             className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
           >
             <option value="">Chọn điểm khởi hành</option>
-            {isLoading ? (
-              <option>Loading...</option>
-            ) : (
-              sanBays.map((sanBay) => (
-                <option key={sanBay._id} value={sanBay.MaSB}>
-                  {sanBay.MaSB}
-                </option>
-              ))
-            )}
+            {sanBays.map((sanBay) => (
+              <option key={sanBay._id} value={sanBay.MaSB}>
+                {sanBay.MaSB}
+              </option>
+            ))}
           </select>
 
           <label className="text-black pb-4">Điểm kết thúc</label>
@@ -165,21 +121,32 @@ const CreateTuyenXe = () => {
             onChange={handleChange}
             className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
           />
+
+          <label className="text-black pb-4">Thời gian kết thúc</label>
+          <input
+            type="time"
+            name="ThoiGianKetThuc"
+            value={tuyenxe.ThoiGianKetThuc}
+            onChange={handleChange}
+            className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
+          />
+
           <div className="flex justify-center">
             <button
               disabled={
                 !tuyenxe.DiemSanBay ||
                 !tuyenxe.DiemKetThuc ||
-                !tuyenxe.ThoiGianKhoiHanh
+                !tuyenxe.ThoiGianKhoiHanh ||
+                !tuyenxe.ThoiGianKetThuc // Kiểm tra thời gian kết thúc
               }
               onClick={handleSubmit}
               className="bg-blue-500 px-4 py-2 mt-4 w-fit h-fit hover:bg-blue-700 text-white font-bold rounded"
             >
               Thêm tuyến xe
             </button>
-            <Link className="px-4 py-4" to={`/DanhSachTuyenXe`}>
+            <Link className="px-4 py-4" to="">
               <button className="bg-red-500 px-4 py-2 hover:bg-red-700 text-white font-bold rounded">
-                <FontAwesomeIcon icon={faXmark} /> Cancel
+                <FontAwesomeIcon icon={faXmark}/> Cancel
               </button>
             </Link>
           </div>

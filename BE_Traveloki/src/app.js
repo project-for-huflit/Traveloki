@@ -12,7 +12,7 @@ const app = express()
 // Middewares
 // app.use(cors());
 app.use(cors({
-  origin: 'http://localhost:5175', // Domain client
+  origin: ['http://localhost:5175', 'http://localhost:5173'], // Domain client
   credentials: true, // Cho phép credentials (cookies, headers...)
 }));
 app.use(morgan("dev"))

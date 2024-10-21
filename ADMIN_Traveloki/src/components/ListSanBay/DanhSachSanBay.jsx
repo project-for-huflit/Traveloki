@@ -1,107 +1,106 @@
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-// import UseFetch from "../../Router/UseFetch";
-import {useEffect, useState} from "react";
-import {deleteSanBay, fetchAllSanBay} from "../../services/api/ListSanBay/apiDanhSachSanBay.js";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useEffect, useState } from "react";
+import { deleteSanBay, fetchAllSanBay } from "../../services/api/ListSanBay/apiDanhSachSanBay.js";
+import { Link } from "react-router-dom";
+import {Modal as AntdModal, notification} from "antd";
 
 const DanhSachSanBay = () => {
   const [sanbay, setSanBay] = useState([]);
-  // const {
-  //   data: sanbay,
-  //   error,
-  //   isLoading,
-  // } = UseFetch(
-  //   "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api/GetDanhSachSanBay",
-  //   "danhSachSanBay"
-  // );
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [sanBayToDelete, setSanBayToDelete] = useState(null);
 
   useEffect(() => {
     const danhSachSanBay = async () => {
       try {
         const res = await fetchAllSanBay();
-        if (!res.ok) {
-          throw new Error("Không thể lấy dữ liệu từ máy chủ");
-        }
+        console.log(res);
         setSanBay(res.data || []);
       } catch (error) {
-        console.log(error)
+        console.error(error);
       }
-    }
+    };
     danhSachSanBay();
-  },[])
+  }, []);
 
-  const handleDeleteSanBay = async (_id) => {
-    try {
-      const res = await deleteSanBay(_id);
-      if (res.status == 200) {
-        alert("Xóa thành công");
-        window.location.reload();
-      } else {
-        alert("Xóa thất bại");
-      }
-    } catch (error) {
-      console.error("Error deleting san bay:", error);
-      alert("Đã xảy ra lỗi khi xóa sân bay");
-    }
+  const showModal = (sanBay) => {
+    setSanBayToDelete(sanBay);
+    setIsModalVisible(true);
   };
 
-  // if (isLoading)
-  //   return (
-  //     <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-  //       Loading...
-  //     </div>
-  //   );
-  // if (error)
-  //   return (
-  //     <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-  //       Error: {error}
-  //     </div>
-  //   );
+  const handleOk = async () => {
+    if (sanBayToDelete) {
+      try {
+        const response = await deleteSanBay(sanBayToDelete._id);
+        if (response && response.EC === 0) {
+          notification.success({
+            message: "Xóa sân bay",
+            description: "Xóa sân bay thành công"
+          });
+          setSanBay(prev => prev.filter(sanBay => sanBay._id !== sanBayToDelete._id));
+        } else {
+          alert(response.EM);
+        }
+      } catch (error) {
+        console.error("Error deleting san bay:", error);
+        alert("Đã xảy ra lỗi khi xóa sân bay");
+      }
+    }
+    setIsModalVisible(false);
+    setSanBayToDelete(null);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setSanBayToDelete(null);
+  };
 
   return (
-    <div className="w-auto h-full bg-white">
-      {/*{isLoading && <div>Loading...</div>}*/}
-      {/*{error && <div>Error: {error}</div>}*/}
-      <div className="flex w-auto">
-        <h1 className="text-black w-1/2 p-4 text-4xl">Danh sách sân bay</h1>
-        <div className="flex w-1/2 mr-2 justify-end">
-          <button className="bg-blue-500 px-4 py-2 mt-4 w-fit h-fit hover:bg-blue-700 text-white font-bold rounded">
-            <a className="no-underline text-white" href="/CreateDanhSachSanBay">
-              Thêm sân bay
-            </a>
-          </button>
-        </div>
+    <div className="w-auto h-full bg-white p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-black text-4xl">Danh sách sân bay</h1>
+        <Link to="/airport/list/create">
+          <Button variant="contained" color="primary">Thêm sân bay</Button>
+        </Link>
       </div>
-      <div className="p-2">
-        <table className="w-full">
-          <thead>
-            <tr className="bg-green-400">
-              <th className="border px-4 py-2">Mã sân bay</th>
-              <th className="border px-4 py-2">Tên sân bay</th>
-              <th className="border px-4 py-2">Thành phố</th>
-              <th className="border px-4 py-2">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ backgroundColor: '#e3f2fd' }}>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Mã sân bay</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Tên sân bay</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Thành phố</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Hành động</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {sanbay.map((sanBay) => (
-              <tr key={sanBay._id} className="text-black">
-                <td className="border px-4 py-2">{sanBay.MaSB}</td>
-                <td className="border px-4 py-2">{sanBay.TenSanBay}</td>
-                <td className="border px-4 py-2">{sanBay.ThanhPho}</td>
-                <td className="border px-4 py-2 flex justify-center">
-                  <button
-                    className="bg-red-500 px-4 py-2 w-fit h-fit hover:bg-red-700 text-white font-bold rounded"
-                    onClick={() => handleDeleteSanBay(sanBay._id)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                </td>
-              </tr>
+              <TableRow key={sanBay._id} sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}>
+                <TableCell>{sanBay.MaSB}</TableCell>
+                <TableCell>{sanBay.TenSanBay}</TableCell>
+                <TableCell>{sanBay.ThanhPho}</TableCell>
+                <TableCell>
+                  <IconButton color="error" onClick={() => showModal(sanBay)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {/* Modal xác nhận xóa */}
+      <AntdModal
+        title="Xác nhận xóa"
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText="Có"
+        cancelText="Không"
+      >
+        <p>Bạn có chắc chắn muốn xóa sân bay này?</p>
+      </AntdModal>
     </div>
   );
 };
