@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "react-router-dom";
-import { paymentSend } from '../../services/api/payment/index'
-import { createBookingCar, GetBookingCarId } from '../../services/api/booking/api.bookingCar'
+// import { paymentSend } from '../../services/api/payment/index'
+// import { createBookingCar, GetBookingCarId } from '../../services/api/booking/api.bookingCar'
 
 import {
   faUser,
