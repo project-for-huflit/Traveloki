@@ -11,7 +11,7 @@ import api from '../../services/axios.customize'
 import DirectToAuthPage from './directToAuthPage'
 import ShowProfile from './showProfile';
 
-import { AuthContext } from "../../context/auth.provider";
+import { AuthProvider } from "../../context/auth.provider";
 
 const Header2 = () => {
   // const handleButtonClickMyBooking = () => {
@@ -26,7 +26,7 @@ const Header2 = () => {
    * @author LOQ-burh
    * @description xử lý logic show profile client
    */
-  const { handleContextLogin, isLogin, handleContextLogout } = useContext(AuthContext);
+  // const { handleContextLogin, isLogin, handleContextLogout } = useContext(AuthProvider);
   const [user, setUser] = useState('');
 
   useEffect(() => {

@@ -41,8 +41,8 @@ function AuthProvider(props) {
     handleContextLogout,
   };
   return (
-    <AuthContext.Provider value={value} {...props}></AuthContext.Provider>
+    <AuthContext value={value} {...props}></AuthContext>
   )
 }
 
-export { AuthProvider, AuthProvider }; //?
+export { AuthProvider }; //?

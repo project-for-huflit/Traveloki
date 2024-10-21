@@ -57,9 +57,11 @@ const Login = () => {
       const response = await loginApi(credentials)
       const { accessToken, refreshToken } = response.metadata.tokens;
       // Store the tokens in localStorage or secure cookie for later use
-      console.log(response?.metadata);
-      console.log(response?.metadata.tokens.accessToken);
-      console.log(response?.metadata.tokens.refreshToken);
+      // console.log(response?.metadata);
+      // console.log(response?.metadata.user);
+      // console.log(response?.metadata.tokens);
+      // console.log(response?.metadata.tokens.accessToken);
+      // console.log(response?.metadata.tokens.refreshToken);
       console.log(JSON.stringify(response))
 
       localStorage.setItem('token', accessToken);

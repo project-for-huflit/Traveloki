@@ -9,7 +9,7 @@ import "swagger-ui-react/swagger-ui.css"
  * @example
  * @code element={<AuthGuard><Profile /></AuthGuard>}
  */
-import AuthGuard from "../guards/AuthGuard.js";
+// import AuthGuard from "../guards/AuthGuard.js";
 
 import BookingCar from "../components/booking/BookingCar.jsx";
 import ListVehicle from "../components/booking/ListMain.jsx";
