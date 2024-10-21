@@ -185,10 +185,11 @@ const SearchBar = () => {
     >
       <div className="mx-auto pt-12 flex justify-center w-full container pb-24">
         <div className="flex justify-center flex-col">
-        <div className="h-fit bg-white rounded-xl p-4 justify-center grid xl:grid-cols-12 sm:grid-cols-6 grid-cols-2 w-full">
-          <div className="h-fit sm:col-span-2 col-span-1 p-5 w-full">
+        <div className="h-fit  rounded-xl p-4 justify-center grid xl:grid-cols-12 sm:grid-cols-6 grid-cols-2 w-full">
+
+          <div className="h-fit sm:col-span-2 col-span-1  w-full">
             <div className="suggestion-container-airport">
-              <label className="text-black font-bold flex mb-2 items-center space-x-2">
+              <label className="text-white font-bold flex mb-2 items-center space-x-2">
                 Từ sân bay
               </label>
               <div className="flex relative">
@@ -196,7 +197,7 @@ const SearchBar = () => {
                   <FontAwesomeIcon icon={faPlaneDeparture} />
                 </span>
                 <input
-                  className="w-full bg-slate-100 outline-none pl-8 border-black rounded-lg p-2"
+                  className="w-full bg-slate-100 outline-none pl-8 border-black rounded-l-lg p-2"
                   type="text"
                   value={diemSanBay}
                   onChange={(e) => {
@@ -224,12 +225,10 @@ const SearchBar = () => {
               )}
             </div>
           </div>
-          <span className="w-full col-span-1 text-center pb-6 mt-11 text-3xl pr-9 translate-y-2">
-            ⇌
-          </span>
-          <div className="h-fit pt-5 col-span-1 sm:col-span-3 pr-5 w-full">
+
+          <div className="h-fit col-span-1 sm:col-span-3 w-full">
             <div className="suggestion-container-tram">
-              <label className="text-black font-bold flex mb-2 items-center space-x-2">
+              <label className="text-white font-bold flex mb-2 items-center space-x-2">
                 Đến khu vực địa chỉ{" "}
               </label>
               <div className="flex relative">
@@ -237,7 +236,7 @@ const SearchBar = () => {
                   <FontAwesomeIcon icon={faLocationDot} />
                 </span>
                 <input
-                  className="w-full bg-slate-100 outline-none pl-8 z-30 border-black rounded-lg p-2"
+                  className="w-full bg-slate-100 outline-none pl-8 z-30 border-black p-2"
                   type="text"
                   value={diemKetThuc}
                   onChange={(e) => {
@@ -264,11 +263,14 @@ const SearchBar = () => {
               )}
             </div>
           </div>
-          <div className="mt-5 col-span-1 sm:col-span-2">
-            <label className="text-black pl-2 font-bold flex mb-2 items-center space-x-2">
+
+          <span className=" col-span-1 text-center mt-7 text-3xl">⇌</span>
+
+          <div className=" col-span-1 sm:col-span-2">
+            <label className="text-white pl-2 font-bold flex mb-2 items-center">
               Ngày khởi hành
             </label>
-            <div className="items-center h-fit w-3/4 px-2 py-[6px] mx-2 bg-gray-200 shadow rounded-lg">
+            <div className="items-center h-fit  px-2 py-[6px] bg-gray-200">
               <input
                 className="bg-transparent w-full h-fit outline-none text-center"
                 type="date"
@@ -279,11 +281,11 @@ const SearchBar = () => {
             </div>
           </div>
 
-          <div className="mt-5 col-span-1 sm:col-span-2">
-            <label className="text-black pl-2 font-bold flex mb-2 items-center space-x-2">
+          <div className=" col-span-1 sm:col-span-2">
+            <label className="text-white pl-2 font-bold flex mb-2 items-center space-x-2">
               Giờ khởi hành
             </label>
-            <div className="items-center flex justify-center h-fit w-3/4 px-2 py-[6px] mx-2 bg-gray-200 shadow rounded-lg">
+            <div className="items-center flex justify-center h-fit px-2 py-[6px] bg-gray-200">
               <input
                 type="time"
                 className="bg-transparent w-full h-fit outline-none text-center"
@@ -292,10 +294,10 @@ const SearchBar = () => {
               />
             </div>
           </div>
-          <div className="flex justify-center col-span-1 sm:col-span-1 h-fit mt-[50px]">
+          <div className="flex justify-center col-span-1 sm:col-span-1 h-fit mt-[30px]">
             <button
               onClick={handleSubmit}
-              className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
+              className="bg-blue-500 text-white font-bold py-2 px-4 rounded-r-lg"
             >
               Tìm kiếm
             </button>
