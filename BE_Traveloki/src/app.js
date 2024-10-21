@@ -16,9 +16,11 @@ app.use(cors({
     'http://localhost:5175',
     'http://localhost:5173',
     "http://localhost:3000",
+    "https://api-traveloki.onrender.com",
     "https://wallet.pointer.io.vn",
     "https://presspay-wallet.vercel.app",
     "https://presspay.vercel.app",
+    "https://presspay-api.azurewebsites.net"
   ],
   credentials: true, // Cho phép credentials (cookies, headers...)
 }));
@@ -39,7 +41,7 @@ app.use(express.urlencoded({
 require('./data/init.mongodb')
 
 // routes
-app.use('/', require('./routes/index'))
+app.use('', require('./routes/index'))
 
 //hanlding errors
 app.use((req, res, next) => {

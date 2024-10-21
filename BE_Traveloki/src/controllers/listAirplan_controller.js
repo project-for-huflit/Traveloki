@@ -1,4 +1,4 @@
-const { DanhSachSanBay } = require("../models/sanBay.model");
+const { SanBay } = require("../models/sanBay.model");
 const Counter = require("../models/counter.model").CounterLSB;
 const {getAllSanBayService, createSanBayService, deleteSanBayService} = require("../services/sanBay.service");
 
@@ -31,7 +31,7 @@ const DeleteDanhSachSanBay = async (req, res) => {
 const GetSanBayID = async (req, res) => {
   try {
     const { id } = req.params;
-    const danhSachSanBay = await DanhSachSanBay.findById(id);
+    const danhSachSanBay = await SanBay.findById(id);
 
     if (!danhSachSanBay) {
       return res.status(404).json({ message: "Sân bay không tồn tại" });
@@ -52,7 +52,7 @@ const getSanBaybyTenSanBay = async (req, res) => {
   }
 
   try {
-    const sanbays = await DanhSachSanBay.find({
+    const sanbays = await SanBay.find({
       TenSanBay: { $regex: TenSanBay, $options: "i" },
     });
 

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "react-router-dom";
+import { paymentSend } from '../../services/api/payment/index'
+import { createBookingCar, GetBookingCarId } from '../../services/api/booking/api.bookingCar'
 
 import {
   faUser,
@@ -33,7 +35,7 @@ const BookingCar = () => {
     ThanhTien: "" || 0,
     TrangThai: false,
     Description: "",
-
+    currency:"VND"
   });
 
   const fetchDetailCar = async () => {
@@ -104,6 +106,11 @@ const BookingCar = () => {
     }
   }, [detail, tram]);
 
+  /**
+   * #region old service
+   * @param {*} e
+   * @returns
+   */
   const handle_Submit = async (e) => {
     e.preventDefault();
     console.log("Dữ liệu gửi đi:", bookingCar);
@@ -209,6 +216,31 @@ const BookingCar = () => {
       alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
     }
   };
+
+  const handlePayment = async (e) => {
+    e.preventDefault()
+
+
+    const bookingId = await GetBookingCarId()
+    const body = {
+      private_key:import.meta.env.VITE_SECRET_API_KEY_POINTER,
+      amount:bookingCar.ThanhTien,
+      currency:bookingCar.currency,
+      message:bookingCar.Description,
+      return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}list/cars/result`,
+      orderID:formData.orderID,
+      userID:"userO1"
+    }
+
+    try {
+      const response = await paymentSend(body)
+      if(response.status === 200){
+          window.location.replace(response.data.url)
+      }
+    } catch (error) {
+      console.error("Lỗi khi truyền dữ liệu:", error);
+    }
+  }
 
   if (isLoading)
     return (

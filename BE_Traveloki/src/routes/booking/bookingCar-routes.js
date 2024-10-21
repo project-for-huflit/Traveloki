@@ -1,5 +1,3 @@
-'use strict'
-
 const express = require("express");
 const route = express.Router();
 
@@ -14,7 +12,7 @@ const {
 
 route.get("/GetDatXeOto", GetDatXeOto);
 route.post("/BookingCar", BookingCar);
-route.get("/FindBookingCarID", FindBookingCarID);
+route.get("/FindBookingCarID/:id", FindBookingCarID);
 route.get("/FindBookingCarMaDX", FindBookingCarMaDX);
 route.put("/BookingCar/SchedularChange/:id", SchedularChange);
 route.delete("/CancelBooking/:MaDX", CancelBooking);

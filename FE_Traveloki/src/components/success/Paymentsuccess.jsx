@@ -1,6 +1,7 @@
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { Link } from "react-router-dom";
+// import { use } from "../../../../BE_Traveloki/src/routes/booking/bookingCar-routes";
 function Paymentsuccess() {
     return (
         <div className="w-[35%] mx-auto mt-10 p-6 rounded-lg shadow-md">
@@ -25,7 +26,9 @@ function Paymentsuccess() {
                 <p className="text-[14px] font-medium mb-4">FT23010622153667</p>
             </div>
             <div className="text-center w-[100%]">
-                <button className="bg-black text-white py-2 px-4 rounded-lg w-[100%] text-[16px] mt-5 pt-4 pb-4 font-[600]">Hoàn thành</button>
+            <Link  to={"/"}>
+            <button className="bg-black text-white py-2 px-4 rounded-lg w-[100%] text-[16px] mt-5 pt-4 pb-4 font-[600]">Hoàn thành</button>
+            </Link>
             </div>
         </div>
     );

@@ -78,10 +78,10 @@ const router = createBrowserRouter([
             { path: "trips-train", element: <RatingTau /> }
         ]
       },
-      {
-        path: "payment",
-        element: <Paymentsuccess />,
-      }
+      // {
+      //   path: "payment",
+      //   element: <Paymentsuccess />,
+      // }
     ]
   },
   {
@@ -103,6 +103,7 @@ const router = createBrowserRouter([
       { path: "list/cars", element: <BookingCar />, },
       { path: "list/bus", element: <BookingBus />, },
       { path: "list/trains", element: <BookingTrain />, },
+      { path: "list/cars/result", element: <Paymentsuccess /> },
     ],
   },
   { path: 'swagger', element: <SwaggerUI url="https://petstore.swagger.io/v2/swagger.json" /> }

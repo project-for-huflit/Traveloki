@@ -5,9 +5,9 @@ const { TramDung } = require("../models/tramDung.model");
 const { ChiTietXeOto } = require("../models/detailsCar.model");
 const CounterDatXeOto = require("../models/counter.model").CounterDatXe;
 
-const asyncHandler = require('../middlewares/asyncHandler.middeware')
+// const asyncHandler = require('../middlewares/asyncHandler.middeware')
 
-const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+// const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 class BookingCarController {
   getDatXeOto = async ( req, res, next ) => {
@@ -48,27 +48,14 @@ const GetDatXeOto = async (req, res) => {
 const BookingCar = async (req, res) => {
   try {
     const {
-      MaDetailCar,
-      Sdt,
-      MaTram,
-      DiemSanBay,
-      DiemDon_Tra,
-      NgayGioDat,
-      ThanhTien,
-      SoKm,
-      Description,
+      MaDetailCar, Sdt, MaTram, DiemSanBay,
+      DiemDon_Tra, NgayGioDat, ThanhTien, SoKm, Description,
     } = req.body;
 
     const tramDung = await TramDung.findById(MaTram);
     const chiTietXe = await ChiTietXeOto.findById(MaDetailCar);
-
-    if (!chiTietXe) {
-      return res.status(404).json({ message: "Vehicle details do not exist!!" });
-    }
-
-    if (!tramDung) {
-      return res.status(404).json({ message: "Waypoint do not exist" });
-    }
+    if (!chiTietXe) { return res.status(404).json({ message: "Vehicle details do not exist!!" }); }
+    if (!tramDung) { return res.status(404).json({ message: "Waypoint do not exist" }); }
 
     const CounterDatXe = await CounterDatXeOto.findOneAndUpdate(
       { _id: "datXeCounter" },
@@ -79,17 +66,8 @@ const BookingCar = async (req, res) => {
     const MaDX = `DX${CounterDatXe.seq}`;
 
     const CreateDatXeOto = new DatXeOto({
-      MaDX,
-      MaDetailCar,
-      Sdt,
-      MaTram,
-      DiemSanBay,
-      DiemDon_Tra,
-      NgayGioDat,
-      SoKm,
-      ThanhTien,
-      Trangthai: false,
-      Description,
+      MaDX, MaDetailCar, Sdt, MaTram, DiemSanBay, DiemDon_Tra,
+      NgayGioDat, SoKm, ThanhTien, Trangthai: false, Description,
     });
 
     const result = await CreateDatXeOto.save();
@@ -149,10 +127,10 @@ const FindBookingCarID = async (req, res) => {
       return res.status(404).json({ message: "DatXeOto not found" });
     }
 
-    res.status(200).json(datXeOto);
+    return res.status(200).json(datXeOto);
   } catch (e) {
     console.error("Error fetching DatXeOto by ID:", e);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
