@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import {deleteTuyenXe, fetchAllTuyenXe} from "../../services/api/TuyenXe/apiDanhSachTuyenXe";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { deleteTuyenXe, fetchAllTuyenXe } from "../../services/api/TuyenXe/apiDanhSachTuyenXe";
+import { Link } from "react-router-dom";
+import { Popconfirm } from "antd";
 
 const DanhSachTuyenXe = () => {
   const [tuyenxe, setTuyenxe] = useState([]);
@@ -19,14 +21,14 @@ const DanhSachTuyenXe = () => {
     return new Date(isoString).toLocaleString("vi-VN", options);
   };
 
+  useEffect(() => {
+    fetchTuyenXe();
+  }, []);
+
   const fetchTuyenXe = async () => {
     try {
       const res = await fetchAllTuyenXe();
-      // if (!res.ok) {
-      //   throw new Error("Network response was not ok");
-      // }
-      const result = await res.json();
-      setTuyenxe(result.tuyen || []);
+      setTuyenxe(res.tuyen || []);
     } catch (error) {
       setError("Không thể lấy dữ liệu từ máy chủ");
     } finally {
@@ -34,17 +36,12 @@ const DanhSachTuyenXe = () => {
     }
   };
 
-  useEffect(() => {
-    fetchAllTuyenXe();
-  }, []);
-
   const handleDeleteTuyenXe = async (_id) => {
     try {
-      const res = await deleteTuyenXe(_id)
+      const res = await deleteTuyenXe(_id);
       if (res.ok) {
         alert("Xóa thành công");
-        // Fetch lại danh sách tuyến sau khi xóa
-        fetchTuyenXe();
+        setTuyenxe(prev => prev.filter((tuyenXe) => tuyenXe._id !== _id));
       } else {
         const { message } = await res.json();
         alert(`Xóa thất bại: ${message}`);
@@ -69,54 +66,50 @@ const DanhSachTuyenXe = () => {
     );
 
   return (
-    <div className="w-auto h-full bg-white">
-      <div className="flex w-auto">
-        <h1 className="text-black w-1/2 p-4 text-4xl">Danh sách tuyến</h1>
-        <div className="flex w-1/2 mr-2 justify-end">
-          <button className="bg-blue-500 px-4 py-2 mt-4 w-fit h-fit hover:bg-blue-700 text-white font-bold rounded">
-            <a className="no-underline text-white" href="/CreateTuyenXe">
-              Thêm tuyến xe
-            </a>
-          </button>
-        </div>
+    <div className="w-auto h-full bg-white p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-black text-4xl">Danh sách tuyến xe</h1>
+        <Link to="/road/list/create">
+          <Button variant="contained" color="primary">Thêm tuyến xe</Button>
+        </Link>
       </div>
-      <div className="p-2">
-        <table className="w-full">
-          <thead>
-            <tr className="bg-green-400">
-              <th className="border px-4 py-2">Mã tuyến xe</th>
-              <th className="border px-4 py-2">Điểm khởi hành</th>
-              <th className="border px-4 py-2">Điểm kết thúc</th>
-              <th className="border px-4 py-2">Thời gian khởi hành</th>
-              <th className="border px-4 py-2">Thời gian kết thúc</th>
-              <th className="border px-4 py-2">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ backgroundColor: '#e3f2fd' }}>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Mã tuyến xe</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Điểm khởi hành</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Điểm kết thúc</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Thời gian khởi hành</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Thời gian kết thúc</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Hành động</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {tuyenxe.map((tuyenXe) => (
-              <tr key={tuyenXe._id} className="text-black">
-                <td className="border px-4 py-2">{tuyenXe.MaTuyen}</td>
-                <td className="border px-4 py-2">{tuyenXe.DiemSanBay}</td>
-                <td className="border px-4 py-2">{tuyenXe.DiemKetThuc}</td>
-                <td className="border px-4 py-2">
-                  {formatDateTime(tuyenXe.ThoiGianKhoiHanh)}
-                </td>
-                <td className="border px-4 py-2">
-                  {formatDateTime(tuyenXe.ThoiGianKetThuc)}
-                </td>
-                <td className="border px-4 py-2 flex justify-center">
-                  <button
-                    className="bg-red-500 px-4 py-2 w-fit h-fit hover:bg-red-700 text-white font-bold rounded"
-                    onClick={() => handleDeleteTuyenXe(tuyenXe._id)}
+              <TableRow key={tuyenXe._id} sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}>
+                <TableCell>{tuyenXe.MaTuyen}</TableCell>
+                <TableCell>{tuyenXe.DiemSanBay}</TableCell>
+                <TableCell>{tuyenXe.DiemKetThuc}</TableCell>
+                <TableCell>{formatDateTime(tuyenXe.ThoiGianKhoiHanh)}</TableCell>
+                <TableCell>{formatDateTime(tuyenXe.ThoiGianKetThuc)}</TableCell>
+                <TableCell>
+                  <Popconfirm
+                    title="Bạn có chắc chắn muốn xóa tuyến xe này?"
+                    onConfirm={() => handleDeleteTuyenXe(tuyenXe._id)}
+                    okText="Có"
+                    cancelText="Không"
                   >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                </td>
-              </tr>
+                    <IconButton color="error">
+                      <DeleteIcon />
+                    </IconButton>
+                  </Popconfirm>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

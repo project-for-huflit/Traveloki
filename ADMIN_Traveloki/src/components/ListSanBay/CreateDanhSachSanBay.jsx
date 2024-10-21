@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import {createDanhSachSanBay} from "../../services/api/ListSanBay/apiCreateDanhSachSanBay.js";
+import { notification } from "antd";
 
 const CreateDanhSachSanBay = () => {
   const [danhSachSanBay, setDanhSachSanBay] = useState({});
@@ -18,12 +19,20 @@ const CreateDanhSachSanBay = () => {
 
     try {
       const res = await createDanhSachSanBay(danhSachSanBay)
-      if (res.status === 200 || res.status === 201) {
-        alert("Thêm sân bay thành công");
-        navigate("/");
+      if (res && res.EC === 0) {
+        notification.success({
+          message: "Thêm sân bay",
+          description: "Thêm sân bay thành công"
+        });
+        navigate("/airport/list");
+      }else {
+        notification.error({
+          message: "Thêm sân bay",
+          description: `Thêm thất bại: ${res.EM}`
+        });
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
     }
   };
@@ -67,7 +76,7 @@ const CreateDanhSachSanBay = () => {
             >
               Thêm sân bay
             </button>
-            <Link className="px-4 py-4" to={`/`}>
+            <Link className="px-4 py-4" to={`/airport/list`}>
               <button className="bg-red-500 px-4 py-2 hover:bg-red-700 text-white font-bold rounded">
                 <FontAwesomeIcon icon={faXmark} /> Cancel
               </button>
