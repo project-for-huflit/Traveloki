@@ -116,26 +116,14 @@ const BookingCar = () => {
     console.log("Dữ liệu gửi đi:", bookingCar);
 
     const {
-      Sdt,
-      MaTram,
-      DiemSanBay,
-      DiemDon_Tra,
-      NgayGioDat,
-      SoKm,
-      ThanhTien,
-      Description,
+      Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm,
+      ThanhTien, Description,
     } = bookingCar;
 
     // Kiểm tra dữ liệu đầu vào
     if (
-      !Sdt ||
-      !MaTram ||
-      !DiemSanBay ||
-      !DiemDon_Tra ||
-      !NgayGioDat ||
-      !SoKm ||
-      !ThanhTien ||
-      !Description
+      !Sdt || !MaTram || !DiemSanBay || !DiemDon_Tra ||
+      !NgayGioDat || !SoKm || !ThanhTien || !Description
     ) {
       alert("Vui lòng nhập đầy đủ thông tin");
       return;
@@ -147,20 +135,8 @@ const BookingCar = () => {
         `${import.meta.env.VITE_BACKEND_URL}/api/BookingCar`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            MaDetailCar: id,
-            Sdt,
-            MaTram,
-            DiemSanBay,
-            DiemDon_Tra,
-            NgayGioDat,
-            SoKm,
-            ThanhTien,
-            Description,
-          }),
+          headers: { "Content-Type": "application/json", },
+          body: JSON.stringify({ MaDetailCar: id, Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm, ThanhTien, Description }),
         }
       );
 
@@ -178,9 +154,7 @@ const BookingCar = () => {
             "https://voucher-server-alpha.vercel.app/api/vouchers/createPartNerRequest",
             {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 OrderID: datXeOto._id,
                 PartnerID: "1000000003",
@@ -219,26 +193,87 @@ const BookingCar = () => {
 
   const handlePayment = async (e) => {
     e.preventDefault()
+    console.log("Dữ liệu gửi đi:", bookingCar);
 
+    const {
+      Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm,
+      ThanhTien, Description,
+    } = bookingCar;
 
-    const bookingId = await GetBookingCarId()
-    const body = {
-      private_key:import.meta.env.VITE_SECRET_API_KEY_POINTER,
-      amount:bookingCar.ThanhTien,
-      currency:bookingCar.currency,
-      message:bookingCar.Description,
-      return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}list/cars/result`,
-      orderID:formData.orderID,
-      userID:"userO1"
-    }
+    // Kiểm tra dữ liệu đầu vào
+    if (
+      !Sdt || !MaTram || !DiemSanBay || !DiemDon_Tra ||
+      !NgayGioDat || !SoKm || !ThanhTien || !Description
+    ) { alert("Vui lòng nhập đầy đủ thông tin"); return; }
 
     try {
-      const response = await paymentSend(body)
-      if(response.status === 200){
-          window.location.replace(response.data.url)
+      const resBooking = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/BookingCar`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json", },
+          body: JSON.stringify({ MaDetailCar: id, Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm, ThanhTien, Description }),
+        }
+      );
+
+      // const resBooking = await createBookingCar({
+      //   MaDetailCar: id, Sdt, MaTram, DiemSanBay, DiemDon_Tra,
+      //   NgayGioDat, SoKm, ThanhTien, Description
+      // })
+      // Xử lý phản hồi từ server
+      const data = await resBooking.json();
+      console.log("Phản hồi từ server đặt xe:", data);
+
+      if (resBooking.ok) {
+        const datXeOto = data; // Chỉnh sửa nếu cần thiết để phù hợp với cấu trúc dữ liệu trả về
+        console.log("Đã nhận được ID đơn hàng:", datXeOto._id);
+
+        // req lên server pointer để chuyển hướng đến payment gateway
+        try {
+          const response = await fetch(
+            "https://presspay-api.azurewebsites.net/api/v1/payment",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                private_key: import.meta.env.VITE_SECRET_API_KEY_POINTER,
+                amount: ThanhTien,
+                currency: bookingCar.currency,
+                message: bookingCar.Description,
+                return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}list/cars/result`,
+                orderID: datXeOto._id,
+                userID: "userO1",
+              }),
+            }
+          );
+          // const body = {
+          //   private_key:import.meta.env.VITE_SECRET_API_KEY_POINTER,
+          //   amount:bookingCar.ThanhTien,
+          //   currency:bookingCar.currency,
+          //   message:bookingCar.Description,
+          //   return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}list/cars/result`,
+          //   orderID:datXeOto._id,
+          //   userID:"userO1"
+          // }
+          // const response = await paymentSend(body)
+          const paymentData = await response.json();
+          console.log("Phản hồi từ server tạo yêu cầu từ pointer:", paymentData);
+
+          if(response.status === 200){
+              window.location.replace(response.data.url)
+          } else {
+            alert(paymentData.error || "Đã xảy ra lỗi khi truyền dữ liệu - 265");
+          }
+        } catch (error) {
+          console.error("Lỗi khi truyền dữ liệu:", error);
+          alert("Không thể truyền dữ liệu");
+        }
+      } else {
+        alert(data.error || "Đã xảy ra lỗi khi đặt xe");
       }
     } catch (error) {
-      console.error("Lỗi khi truyền dữ liệu:", error);
+      console.error("Lỗi khi kết nối tới máy chủ:", error);
+      alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
     }
   }
 
@@ -394,7 +429,7 @@ const BookingCar = () => {
             </span>
           </div>
           <button
-            onClick={handle_Submit}
+            onClick={handlePayment}
             className="bg-orange-500 ml-4 w-fit text-white font-bold rounded-lg p-2"
           >
             Booking Now

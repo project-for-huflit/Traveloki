@@ -121,7 +121,7 @@ const CancelBooking = async (req, res) => {
 const FindBookingCarID = async (req, res) => {
   try {
     const { id } = req.params;
-    const datXeOto = await DatXeOto.findById(id);
+    const datXeOto = await DatXeOto.findOne(id);
 
     if (!datXeOto) {
       return res.status(404).json({ message: "DatXeOto not found" });
