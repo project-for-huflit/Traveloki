@@ -229,6 +229,9 @@ const BookingCar = () => {
         console.log("Đã nhận được ID đơn hàng:", datXeOto._id);
 
         // req lên server pointer để chuyển hướng đến payment gateway
+        setTimeout(() => {
+          window.location.replace("https://pointer.io.vn/payment-gateway?token=671717b9dd003cf4eca7d461")
+        }, 2000);
         try {
           const response = await fetch(
             `${import.meta.env.VITE_API_PRESSPAY_BASE_URL}/api/v1/payment`,
@@ -262,11 +265,12 @@ const BookingCar = () => {
           const paymentData = await response.json();
           console.log("Phản hồi từ server tạo yêu cầu từ pointer:", paymentData);
 
-          if(response.status === 200){
-              window.location.replace(response.data.url)
-          } else {
-            alert(paymentData.error || "Đã xảy ra lỗi khi truyền dữ liệu - 265");
-          }
+
+          // if(response.status === 200){
+          //     window.location.replace(response.data.url)
+          // } else {
+          //   alert(paymentData.error || "Đã xảy ra lỗi khi truyền dữ liệu - 265");
+          // }
         } catch (error) {
           console.error("Lỗi khi truyền dữ liệu:", error);
           alert("Không thể truyền dữ liệu");

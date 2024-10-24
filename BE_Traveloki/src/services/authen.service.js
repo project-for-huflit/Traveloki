@@ -317,15 +317,15 @@ class AuthSSOService {
     }
   }
   static async loginWithPointer(code) {
-    const getPartnerId = await PartnerService.getPartnerId({ _id })
-    if(!getPartnerId) throw new BadRequestError('Partner not registered!')
+    // const getPartnerId = await PartnerService.getPartnerId({ _id })
+    // if(!getPartnerId) throw new BadRequestError('Partner not registered!')
 
     // const pointer = new PointerStrategy({
     //   clientId: getPartnerId._id,
     //   clientSecret: SECRET_POINTER,
     //   callbackUrl: ".",
     // });
-    const pointer = new PointerStrategy("123");
+    const pointer = new PointerStrategy({ apiKey: "" });
 
     const getAccessToken = async () => {
       try {
@@ -358,35 +358,35 @@ class AuthSSOService {
     // if (!userId) throw new BadRequestError('User ID not found in user data');
 
     //Sau khi lấy thông tin người dùng thì xử lý theo nghiệp vụ của app
-    const foundPartner = await PartnerService.findByEmail({ email: parter._id })
-    if(!foundPartner) throw new BadRequestError('Parter is not registered!')
+    // const foundPartner = await PartnerService.findByEmail({ email: parter._id })
+    // if(!foundPartner) throw new BadRequestError('Parter is not registered!')
 
-    const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
-      modulusLength: 2048,
-      publicKeyEncoding: {
-        type: "pkcs1",
-        format: "pem"
-      },
-      privateKeyEncoding: {
-        type: "pkcs1",
-        format: "pem"
-      }
-    })
+    // const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+    //   modulusLength: 2048,
+    //   publicKeyEncoding: {
+    //     type: "pkcs1",
+    //     format: "pem"
+    //   },
+    //   privateKeyEncoding: {
+    //     type: "pkcs1",
+    //     format: "pem"
+    //   }
+    // })
 
-    // tao cap tokens
-    const { _id: userId } = foundPartner
-    const tokens = await createTokenPair({userId: userId, email}, publicKey, privateKey)
+    // // tao cap tokens
+    // const { _id: userId } = foundPartner
+    // const tokens = await createTokenPair({userId: userId, email}, publicKey, privateKey)
 
-    await KeyTokenService.createKeyToken({
-      refreshToken: tokens.refreshToken,
-      userId: userId,
-      privateKey,
-      publicKey
-    })
+    // await KeyTokenService.createKeyToken({
+    //   refreshToken: tokens.refreshToken,
+    //   userId: userId,
+    //   privateKey,
+    //   publicKey
+    // })
 
     return {
-      partner: getInfoData({ fields: ['_id', 'name', 'email'], object: foundPartner }),
-      tokens
+      getAT,
+      parter
     }
   }
   static logout = async ( keyStore ) => {
