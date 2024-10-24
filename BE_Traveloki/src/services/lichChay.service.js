@@ -5,6 +5,7 @@ const getAllLichChayService = async () => {
     const result = await LichChay.find()
       .populate('MaTuyen')
       .populate('MaPT');
+
     return {
       EC: 0,
       EM: "Lấy lịch chạy thành công",

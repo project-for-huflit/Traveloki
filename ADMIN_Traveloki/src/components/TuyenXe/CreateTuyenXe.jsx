@@ -2,25 +2,29 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { fetchAllSanBay } from "../../services/api/ListSanBay/apiDanhSachSanBay.js";
 import { createTuyenXe } from "../../services/api/TuyenXe/apiCreateTuyenXe.js";
+import {fetchAllTramDung} from "../../services/api/TramDung/apiDanhSachTramDung.js";
+import {notification} from "antd";
 
 const CreateTuyenXe = () => {
   const [tuyenxe, setTuyenXe] = useState({
-    DiemSanBay: "",
+    DiemKhoiHanh: "",
     DiemKetThuc: "",
     ThoiGianKhoiHanh: "",
     ThoiGianKetThuc: "",
   });
   const [sanBays, setSanBays] = useState([]);
+  const [tramDung, setTramDung] = useState([]);
+  const [tramList, setTramList] = useState([{ MaTramDung: "", SoKM: "", GiaVe: "" }]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const danhSachSanBay = async () => {
       try {
         const res = await fetchAllSanBay();
-        console.log(res);
         if (res && res.data) {
           setSanBays(res.data);
         } else {
@@ -31,6 +35,20 @@ const CreateTuyenXe = () => {
       }
     };
     danhSachSanBay();
+
+    const danhSachTramDung = async () => {
+      try {
+        const res = await fetchAllTramDung();
+        if (res && res.data) {
+          setTramDung(res.data);
+        } else {
+          throw new Error("Không thể lấy dữ liệu từ máy chủ");
+        }
+      } catch (error) {
+        console.log("Lỗi:", error);
+      }
+    }
+    danhSachTramDung();
   }, []);
 
   const handleChange = (e) => {
@@ -41,40 +59,62 @@ const CreateTuyenXe = () => {
     }));
   };
 
+  const handleTramChange = (e, index) => {
+    const { name, value } = e.target;
+    const updatedTramList = [...tramList];
+    updatedTramList[index][name] = value;
+    setTramList(updatedTramList);
+  };
+
+  const addTram = () => {
+    setTramList([...tramList, { MaTramDung: "", SoKM: "", GiaVe: "" }]);
+  };
+
+  const removeTramAtIndex = (index) => {
+    const updatedTramList = [...tramList];
+    if (updatedTramList.length > 1) {
+      updatedTramList.splice(index, 1);
+      setTramList(updatedTramList);
+    } else {
+      alert("Cần ít nhất một trạm dừng.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!tuyenxe.DiemSanBay || !tuyenxe.DiemKetThuc || !tuyenxe.ThoiGianKhoiHanh || !tuyenxe.ThoiGianKetThuc)
-    {
+    if (!tuyenxe.DiemKhoiHanh || !tuyenxe.DiemKetThuc || !tuyenxe.ThoiGianKhoiHanh || !tuyenxe.ThoiGianKetThuc) {
       alert("Vui lòng nhập đầy đủ thông tin");
       return;
     }
 
-    const thoiGianKhoiHanh = new Date(
-      `1970-01-01T${tuyenxe.ThoiGianKhoiHanh}:00Z`
-    );
-    const thoiGianKetThuc = new Date(
-      `1970-01-01T${tuyenxe.ThoiGianKetThuc}:00Z`
-    );
+    // const thoiGianKhoiHanh = new Date(`1970-01-01T${tuyenxe.ThoiGianKhoiHanh}:00Z`);
+    // const thoiGianKetThuc = new Date(`1970-01-01T${tuyenxe.ThoiGianKetThuc}:00Z`);
 
-    if (thoiGianKetThuc <= thoiGianKhoiHanh) {
+    if (tuyenxe.ThoiGianKetThuc <= tuyenxe.ThoiGianKhoiHanh) {
       alert("Thời gian kết thúc phải sau thời gian khởi hành");
       return;
     }
 
-    try {
-      const res = await createTuyenXe({
-        DiemSanBay: tuyenxe.DiemSanBay,
-        DiemKetThuc: tuyenxe.DiemKetThuc,
-        ThoiGianKhoiHanh: thoiGianKhoiHanh.toISOString(),
-        ThoiGianKetThuc: thoiGianKetThuc.toISOString(),
-      });
 
+    try {
+      const res = await createTuyenXe(
+        tuyenxe.DiemKhoiHanh,
+        tuyenxe.DiemKetThuc,
+        tuyenxe.ThoiGianKhoiHanh,
+        tuyenxe.ThoiGianKetThuc,
+        tramList
+      );
       if (res && res.EC === 0) {
-        alert("Thêm danh sách tuyến xe thành công");
-        navigate("/DanhSachTuyenXe");
+        notification.success({
+          message: "Thêm tuyến xe",
+          description: "Thêm tuyến xe thành công",
+        });
+        navigate("/road/list");
       } else {
-        console.error(res.data);
-        alert("Điểm kết thúc đã tồn tại vui lòng nhập điểm mới");
+       notification.error({
+          message: "Thêm tuyến xe",
+          description: `Thêm thất bại: ${res.EM}`,
+       })
       }
     } catch (error) {
       console.error(error);
@@ -91,20 +131,19 @@ const CreateTuyenXe = () => {
         <div className="w-1/2">
           <label className="text-black">Điểm khởi hành</label>
           <select
-            name="DiemSanBay"
-            value={tuyenxe.DiemSanBay}
+            name="DiemKhoiHanh"
+            value={tuyenxe.DiemKhoiHanh}
             onChange={handleChange}
             className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
           >
             <option value="">Chọn điểm khởi hành</option>
             {sanBays.map((sanBay) => (
-              <option key={sanBay._id} value={sanBay.MaSB}>
-                {sanBay.MaSB}
+              <option key={sanBay._id} value={sanBay.TenSanBay}>
+                {sanBay.TenSanBay} ({sanBay.MaSB})
               </option>
             ))}
           </select>
-
-          <label className="text-black pb-4">Điểm kết thúc</label>
+          <label className="text-black pb-4 ">Điểm kết thúc</label>
           <input
             type="text"
             name="DiemKetThuc"
@@ -131,22 +170,77 @@ const CreateTuyenXe = () => {
             className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
           />
 
+          {tramList.map((tram, index) => (
+            <div key={index} className="flex space-x-4 mt-4 items-center">
+              <div>
+                <label className="text-black pb-4">Mã trạm</label>
+                <select
+                  name="MaTramDung"
+                  value={tram.MaTramDung}
+                  onChange={(e) => handleTramChange(e, index)}
+                  className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
+                >
+                  <option value="">Chọn trạm</option>
+                  {tramDung.map((tramOption) => (
+                    <option key={tramOption._id} value={tramOption._id}>
+                      {tramOption.TenTramDung} ({tramOption.MaTramDung})
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-black pb-4">Số km</label>
+                <input
+                  name="SoKM"
+                  value={tram.SoKM}
+                  onChange={(e) => handleTramChange(e, index)}
+                  className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
+                />
+              </div>
+              <div>
+                <label className="text-black pb-4">Giá vé</label>
+                <input
+                  name="GiaVe"
+                  value={tram.GiaVe}
+                  onChange={(e) => handleTramChange(e, index)}
+                  className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => removeTramAtIndex(index)}
+                className="bg-red-500 p-2 hover:bg-red-700 text-white font-bold rounded mt-8"
+              >
+                <FontAwesomeIcon icon={faTrash}/>
+              </button>
+            </div>
+          ))}
+
+          <div className="flex justify-end space-x-4 mt-4">
+            <button
+              type="button"
+              onClick={addTram}
+              className="bg-green-500 px-4 py-2 hover:bg-green-700 text-white font-bold rounded"
+            >
+              Thêm trạm
+            </button>
+          </div>
           <div className="flex justify-center">
             <button
               disabled={
-                !tuyenxe.DiemSanBay ||
+                !tuyenxe.DiemKhoiHanh ||
                 !tuyenxe.DiemKetThuc ||
                 !tuyenxe.ThoiGianKhoiHanh ||
-                !tuyenxe.ThoiGianKetThuc // Kiểm tra thời gian kết thúc
+                !tuyenxe.ThoiGianKetThuc
               }
               onClick={handleSubmit}
               className="bg-blue-500 px-4 py-2 mt-4 w-fit h-fit hover:bg-blue-700 text-white font-bold rounded"
             >
               Thêm tuyến xe
             </button>
-            <Link className="px-4 py-4" to="">
+            <Link className="p-4" to="/road/list">
               <button className="bg-red-500 px-4 py-2 hover:bg-red-700 text-white font-bold rounded">
-                <FontAwesomeIcon icon={faXmark}/> Cancel
+               Cancel
               </button>
             </Link>
           </div>

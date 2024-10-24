@@ -14,6 +14,8 @@ import GetDetailCar from "../components/DetailCar/GetDetailCar.jsx";
 import EditDetailCar from "../components/DetailCar/UpdateDetail.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 import {Dashboard} from "../components/DashBoard/DashBoard.jsx";
+import DanhSachLichChay from "../components/LichChay/DanhSachLichChay.jsx";
+import CreateLichChay from "../components/LichChay/CreateLichChay.jsx";
 
 const router = createBrowserRouter([
   {
@@ -75,6 +77,14 @@ const router = createBrowserRouter([
         path: `EditDetailCar/:id`,
         element: <EditDetailCar />,
       },
+      {
+        path: 'schedule/list',
+        element: <DanhSachLichChay />,
+      },
+      {
+        path: "schedule/list/create",
+        element: <CreateLichChay/>
+      }
     ],
   },
 ]);

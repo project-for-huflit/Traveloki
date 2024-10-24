@@ -5,8 +5,8 @@ const TuyenSchema = new Schema({
   MaTuyen: { type: String, required: true, maxlength: 5 },
   DiemKhoiHanh: { type: String, required: true },
   DiemKetThuc: { type: String, required: true },
-  ThoiGianKhoiHanh: { type: Date, required: true },
-  ThoiGianKetThuc: { type: Date, required: true },
+  ThoiGianKhoiHanh: { type: String, required: true },
+  ThoiGianKetThuc: { type: String, required: true },
 },{
   timestamps: true,
   collection: COLLECTION_NAME
