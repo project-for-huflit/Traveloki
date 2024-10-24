@@ -12,6 +12,7 @@ const PhieuDatTauSchema = new Schema({
   NgayGioKhoiHanh: { type: String, required: true },
   ThanhTien: { type: Number, required: true },
   TrangThai: { type: Boolean, required: true },
+  userId:{ type:Schema.Types.ObjectId, ref:'user', required:false },
 },{
   timestamps: true,
   collection: COLLECTION_NAME
