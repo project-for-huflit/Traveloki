@@ -29,6 +29,7 @@ const BookingBus = () => {
     NgayGioKhoiHanh: `${dateParam}T${timeParam}`,
     ThanhTien: 0,
     TrangThai: false,
+    currency: "VND"
   });
 
   const increaseCount = () => {
@@ -179,6 +180,96 @@ const BookingBus = () => {
       alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
     }
   };
+
+
+  const handlePayment = async (e) => {
+    e.preventDefault()
+    console.log("Dữ liệu gửi đi:", bookingBus);
+
+    const {
+      Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm,
+      ThanhTien, Description,
+    } = bookingBus;
+
+    // Kiểm tra dữ liệu đầu vào
+    if (
+      !Sdt || !MaTram || !DiemSanBay || !DiemDon_Tra ||
+      !NgayGioDat || !SoKm || !ThanhTien || !Description
+    ) { alert("Vui lòng nhập đầy đủ thông tin"); return; }
+
+    try {
+      const resBooking = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/BookingCar`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json", },
+          body: JSON.stringify({ MaDetailCar: id, Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm, ThanhTien, Description }),
+        }
+      );
+
+      // Xử lý phản hồi từ server
+      const data = await resBooking.json();
+      console.log("Phản hồi từ server đặt xe:", data);
+
+      if (resBooking.ok) {
+        const datXeBus = data; // Chỉnh sửa nếu cần thiết để phù hợp với cấu trúc dữ liệu trả về
+        console.log("Đã nhận được ID đơn hàng:", datXeBus._id);
+
+        // req lên server pointer để chuyển hướng đến payment gateway
+        setTimeout(() => {
+          window.location.replace("https://pointer.io.vn/payment-gateway?token=671717b9dd003cf4eca7d461")
+        }, 2000);
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_API_PRESSPAY_BASE_URL}/api/v1/payment`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: 'Bearer pk_presspay_82fad953e33c472656094ab3b6a3d7d3553d3215ea09fda4e7d363caae555811'
+              },
+              body: JSON.stringify({
+                private_key: import.meta.env.VITE_SECRET_API_KEY_POINTER,
+                amount: ThanhTien,
+                currency: bookingBus.currency,
+                message: bookingBus.Description,
+                return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}list/cars/result`,
+                orderID: datXeBus._id,
+                userID: "userO1",
+              }),
+            }
+          );
+          // const body = {
+          //   private_key:import.meta.env.VITE_SECRET_API_KEY_POINTER,
+          //   amount:bookingCar.ThanhTien,
+          //   currency:bookingCar.currency,
+          //   message:bookingCar.Description,
+          //   return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}list/cars/result`,
+          //   orderID:datXeOto._id,
+          //   userID:"userO1"
+          // }
+          // const response = await paymentSend(body)
+          const paymentData = await response.json();
+          console.log("Phản hồi từ server tạo yêu cầu từ pointer:", paymentData);
+
+
+          // if(response.status === 200){
+          //     window.location.replace(response.data.url)
+          // } else {
+          //   alert(paymentData.error || "Đã xảy ra lỗi khi truyền dữ liệu - 265");
+          // }
+        } catch (error) {
+          console.error("Lỗi khi truyền dữ liệu:", error);
+          alert("Không thể truyền dữ liệu");
+        }
+      } else {
+        alert(data.error || "Đã xảy ra lỗi khi đặt xe");
+      }
+    } catch (error) {
+      console.error("Lỗi khi kết nối tới máy chủ:", error);
+      alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
+    }
+  }
 
   if (isLoading)
     return (

@@ -9,7 +9,7 @@ import "swagger-ui-react/swagger-ui.css"
  * @example
  * @code element={<AuthGuard><Profile /></AuthGuard>}
  */
-import AuthGuard from "../guards/AuthGuard.js";
+// import AuthGuard from "../guards/AuthGuard.js";
 
 import BookingCar from "../components/booking/BookingCar.jsx";
 import ListVehicle from "../components/booking/ListMain.jsx";
@@ -22,6 +22,7 @@ import LichSuDatCho from "../components/datChoCuaToi/LichSuDatCho.jsx";
 import CancelTicketBus from "../components/cancel/CancelTicketBus.jsx";
 import CancelTicketTrain from "../components/cancel/CancelTicketTau.jsx";
 import CancelTicket from "../components/cancel/CancelTicket.jsx";
+import Paymentsuccess from "../components/success/Paymentsuccess.jsx";
 import { RatingCar } from "../components/rating/RatingCar.jsx";
 import { RatingBus } from "../components/rating/RatingBus.jsx";
 import { RatingTau } from "../components/rating/RatingTau.jsx";
@@ -76,7 +77,11 @@ const router = createBrowserRouter([
             { path: "trips-bus", element: <RatingBus /> },
             { path: "trips-train", element: <RatingTau /> }
         ]
-      }
+      },
+      // {
+      //   path: "payment",
+      //   element: <Paymentsuccess />,
+      // }
     ]
   },
   {
@@ -98,6 +103,7 @@ const router = createBrowserRouter([
       { path: "list/cars", element: <BookingCar />, },
       { path: "list/bus", element: <BookingBus />, },
       { path: "list/trains", element: <BookingTrain />, },
+      { path: "list/cars/result", element: <Paymentsuccess /> },
     ],
   },
   { path: 'swagger', element: <SwaggerUI url="https://petstore.swagger.io/v2/swagger.json" /> }

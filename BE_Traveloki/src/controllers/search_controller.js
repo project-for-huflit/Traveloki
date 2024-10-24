@@ -1,6 +1,6 @@
 const express = require("express");
 const session = require("express-session");
-const { DanhSachSanBay } = require("../models/sanBay.model");
+const { SanBay } = require("../models/sanBay.model");
 const { TramDung } = require("../models/tramDung.model");
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
@@ -19,7 +19,7 @@ class SearchController {
 const SuggestsAirpost = async (req, res) => {
   try {
     const { query } = req.query;
-    const suggestions = await DanhSachSanBay.find({
+    const suggestions = await SanBay.find({
       TenSanBay: { $regex: query, $options: "i" },
     }).limit(10);
 
@@ -48,7 +48,7 @@ const SuggestsTramDung = async (req, res) => {
 
     const maTuyens = tramDungSuggestions.map((tramDung) => tramDung.MaTuyen);
 
-    const sanBayTuongUng = await DanhSachSanBay.find({
+    const sanBayTuongUng = await SanBay.find({
       MaSB: { $in: maTuyens },
     });
 

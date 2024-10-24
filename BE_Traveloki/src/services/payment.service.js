@@ -3,7 +3,7 @@ require('dotenv').config()
 const { Pointer } = require('pointer-wallet');
 const { getInfoData } = require('../utils');
 
-class PressPay {
+class PressPayService {
   static async paymentCar() {
 
     // Find OrderID
@@ -31,5 +31,5 @@ class PressPay {
 }
 
 module.exports = {
-  PressPay,
+  PressPayService,
 };

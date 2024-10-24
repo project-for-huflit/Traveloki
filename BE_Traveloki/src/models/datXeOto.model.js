@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 const COLLECTION_NAME = 'DatXeOtos'
 
 const DatXeOtoSchema = new Schema({
@@ -12,6 +12,7 @@ const DatXeOtoSchema = new Schema({
   ThanhTien: { type: Number, required: true },
   Trangthai: { type: Boolean, required: true },
   Description: { type: String, maxlength: 500 },
+  userId:{ type:Schema.Types.ObjectId, ref:'user', required:false },
 },{
   timestamps: true,
   collection: COLLECTION_NAME
