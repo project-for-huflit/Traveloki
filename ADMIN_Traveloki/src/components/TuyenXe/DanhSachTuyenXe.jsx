@@ -7,35 +7,20 @@ import { Popconfirm } from "antd";
 
 const DanhSachTuyenXe = () => {
   const [tuyenxe, setTuyenxe] = useState([]);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const formatDateTime = (isoString) => {
-    const options = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(isoString).toLocaleString("vi-VN", options);
-  };
 
   useEffect(() => {
+    const fetchTuyenXe = async () => {
+      try {
+        const res = await fetchAllTuyenXe();
+        setTuyenxe(res.data || []);
+      } catch (error) {
+        console.error("Không thể lấy dữ liệu phương tiện:", error);
+      }
+    };
     fetchTuyenXe();
   }, []);
 
-  const fetchTuyenXe = async () => {
-    try {
-      const res = await fetchAllTuyenXe();
-      setTuyenxe(res.tuyen || []);
-    } catch (error) {
-      setError("Không thể lấy dữ liệu từ máy chủ");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  console.log("check tuyenxe", tuyenxe)
   const handleDeleteTuyenXe = async (_id) => {
     try {
       const res = await deleteTuyenXe(_id);
@@ -52,19 +37,6 @@ const DanhSachTuyenXe = () => {
     }
   };
 
-  if (isLoading)
-    return (
-      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-        Loading...
-      </div>
-    );
-  if (error)
-    return (
-      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-        Error: {error}
-      </div>
-    );
-
   return (
     <div className="w-auto h-full bg-white p-4">
       <div className="flex justify-between items-center mb-4">
@@ -77,11 +49,11 @@ const DanhSachTuyenXe = () => {
         <Table>
           <TableHead>
             <TableRow sx={{ backgroundColor: '#e3f2fd' }}>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Mã tuyến xe</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Mã tuyến</TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Điểm khởi hành</TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Điểm kết thúc</TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Thời gian khởi hành</TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Thời gian kết thúc</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Thời gian hoạt động</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Số trạm dừng</TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Hành động</TableCell>
             </TableRow>
           </TableHead>
@@ -89,10 +61,10 @@ const DanhSachTuyenXe = () => {
             {tuyenxe.map((tuyenXe) => (
               <TableRow key={tuyenXe._id} sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}>
                 <TableCell>{tuyenXe.MaTuyen}</TableCell>
-                <TableCell>{tuyenXe.DiemSanBay}</TableCell>
+                <TableCell>{tuyenXe.DiemKhoiHanh}</TableCell>
                 <TableCell>{tuyenXe.DiemKetThuc}</TableCell>
-                <TableCell>{formatDateTime(tuyenXe.ThoiGianKhoiHanh)}</TableCell>
-                <TableCell>{formatDateTime(tuyenXe.ThoiGianKetThuc)}</TableCell>
+                <TableCell>{tuyenXe.ThoiGianKhoiHanh} - {tuyenXe.ThoiGianKetThuc}</TableCell>
+                <TableCell>{tuyenXe.tramDungs.length}</TableCell>
                 <TableCell>
                   <Popconfirm
                     title="Bạn có chắc chắn muốn xóa tuyến xe này?"

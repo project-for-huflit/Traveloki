@@ -23,7 +23,7 @@ const getAllTuyenService = async () => {
             DiemKetThuc: item.MaTuyen.DiemKetThuc,
             ThoiGianKhoiHanh: item.MaTuyen.ThoiGianKhoiHanh,
             ThoiGianKetThuc: item.MaTuyen.ThoiGianKetThuc,
-            tramDungs: [], // khởi tạo mảng trạm dừng trống
+            tramDungs: [],
           },
         };
       }
@@ -32,7 +32,9 @@ const getAllTuyenService = async () => {
         _id: item.MaTramDung._id,
         MaTramDung: item.MaTramDung.MaTramDung,
         TenTramDung: item.MaTramDung.TenTramDung,
-        DiaChi: item.MaTramDung.DiaChi,
+        DiaChi: item.DiaChi,
+        SoKM: item.SoKM,
+        GiaVe: item.GiaVe,
       });
     });
 
@@ -54,8 +56,8 @@ const getAllTuyenService = async () => {
   }
 }
 
-const createTuyenService = async (items, DiemKhoiHanh, DiemKetThuc, ThoiGianKhoiHanh, ThoiGianKetThuc) => {
-  if (!items || items.length === 0) {
+const createTuyenService = async (TramList, DiemKhoiHanh, DiemKetThuc, ThoiGianKhoiHanh, ThoiGianKetThuc) => {
+  if (!TramList || TramList.length === 0) {
     return {
       EC: 1,
       EM: "Không thể tạo tuyến vì không có trạm dừng",
@@ -99,7 +101,7 @@ const createTuyenService = async (items, DiemKhoiHanh, DiemKetThuc, ThoiGianKhoi
     let lastTuyenTramDung = await TuyenTramDung.findOne().sort({ MaTuyenTramDung: -1 }).exec();
     let lastNumberTTD = lastTuyenTramDung ? parseInt(lastTuyenTramDung.MaTuyenTramDung.slice(3), 10) : 0;
 
-    const tuyenTramDung = await TuyenTramDung.insertMany(items.map((item, index) => {
+    const tuyenTramDung = await TuyenTramDung.insertMany(TramList.map((item, index) => {
       const newMaTuyenTramDung = `TTD${lastNumberTTD + index + 1}`;
       return {
         MaTuyenTramDung: newMaTuyenTramDung,

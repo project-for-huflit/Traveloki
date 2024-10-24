@@ -10,23 +10,22 @@ const DanhSachPhuongTien = () => {
   const [isModalVisible, setIsModalVisible] = useState(false); // Trạng thái hiển thị Modal
   const [phuongTienToDelete, setPhuongTienToDelete] = useState(null); // Trạng thái lưu phương tiện cần xóa
 
-  // Hàm lấy danh sách phương tiện từ API
   useEffect(() => {
     const danhSachPhuongTien = async () => {
       try {
         const res = await fetchAllPhuongTien();
-        setPhuongTien(res.data || []); // Cập nhật danh sách phương tiện
+        setPhuongTien(res.data || []);
       } catch (error) {
         console.error("Không thể lấy dữ liệu phương tiện:", error);
       }
     };
-    danhSachPhuongTien(); // Gọi hàm lấy dữ liệu
+    danhSachPhuongTien();
   }, []);
 
   // Hàm hiển thị Modal xác nhận xóa
   const showModal = (phuongTien) => {
-    setPhuongTienToDelete(phuongTien); // Lưu phương tiện muốn xóa
-    setIsModalVisible(true); // Hiển thị Modal
+    setPhuongTienToDelete(phuongTien);
+    setIsModalVisible(true);
   };
 
   // Hàm xử lý xóa phương tiện
@@ -73,6 +72,7 @@ const DanhSachPhuongTien = () => {
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Mã PT</TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Tên Phương Tiện</TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Loại PT</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Sân bay hoạt động</TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Số ghế </TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Biển Số</TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Hình ảnh</TableCell>
@@ -85,12 +85,17 @@ const DanhSachPhuongTien = () => {
                 <TableCell>{phuongTien.MaPT}</TableCell>
                 <TableCell>{phuongTien.TenPhuongTien}</TableCell>
                 <TableCell>{phuongTien.LoaiPT}</TableCell>
+                <TableCell>{phuongTien.MaSB.TenSanBay}</TableCell>
                 <TableCell>{phuongTien.SoGheToiDa}</TableCell>
                 <TableCell>{phuongTien.MaSoXe}</TableCell>
-                <TableCell>{phuongTien.Image}</TableCell>
+                <TableCell> <img
+                  src={phuongTien.Image}
+                  alt={phuongTien.TenPhuongTien}
+                  style={{width: '100px', height: 'auto'}}
+                /></TableCell>
                 <TableCell>
                   <IconButton color="error" onClick={() => showModal(phuongTien)}>
-                    <DeleteIcon />
+                  <DeleteIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>

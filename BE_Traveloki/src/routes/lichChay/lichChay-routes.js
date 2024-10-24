@@ -1,5 +1,3 @@
-
-
 const express = require("express");
 const route = express.Router();
 const {getAllLichChay, createLichChay, deleteLichChay, updateLichChay} = require("../../controllers/lichChay_controller");

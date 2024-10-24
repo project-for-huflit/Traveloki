@@ -1,7 +1,7 @@
 import axios from '../../axiosCustomize.js';
 
 const fetchAllTuyenXe = async () => {
-  const URL_BACKEND = "/api/GetTuyenXe";
+  const URL_BACKEND = "/api/GetTuyen";
   return axios.get(URL_BACKEND);
 }
 
