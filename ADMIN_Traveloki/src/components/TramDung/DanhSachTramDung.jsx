@@ -1,109 +1,105 @@
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
-import {deleteTramDung, fetchAllTramDung} from "../../services/api/TramDung/apiDanhSachTramDung.js";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Link } from "react-router-dom";
+import { fetchAllTramDung, deleteTramDung } from "../../services/api/TramDung/apiDanhSachTramDung";
+import {Modal as AntdModal, notification} from "antd";
 
 const DanhSachTramDung = () => {
   const [tramDung, setTramDung] = useState([]);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const fetchTramDung = async () => {
-    try {
-      const res = await fetchAllTramDung()
-      // if (!res.ok) {
-      //   throw new Error("Network response was not ok");
-      // }
-
-      setTramDung(res.tramDung || []);
-    } catch (error) {
-      setError("Không thể lấy dữ liệu từ máy chủ");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [tramToDelete, setTramToDelete] = useState(null);
 
   useEffect(() => {
-    fetchTramDung();
+    const danhSachTramDung = async () => {
+      try {
+        const res = await fetchAllTramDung();
+        setTramDung(res.data || []);
+      } catch (error) {
+        console.error("Không thể lấy dữ liệu trạm dừng:", error);
+      }
+    };
+    danhSachTramDung();
   }, []);
 
-  const handleDeleteTramDung = async (_id) => {
-    try {
-      const res = await deleteTramDung(_id);
-      if (res.ok) {
-        alert("Xóa thành công");
-        fetchTramDung();
-      } else {
-        const { message } = await res.json();
-        alert(`Xóa thất bại: ${message}`);
-      }
-    } catch (error) {
-      console.error("Error deleting tram dung:", error);
-      alert("Đã xảy ra lỗi khi xóa trạm dừng");
-    }
+  const showModal = (tram) => {
+    setTramToDelete(tram);
+    setIsModalVisible(true);
   };
 
-  if (isLoading) {
-    return (
-      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-        Loading...
-      </div>
-    );
-  }
+  const handleOk = async () => {
+    if (tramToDelete) {
+      try {
+        const res = await deleteTramDung(tramToDelete._id);
+        if (res && res.EC === 0) {
+          notification.success({
+            message: "Xóa trạm dừng",
+            description: "Xóa trạm dừng thành công"
+          });
+          setTramDung((prev) => prev.filter((tram) => tram._id !== tramToDelete._id));
+        } else {
+          alert(res.EM);
+        }
+      } catch (error) {
+        console.error("Error deleting tram dung:", error);
+        alert("Đã xảy ra lỗi khi xóa trạm dừng");
+      }
+    }
+    setIsModalVisible(false);
+    setTramToDelete(null);
+  };
 
-  if (error) {
-    return (
-      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-        Error: {error}
-      </div>
-    );
-  }
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setTramToDelete(null);
+  };
 
   return (
-    <div className="w-auto h-full bg-white">
-      <div className="flex w-auto">
-        <h1 className="text-black w-1/2 p-4 text-4xl">Danh sách trạm dừng</h1>
-        <div className="flex w-1/2 mr-2 justify-end">
-          <button className="bg-blue-500 px-4 py-2 mt-4 w-fit h-fit hover:bg-blue-700 text-white font-bold rounded">
-            <a className="no-underline text-white" href="/CreateTramDung">
-              Thêm trạm dừng
-            </a>
-          </button>
-        </div>
+    <div className="w-auto h-full bg-white p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-black text-4xl">Danh sách trạm dừng</h1>
+        <Link to="/waypoint/list/create">
+          <Button variant="contained" color="primary">Thêm trạm dừng</Button>
+        </Link>
       </div>
-      <div className="p-2">
-        <table className="w-full">
-          <thead>
-            <tr className="bg-green-400">
-              <th className="border px-4 py-2">Mã Trạm</th>
-              <th className="border px-4 py-2">Mã Tuyến</th>
-              <th className="border px-4 py-2">Địa Chỉ</th>
-              <th className="border px-4 py-2">Số KM</th>
-              <th className="border px-4 py-2">Giá Vé</th>
-              <th className="border px-4 py-2">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ backgroundColor: '#e3f2fd' }}>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Mã Trạm</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Tên Trạm Dừng</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Địa Chỉ</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Hành động</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {tramDung.map((tram) => (
-              <tr key={tram._id} className="text-black">
-                <td className="border px-4 py-2">{tram.MaTram}</td>
-                <td className="border px-4 py-2">{tram.MaTuyen}</td>
-                <td className="border px-4 py-2">{tram.DiaChi}</td>
-                <td className="border px-4 py-2">{tram.SoKM}</td>
-                <td className="border px-4 py-2">{tram.GiaTienVe}</td>
-                <td className="border px-4 py-2 flex justify-center">
-                  <button
-                    className="bg-red-500 px-4 py-2 w-fit h-fit hover:bg-red-700 text-white font-bold rounded"
-                    onClick={() => handleDeleteTramDung(tram._id)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                </td>
-              </tr>
+              <TableRow key={tram._id} sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}>
+                <TableCell>{tram.MaTramDung}</TableCell>
+                <TableCell>{tram.TenTramDung}</TableCell>
+                <TableCell>{tram.DiaChi}</TableCell>
+                <TableCell>
+                  <IconButton color="error" onClick={() => showModal(tram)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {/* Modal xác nhận xóa */}
+      <AntdModal
+        title="Xác nhận xóa"
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText="Có"
+        cancelText="Không"
+      >
+        <p>Bạn có chắc chắn muốn xóa trạm dừng này?</p>
+      </AntdModal>
     </div>
   );
 };

@@ -57,6 +57,7 @@ const createTramDungService = async (DiaChi, TenTramDung) => {
       data: result,
     };
   }catch (error){
+    console.log(error);
     return {
       EC: 1,
       EM: "Không thể tạo trạm dừng",

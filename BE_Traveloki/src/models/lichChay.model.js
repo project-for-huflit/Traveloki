@@ -13,7 +13,7 @@ const LichChaySchema = new Schema({
       ref: 'Tuyen'
     },
     ngayKhoiHanh: {
-      type: Date,
+      type: String,
       required: true
     },
     gioKhoiHanh: {

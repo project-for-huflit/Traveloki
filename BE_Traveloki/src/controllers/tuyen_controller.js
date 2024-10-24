@@ -20,8 +20,9 @@ const GetTuyen = async (req, res) => {
 };
 
 const CreateTuyen = async (req, res) => {
-  const {items, DiemKhoiHanh, DiemKetThuc, ThoiGianKhoiHanh, ThoiGianKetThuc} = req.body;
-  const data = await createTuyenService(items, DiemKhoiHanh, DiemKetThuc, ThoiGianKhoiHanh, ThoiGianKetThuc);
+  console.log("check",req.body);
+  const {TramList, DiemKhoiHanh, DiemKetThuc, ThoiGianKhoiHanh, ThoiGianKetThuc} = req.body;
+  const data = await createTuyenService(TramList, DiemKhoiHanh, DiemKetThuc, ThoiGianKhoiHanh, ThoiGianKetThuc);
   return res.status(200).json(data)
 };
 
