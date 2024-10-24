@@ -1,8 +1,17 @@
 import axios from '../../axiosCustomize.js';
 
-const createTuyenXe = async () => {
-  const URL_BACKEND = "/api/CreateTuyenXe";
-  return axios.post(URL_BACKEND);
+const createTuyenXe = ( DiemKhoiHanh, DiemKetThuc, ThoiGianKhoiHanh, ThoiGianKetThuc, TramList) => {
+
+  const data = {
+    DiemKhoiHanh: DiemKhoiHanh,
+    DiemKetThuc: DiemKetThuc,
+    ThoiGianKhoiHanh: ThoiGianKhoiHanh,
+    ThoiGianKetThuc: ThoiGianKetThuc,
+    TramList: TramList,
+  };
+  console.log("check data",data);
+  const URL_BACKEND = "/api/CreateTuyen";
+  return axios.post(URL_BACKEND, data);
 }
 
 export {

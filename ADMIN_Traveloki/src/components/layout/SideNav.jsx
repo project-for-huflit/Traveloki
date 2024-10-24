@@ -153,6 +153,64 @@ const SideNav = () => {
             </ListItemButton>
             </NavLink>
           </ListItem>
+          <ListItem  disablePadding sx={{ display: 'block' }}>
+            <NavLink
+              to="/vehicle/list"
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-blue-500 bg-gray-200' // Màu khi active
+                  : 'text-gray-700 hover:bg-gray-100'
+              }
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    justifyContent: 'center',
+                    mr: open ? 3 : "auto",
+                  }}
+                >
+                  <EmojiTransportationIcon />
+                </ListItemIcon>
+                <ListItemText primary="Danh sách phương tiện" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </NavLink>
+          </ListItem>
+          <ListItem  disablePadding sx={{ display: 'block' }}>
+            <NavLink
+              to="/waypoint/list"
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-blue-500 bg-gray-200' // Màu khi active
+                  : 'text-gray-700 hover:bg-gray-100'
+              }
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    justifyContent: 'center',
+                    mr: open ? 3 : "auto",
+                  }}
+                >
+                  <AddLocationIcon />
+                </ListItemIcon>
+                <ListItemText primary="Danh sách Trạm Dừng" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </NavLink>
+          </ListItem>
           <ListItem  disablePadding sx={{ display: 'block' }} >
             <NavLink
               to="/road/list"
@@ -184,94 +242,7 @@ const SideNav = () => {
           </ListItem>
           <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/vehicle/list"
-              className={({ isActive }) =>
-                isActive
-                  ? 'text-blue-500 bg-gray-200' // Màu khi active
-                  : 'text-gray-700 hover:bg-gray-100'
-              }
-            >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  justifyContent: 'center',
-                  mr: open ? 3 : "auto",
-                }}
-              >
-                <EmojiTransportationIcon />
-              </ListItemIcon>
-              <ListItemText primary="Danh sách phương tiện" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-            </NavLink>
-          </ListItem>
-          <ListItem  disablePadding sx={{ display: 'block' }}>
-            <NavLink
-              to="/waypoint/list"
-              className={({ isActive }) =>
-                isActive
-                  ? 'text-blue-500 bg-gray-200' // Màu khi active
-                  : 'text-gray-700 hover:bg-gray-100'
-              }
-            >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  justifyContent: 'center',
-                  mr: open ? 3 : "auto",
-                }}
-              >
-                <AddLocationIcon />
-              </ListItemIcon>
-              <ListItemText primary="Danh sách Trạm Dừng" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-            </NavLink>
-          </ListItem>
-          <ListItem  disablePadding sx={{ display: 'block' }}>
-            <NavLink
-              to="/detail-car/list"
-              className={({ isActive }) =>
-                isActive
-                  ? 'text-blue-500 bg-gray-200' // Màu khi active
-                  : 'text-gray-700 hover:bg-gray-100'
-              }
-            >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  justifyContent: 'center',
-                  mr: open ? 3 : "auto",
-                }}
-              >
-                <DirectionsCarIcon />
-              </ListItemIcon>
-              <ListItemText primary="Danh sách Xe" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-            </NavLink>
-          </ListItem>
-          <ListItem  disablePadding sx={{ display: 'block' }}>
-            <NavLink
-              to="/"
+              to="/schedule/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -295,6 +266,35 @@ const SideNav = () => {
                   <ScheduleIcon />
                 </ListItemIcon>
                 <ListItemText primary="Lịch chạy" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </NavLink>
+          </ListItem>
+          <ListItem  disablePadding sx={{ display: 'block' }}>
+            <NavLink
+              to="/detail-car/list"
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-blue-500 bg-gray-200' // Màu khi active
+                  : 'text-gray-700 hover:bg-gray-100'
+              }
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    justifyContent: 'center',
+                    mr: open ? 3 : "auto",
+                  }}
+                >
+                  <DirectionsCarIcon />
+                </ListItemIcon>
+                <ListItemText primary="Danh sách Xe" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </NavLink>
           </ListItem>
