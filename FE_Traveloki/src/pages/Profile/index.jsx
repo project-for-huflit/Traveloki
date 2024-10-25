@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import { AuthContext } from "../../context/auth.provider";
+import { AuthProvider } from "../../context/auth.provider";
 
 function ProfleUser() {
-  const { isToken } = useContext(AuthContext);
+  // const { isToken } = useContext(AuthProvider);
   return (
     <div className="">
       <h1>Profile</h1>
-      <p>Your secret token is: {isToken}</p>
+      <p>Your secret token is: </p>
     </div>
    );
 }
