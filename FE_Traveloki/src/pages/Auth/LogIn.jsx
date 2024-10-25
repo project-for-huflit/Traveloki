@@ -55,21 +55,23 @@ const Login = () => {
 
     try {
       const response = await loginApi(credentials)
-      const { accessToken, refreshToken } = response.metadata.tokens;
+      // console.log(response.data)
+      const { accessToken, refreshToken } = response.data.metadata.tokens;
+      const { user } = response.data.metadata;
       // Store the tokens in localStorage or secure cookie for later use
-      // console.log(response?.metadata);
-      // console.log(response?.metadata.user);
-      // console.log(response?.metadata.tokens);
+      console.log(response?.data.metadata);
+      console.log(response?.data.metadata.user);
+      console.log(response?.data.metadata.tokens);
       // console.log(response?.metadata.tokens.accessToken);
       // console.log(response?.metadata.tokens.refreshToken);
       console.log(JSON.stringify(response))
 
       localStorage.setItem('token', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('user', JSON.stringify(response.metadata.user));
+      localStorage.setItem('user', JSON.stringify(user));
 
       // Redirect or perform other actions upon successful login
-      if(response.status == 200) {
+      if(response.data.status == 200) {
         // setSuccess('Đăng nhập thành công!');
         navigate('/home');
       } else {
@@ -78,7 +80,7 @@ const Login = () => {
     } catch (error) {
       setError('Có lỗi xảy ra trong quá trình đăng nhập. Vui lòng thử lại.');
     }
-  };
+  }
   return (
     <div
       className="flex items-center justify-center py-9 min-h-screen bg-center bg-cover"
@@ -162,7 +164,6 @@ const Login = () => {
           <button
             type="submit"
             className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-            // onClick={handleLogin}
           >
             Đăng Nhập
           </button>
