@@ -18,7 +18,11 @@ function showProfile(user) {
 
   const handleLogout = async (e) => {
     e.preventDefault();
-    const response = await logoutApi();
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+    window.location.reload();
+    setAnchorEl(null);
   };
 
   return (
@@ -34,7 +38,7 @@ function showProfile(user) {
         onClick={handleClick}
         className="text-white"
       >
-        Welcome, {user.name}!
+        Welcome, {user.user}!
       </Button>
       <Menu
         id="basic-menu"
@@ -51,7 +55,7 @@ function showProfile(user) {
         <Link to={'/user/account'}>
           <MenuItem onClick={handleClose}>My account</MenuItem>
         </Link>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
   );
