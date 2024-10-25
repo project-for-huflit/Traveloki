@@ -187,7 +187,7 @@ const SearchBar = () => {
         <div className="flex justify-center flex-col">
         <div className="h-fit bg-white rounded-xl p-4 justify-center grid xl:grid-cols-12 sm:grid-cols-6 grid-cols-2 w-full">
           <div className="h-fit sm:col-span-2 col-span-1 p-5 w-full">
-            <div className="suggestion-container-airport">
+            <div className="suggestion-container-airport relative">
               <label className="text-black font-bold flex mb-2 items-center space-x-2">
                 Từ sân bay
               </label>
@@ -210,7 +210,7 @@ const SearchBar = () => {
                 />
               </div>
               {showAirportSuggestions && (
-                <ul className="w-1/4 p-2 top-[21rem] bg-gray-100 z-0 h-fit min:h-1/4 absolute overflow-auto mt-6 rounded-lg">
+                <ul className="w-1/4 p-2 min-w-[239px] top-[40px] bg-gray-100 z-0 h-fit min:h-1/4 absolute overflow-auto mt-6 rounded-lg">
                   {suggestions.sanBays.map((sanBay, index) => (
                     <li
                       className=" hover:bg-blue-100 p-2 rounded-md border-b-gray-400 border-0 border-b-2 "
@@ -228,7 +228,7 @@ const SearchBar = () => {
             ⇌
           </span>
           <div className="h-fit pt-5 col-span-1 sm:col-span-3 pr-5 w-full">
-            <div className="suggestion-container-tram">
+            <div className="suggestion-container-tram relative">
               <label className="text-black font-bold flex mb-2 items-center space-x-2">
                 Đến khu vực địa chỉ{" "}
               </label>
@@ -250,7 +250,7 @@ const SearchBar = () => {
                 />
               </div>
               {showTramDungSuggestions && (
-                <ul className="w-1/4 p-2 top-[21rem] bg-gray-100 z-0 h-fit min:h-1/4 absolute overflow-auto mt-6 rounded-lg">
+                <ul className="w-1/4 p-2 min-w-[280px] top-[45px] bg-gray-100 z-0 h-fit min:h-1/4 absolute overflow-auto mt-6 rounded-lg">
                   {suggestions.tramDungs.map((suggestion, index) => (
                     <li
                       className=" hover:bg-blue-100 p-2 rounded-md border-b-gray-400 border-0 border-b-2 "
