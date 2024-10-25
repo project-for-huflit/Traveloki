@@ -1,6 +1,6 @@
-function showProfile({user}) {
+function showProfile(user) {
   return (
-    <div className="">
+    <div className="text-white">
       <h2>Welcome, {user.name}!</h2>
     </div>
    );

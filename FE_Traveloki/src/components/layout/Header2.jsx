@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate  } from "react-router-dom";
 import logoTravelokiWhite from "../../assets/logoTravelokiWhite.png";
 import icVN from "../../assets/iconVN.png";
 import icPercent from "../../assets/iconPercent.png";
 import backgroundImage from "../../assets/introPic.png";
-import icUser from "../../assets/iconUser.png";
+// import icUser from "../../assets/iconUser.png";
 
-import api from '../../services/axios.customize'
+// import api from '../../services/axios.customize'
 
 import DirectToAuthPage from './directToAuthPage'
 import ShowProfile from './showProfile';
@@ -33,6 +33,8 @@ const Header2 = () => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     if (user) {
+      console.log(user.name);
+      // const _user = JSON.parse(user);
       setUser(user.name);
     }
   }, []);
