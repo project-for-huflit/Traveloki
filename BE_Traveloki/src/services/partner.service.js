@@ -1,5 +1,6 @@
 'use strict'
 
+const { BadRequestError } = require('../middlewares/error.response')
 const { DoiTac } = require('../models/partner.model')
 
 const Role = {
@@ -34,12 +35,11 @@ class PartnerService {
 
   static findOrCreatePartner = async () => {
     const existPartner = await DoiTac.findOne({ email }).lean()
-    if(!existPartner) {
-      existPartner = await DoiTac.create({ email })
-      console.log("New user created: ", existPartner)
-    } else {
+    if(existPartner) throw new BadRequestError('Error: Partner already registered!')
 
-    }
+    existPartner = await DoiTac.create({ email })
+    console.log("New user created: ", existPartner)
+    return existPartner
   }
 
 
