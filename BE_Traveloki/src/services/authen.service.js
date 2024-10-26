@@ -1,7 +1,7 @@
 'use strict'
 // lib
 require('dotenv').config()
-// const { PointerStrategy } = require("sso-pointer");
+const { PointerStrategy } = require("sso-pointer");
 const crypto = require('node:crypto');
 const bcrypt = require('bcrypt')
 // const { type } = require("node:os");
@@ -10,12 +10,12 @@ const bcrypt = require('bcrypt')
 // depenc...
 const { DoiTac } = require('../models/partner.model')
 const { Account } = require('../models/account.model')
-const { BadRequestError, ForbidenError, AuthFailureError } = require('../middlewares/error.response')
+const { BadRequestError, ForbidenError, AuthFailureError, NotFoundError } = require('../middlewares/error.response')
 const UserService = require('./account.service')
 const PartnerService = require('./partner.service')
 const KeyTokenService = require('./keyToken.service')
 const { getInfoData } = require('../utils/')
-const { createTokenPair } = require('./auth/utils');
+const { createTokenPair, getAccessToken, getUserProfile } = require('./auth/utils');
 
 const Role = {
   USER: 'USER',
@@ -60,7 +60,7 @@ class  AuthJWTService {
   static register = async ({ name, email, password }) => {
     try {
       const modelUser = await Account.findOne({ email }).lean()
-      if (modelUser) throw new BadRequestError('Error: Shop already registered!')
+      if (modelUser) throw new BadRequestError('Error: User already registered!')
 
       const passwordHash = await bcrypt.hash(password, 10)
 
@@ -317,42 +317,59 @@ class AuthSSOService {
     }
   }
   static async loginWithPointer(code) {
-    // const getPartnerId = await PartnerService.getPartnerId({ _id })
-    // if(!getPartnerId) throw new BadRequestError('Partner not registered!')
+    if(!code) throw new NotFoundError('Authorization code is required!')
 
-    // const pointer = new PointerStrategy({
-    //   clientId: getPartnerId._id,
-    //   clientSecret: SECRET_POINTER,
-    //   callbackUrl: ".",
-    // });
-    const pointer = new PointerStrategy({ apiKey: "" });
+    const getPartnerId = await PartnerService.findByEmail({ email })
+    if(!getPartnerId) throw new BadRequestError('Partner not registered!')
 
-    const getAccessToken = async () => {
-      try {
-        const rs = await pointer.getAccessToken("dd34c58f8000a0e4e573e8eb");
-        console.log(rs);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const { accessToken } = getAccessToken();
+    // const pointer = new PointerStrategy({ apiKey: "" });
 
-    const verifyToken = async () => {
-      try {
-        const rs = await pointer.verifyAccessToken({
-          accessToken: accessToken,
-          // Synchronizes login sessions between apps but increases response time
-          session: false, //option
-        });
-        console.log(rs);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    verifyToken();
+    // // 1. get access token
+    // const getAccessToken = async () => {
+    //   try {
+    //     const rs = await pointer.getAccessToken("dd34c58f8000a0e4e573e8eb");
+    //     console.log(rs);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // const { accessToken } = getAccessToken();
 
-    const getAT = await pointer.getAccessToken(code);
-    const parter = await pointer.getUser(getAT.accessToken);
+    // const verifyToken = async () => {
+    //   try {
+    //     const rs = await pointer.verifyAccessToken({
+    //       accessToken: accessToken,
+    //       // Synchronizes login sessions between apps but increases response time
+    //       session: false, //option
+    //     });
+    //     console.log(rs);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // verifyToken();
+
+    // const getAT = await pointer.getAccessToken(code);
+    // const parter = await pointer.getUser(getAT.accessToken);
+    try {
+      const AT = await getAccessToken(code)
+      const user = await getUserProfile(AT)
+
+      // 3. check if isUser, if user isn't exist then create profile
+      // const isUser = await
+
+      // 4. create token jwt
+    } catch (error) {
+
+    }
+
+    // 2. get user profile from access token
+
+    // 3. find or create user with emaill from user profile
+
+    // 4. create token jwt for user
+
+    // 5. send response infor user and token
 
     // const userId = user?._id;
     // if (!userId) throw new BadRequestError('User ID not found in user data');

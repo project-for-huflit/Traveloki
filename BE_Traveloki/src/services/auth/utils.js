@@ -204,10 +204,38 @@ const verifyJWT = async ( token, keySecret ) => {
   return await JWT.verify( token, keySecret )
 }
 
+const { PointerStrategy } = require("sso-pointer");
+const pointer = new PointerStrategy({ apiKey: "" });
+const getAccessToken = async (code) => {
+  try {
+    const { accessToken } = await pointer.getAccessToken(code);
+    return accessToken
+  } catch (error) {
+    throw new Error('Failed to get access token!')
+  }
+}
+
+const getUserProfile = async (accessToken) => {
+  try {
+    const userProfile = await pointer.verifyAccessToken({
+      accessToken,
+      // Synchronizes login sessions between apps but increases response time
+      session: false, //option
+    });
+
+    if (!userProfile || !userProfile.email) { throw new NotFoundError('Invalid user profile') }
+    return userProfile
+  } catch (error) {
+    throw new Error('Failed to get user profile!')
+  }
+}
+
 module.exports = {
     createTokenPair,
     authenticationUser,
     // authenticationAdmin,
     authenticationPartner,
-    verifyJWT
+    verifyJWT,
+    getAccessToken,
+    getUserProfile
 }

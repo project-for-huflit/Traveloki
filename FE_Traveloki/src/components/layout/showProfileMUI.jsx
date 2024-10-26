@@ -18,13 +18,10 @@ function showProfile(user) {
 
   const handleLogout = async (e) => {
     e.preventDefault();
-    const response = await logoutApi();
+    // const response = await logoutApi();
   };
 
   return (
-    // <div className="text-white">
-    //   <h2>Welcome, {user.name}!</h2>
-    // </div>
     <div>
       <Button
         id="basic-button"
