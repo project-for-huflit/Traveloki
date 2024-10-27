@@ -1,13 +1,6 @@
 'use strict'
 
-const { BadRequestError } = require('../middlewares/error.response')
-const { DoiTac } = require('../models/partner.model')
-
-const Role = {
-  USER: 'USER',
-  PARTNER: 'PARTNER',
-  ADMIN: 'ADMIN'
-}
+const partnerModel = require('../models/partner.model')
 
 class PartnerService {
 
@@ -20,7 +13,7 @@ class PartnerService {
     phone: 1,
     status: 1
   }}) => {
-    return await DoiTac.findOne({ _id }).select(select).lean()
+    return await partnerModel.findOne({ _id }).select(select).lean()
   }
   static findByEmail = async ({ email, select = {
     email: 1,
@@ -30,19 +23,8 @@ class PartnerService {
     phone: 1,
     status: 1
   }}) => {
-    return await DoiTac.findOne({ email }).select(select).lean()
+    return await partnerModel.findOne({ email }).select(select).lean()
   }
-
-  static findOrCreatePartner = async () => {
-    const existPartner = await DoiTac.findOne({ email }).lean()
-    if(existPartner) throw new BadRequestError('Error: Partner already registered!')
-
-    existPartner = await DoiTac.create({ email })
-    console.log("New user created: ", existPartner)
-    return existPartner
-  }
-
-
 }
 
 

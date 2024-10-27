@@ -15,7 +15,7 @@ import buoc4 from "../../assets/Buoc4.png";
 import buoc5 from "../../assets/Buoc5.png";
 import buoc6 from "../../assets/Buoc6.png";
 // import SearchBar from "./Search";
-import SearchBar2 from "./Search-old";
+import SearchBar2 from "./Search-new.jsx";
 
 const HomePage = () => {
   const reasons = [
