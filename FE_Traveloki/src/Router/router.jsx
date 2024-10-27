@@ -32,7 +32,6 @@ import HomePage from "../pages/HomePage/HomePage.jsx";
 import Login from "../pages/Auth/LogIn";
 import SignUp from "../pages/Auth/Register.jsx";
 import Loading from '../pages/loading/index.jsx'
-import ProfilePage from '../pages/Profile/index.jsx'
 // import { TextEditorReact } from "../Customer/Rating/TextEditorReact.jsx";
 
 // layouts
@@ -79,14 +78,10 @@ const router = createBrowserRouter([
             { path: "trips-train", element: <RatingTau /> }
         ]
       },
-      {
-        path: "profile",
-        element: <ProfilePage />,
-      },
-      {
-        path: "account",
-        element: <Paymentsuccess />,
-      }
+      // {
+      //   path: "payment",
+      //   element: <Paymentsuccess />,
+      // }
     ]
   },
   {
