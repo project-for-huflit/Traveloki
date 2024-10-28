@@ -229,18 +229,10 @@ const BookingCar = () => {
         console.log("Đã nhận được ID đơn hàng:", datXeOto._id);
 
         // req lên server pointer để chuyển hướng đến payment gateway
-        // setTimeout(() => {
-        //   window.location.replace("https://pointer.io.vn/payment-gateway?token=671717b9dd003cf4eca7d461")
-        // }, 2000);
+        setTimeout(() => {
+          window.location.replace("https://pointer.io.vn/payment-gateway?token=671717b9dd003cf4eca7d461")
+        }, 2000);
         try {
-          console.log({
-            amount: ThanhTien,
-            currency: bookingCar.currency,
-            message: bookingCar.Description,
-            return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}list/cars/result`,
-            orderID: datXeOto._id,
-            userID: "userO1",
-          })
           const response = await fetch(
             `${import.meta.env.VITE_API_PRESSPAY_BASE_URL}/api/v1/payment`,
             {
@@ -250,6 +242,7 @@ const BookingCar = () => {
                 Authorization: 'Bearer pk_presspay_82fad953e33c472656094ab3b6a3d7d3553d3215ea09fda4e7d363caae555811'
               },
               body: JSON.stringify({
+                private_key: import.meta.env.VITE_SECRET_API_KEY_POINTER,
                 amount: ThanhTien,
                 currency: bookingCar.currency,
                 message: bookingCar.Description,
@@ -259,7 +252,6 @@ const BookingCar = () => {
               }),
             }
           );
-
           // const body = {
           //   private_key:import.meta.env.VITE_SECRET_API_KEY_POINTER,
           //   amount:bookingCar.ThanhTien,
@@ -270,18 +262,17 @@ const BookingCar = () => {
           //   userID:"userO1"
           // }
           // const response = await paymentSend(body)
-          // const paymentData = await response.json();
-          console.log("Phản hồi từ server tạo yêu cầu từ pointer:", response);
-          console.log(response.data.url)
+          const paymentData = await response.json();
+          console.log("Phản hồi từ server tạo yêu cầu từ pointer:", paymentData);
 
 
-          if(response.status === 200){
-              window.location.replace(response.data.url)
-          } else {
-            alert(response.error || "Đã xảy ra lỗi khi truyền dữ liệu - 265");
-          }
+          // if(response.status === 200){
+          //     window.location.replace(response.data.url)
+          // } else {
+          //   alert(paymentData.error || "Đã xảy ra lỗi khi truyền dữ liệu - 265");
+          // }
         } catch (error) {
-          console.log("Lỗi khi truyền dữ liệu:", error);
+          console.error("Lỗi khi truyền dữ liệu:", error);
           alert("Không thể truyền dữ liệu");
         }
       } else {

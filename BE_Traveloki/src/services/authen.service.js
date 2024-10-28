@@ -1,228 +1,198 @@
-'use strict';
+'use strict'
 // lib
 require('dotenv').config()
-const { PointerStrategy } = require("sso-pointer");
+// const { PointerStrategy } = require("sso-pointer");
 const crypto = require('node:crypto');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
 // const { type } = require("node:os");
 // const { format } = require("node:path");
 
 // depenc...
 const { DoiTac } = require('../models/partner.model')
 const { Account } = require('../models/account.model')
-const { BadRequestError, ForbidenError, AuthFailureError, NotFoundError } = require('../middlewares/error.response')
+const { BadRequestError, ForbidenError, AuthFailureError } = require('../middlewares/error.response')
 const UserService = require('./account.service')
 const PartnerService = require('./partner.service')
 const KeyTokenService = require('./keyToken.service')
 const { getInfoData } = require('../utils/')
-const { createTokenPair, getAccessToken, getUserProfile } = require('./auth/utils');
+const { createTokenPair } = require('./auth/utils');
 
 const Role = {
   USER: 'USER',
   PARTNER: 'PARTNER',
-  ADMIN: 'ADMIN',
-};
+  ADMIN: 'ADMIN'
+}
 
-const SECRET_POINTER = process.env.SECRET_KEY_POINTER;
+const SECRET_POINTER = process.env.SECRET_KEY_POINTER
 
-class AuthJWTService {
+class  AuthJWTService {
+
   static handleRefreshToken = async ({ keyStore, user, refreshToken }) => {
-    const { userId, email } = user;
 
-    if (keyStore.refreshTokensUsed.includes(refreshToken)) {
-      await KeyTokenService.deleteKeyById(userId);
-      throw new ForbidenError('Something wrong happened, please relogin!');
+    const { userId, email } = user
+
+    if(keyStore.refreshTokensUsed.includes(refreshToken)) {
+      await KeyTokenService.deleteKeyById( userId )
+      throw new ForbidenError('Something wrong happened, please relogin!')
     }
 
-    if (keyStore.refreshToken !== refreshToken)
-      throw new AuthFailureError('Shop is not registered!');
+    if(keyStore.refreshToken !== refreshToken) throw new AuthFailureError('Shop is not registered!')
 
     //check userId
-    const foundShop = await findByEmail({ email });
-    if (!foundShop)
-      throw new AuthFailureError('Shop is not registered - found');
+    const foundShop = await findByEmail( { email } )
+    if(!foundShop) throw new AuthFailureError('Shop is not registered - found')
 
     // create new pair
-    const tokens = await createTokenPair(
-      { userId: userId, email },
-      keyStore.publicKey,
-      keyStore.privateKey,
-    );
+    const tokens = await createTokenPair({userId: userId, email}, keyStore.publicKey, keyStore.privateKey)
 
     //update token
     await keyStore.updateOne({
       $set: {
-        refreshToken: tokens.refreshToken,
+        refreshToken: tokens.refreshToken
       },
       $addToSet: {
-        refreshTokensUsed: refreshToken, // is used to take new token
-      },
-    });
-    return { user, tokens };
-  };
+        refreshTokensUsed: refreshToken // is used to take new token
+      }
+    })
+    return { user, tokens }
+  }
 
   static register = async ({ name, email, password }) => {
     try {
       const modelUser = await Account.findOne({ email }).lean()
-      if (modelUser) throw new BadRequestError('Error: User already registered!')
+      if (modelUser) throw new BadRequestError('Error: Shop already registered!')
 
-      const passwordHash = await bcrypt.hash(password, 10);
+      const passwordHash = await bcrypt.hash(password, 10)
 
       const newUser = await Account.create({
-        name,
-        email,
-        password: passwordHash,
-        phone,
-        roles: [Role.USER],
-      });
+        name, email, password: passwordHash, phone, roles: [Role.USER]
+      })
 
       if (newUser) {
         const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
           modulusLength: 2048,
-          publicKeyEncoding: { type: 'pkcs1', format: 'pem' },
-          privateKeyEncoding: { type: 'pkcs1', format: 'pem' },
-        });
+          publicKeyEncoding: { type: "pkcs1", format: "pem" },
+          privateKeyEncoding: { type: "pkcs1", format: "pem" }
+        })
 
-        console.log({ privateKey, publicKey });
+        console.log({ privateKey, publicKey })
 
         const publicKeyString = await KeyTokenService.createKeyTokenForUser({
           userId: newUser._id,
           publicKey,
-          privateKey,
-        });
+          privateKey
+        })
 
         if (!publicKeyString) {
           return {
             code: 'xxx',
-            message: 'publicKeyString error!',
-          };
+            message: 'publicKeyString error!'
+          }
         }
-        console.log(`publicKeyString::`, publicKeyString);
+        console.log(`publicKeyString::`, publicKeyString)
 
-        const publicKeyObject = crypto.createPublicKey(publicKeyString);
-        console.log(`publicKeyObject::`, publicKeyObject);
+        const publicKeyObject = crypto.createPublicKey(publicKeyString)
+        console.log(`publicKeyObject::`, publicKeyObject)
 
-        const tokens = await createTokenPair(
-          { userId: newUser._id, email },
-          publicKeyObject,
-          privateKey,
-        );
-        console.log(`created tokens success!::`, tokens);
+        const tokens = await createTokenPair({ userId: newUser._id, email }, publicKeyObject, privateKey)
+        console.log(`created tokens success!::`, tokens)
 
         return {
           code: 201,
           metadata: {
-            user: getInfoData({
-              fields: ['_id', 'name', 'email'],
-              object: newUser,
-            }),
-            tokens,
-          },
-        };
+            user: getInfoData({ fields: ['_id', 'name', 'email'], object: newUser }),
+            tokens
+          }
+        }
       }
       return {
         code: 200,
-        metadata: null,
-      };
+        metadata: null
+      }
     } catch (error) {
       return {
         code: 'xxx',
         message: error.message,
-        status: 'error',
-      };
+        status: 'error'
+      }
     }
-  };
+  }
 
   static login = async ({ email, password, refreshToken = null }) => {
-    const foundUser = await UserService.findByEmail({ email });
-    if (!foundUser) throw new BadRequestError('User not registered!');
 
-    const match = bcrypt.compare(password, foundUser.password);
-    if (!match) throw new AuthFailureError('Authentication error!');
+    const foundUser = await UserService.findByEmail({ email })
+    if(!foundUser) throw new BadRequestError('User not registered!')
+
+    const match = bcrypt.compare( password, foundUser.password )
+    if(!match) throw new AuthFailureError('Authentication error!')
 
     const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
       modulusLength: 2048,
       publicKeyEncoding: {
-        type: 'pkcs1',
-        format: 'pem',
+        type: "pkcs1",
+        format: "pem"
       },
       privateKeyEncoding: {
-        type: 'pkcs1',
-        format: 'pem',
-      },
-    });
+        type: "pkcs1",
+        format: "pem"
+      }
+    })
 
-    const { _id: userId } = foundUser;
-    const tokens = await createTokenPair(
-      { userId: userId, email },
-      publicKey,
-      privateKey,
-    );
+    const { _id: userId } = foundUser
+    const tokens = await createTokenPair({userId: userId, email}, publicKey, privateKey)
 
     await KeyTokenService.createKeyTokenForUser({
       refreshToken: tokens.refreshToken,
       userId: userId,
       privateKey,
-      publicKey,
-    });
+      publicKey
+    })
 
     return {
-      user: getInfoData({
-        fields: ['_id', 'name', 'email'],
-        object: foundUser,
-      }),
-      tokens,
-    };
-  };
+      user: getInfoData({ fields: ['_id', 'name', 'email'], object: foundUser }),
+      tokens
+    }
+  }
 
-  static logout = async (keyStore) => {
-    const delKey = await KeyTokenService.removeKeyById(keyStore._id);
-    console.log({ delKey });
-    return delKey;
-  };
+  static logout = async ( keyStore ) => {
+    const delKey = await KeyTokenService.removeKeyById( keyStore._id )
+    console.log({delKey})
+    return delKey
+  }
 }
 
 class AuthSSOService {
   static async handleRefreshToken({ keyStore, user, refreshToken }) {
-    const { userId, email } = user;
+    const { userId, email } = user
 
-    if (keyStore.refreshTokensUsed.includes(refreshToken)) {
-      await KeyTokenService.deleteKeyById(userId);
-      throw new ForbidenError(
-        'Something wrong happened, please relogin! - line 39',
-      );
+    if(keyStore.refreshTokensUsed.includes(refreshToken)) {
+      await KeyTokenService.deleteKeyById( userId )
+      throw new ForbidenError('Something wrong happened, please relogin! - line 39')
     }
 
-    if (keyStore.refreshToken !== refreshToken)
-      throw new AuthFailureError('Partner is not registered! - line 42');
+    if(keyStore.refreshToken !== refreshToken) throw new AuthFailureError('Partner is not registered! - line 42')
 
-    const foundPartner = await PartnerService.findByEmail({ email });
-    if (!foundPartner)
-      throw new AuthFailureError('Shop is not registered - line 45');
+    const foundPartner = await PartnerService.findByEmail({ email })
+    if(!foundPartner) throw new AuthFailureError('Shop is not registered - line 45')
 
-    const tokens = await createTokenPair(
-      {
-        userId: userId,
-        email,
-      },
-      keyStore.publicKey,
-      keyStore.privateKey,
-    );
+    const tokens = await createTokenPair({
+      userId: userId, email
+    }, keyStore.publicKey, keyStore.privateKey)
 
     // update tokens
     await keyStore.updateOne({
       $set: {
-        refreshToken: tokens.refreshToken,
+        refreshToken: tokens.refreshToken
       },
       $addToSet: {
-        refreshTokensUsed: refreshToken, // is used to take new token
-      },
-    });
+        refreshTokensUsed: refreshToken // is used to take new token
+      }
+    })
 
     return {
       user,
-      tokens,
-    };
+      tokens
+    }
   }
   /**
    * @LOQ-burh
@@ -242,28 +212,22 @@ class AuthSSOService {
   static async register({ name, email, password }) {
     try {
       // - 1
-      const existPartner = await DoiTac.findOne({ email }).lean();
-      if (existPartner)
-        throw new BadRequestError(
-          'Error: Partner already registered! - line 85',
-        );
+      const existPartner = await DoiTac.findOne({ email }).lean()
+      if(existPartner) throw new BadRequestError('Error: Partner already registered! - line 85')
 
-      const passHash = await bcrypt.hash(password, 10);
+      const passHash = await bcrypt.hash(password, 10)
 
       const newPartner = await DoiTac.create({
-        name,
-        email,
-        password: passHash,
-        isPartner: true,
-      });
+        name, email, password: passHash, isPartner: true
+      })
 
-      if (newPartner) {
-        const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+      if(newPartner) {
+        const {privateKey, publicKey} = crypto.generateKeyPairSync('rsa', {
           modulusLength: 2048,
-          publicKeyEncoding: { type: 'pkcs1', format: 'pem' },
-          privateKeyEncoding: { type: 'pkcs1', format: 'pem' },
-        });
-        console.log({ privateKey, publicKey });
+          publicKeyEncoding: { type: "pkcs1", format: "pem" },
+          privateKeyEncoding: { type: "pkcs1", format: "pem" }
+        })
+        console.log({privateKey, publicKey})
         // console.log(
         //   publicKey.export({ type: "pkcs1", format: "pem" }),
         //   privateKey.export({ type: "pkcs1", format: "pem" })
@@ -272,47 +236,39 @@ class AuthSSOService {
         const publicKeyString = await KeyTokenService.createKeyTokenForPartner({
           partnerId: newPartner._id,
           publicKey,
-          privateKey,
-        });
-        if (!publicKeyString) {
+          privateKey
+        })
+        if(!publicKeyString) {
           return {
             code: 'xxx',
-            message: 'publicKeyString error! - line 113',
-          };
+            message: 'publicKeyString error! - line 113'
+          }
         }
-        console.log(`publicKeyString::`, publicKeyString);
+        console.log(`publicKeyString::`, publicKeyString)
 
-        const publicKeyObject = crypto.createPublicKey(publicKeyString);
-        console.log(`publicKeyObject::`, publicKeyObject);
+        const publicKeyObject = crypto.createPublicKey(publicKeyString)
+        console.log(`publicKeyObject::`, publicKeyObject)
 
         // create tokens pair
-        const tokens = await createTokenPair(
-          { partnerId: newPartner._id, email },
-          publicKeyObject,
-          privateKey,
-        );
-        console.log(`create tokens pair success::`, tokens);
+        const tokens = await createTokenPair({ partnerId: newPartner._id, email }, publicKeyObject, privateKey)
+        console.log(`create tokens pair success::`, tokens)
 
         return {
           code: 201,
           metadata: {
-            partner: getInfoData({
-              fields: ['_id', 'name', 'email'],
-              object: newPartner,
-            }),
-            tokens,
-          },
-        };
+            partner: getInfoData({fields: ['_id', 'name', 'email'], object: newPartner}),
+            tokens
+          }
+        }
       }
     } catch (error) {
       return {
         code: 'xxx',
         message: error.message,
-        status: 'error',
-      };
+        status: 'error'
+      }
     }
   }
-
   /**
    * @LOQ-burh
    * @steps
@@ -328,44 +284,37 @@ class AuthSSOService {
    * @returns tokens pair: access token, refresh token
    */
   static async login({ email, password, refreshToken = null }) {
-    const foundPartner = await PartnerService.findByEmail({ email });
-    if (!foundPartner) throw new BadRequestError('Partner not registered!');
+    const foundPartner = await PartnerService.findByEmail({ email })
+    if(!foundPartner) throw new BadRequestError('Partner not registered!')
 
-    const match = bcrypt.compare(password, foundPartner.password);
-    if (!match) throw new AuthFailureError('Authen error!');
+    const match = bcrypt.compare( password, foundPartner.password )
+    if(!match) throw new AuthFailureError('Authen error!')
 
     const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
       modulusLength: 2048,
       publicKeyEncoding: {
-        type: 'pkcs1',
-        format: 'pem',
+        type: "pkcs1",
+        format: "pem"
       },
       privateKeyEncoding: {
-        type: 'pkcs1',
-        format: 'pem',
-      },
-    });
-    const { _id: partnerId } = foundPartner;
-    const tokens = await createTokenPair(
-      { partnerId: partnerId, email },
-      publicKey,
-      privateKey,
-    );
+        type: "pkcs1",
+        format: "pem"
+      }
+    })
+    const { _id: partnerId } = foundPartner
+    const tokens = await createTokenPair({partnerId: partnerId, email}, publicKey, privateKey)
 
     await KeyTokenService.createKeyTokenForPartner({
       refreshToken: tokens.refreshToken,
       partnerId: partnerId,
       privateKey,
-      publicKey,
-    });
+      publicKey
+    })
 
     return {
-      partner: getInfoData({
-        fields: ['_id', 'name', 'email'],
-        object: foundPartner,
-      }),
-      tokens,
-    };
+      partner: getInfoData({ fields: ['_id', 'name', 'email'], object: foundPartner }),
+      tokens
+    }
   }
   static async loginWithPointer({code}) {
     console.log(`Received code::${code}`);
@@ -433,15 +382,15 @@ class AuthSSOService {
       };
     }
   }
-
-  static logout = async (keyStore) => {
-    const delKey = await KeyTokenService.removeKeyById(keyStore._id);
-    console.log({ delKey });
-    return delKey;
-  };
+  static logout = async ( keyStore ) => {
+    const delKey = await KeyTokenService.removeKeyById( keyStore._id )
+    console.log({delKey})
+    return delKey
+  }
 }
 
 module.exports = {
   AuthJWTService,
-  AuthSSOService,
-};
+  AuthSSOService
+}
+
