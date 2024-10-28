@@ -22,6 +22,7 @@ app.use(cors({
     "https://presspay-wallet.vercel.app",
     "https://presspay.vercel.app",
     "https://presspay-api.azurewebsites.net",
+    "https://api-presspay.azurewebsites.net",
     "https://api-wallet.pointer.io.vn"
   ],
   credentials: true, // Cho phép credentials (cookies, headers...)
