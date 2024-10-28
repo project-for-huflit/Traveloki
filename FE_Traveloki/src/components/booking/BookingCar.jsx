@@ -229,9 +229,9 @@ const BookingCar = () => {
         console.log("Đã nhận được ID đơn hàng:", datXeOto._id);
 
         // req lên server pointer để chuyển hướng đến payment gateway
-        setTimeout(() => {
-          window.location.replace("https://pointer.io.vn/payment-gateway?token=671717b9dd003cf4eca7d461")
-        }, 2000);
+        // setTimeout(() => {
+        //   window.location.replace("https://pointer.io.vn/payment-gateway?token=671717b9dd003cf4eca7d461")
+        // }, 2000);
         try {
           const response = await fetch(
             `${import.meta.env.VITE_API_PRESSPAY_BASE_URL}/api/v1/payment`,

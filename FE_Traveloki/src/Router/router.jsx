@@ -28,6 +28,7 @@ import { RatingBus } from "../components/rating/RatingBus.jsx";
 import { RatingTau } from "../components/rating/RatingTau.jsx";
 import { ErrorPage } from "../pages/SystemPage/ErrorPage.jsx";
 import HomePage from "../pages/HomePage/HomePage.jsx";
+import ProfilePage from '../pages/Profile/index.jsx'
 // import Login from "../pages/Auth/LogIn.jsx";
 import Login from "../pages/Auth/LogIn";
 import SignUp from "../pages/Auth/Register.jsx";
@@ -80,10 +81,14 @@ const router = createBrowserRouter([
             { path: "trips-train", element: <RatingTau /> }
         ]
       },
-      // {
-      //   path: "payment",
-      //   element: <Paymentsuccess />,
-      // }
+      {
+        path: "profile",
+        element: <ProfilePage />,
+      },
+      {
+        path: "account",
+        element: <Paymentsuccess />,
+      }
     ]
   },
   {
