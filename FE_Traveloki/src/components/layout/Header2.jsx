@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import logoTravelokiWhite from "../../assets/logoTravelokiWhite.png";
 import icVN from "../../assets/iconVN.png";
 import icPercent from "../../assets/iconPercent.png";
@@ -9,9 +9,9 @@ import backgroundImage from "../../assets/introPic.png";
 // import api from '../../services/axios.customize'
 
 import DirectToAuthPage from './directToAuthPage'
-import ShowProfile from './showProfileMUI';
+import ShowProfile from './showProfile';
 
-// import { AuthProvider } from "../../context/auth.provider";
+import { AuthProvider } from "../../context/auth.provider";
 
 const Header2 = () => {
   // const handleButtonClickMyBooking = () => {
