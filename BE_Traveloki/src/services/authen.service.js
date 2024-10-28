@@ -367,18 +367,15 @@ class AuthSSOService {
       tokens,
     };
   }
-  static async loginWithPointer(code) {
+  static async loginWithPointer({code}) {
+    console.log(`Received code::${code}`);
     if(!code) throw new NotFoundError('Authorization code is required!')
 
-    const getPartnerId = await PartnerService.findByEmail({ email })
-    if(!getPartnerId) throw new BadRequestError('Partner not registered!')
-
     try {
-      const AT = await getAccessToken(code)
-      const partner = await getUserProfile(AT)
-
+      const { accessToken, email, id } = await getAccessToken(code) // { accessToken, email, id }
+      const partner = await getUserProfile(accessToken)
       // 3. check if isUser, if user isn't exist then create profile
-      const isPartner = await PartnerService.findOrCreatePartner(partner.email)
+      const isPartner = await PartnerService.findOrCreatePartner(email)
 
       // 4. create token jwt
       if(isPartner) {
@@ -421,8 +418,11 @@ class AuthSSOService {
               object: isPartner,
             }),
             tokens,
-            partnerId: isPartner._id
           },
+          isPartner,
+          tokens: accessToken,
+          partnerEmail: email,
+          partnerId: id
         };
       }
     } catch (error) {

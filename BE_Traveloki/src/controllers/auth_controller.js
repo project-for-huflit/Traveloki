@@ -54,8 +54,8 @@ class AuthController {
   };
   loginPointer = async (req, res, next) => {
     new SuccessResponse({
-      message: ' success!',
-      metadata: await AuthSSOService.loginWithPointer(req.body.accessToken),
+      message: 'success with post!',
+      metadata: await AuthSSOService.loginWithPointer(req.body),
     }).send(res);
   };
 
