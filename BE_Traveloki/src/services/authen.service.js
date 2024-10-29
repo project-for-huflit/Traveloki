@@ -15,7 +15,7 @@ const UserService = require('./account.service')
 const PartnerService = require('./partner.service')
 const KeyTokenService = require('./keyToken.service')
 const { getInfoData } = require('../utils/')
-const { createTokenPair } = require('./auth/utils');
+const { createTokenPair , getAccessToken, getUserProfile } = require('./auth/utils');
 
 const Role = {
   USER: 'USER',
@@ -316,7 +316,7 @@ class AuthSSOService {
       tokens
     }
   }
-  static async loginWithPointer({code}) {
+  static async loginWithPointer({ code }) {
     console.log(`Received code::${code}`);
     if(!code) throw new NotFoundError('Authorization code is required!')
 
