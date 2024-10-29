@@ -6,7 +6,7 @@ const { countConnect } = require('../helpers/check.connect')
 // const connectString = process.env.MONGODB_URI
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI_2)
   .then(() => {
     console.log("Connected to MongoDB!");
   })
