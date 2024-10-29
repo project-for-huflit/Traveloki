@@ -28,11 +28,11 @@ const Login = () => {
   // const handleClickShowPassword = () => setShowPassword((show) => !show);
   // const handleMouseDownPassword = (event) => { event.preventDefault(); };
 
-  const newDirect = `https://sso-pointer.vercel.app/authorize?callbackUrl=${import.meta.env.VITE_FE_URL_HOME}`
   // Navigate to Pointer
   const redirectToSSOPointer = () => {
     navigate('/load');
-    window.location.href = newDirect;
+    const redirectToPointer = encodeURIComponent(`${import.meta.env.VITE_FE_URL}/auth/callback`)
+    window.location.href = `https://sso-pointer.vercel.app/authorize?callbackUrl=${redirectToPointer}`
   };
 
   /**

@@ -40,17 +40,17 @@ const HomePage = () => {
     },
   ];
 
-  const checkLoginStatus = () => {
-    const token = localStorage.getItem('token')
-    if(!token) {
-      const redirectToPointer = encodeURIComponent(`${import.meta.env.VITE_FE_URL}/auth/callback`)
-      window.location.href = `https://sso-pointer.vercel.app/authorize?callbackUrl=${redirectToPointer}`
-    }
-  }
+  // const checkLoginStatus = () => {
+  //   const token = localStorage.getItem('token')
+  //   if(!token) {
+  //     const redirectToPointer = encodeURIComponent(`${import.meta.env.VITE_FE_URL}/auth/callback`)
+  //     window.location.href = `https://sso-pointer.vercel.app/authorize?callbackUrl=${redirectToPointer}`
+  //   }
+  // }
 
-  useEffect(() => {
-    checkLoginStatus()
-  }, [])
+  // useEffect(() => {
+  //   checkLoginStatus()
+  // }, [])
   return (
     <div>
       <SearchBar2 />
