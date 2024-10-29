@@ -239,7 +239,7 @@ const BookingCar = () => {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: 'Bearer pk_presspay_82fad953e33c472656094ab3b6a3d7d3553d3215ea09fda4e7d363caae555811'
+                Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
               },
               body: JSON.stringify({
                 private_key: import.meta.env.VITE_SECRET_API_KEY_POINTER,
