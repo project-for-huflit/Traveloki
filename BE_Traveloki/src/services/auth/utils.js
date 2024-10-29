@@ -234,5 +234,7 @@ module.exports = {
     authenticationUser,
     // authenticationAdmin,
     authenticationPartner,
-    verifyJWT
+    verifyJWT,
+    getAccessToken,
+    getUserProfile
 }
