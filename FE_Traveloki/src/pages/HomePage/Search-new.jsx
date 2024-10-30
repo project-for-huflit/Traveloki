@@ -41,7 +41,7 @@ const SearchBar = () => {
   //click vào hiển thị dropdown
   const handleInputClick = () => {
     setShowAirportSuggestions(true);
-    debouncedFetchAirportSuggestions(diemSanBay); // Hiển thị toàn bộ danh sách sân bay khi nhấp vào ô chọn
+    debouncedFetchAirportSuggestions(diemSanBay);
   };
 
   const fetchTramDungSuggestions = async (query) => {
@@ -116,12 +116,14 @@ const SearchBar = () => {
 
     try {
       const response = await checkRoute(diemSanBay, diemKetThuc);
-
+      console.log("check",response)
       if (response.data.success) {
+        const maTuyens = response.data.data.map((route) => route.MaTuyen).join(",");
         navigate(
           `/airport-transfer/search/list?SanBay=${encodeURIComponent(diemSanBay)}
         &Date=${encodeURIComponent(selectedDate)}
-        &Time=${encodeURIComponent(selectedHour)}`
+        &Time=${encodeURIComponent(selectedHour)}
+        &MaTuyen=${encodeURIComponent(maTuyens)}`
         );
       } else {
         alert(response.data.message || "Không tìm thấy tuyến nào.");
