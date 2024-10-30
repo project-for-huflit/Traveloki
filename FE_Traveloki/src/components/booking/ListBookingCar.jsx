@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faSuitcase } from "@fortawesome/free-solid-svg-icons";
 import imagelist from "../../assets/listbooking.png";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
-const ListBookingCar = () => {
-  // const url = "http://localhost:3005/api";
+const ListBookingCar = (props) => {
   const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const navigate = useNavigate();
   const [detailCar, setDetailCar] = useState([]);
