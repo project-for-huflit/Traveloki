@@ -32,12 +32,10 @@ const SearchBar = () => {
         ...prevSuggestions,
         sanBays: response.data.sanBays,
       }));
-      console.log(response.data);
     } catch (err) {
       setError("Lỗi khi lấy gợi ý sân bay: " + err.message);
     }
   };
-  console.log("airpot",suggestions)
   //click vào hiển thị dropdown
   const handleInputClick = () => {
     setShowAirportSuggestions(true);
@@ -116,20 +114,29 @@ const SearchBar = () => {
 
     try {
       const response = await checkRoute(diemSanBay, diemKetThuc);
-      console.log("check",response)
+      console.log("checkRoute",response);
+      let maTuyens = "";
       if (response.data.success) {
-        const maTuyens = response.data.data.map((route) => route.MaTuyen).join(",");
+        maTuyens = response.data.data.map((route) => route.MaTuyen.trim()).join(",");
+        console.log("maTuyens",maTuyens);
         navigate(
           `/airport-transfer/search/list?SanBay=${encodeURIComponent(diemSanBay)}
-        &Date=${encodeURIComponent(selectedDate)}
-        &Time=${encodeURIComponent(selectedHour)}
-        &MaTuyen=${encodeURIComponent(maTuyens)}`
+          &Date=${encodeURIComponent(selectedDate)}
+          &Time=${encodeURIComponent(selectedHour)}
+          &MaTuyen=${encodeURIComponent(maTuyens)}
+          &GiaVe=${encodeURIComponent(response.data.data[0].GiaVe)}`
         );
       } else {
-        alert(response.data.message || "Không tìm thấy tuyến nào.");
+        navigate(
+          `/airport-transfer/search/list?SanBay=${encodeURIComponent(diemSanBay)}
+          &DiemKetThuc=${encodeURIComponent(diemKetThuc)}
+          &Date=${encodeURIComponent(selectedDate)}
+          &Time=${encodeURIComponent(selectedHour)}`
+        );
       }
     } catch (error) {
-      alert("Có lỗi xảy ra: " + (error.response?.data?.message || error.message));
+      console.error("Error fetching route:", error);
+      setError("Đã xảy ra lỗi khi tìm tuyến.");
     }
   };
 

@@ -12,7 +12,7 @@ const ChiTietXeOtoSchema = new Schema({
   SoGheToiDa: { type: Number, required: true },
   SoTien_1km: { type: Number, required: true },
   Image: { type: String, required: true },
-  MaSB: { type: String, ref: "DanhSachSanBay" },
+  // MaSB: { type: String, ref: "DanhSachSanBay" },
   ratingsAverage: {
     type: Number,
     default: 4.5,

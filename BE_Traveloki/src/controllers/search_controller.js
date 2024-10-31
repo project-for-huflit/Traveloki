@@ -81,8 +81,12 @@ const checkTuyenTramDung = async (req, res) => {
       MaTuyen: { $in: maTuyenTuongUng.map((tuyen) => tuyen._id) },
       MaTramDung: { $in: tramDungTuongUng.map((tram) => tram._id) },
     })
+
     if (!result.length) {
-      return res.status(404).json({ message: "Không tìm thấy tuyến nào phù hợp giữa điểm khởi hành và điểm kết thúc" });
+      return res.status(200).json({
+        success: false,
+        message: "Không tìm thấy tuyến nào phù hợp giữa điểm khởi hành và điểm kết thúc",
+      });
     }
 
     res.status(200).json({ success: true, data: result });
