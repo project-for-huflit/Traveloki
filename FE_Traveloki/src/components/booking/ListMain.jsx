@@ -84,7 +84,7 @@ const ListMain = () => {
           <FontAwesomeIcon icon={faTrain} /> Airport Train
         </span>
       </div>
-      {selected === "Car" && <ListBookingCar MaTuyen={MaTuyen}/>}
+      {selected === "Car" && <ListBookingCar/>}
       {selected === "Bus" && <ListBookingBus MaTuyen={MaTuyen}/>}
       {selected === "Train" && <ListBookingTrain MaTuyen={MaTuyen}/>}
     </div>
