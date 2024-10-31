@@ -121,6 +121,7 @@ const SearchBar = () => {
         console.log("maTuyens",maTuyens);
         navigate(
           `/airport-transfer/search/list?SanBay=${encodeURIComponent(diemSanBay)}
+          &DiemKetThuc=${encodeURIComponent(diemKetThuc)}
           &Date=${encodeURIComponent(selectedDate)}
           &Time=${encodeURIComponent(selectedHour)}
           &MaTuyen=${encodeURIComponent(maTuyens)}
