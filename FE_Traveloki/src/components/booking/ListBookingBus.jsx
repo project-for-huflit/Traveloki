@@ -7,26 +7,23 @@ import {getPhuongTienByLichChay} from "../../services/api/phuongTien/api.phuongT
 
 const ListBookingBus = (props) => {
   const {MaTuyen} = props;
-  // const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const navigate = useNavigate();
   const [fetchError, setFetchError] = useState(null);
   const [searchParams] = useSearchParams();
   const [bus, setBus] = useState([]);
-  // const [tramBus, setTramBus] = useState({});
-  // const [tuyenSB, setTuyenSB] = useState([]);
   const SanBay = searchParams.get("SanBay");
   const Date = searchParams.get("Date");
   const Time = searchParams.get("Time");
   const IDTram = searchParams.get("IDTram");
-  // const MaSB = searchParams.get("MaSB");
-  console.log("check bbus",bus)
+  const GiaVe = searchParams.get("GiaVe");
+
   useEffect(() => {
     const fetchBusByLichChay = async() => {
       try{
         const res = await getPhuongTienByLichChay(MaTuyen)
-        console.log("check",res.data)
+        console.log("check bus",res)
         if (res && res.data.EC === 0){
-          const busData = res.data
+          const busData = res.data.data
             .filter((item) => item.MaPT.LoaiPT === "bus")
             .map((item) => item.MaPT);
           setBus(busData);
@@ -55,8 +52,6 @@ const ListBookingBus = (props) => {
     }
     fetchBusByLichChay()
   }, [MaTuyen])
-
-  console.log("check", bus)
 
   // const fetchBus = async () => {
   //   setFetchError(null);
@@ -203,7 +198,7 @@ const ListBookingBus = (props) => {
                   <div>
                     <div className="w-fit">
                       <span className="text-lg text-orange-400">
-                        {formatPrice(item.GiaTienVe || 0)} VND / 1 ticket
+                        {formatPrice(GiaVe || 0)} VND / 1 ticket
                       </span>
                     </div>
                     <button

@@ -7,17 +7,12 @@ import ListBookingTrain from "./ListBookingTrain";
 import { useSearchParams } from "react-router-dom";
 
 const ListMain = () => {
-  // const url = "http://localhost:3005/api";
-  const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const [selected, setSelected] = useState("Car");
   const [searchParams] = useSearchParams();
-
   const SanBay = searchParams.get("SanBay") || "Default San Bay";
   const Date = searchParams.get("Date") || "Default Date";
   const Time = searchParams.get("Time") || "Default Time";
-  // const IDTram = searchParams.get("IDTram") || "Default IDTram";
-  // const MaSB = searchParams.get("MaSB") || "";
-  const MaTuyen = searchParams.get("MaTuyen")?.split(",") || "";
+  const MaTuyen = searchParams.get("MaTuyen")?.split(",").map((item) => item.trim()) || "";
 
   const handleClick = (option) => {
     setSelected(option);
