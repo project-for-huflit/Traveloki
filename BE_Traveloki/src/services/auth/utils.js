@@ -38,7 +38,7 @@ const createTokenPair = async ( payLoad, publicKey, privateKey ) => {
     }
 }
 
-const authenticationUser = asyncHandler(async (req, res, next) => {
+const  authenticationUser = asyncHandler(async (req, res, next) => {
   /*
   1 - Check userId missing??
   2 - get accessToken
