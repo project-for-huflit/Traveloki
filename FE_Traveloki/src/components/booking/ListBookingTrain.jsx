@@ -1,82 +1,57 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import imagelist from "../../assets/busimage.png";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import {getPhuongTienByLichChay} from "../../services/api/phuongTien/api.phuongTien.js";
 
-const ListBookingBus = () => {
-  // const url = "http://localhost:3005/api";
-  const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
+const ListBookingBus = (props) => {
+  const {MaTuyen} = props;
   const navigate = useNavigate();
   const [fetchError, setFetchError] = useState(null);
   const [searchParams] = useSearchParams();
   const [trains, setTrains] = useState([]);
-  const [tramTrain, setTramTrain] = useState({});
-  const [tuyenSB, setTuyenSB] = useState([]);
   const SanBay = searchParams.get("SanBay");
   const Date = searchParams.get("Date");
   const Time = searchParams.get("Time");
   const IDTram = searchParams.get("IDTram");
-  const MaSB = searchParams.get("MaSB");
-
-  const fetchTrains = async () => {
-    setFetchError(null);
-    try {
-      const res = await fetch(`${url}/SearchFindPhuongTien/false`);
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await res.json();
-      console.log("Fetched trains:", result);
-      setTrains(result.buses || []);
-    } catch (e) {
-      console.error("Error fetching trains:", e);
-    }
-  };
-
-  const fetchTramTrain = async () => {
-    if (!IDTram) return;
-    try {
-      const res = await fetch(`${url}/GetTramDungID/${IDTram}`);
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await res.json();
-      console.log("Fetched tramTrain:", result);
-      setTramTrain(result || {});
-    } catch (e) {
-      console.error("Error fetching tramTrain:", e);
-    }
-  };
-
-  const fetchTuyenSB = async (MaSB) => {
-    if (!MaSB) return;
-    try {
-      const res = await fetch(`${url}/TuyenDiemSanBay?diemSanBay=${MaSB}`);
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await res.json();
-      console.log("Fetched tuyenSB:", result);
-      setTuyenSB(result.tuyens || []);
-    } catch (e) {
-      console.error("Error fetching tuyenSB:", e);
-    }
-  };
+  const GiaVe = searchParams.get("GiaVe");
 
   useEffect(() => {
-    fetchTrains();
-  }, []);
-
-  useEffect(() => {
-    if (MaSB) {
-      fetchTuyenSB(MaSB);
+    const fetchTrainByLichChay = async() => {
+      try{
+        const res = await getPhuongTienByLichChay(MaTuyen)
+        console.log("check train",res)
+        if (res && res.data.EC === 0){
+          const trainData = res.data.data
+            .filter((item) => item.MaPT.LoaiPT === "train")
+            .map((item) => item.MaPT);
+          setTrains(trainData);
+        }
+      }catch (error){
+        console.error("Error fetching bus:", error);
+        setFetchError(
+          <div className="w-full">
+            <div className="flex justify-center mt-8 mx-auto">
+              <img
+                className="w-1/3 h-1/3"
+                src="https://ik.imagekit.io/tvlk/image/imageResource/2022/11/29/1669703331120-6c5d2bb47e511f5b9b7e143f55f513d7.png?tr=dpr-2,h-200,q-75"
+                alt="No buses available"
+              />
+            </div>
+            <p className="text-xl mt-4 text-center font-extrabold">
+              No Train Available
+            </p>
+            <p className="text-center my-4">
+              There are no trains operating between your locations. Please check
+              again at another time.
+            </p>
+          </div>
+        );
+      }
     }
-  }, [MaSB]);
-
-  useEffect(() => {
-    fetchTramTrain();
-  }, [IDTram]);
+    fetchTrainByLichChay()
+  }, [MaTuyen])
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat().format(price);
@@ -92,19 +67,15 @@ const ListBookingBus = () => {
     );
   };
 
-  const filteredTrains = trains.filter((train) =>
-    tuyenSB.some((tuyen) => tuyen.MaTuyen === train.MaTuyen)
-  );
-
-  console.log("Train data:", trains);
-  console.log("TuyenSB data:", tuyenSB);
-  console.log("Filtered trains:", filteredTrains);
+  // const filteredTrains = trains.filter((train) =>
+  //   tuyenSB.some((tuyen) => tuyen.MaTuyen === train.MaTuyen)
+  // );
 
   return (
     <div className="w-full h-full mx-auto container">
       <img src={imagelist} alt="Train List" />
       {fetchError && <div className="">{fetchError}</div>}
-      {filteredTrains.length === 0 ? (
+      {trains.length === 0 && !fetchError ? (
         <div className="w-full">
           <div className="flex justify-center mt-8 mx-auto">
             <img
@@ -122,7 +93,7 @@ const ListBookingBus = () => {
           </p>
         </div>
       ) : (
-        filteredTrains.map((item) => (
+        trains.map((item) => (
           <div
             className="bg-white my-4 rounded-lg hover:border-green-500 border-2 transition-all duration-300"
             key={item._id}
@@ -148,7 +119,7 @@ const ListBookingBus = () => {
                   <div>
                     <div className="w-fit">
                       <span className="text-lg text-orange-400">
-                        {formatPrice(tramTrain.GiaTienVeTau || 0)} VND /1 người
+                        {formatPrice(GiaVe || 0)} VND /1 người
                       </span>
                     </div>
                     <button
