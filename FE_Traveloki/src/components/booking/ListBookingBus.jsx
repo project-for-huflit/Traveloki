@@ -16,12 +16,12 @@ const ListBookingBus = (props) => {
   const Time = searchParams.get("Time");
   const IDTram = searchParams.get("IDTram");
   const GiaVe = searchParams.get("GiaVe");
+  const DiemKetThuc = searchParams.get("DiemKetThuc");
 
   useEffect(() => {
     const fetchBusByLichChay = async() => {
       try{
         const res = await getPhuongTienByLichChay(MaTuyen)
-        console.log("check bus",res)
         if (res && res.data.EC === 0){
           const busData = res.data.data
             .filter((item) => item.MaPT.LoaiPT === "bus")
@@ -138,17 +138,20 @@ const ListBookingBus = (props) => {
 
   const handleSubmit = (busID) => {
     navigate(
-      `/airport-transfer/search/list/bus?SanBay=${encodeURIComponent(
-        SanBay
-      )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
-        Time
-      )}&IDTram=${IDTram}&PhuongTienID=${busID}`
+      `/airport-transfer/search/list/bus?SanBay=${encodeURIComponent(SanBay)}
+      &Date=${encodeURIComponent(Date)}
+      &Time=${encodeURIComponent(Time)}
+      &DiemKetThuc=${encodeURIComponent(DiemKetThuc)}
+      &GiaVe=${encodeURIComponent(GiaVe)}
+      &PhuongTienID=${busID}`
     );
   };
 
   // const filteredBuses = (Array.isArray(bus) ? bus : []).filter((item) =>
   //   tuyenSB.some((tuyen) => tuyen.MaTuyen === item.MaTuyen)
   // );
+
+  console.log("Bus:", bus);
 
   return (
     <div className="w-full h-full mx-auto container">

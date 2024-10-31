@@ -10,6 +10,7 @@ const ListMain = () => {
   const [selected, setSelected] = useState("Car");
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay") || "Default San Bay";
+  const DiemKetThuc = searchParams.get("DiemKetThuc") || "Default Diem Ket Thuc";
   const Date = searchParams.get("Date") || "Default Date";
   const Time = searchParams.get("Time") || "Default Time";
   const MaTuyen = searchParams.get("MaTuyen")?.split(",").map((item) => item.trim()) || "";

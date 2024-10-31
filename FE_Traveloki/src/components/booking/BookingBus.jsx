@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "react-router-dom";
-import {getTramDungId} from "../../services/api/booking/api.bookingBus.js";
+import {faCalendarDays, faPlaneArrival} from "@fortawesome/free-solid-svg-icons";
+import {getPhuongTienId} from "../../services/api/phuongTien/api.phuongTien.js";
+import {buyTicketBus} from "../../services/api/booking/api.bookingBus.js";
 // import {
 //   faPlaneArrival,
 //   faCalendarDays,
@@ -13,24 +15,26 @@ const BookingBus = () => {
   const SanBay = searchParams.get("SanBay");
   const dateParam = searchParams.get("Date");
   const timeParam = searchParams.get("Time");
-  const IDTram = searchParams.get("IDTram");
-  const id = searchParams.get("PhuongTienID");
+  const busId = searchParams.get("PhuongTienID");
+  const DiemKetThuc = searchParams.get("DiemKetThuc");
+  const GiaVe = parseFloat(searchParams.get("GiaVe")) || 0;
   const [count, setCount] = useState(1);
   const [phuongtien, setPhuongTien] = useState(null);
-  const [tram, setTram] = useState(null);
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [bookingBus, setBookingBus] = useState({
-    MaPT: id,
-    MaTram: IDTram,
-    SLVe: "",
-    DiemDon: SanBay,
-    DiemTra: "",
-    NgayGioKhoiHanh: `${dateParam}T${timeParam}`,
-    ThanhTien: 0,
-    TrangThai: false,
-    currency: "VND"
-  });
+  const [totalPrice, setTotalPrice] = useState(0);
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [bookingBus, setBookingBus] = useState({
+  //   MaPT: busId,
+  //   SLVe: "",
+  //   DiemDon: SanBay,
+  //   DiemTra: DiemKetThuc,
+  //   NgayGioKhoiHanh: `${dateParam}T${timeParam}`,
+  //   ThanhTien: 0,
+  //   TrangThai: false,
+  //   currency: "VND"
+  // });
+
+  // console.log("busId", bookingBus)
 
   const increaseCount = () => {
     setCount((prevCount) => (prevCount < 10 ? prevCount + 1 : 10));
@@ -40,63 +44,33 @@ const BookingBus = () => {
     setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : 1));
   };
 
-  const fetchPhuongTien = async () => {
-    try {
-      const res = await fetchPhuongTien(id);
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await res.json();
-      setPhuongTien(result.phuongTien);
-    } catch (error) {
-      setError("Không thể lấy dữ liệu từ máy chủ phuongtien: " + error.message);
-    }
-  };
-
-  const fetchTram = async () => {
-    try {
-      const res = await getTramDungId(IDTram);
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await res.json();
-      setTram(result);
-    } catch (error) {
-      setError("Không thể lấy dữ liệu từ máy chủ tram: " + error.message);
-    }
-  };
+  useEffect(() => {
+    setTotalPrice(GiaVe * count);
+  }, [count]);
 
   useEffect(() => {
+    const fetchPhuongTien = async () => {
+      try {
+        const res = await getPhuongTienId(busId);
+        if (res && res.data.phuongTien) {
+          setPhuongTien(res.data.phuongTien);
+        }
+      } catch (error) {
+        setError("Không thể lấy dữ liệu từ máy chủ phuongtien: " + error.message);
+      }
+    };
     fetchPhuongTien();
-  }, [id]);
-
-  useEffect(() => {
-    fetchTram();
-  }, [IDTram]);
-
-  useEffect(() => {
-    if (phuongtien && tram) {
-      setBookingBus((prevBookingBus) => ({
-        ...prevBookingBus,
-        MaPT: phuongtien._id,
-        DiemDon: SanBay,
-        DiemTra: tram.DiaChi,
-        ThanhTien: count * tram.GiaTienVe,
-      }));
-      setIsLoading(false);
-    }
-  }, [phuongtien, tram, count]);
+  }, [busId]);
 
   const handle_Submit = async (e) => {
     e.preventDefault();
     console.log("Dữ liệu gửi đi:", bookingBus);
 
-    const { MaPT, MaTram, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } =
-      bookingBus;
+    // const { MaPT, MaTram, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } =
+    //   bookingBus;
 
     if (
       !MaPT ||
-      !MaTram ||
       !DiemDon ||
       !DiemTra ||
       !NgayGioKhoiHanh ||
@@ -107,6 +81,17 @@ const BookingBus = () => {
     }
 
     const formattedDate = new Date(NgayGioKhoiHanh).toISOString();
+
+    try {
+      const res = await buyTicketBus(busId, count, SanBay, DiemKetThuc, formattedDate, totalPrice);
+      if (res && res.data) {
+        console.log("Đã nhận được ID đơn hàng:", res.data.buyTicketBus._id);
+      }
+    }catch (error) {
+      console.error("Lỗi khi kết nối tới máy chủ:", error);
+      alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
+    }
+
 
     try {
       const res = await fetch(`${url}/BuyTicketBus`, {
@@ -181,7 +166,6 @@ const BookingBus = () => {
     }
   };
 
-
   const handlePayment = async (e) => {
     e.preventDefault()
     console.log("Dữ liệu gửi đi:", bookingBus);
@@ -203,7 +187,7 @@ const BookingBus = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json", },
-          body: JSON.stringify({ MaDetailCar: id, Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm, ThanhTien, Description }),
+          body: JSON.stringify({ MaDetailCar: busId, Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm, ThanhTien, Description }),
         }
       );
 
@@ -271,32 +255,31 @@ const BookingBus = () => {
     }
   }
 
-  if (isLoading)
-    return (
-      <div className="text-center text-4xl translate-y-1/2 h-3/4 font-extrabold">
-        Loading...
-      </div>
-    );
-  if (error)
-    return (
-      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-        Error: {error}
-      </div>
-    );
-
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat().format(price);
-  };
+  // if (isLoading)
+  //   return (
+  //     <div className="text-center text-4xl translate-y-1/2 h-3/4 font-extrabold">
+  //       Loading...
+  //     </div>
+  //   );
+  // if (error)
+  //   return (
+  //     <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
+  //       Error: {error}
+  //     </div>
+  //   );
+  //
+  // const formatPrice = (price) => {
+  //   return new Intl.NumberFormat().format(price);
+  // };
 
   return (
     <div className="p-4 w-full h-fit overflow-y-auto">
       <span className="bg-white h-fit w-[96%] p-2 -top-0 font-bold text-xl">
         <span className="font-extrabold text-green-500 px-4">{SanBay}</span> -
         <span className="font-extrabold text-green-500 px-4">
-          {tram?.DiaChi}
+          {DiemKetThuc}
         </span>
       </span>
-      <p className="pl-6 text-xl">Công ty: {phuongtien?.TenCty}</p>
       <div className="mt-4 bg-slate-100 h-fit p-4">
         <label className="font-bold">
           <span className="text-blue-500">○</span> Điểm sân bay
@@ -348,7 +331,7 @@ const BookingBus = () => {
         <div className="p-2 pl-8">
           <p className="border mt-2 text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2">
             <FontAwesomeIcon icon={faPlaneArrival} />
-            <span className="ml-2">{tram?.DiaChi}</span>
+            <span className="ml-2">{DiemKetThuc}</span>
           </p>
         </div>
       </div>
@@ -357,7 +340,8 @@ const BookingBus = () => {
           <div className="w-fit">
             <p className="text-gray-500 text-sm text-right">Tổng tiền xe</p>
             <span className="text-lg text-orange-400">
-              {formatPrice(bookingBus.ThanhTien)} VND
+              {/*{formatPrice(bookingBus.ThanhTien)} VND*/}
+              {totalPrice} VND
             </span>
           </div>
           <button

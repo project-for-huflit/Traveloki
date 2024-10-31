@@ -9,6 +9,7 @@ const asyncHandler = require('../middlewares/asyncHandler.middeware')
 class BookingBusController {
 
 }
+
 // module.exports = new BookingBusController()
 
 const GetBuyTicketBus = async (req, res) => {
@@ -22,9 +23,9 @@ const GetBuyTicketBus = async (req, res) => {
 
 const BuyTicketBus = async (req, res) => {
   try {
-    const { MaPT, MaTram, SLVe, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } = req.body;
+    const { MaPT, SLVe, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } = req.body;
 
-    if ( !MaPT || !MaTram || !SLVe || !DiemDon || !DiemTra || !NgayGioKhoiHanh || !ThanhTien ) {
+    if ( !MaPT || !SLVe || !DiemDon || !DiemTra || !NgayGioKhoiHanh || !ThanhTien ) {
       return res.status(400).json("Missing information");
     }
 
@@ -43,7 +44,6 @@ const BuyTicketBus = async (req, res) => {
     const buyTicketBus = new PhieuDatXeBus({
       MaVeBus,
       MaPT,
-      MaTram,
       SLVe,
       DiemDon,
       DiemTra,

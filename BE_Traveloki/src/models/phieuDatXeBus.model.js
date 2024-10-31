@@ -4,7 +4,6 @@ const COLLECTION_NAME = 'PhieuDatXeBuses'
 const PhieuDatXeBusSchema = new Schema({
   MaVeBus: { type: String, required: true, maxlength: 5 },
   MaPT: { type: String, ref: "PhuongTien" },
-  MaTram: { type: String, ref: "TramDung" },
   SLVe: { type: Number, required: true },
   DiemDon: { type: String, required: true, maxlength: 100 },
   DiemTra: { type: String, required: true, maxlength: 100 },

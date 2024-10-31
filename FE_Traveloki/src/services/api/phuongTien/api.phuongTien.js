@@ -11,6 +11,11 @@ const getAllCar = () =>{
   return axios.get(URL_BACKEND)
 }
 
+const getPhuongTienId = (id) =>{
+  const URL_BACKEND = `/api/GetPhuongTienID/${id}`;
+  return axios.get(URL_BACKEND)
+}
+
 export {
-  getPhuongTienByLichChay, getAllCar
+  getPhuongTienByLichChay, getAllCar, getPhuongTienId
 }
