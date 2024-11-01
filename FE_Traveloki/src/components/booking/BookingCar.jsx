@@ -69,6 +69,8 @@ const BookingCar = () => {
     }
   };
 
+  console.log("IDTram:", IDTram);
+  console.log("BookingCar parameters:", { SanBay,diemKetThuc ,Date, Time, IDTram });
   const fetchTram = async () => {
     try {
       // const res = await fetch(
@@ -272,13 +274,6 @@ const BookingCar = () => {
           // const response = await paymentSend(body)
           const paymentData = await response.json();
           console.log("Phản hồi từ server tạo yêu cầu từ pointer:", paymentData);
-
-
-          // if(response.status === 200){
-          //     window.location.replace(response.data.url)
-          // } else {
-          //   alert(paymentData.error || "Đã xảy ra lỗi khi truyền dữ liệu - 265");
-          // }
         } catch (error) {
           console.error("Lỗi khi truyền dữ liệu:", error);
           alert("Không thể truyền dữ liệu");
