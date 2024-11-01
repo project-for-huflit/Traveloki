@@ -49,18 +49,16 @@ const BookingCar = () => {
 
   const fetchDetailCar = async () => {
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/GetDetailCarID/${id}`
-      );
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/GetDetailCarID/${id}`);
+      if (!res.ok) { throw new Error("Network response was not ok") }
       const result = await res.json();
+      console.log("detail car::", result)
       setDetail(result);
+
       setBookingCar((prevBookingCar) => ({
         ...prevBookingCar,
         MaDetailCar: result._id,
-        ThanhTien: result.SoTien_1km * (tram?.SoKM || 0),
+        ThanhTien: result.SoTien_1km * (tram?.cost || 0),
       }));
     } catch (error) {
       setError("Không thể lấy dữ liệu từ máy chủ detail cars");
@@ -69,22 +67,17 @@ const BookingCar = () => {
     }
   };
 
-  console.log("IDTram:", IDTram);
-  console.log("BookingCar parameters:", { SanBay,diemKetThuc ,Date, Time, IDTram });
   const fetchTram = async () => {
     try {
-      // const res = await fetch(
-      //   `${import.meta.env.VITE_BACKEND_URL}/api/GetTramDungID/${IDTram}`
-      // );
-      // if (!res.ok) {
-      //   throw new Error("Network response was not ok");
-      // }
-      // const result = await res.json();
-      // setTram(result);
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/GetTramDungID/${IDTram}`);
+      if (!res.ok) { throw new Error("Network response was not ok") }
+      const result = await res.json();
+      setTram(result);
+      console.log([tram.tramDung._id])
       setBookingCar((prevBookingCar) => ({
         ...prevBookingCar,
-        // SoKm: result.SoKM,
-        // MaTram: result._id,
+        SoKm: result.cost,
+        MaTram: result.tramDung._id,
         DiemDon_Tra: diemDonTra,
       }));
     } catch (error) {
@@ -95,8 +88,8 @@ const BookingCar = () => {
   };
 
   useEffect(() => {
-    fetchDetailCar();
     fetchTram();
+    fetchDetailCar();
   }, [IDTram]);
 
   useEffect(() => {
@@ -104,10 +97,10 @@ const BookingCar = () => {
       setBookingCar((prevBookingCar) => ({
         ...prevBookingCar,
         DiemSanBay: SanBay,
-        DiemDon_Tra: tram?.DiaChi,
+        DiemDon_Tra: diemDonTra,
         NgayGioDat: `${Date}-${Time}`,
-        SoKm: tram?.SoKM,
-        ThanhTien: detail?.SoTien_1km * tram?.SoKM,
+        SoKm: tram?.cost,
+        ThanhTien: detail?.SoTien_1km * tram?.cost,
         Sdt: prevBookingCar.Sdt,
         Description: prevBookingCar.Description,
         TrangThai: prevBookingCar.TrangThai,
@@ -204,6 +197,15 @@ const BookingCar = () => {
   const handlePayment = async (e) => {
     e.preventDefault()
     console.log("Dữ liệu gửi đi:", bookingCar);
+
+    /**
+     * {MaDetailCar: '66a928805951552933eb1b2d',
+     * Sdt: '0374444252',
+     * MaTram: undefined,
+     * DiemSanBay: 'Tân Sơn Nhất',
+     * DiemDon_Tra: 'Ngã tư An Sương',...}
+     * SoKm, MaTram ??
+     */
 
     const {
       Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm,
