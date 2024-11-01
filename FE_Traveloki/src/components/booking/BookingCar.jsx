@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useLocation } from "react-router-dom";
 // import { paymentSend } from '../../services/api/payment/index'
 // import { createBookingCar, GetBookingCarId } from '../../services/api/booking/api.bookingCar'
 
@@ -13,8 +13,17 @@ import {
   faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
 const BookingCar = () => {
+  const location = useLocation();
+
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay");
+
+  const queryParams = new URLSearchParams(location.search);
+  const sanBay = queryParams.get('SanBay');
+  console.log('SanBay::', decodeURIComponent(SanBay))
+  const decodedSanBay = decodeURIComponent(sanBay);
+  console.log('SanBay:', decodedSanBay);
+
   const Date = searchParams.get("Date");
   const Time = searchParams.get("Time");
   const IDTram = searchParams.get("IDTram");
@@ -87,7 +96,7 @@ const BookingCar = () => {
 
   useEffect(() => {
     fetchDetailCar();
-    fetchTram();
+    // fetchTram();
   }, [IDTram]);
 
   useEffect(() => {
