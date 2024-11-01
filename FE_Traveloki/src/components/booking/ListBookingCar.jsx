@@ -1,56 +1,65 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faSuitcase } from "@fortawesome/free-solid-svg-icons";
 import imagelist from "../../assets/listbooking.png";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import {getAllCar} from "../../services/api/phuongTien/api.phuongTien.js";
 
 const ListBookingCar = () => {
-  // const url = "http://localhost:3005/api";
-  const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const navigate = useNavigate();
   const [detailCar, setDetailCar] = useState([]);
   const [fetchError, setFetchError] = useState(null);
   const [searchParams] = useSearchParams();
-
   const SanBay = searchParams.get("SanBay") || "Default San Bay";
+  const DiemKetThuc = searchParams.get("DiemKetThuc") || "Default Diem Ket Thuc";
   const Date = searchParams.get("Date") || "Default Date";
   const Time = searchParams.get("Time") || "Default Time";
-  const IDTram = searchParams.get("IDTram") || "Default IDTram";
-  const MaSB = searchParams.get("MaSB") || "";
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat().format(price);
   };
 
-  const fetchDetailCar = async () => {
-    try {
-      const res = await fetch(`${url}/FindDetailCarID?MaSB=${MaSB}`);
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
+  useEffect(() => {
+    const fetchAllCar = async () => {
+      try{
+        const res = await getAllCar()
+        if (res && res.status === 200){
+          setDetailCar(res.data.chiTietXeOto);
+        }
+      }catch (error){
+        console.error("Error fetching bus:", error);
+        setFetchError(
+          <div className="w-full">
+            <div className="flex justify-center mt-8 mx-auto">
+              <img
+                className="w-1/3 h-1/3"
+                src="https://ik.imagekit.io/tvlk/image/imageResource/2022/11/29/1669703331120-6c5d2bb47e511f5b9b7e143f55f513d7.png?tr=dpr-2,h-200,q-75"
+                alt="No buses available"
+              />
+            </div>
+            <p className="text-xl mt-4 text-center font-extrabold">
+              No Cars Available
+            </p>
+            <p className="text-center my-4">
+              There are no Cars operating between your locations. Please check
+              again at another time.
+            </p>
+          </div>
+        );
       }
-      const result = await res.json();
-      setDetailCar(result.detailCars || []);
-    } catch (e) {
-      console.error("Error fetching detail car:", e);
-      setFetchError("Failed to load details. Please try again later.");
     }
-  };
+    fetchAllCar()
+  }, [])
 
   const handleSubmit = (detailCarID) => {
     navigate(
-      `/airport-transfer/search/list/cars?SanBay=${encodeURIComponent(
-        SanBay
-      )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
-        Time
-      )}&IDTram=${IDTram}&DetailCarID=${detailCarID}`
+      `/airport-transfer/search/list/cars?SanBay=${encodeURIComponent(SanBay)}
+      &DiemKetThuc=${encodeURIComponent(DiemKetThuc)}
+      &Date=${encodeURIComponent(Date)}
+      &Time=${encodeURIComponent(Time)}
+      &DetailCarID=${detailCarID}`
     );
   };
-
-  useEffect(() => {
-    if (MaSB) {
-      fetchDetailCar();
-    }
-  }, [MaSB]);
 
   return (
     <div className="w-full h-full mx-auto container">

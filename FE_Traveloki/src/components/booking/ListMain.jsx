@@ -4,19 +4,16 @@ import { faCar, faBus, faTrain } from "@fortawesome/free-solid-svg-icons";
 import ListBookingCar from "./ListBookingCar";
 import ListBookingBus from "./ListBookingBus";
 import ListBookingTrain from "./ListBookingTrain";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const ListMain = () => {
-  // const url = "http://localhost:3005/api";
-  const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const [selected, setSelected] = useState("Car");
   const [searchParams] = useSearchParams();
-
   const SanBay = searchParams.get("SanBay") || "Default San Bay";
+  const DiemKetThuc = searchParams.get("DiemKetThuc") || "Default Diem Ket Thuc";
   const Date = searchParams.get("Date") || "Default Date";
   const Time = searchParams.get("Time") || "Default Time";
-  const IDTram = searchParams.get("IDTram") || "Default IDTram";
-  const MaSB = searchParams.get("MaSB") || "";
+  const MaTuyen = searchParams.get("MaTuyen")?.split(",").map((item) => item.trim()) || "";
 
   const handleClick = (option) => {
     setSelected(option);
@@ -88,9 +85,9 @@ const ListMain = () => {
           <FontAwesomeIcon icon={faTrain} /> Airport Train
         </span>
       </div>
-      {selected === "Car" && <ListBookingCar />}
-      {selected === "Bus" && <ListBookingBus />}
-      {selected === "Train" && <ListBookingTrain />}
+      {selected === "Car" && <ListBookingCar/>}
+      {selected === "Bus" && <ListBookingBus MaTuyen={MaTuyen}/>}
+      {selected === "Train" && <ListBookingTrain MaTuyen={MaTuyen}/>}
     </div>
   );
 };

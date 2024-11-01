@@ -1,4 +1,5 @@
 const {PhuongTien} = require('../models/phuongTien.model');
+const {LichChay} = require("../models/lichChay.model");
 
 const getAllPhuongTienService = async () => {
   try {
@@ -87,6 +88,22 @@ const deletePhuongTienService = async (id) => {
   }
 }
 
+const getPhuongTienByLichChayService = async (MaTuyen) => {
+  try {
+    const result = await LichChay.find({
+      MaTuyen: {$in: MaTuyen}
+    }).populate('MaPT');
+    return {
+      EC: 0,
+      EM: "Lấy phương tiện đang hoạt động theo tuyến thành công",
+      data: result
+    }
+  } catch (error) {
+    console.error("Có lỗi xảy ra khi tìm phương tiện theo lịch chạy:", error);
+    throw error;
+  }
+}
+
 module.exports = {
-  getAllPhuongTienService, createPhuongTienService, deletePhuongTienService
+  getAllPhuongTienService, createPhuongTienService, deletePhuongTienService, getPhuongTienByLichChayService
 }
