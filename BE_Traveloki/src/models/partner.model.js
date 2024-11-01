@@ -15,12 +15,10 @@ const partnerSchema = new Schema({
   },
   password: {
     type: String,
-    required:true,
   },
   isPartner: {
     type: Boolean,
-    require: true,
-    default: false
+    default: true
   },
   privateKey: {
     type: String,

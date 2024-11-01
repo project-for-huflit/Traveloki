@@ -226,7 +226,7 @@ const CreateDetailCar = () => {
               >
                 Thêm chi tiết xe
               </button>
-              <Link className="px-4" to="/ListDetailCar">
+              <Link className="px-4" to="/detail-car/list">
                 <button className="bg-red-500 px-4 py-2 hover:bg-red-700 text-white font-bold rounded">
                   <FontAwesomeIcon icon={faXmark} /> Hủy
                 </button>

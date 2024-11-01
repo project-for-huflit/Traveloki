@@ -27,7 +27,16 @@ const getTuyenDiemSanBay = (maSanBay) => {
     return axios.get(URL_BACKEND)
 }
 
+const checkRoute = (diemKhoiHanh, diemKetThuc) => {
+  const data = {
+    diemKhoiHanh: diemKhoiHanh,
+    diemKetThuc: diemKetThuc
+  }
+  const URL_BACKEND = `${url}/CheckRoute`
+  return axios.post(URL_BACKEND, data)
+}
+
 export{
     suggestsAirportAPI, suggestsTramDungAPI, tramDungByDiaChi,
-    getSanBaybyTenSanBay, getTuyenDiemSanBay
+    getSanBaybyTenSanBay, getTuyenDiemSanBay, checkRoute
 }

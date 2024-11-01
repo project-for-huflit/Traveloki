@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import axios from '../../axios.customize.js';
 
 // region user
@@ -72,6 +73,35 @@ const pointerApi = async (body) => {
     }
   );
 };
+
+// const fetchPointerApi = async (code) => {
+//   const navigate = useNavigate()
+//   return await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v2/auth/partner/continue-with-pointer`, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify({ code })
+//   }).then(response => {
+//     if (!response.status === 201) {
+//       throw new Error('Network response was not okk')
+//     }
+//     response.json()
+//   }).then(data => {
+//     console.log("API response: ", data)
+//     if(data.metadata.tokens) {
+//       localStorage.setItem('token', data.metadata.tokens)
+//       localStorage.setItem('userId', data.metadata.partnerId)
+
+//       const userId = data.metadata.partnerId
+//       console.log("userId: ", userId)
+
+//       navigate('', { state: { userId }})
+//     } else {
+//       console.error('No token found in response: ', data)
+//     }
+//   })
+// };
 
 const logoutPartnerApi = async (body) => {
   return await axios.post(

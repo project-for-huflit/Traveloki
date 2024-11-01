@@ -28,9 +28,11 @@ import { RatingBus } from "../components/rating/RatingBus.jsx";
 import { RatingTau } from "../components/rating/RatingTau.jsx";
 import { ErrorPage } from "../pages/SystemPage/ErrorPage.jsx";
 import HomePage from "../pages/HomePage/HomePage.jsx";
+import ProfilePage from '../pages/Profile/index.jsx'
 // import Login from "../pages/Auth/LogIn.jsx";
 import Login from "../pages/Auth/LogIn";
 import SignUp from "../pages/Auth/Register.jsx";
+import CallBack from "../pages/Auth/CallBackPage.jsx";
 import Loading from '../pages/loading/index.jsx'
 import ProfilePage from '../pages/Profile/index.jsx'
 // import { TextEditorReact } from "../Customer/Rating/TextEditorReact.jsx";
@@ -46,6 +48,7 @@ const router = createBrowserRouter([
     children: [
       { path: 'login', element: <Login /> },
       { path: 'register', element: <SignUp />},
+      { path: 'callback', element: <CallBack />},
       { path: 'loading', element: <Loading />}
     ]
   },
