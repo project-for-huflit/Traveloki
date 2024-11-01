@@ -71,6 +71,7 @@ const DanhSachLichChay = () => {
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Tuyến</TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Loại PT</TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Ngày khởi hành</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Số lượng vé</TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Giờ hoạt động</TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Hành động</TableCell>
             </TableRow>
@@ -82,6 +83,7 @@ const DanhSachLichChay = () => {
                 <TableCell>{lichChay.MaTuyen.MaTuyen}</TableCell>
                 <TableCell>{lichChay.MaPT.LoaiPT} - {lichChay.MaPT.MaSoXe}</TableCell>
                 <TableCell>{lichChay.ngayKhoiHanh}</TableCell>
+                <TableCell>{lichChay.SLVeConLai}/{lichChay.SLVe}</TableCell>
                 <TableCell>{lichChay.gioKhoiHanh} - {lichChay.gioKetThuc}</TableCell>
                 <TableCell>
                   <IconButton color="error" onClick={() => showModal(lichChay)}>

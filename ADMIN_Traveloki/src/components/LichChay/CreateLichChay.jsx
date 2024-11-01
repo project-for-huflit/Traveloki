@@ -16,7 +16,7 @@ const CreateLichChay = () => {
     ngayKhoiHanh: new Date(),
     gioKhoiHanh: "",
     gioKetThuc: "",
-    SlVe: "",
+    SLVe: "",
   });
   const [tuyen, setTuyen] = useState([]);
   const [phuongTien, setPhuongTien] = useState([]);
@@ -79,6 +79,11 @@ const CreateLichChay = () => {
       return;
     }
 
+    if (lichChay.SLVe < 0 ){
+      alert("SlVe phải lớn hon 0")
+      return
+    }
+
     if (lichChay.gioKhoiHanh >= lichChay.gioKetThuc) {
       alert("Thời gian kết thúc phải sau thời gian khởi hành");
       return;
@@ -92,7 +97,8 @@ const CreateLichChay = () => {
         lichChay.MaTuyen,
         formattedDate,
         lichChay.gioKhoiHanh,
-        lichChay.gioKetThuc
+        lichChay.gioKetThuc,
+        lichChay.SLVe
       );
       if (res && res.EC === 0) {
         notification.success({
@@ -189,8 +195,8 @@ const CreateLichChay = () => {
             <label className="text-black">Số lượng vé</label>
             <input
               type="number"
-              name="gioKetThuc"
-              value={lichChay.gioKetThuc}
+              name="SLVe"
+              value={lichChay.SLVe}
               onChange={handleChange}
               className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
             />
@@ -199,7 +205,8 @@ const CreateLichChay = () => {
           <div className="flex justify-center mt-4">
             <button
               disabled={
-                !lichChay.MaPT || !lichChay.MaTuyen || !lichChay.ngayKhoiHanh || !lichChay.gioKhoiHanh || !lichChay.gioKetThuc
+                !lichChay.MaPT || !lichChay.MaTuyen || !lichChay.ngayKhoiHanh || !lichChay.gioKhoiHanh ||
+                !lichChay.gioKetThuc || !lichChay.SLVe
               }
               onClick={handleSubmit}
               className="bg-blue-500 px-4 py-2 hover:bg-blue-700 text-white font-bold rounded"

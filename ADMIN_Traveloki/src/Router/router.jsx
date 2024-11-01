@@ -16,8 +16,13 @@ import ErrorPage from "./ErrorPage.jsx";
 import {Dashboard} from "../components/DashBoard/DashBoard.jsx";
 import DanhSachLichChay from "../components/LichChay/DanhSachLichChay.jsx";
 import CreateLichChay from "../components/LichChay/CreateLichChay.jsx";
+import Login from "../page/Login.jsx";
 
 const router = createBrowserRouter([
+  {
+    path:"/login",
+    element: <Login/>
+  },
   {
     path: "/",
     element: <App />,
