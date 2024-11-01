@@ -16,6 +16,7 @@ const ListBookingBus = (props) => {
   const Time = searchParams.get("Time");
   const IDTram = searchParams.get("IDTram");
   const GiaVe = searchParams.get("GiaVe");
+  const DiemKetThuc = searchParams.get("DiemKetThuc");
 
   useEffect(() => {
     const fetchTrainByLichChay = async() => {
@@ -58,12 +59,23 @@ const ListBookingBus = (props) => {
   };
 
   const handleSubmit = (TrainID) => {
+    // navigate(
+    //   `/airport-transfer/search/list/trains?
+    //   SanBay=${encodeURIComponent(
+    //     SanBay
+    //   )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
+    //     Time
+    //   )}&IDTram=${IDTram}&PhuongTienID=${TrainID}`
+    // );
+
     navigate(
-      `/airport-transfer/search/list/train?SanBay=${encodeURIComponent(
-        SanBay
-      )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
-        Time
-      )}&IDTram=${IDTram}&PhuongTienID=${TrainID}`
+      `/airport-transfer/search/list/bus?
+      SanBay=${encodeURIComponent(SanBay)}
+      &Date=${encodeURIComponent(Date)}
+      &Time=${encodeURIComponent(Time)}
+      &DiemKetThuc=${encodeURIComponent(DiemKetThuc)}
+      &GiaVe=${encodeURIComponent(GiaVe)}
+      &PhuongTienID=${TrainID}`
     );
   };
 
