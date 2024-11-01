@@ -12,16 +12,17 @@ import {buyTicketBus} from "../../services/api/booking/api.bookingBus.js";
 const BookingBus = () => {
   const url = `${import.meta.env.VITE_BACKEND_URL}/api/`;
   const [searchParams] = useSearchParams();
-  const SanBay = searchParams.get("SanBay");
+  const SanBay = searchParams.get(`SanBay`);
   const dateParam = searchParams.get("Date");
   const timeParam = searchParams.get("Time");
   const busId = searchParams.get("PhuongTienID");
-  const DiemKetThuc = searchParams.get("DiemKetThuc");
+  const DiemKetThuc = searchParams.get(`DiemKetThuc`);
   const GiaVe = parseFloat(searchParams.get("GiaVe")) || 0;
   const [count, setCount] = useState(1);
   const [phuongtien, setPhuongTien] = useState(null);
   const [error, setError] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+
   // const [isLoading, setIsLoading] = useState(true);
   // const [bookingBus, setBookingBus] = useState({
   //   MaPT: busId,
