@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import bird from "../../assets/bird-removebg-preview.png";
 import icVN from "../../assets/iconVN.png";
 import icPercent from "../../assets/iconPercent.png";
@@ -5,8 +7,21 @@ import backgroundImage from "../../assets/introPic.png";
 import { Link } from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
+import DirectToAuthPage from './directToAuthPage'
+import ShowProfile from './showProfileMUI';
 
 const Header = () => {
+  const [user, setUser] = useState('');
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (user) {
+      console.log(user.name);
+      // const _user = JSON.parse(user);
+      setUser(user.name);
+    }
+  }, []);
   return (
     <div className="flex justify-center container w-full mb-20">
       <header
@@ -53,7 +68,7 @@ const Header = () => {
                 <img src={icPercent} alt="icon Percent"/>
                 <span>Khuyến mãi</span>
               </a>
-              <Link
+              {/* <Link
                   to={"/auth/login"}
                   className="hover:text-gray-300 flex items-center space-x-2 border border-white rounded-md p-1 cursor-pointer"
               >
@@ -66,7 +81,8 @@ const Header = () => {
               >
                 <FontAwesomeIcon icon={faUser}/>
                 <span>Đăng ký</span>
-              </Link>
+              </Link> */}
+              {user ? (<ShowProfile user={user} />) : (<DirectToAuthPage />)}
             </nav>
           </div>
         </div>

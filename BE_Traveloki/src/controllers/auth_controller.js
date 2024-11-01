@@ -2,9 +2,16 @@
 // const jwt = require('jsonwebtoken');
 // const {Account} = require('../models/account.model');
 
-const { AuthSSOService, AuthJWTService } = require('../services/authen.service')
+const {
+  AuthSSOService,
+  AuthJWTService,
+} = require('../services/authen.service');
 
-const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+const {
+  OK,
+  CREATED,
+  SuccessResponse,
+} = require('../middlewares/success.response');
 
 class AuthController {
   //region JWT
@@ -12,74 +19,73 @@ class AuthController {
     new CREATED({
       message: 'Register OK!',
       metadata: await AuthJWTService.register(req.body),
-      option: 'abc'
-    }).send(res)
-  }
+      option: 'abc',
+    }).send(res);
+  };
 
   login = async (req, res, next) => {
     new SuccessResponse({
-      metadata: await AuthJWTService.login( req.body )
-    }).send(res)
-  }
+      metadata: await AuthJWTService.login(req.body),
+    }).send(res);
+  };
 
   logout = async (req, res, next) => {
     new SuccessResponse({
       message: 'Logout success!',
-      metadata: await AuthJWTService.logout( req.keyStore )
-    }).send(res)
-  }
-  handlerRefreshTokenUser = async ( req, res, next ) => {
+      metadata: await AuthJWTService.logout(req.keyStore),
+    }).send(res);
+  };
+  handlerRefreshTokenUser = async (req, res, next) => {
     new SuccessResponse({
       message: 'Get token success!',
       metadata: await AuthJWTService.handleRefreshToken({
         refreshToken: req.refreshToken,
         user: req.user,
-        keyStore: req.keyStore
-      })
-    }).send(res)
-  }
+        keyStore: req.keyStore,
+      }),
+    }).send(res);
+  };
   // region POINTER SERVICE
 
-  loginPartner =  async (req, res, next) => {
+  loginPartner = async (req, res, next) => {
     new SuccessResponse({
-      metadata: await AuthSSOService.login( req.body )
-    }).send(res)
-  }
+      metadata: await AuthSSOService.login(req.body),
+    }).send(res);
+  };
   loginPointer = async (req, res, next) => {
     new SuccessResponse({
-      message: 'success with post!',
-      metadata: await AuthSSOService.loginWithPointer(req.body),
+      message: ' success!',
+      metadata: await AuthSSOService.loginWithPointer(req.body.accessToken),
     }).send(res);
   };
 
   logoutPointer = async (req, res, next) => {
     new SuccessResponse({
       message: 'Logout with partner success!',
-      metadata: await AuthSSOService.logout( req.keyStore )
-    }).send(res)
-  }
+      metadata: await AuthSSOService.logout(req.keyStore),
+    }).send(res);
+  };
 
   registerPointer = async (req, res, next) => {
     new CREATED({
       message: 'Register with pointer OK!',
-      metadata: await AuthSSOService.register(req.body)
-    }).send(res)
-  }
+      metadata: await AuthSSOService.register(req.body),
+    }).send(res);
+  };
 
-  handlerRefreshTokenPointer = async ( req, res, next ) => {
+  handlerRefreshTokenPointer = async (req, res, next) => {
     new SuccessResponse({
       message: 'Get token success!',
       metadata: await AuthSSOService.handleRefreshToken({
         refreshToken: req.refreshToken,
         user: req.user,
-        keyStore: req.keyStore
-      })
-    }).send(res)
-  }
+        keyStore: req.keyStore,
+      }),
+    }).send(res);
+  };
 }
 
-module.exports = new AuthController()
-
+module.exports = new AuthController();
 
 // const login = async (req, res, next) => {
 //   const { username, password } = req.body;
