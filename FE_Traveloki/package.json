@@ -38,6 +38,7 @@
     "lexical": "0.16.1",
     "lodash": "4.17.21",
     "moment": "2.30.1",
+    "netlify-plugin-cloudinary": "^1.17.0",
     "nprogress": "0.2.0",
     "oauth-pointer": "^1.0.3",
     "process": "^0.11.10",
