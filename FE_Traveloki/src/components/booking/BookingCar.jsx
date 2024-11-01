@@ -74,7 +74,7 @@ const BookingCar = () => {
       const result = await res.json();
       setTram(result);
       // console.log("fetTram::",[tram.tramDung._id]) // ??
-      console.log("result fetTram::", tram)
+      console.log("result fetTram::", result)
       setBookingCar((prevBookingCar) => ({
         ...prevBookingCar,
         SoKm: result.cost,
