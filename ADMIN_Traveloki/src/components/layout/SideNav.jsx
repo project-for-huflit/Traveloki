@@ -178,7 +178,7 @@ const SideNav = () => {
                 >
                   <EmojiTransportationIcon />
                 </ListItemIcon>
-                <ListItemText primary="Danh sách phương tiện" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="Danh sách phương tiện công cộng" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </NavLink>
           </ListItem>
@@ -207,7 +207,7 @@ const SideNav = () => {
                 >
                   <AddLocationIcon />
                 </ListItemIcon>
-                <ListItemText primary="Danh sách Trạm Dừng" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="Danh sách trạm dừng" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </NavLink>
           </ListItem>
@@ -295,6 +295,66 @@ const SideNav = () => {
                   <DirectionsCarIcon />
                 </ListItemIcon>
                 <ListItemText primary="Danh sách Xe" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </NavLink>
+          </ListItem>
+
+          <ListItem  disablePadding sx={{ display: 'block' }}>
+            <NavLink
+              to="/detail-car/list"
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-blue-500 bg-gray-200' // Màu khi active
+                  : 'text-gray-700 hover:bg-gray-100'
+              }
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    justifyContent: 'center',
+                    mr: open ? 3 : "auto",
+                  }}
+                >
+                  <DirectionsCarIcon />
+                </ListItemIcon>
+                <ListItemText primary="Danh sách giao dịch" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </NavLink>
+          </ListItem>
+
+          <ListItem  disablePadding sx={{ display: 'block' }}>
+            <NavLink
+              to="/detail-car/list"
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-blue-500 bg-gray-200' // Màu khi active
+                  : 'text-gray-700 hover:bg-gray-100'
+              }
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    justifyContent: 'center',
+                    mr: open ? 3 : "auto",
+                  }}
+                >
+                  <DirectionsCarIcon />
+                </ListItemIcon>
+                <ListItemText primary="Tài khoản" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </NavLink>
           </ListItem>

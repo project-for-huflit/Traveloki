@@ -1,32 +1,39 @@
-const {Schema, model } = require('mongoose');
-const COLLECTION_NAME = 'Tuyen_TramDungs'
+const { Schema, model } = require('mongoose');
+const COLLECTION_NAME = 'Tuyen_TramDungs';
 
-const Tuyen_TramDungSchema = new Schema({
+const Tuyen_TramDungSchema = new Schema(
+  {
     MaTuyen_TramDung: {
       type: String,
       required: true,
-      maxlength: 5
+      maxlength: 5,
     },
-    MaTuyen:{
+    MaTuyen: {
       type: String,
       required: true,
       maxlength: 5,
-      ref: 'Tuyen'
+      ref: 'Tuyen',
     },
-    SoKM:{
+    MaTramDung: {
+      type: Schema.Types.ObjectId,
+      ref: 'TramDung',
+      required: true,
+    },
+    SoKM: {
       type: Number,
-      required: true
+      required: true,
     },
-    GiaVe:{
+    GiaVe: {
       type: Number,
-      required: true
+      required: true,
     },
-  },{
+  },
+  {
     timestamps: true,
-    collection: COLLECTION_NAME
+    collection: COLLECTION_NAME,
   }
-)
+);
 
-const Tuyen_TramDung = model("Tuyen_TramDung", Tuyen_TramDungSchema);
+const Tuyen_TramDung = model('Tuyen_TramDung', Tuyen_TramDungSchema);
 
 module.exports = Tuyen_TramDung;
