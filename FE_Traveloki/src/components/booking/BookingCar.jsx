@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "react-router-dom";
 // import { paymentSend } from '../../services/api/payment/index'
-// import { createBookingCar, GetBookingCarId } from '../../services/api/booking/api.bookingCar'
+import { createBookingCar, GetBookingCarId } from '../../services/api/booking/api.bookingCar'
 
 import {
   faUser,
@@ -73,7 +73,8 @@ const BookingCar = () => {
       if (!res.ok) { throw new Error("Network response was not ok") }
       const result = await res.json();
       setTram(result);
-      console.log([tram.tramDung._id])
+      // console.log("fetTram::",[tram.tramDung._id]) // ??
+      console.log("result fetTram::", tram)
       setBookingCar((prevBookingCar) => ({
         ...prevBookingCar,
         SoKm: result.cost,
@@ -271,7 +272,6 @@ const BookingCar = () => {
               }),
             }
           );
-
           // const body = {
           //   private_key:import.meta.env.VITE_SECRET_API_KEY_POINTER,
           //   amount:bookingCar.ThanhTien,
@@ -282,13 +282,11 @@ const BookingCar = () => {
           //   userID:"userO1"
           // }
           // const response = await paymentSend(body)
-          
+
           // const paymentData = await response.json();
           // console.log("Phản hồi từ server tạo yêu cầu từ pointer:", paymentData);
           console.log("Phản hồi từ server tạo yêu cầu từ pointer:", response);
           console.log(response.data.url)
-
-
           if(response.status === 200){
               window.location.replace(response.data.url)
           } else {
