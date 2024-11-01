@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSearchParams, useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 // import { paymentSend } from '../../services/api/payment/index'
 // import { createBookingCar, GetBookingCarId } from '../../services/api/booking/api.bookingCar'
 
@@ -13,21 +13,21 @@ import {
   faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
 const BookingCar = () => {
-  const location = useLocation();
-
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay");
-
-  const queryParams = new URLSearchParams(location.search);
-  const sanBay = queryParams.get('SanBay');
-  console.log('SanBay::', decodeURIComponent(SanBay))
-  const decodedSanBay = decodeURIComponent(sanBay);
-  console.log('SanBay:', decodedSanBay);
-
   const Date = searchParams.get("Date");
   const Time = searchParams.get("Time");
-  const IDTram = searchParams.get("IDTram");
+  const IDTram = searchParams.get("MaTram"); // 66a928805951552933eb1b2d
   const id = searchParams.get("DetailCarID");
+  const diemDonTra = searchParams.get("DiemKetThuc")
+
+  // console.log("San bay:", SanBay);
+  // console.log("ID Time:", Time);
+  // console.log("ID Date:", Date);
+  // console.log("ID IDTram:", IDTram);
+  // console.log("ID DetailCarID:", id);
+  // console.log("Diem don tra:", diemDonTra);
+
   const [detail, setDetail] = useState(null);
   const [tram, setTram] = useState(null);
   const [error, setError] = useState(null);
@@ -71,21 +71,19 @@ const BookingCar = () => {
 
   const fetchTram = async () => {
     try {
-      console.log("IDTram:", IDTram);
-      console.log("BookingCar parameters:", { SanBay, Date, Time, IDTram });
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/GetTramDungID/${IDTram}`
-      );
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await res.json();
-      setTram(result);
+      // const res = await fetch(
+      //   `${import.meta.env.VITE_BACKEND_URL}/api/GetTramDungID/${IDTram}`
+      // );
+      // if (!res.ok) {
+      //   throw new Error("Network response was not ok");
+      // }
+      // const result = await res.json();
+      // setTram(result);
       setBookingCar((prevBookingCar) => ({
         ...prevBookingCar,
-        SoKm: result.SoKM,
-        MaTram: result._id,
-        DiemDon_Tra: result.DiaChi,
+        // SoKm: result.SoKM,
+        // MaTram: result._id,
+        DiemDon_Tra: diemDonTra,
       }));
     } catch (error) {
       setError("Không thể lấy dữ liệu từ máy chủ tram");
@@ -96,7 +94,7 @@ const BookingCar = () => {
 
   useEffect(() => {
     fetchDetailCar();
-    // fetchTram();
+    fetchTram();
   }, [IDTram]);
 
   useEffect(() => {
@@ -120,6 +118,7 @@ const BookingCar = () => {
    * @param {*} e
    * @returns
    */
+
   // const handle_Submit = async (e) => {
   //   e.preventDefault();
   //   console.log("Dữ liệu gửi đi:", bookingCar);
@@ -327,7 +326,7 @@ const BookingCar = () => {
       <span className="bg-white w-[96%] p-2 -top-0 absolute font-bold text-xl">
         <span className="font-extrabold text-green-500 px-4">{SanBay}</span> -
         <span className="font-extrabold text-green-500 px-4">
-          {tram?.DiaChi}
+          {diemDonTra}
         </span>
       </span>
       <div className="w-full mt-8">

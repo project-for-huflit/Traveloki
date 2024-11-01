@@ -14,7 +14,7 @@ const ListBookingBus = (props) => {
   const SanBay = searchParams.get("SanBay");
   const Date = searchParams.get("Date");
   const Time = searchParams.get("Time");
-  const IDTram = searchParams.get("IDTram");
+  const IDTram = searchParams.get("MaTram") || "Default MaTram";
   const GiaVe = searchParams.get("GiaVe");
   const DiemKetThuc = searchParams.get("DiemKetThuc");
 
@@ -75,6 +75,7 @@ const ListBookingBus = (props) => {
       &Time=${encodeURIComponent(Time)}
       &DiemKetThuc=${encodeURIComponent(DiemKetThuc)}
       &GiaVe=${encodeURIComponent(GiaVe)}
+      &MaTram=${encodeURIComponent(IDTram)}
       &PhuongTienID=${TrainID}`
     );
   };
