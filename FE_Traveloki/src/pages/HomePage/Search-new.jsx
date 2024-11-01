@@ -114,8 +114,8 @@ const SearchBar = () => {
     }
 
     try {
-      const response = await checkRoute(diemSanBay, diemKetThuc);
-      console.log("checkRoute",response);
+      const responseCheckRoute = await checkRoute(diemSanBay, diemKetThuc);
+      console.log("checkRoute::",responseCheckRoute);
       let maTuyens = "";
       let maTramDung = "";
       if (responseCheckRoute.data.success) {
@@ -154,7 +154,7 @@ const SearchBar = () => {
       } else {
         navigate(
           `/airport-transfer/search/list?
-          SanBay=${encodeURIComponent(diemSanBay)}
+          &SanBay=${encodeURIComponent(diemSanBay)}
           &DiemKetThuc=${encodeURIComponent(diemKetThuc)}
           &Date=${encodeURIComponent(selectedDate)}
           &Time=${encodeURIComponent(selectedHour)}`
