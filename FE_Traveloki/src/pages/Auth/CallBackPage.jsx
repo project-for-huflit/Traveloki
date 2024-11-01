@@ -39,7 +39,7 @@ function callbackPage() {
             const userId = data.metadata.partnerId;
             // console.log("userId: ", userId);
 
-            navigate('/home', { state: { userId } });
+            navigate('/', { state: { userId } });
           } else {
             console.error('No token found in response: ', data);
           }
