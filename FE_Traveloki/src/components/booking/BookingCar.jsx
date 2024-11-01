@@ -245,6 +245,14 @@ const BookingCar = () => {
         //   window.location.replace("https://pointer.io.vn/payment-gateway?token=671717b9dd003cf4eca7d461")
         // }, 2000);
         try {
+          console.log({
+            amount: ThanhTien,
+            currency: bookingCar.currency,
+            message: bookingCar.Description,
+            return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}list/cars/result`,
+            orderID: datXeOto._id,
+            userID: "userO1",
+          })
           const response = await fetch(
             `${import.meta.env.VITE_API_PRESSPAY_BASE_URL}/api/v1/payment`,
             {
@@ -254,7 +262,6 @@ const BookingCar = () => {
                 Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
               },
               body: JSON.stringify({
-                private_key: import.meta.env.VITE_SECRET_API_KEY_POINTER,
                 amount: ThanhTien,
                 currency: bookingCar.currency,
                 message: bookingCar.Description,
@@ -264,6 +271,7 @@ const BookingCar = () => {
               }),
             }
           );
+
           // const body = {
           //   private_key:import.meta.env.VITE_SECRET_API_KEY_POINTER,
           //   amount:bookingCar.ThanhTien,
@@ -274,10 +282,20 @@ const BookingCar = () => {
           //   userID:"userO1"
           // }
           // const response = await paymentSend(body)
-          const paymentData = await response.json();
-          console.log("Phản hồi từ server tạo yêu cầu từ pointer:", paymentData);
+          
+          // const paymentData = await response.json();
+          // console.log("Phản hồi từ server tạo yêu cầu từ pointer:", paymentData);
+          console.log("Phản hồi từ server tạo yêu cầu từ pointer:", response);
+          console.log(response.data.url)
+
+
+          if(response.status === 200){
+              window.location.replace(response.data.url)
+          } else {
+            alert(response.error || "Đã xảy ra lỗi khi truyền dữ liệu - 265");
+          }
         } catch (error) {
-          console.error("Lỗi khi truyền dữ liệu:", error);
+          console.log("Lỗi khi truyền dữ liệu:", error);
           alert("Không thể truyền dữ liệu");
         }
       } else {

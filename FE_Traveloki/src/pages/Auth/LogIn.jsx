@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { useState, useContext } from 'react';
+// import * as React from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -7,7 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 // import { AuthContext } from '../../components/context/authContext.jsx';
 import { loginApi } from '../../services/api/auth/auth_api.js';
 import MaterialUISwitch from './CustomSwitch.jsx';
-import axios from '../../services/axios.customize.js';
+// import axios from '../../services/axios.customize.js';
 
 const Login = () => {
   // const { setUser } = useContext(AuthContext);
