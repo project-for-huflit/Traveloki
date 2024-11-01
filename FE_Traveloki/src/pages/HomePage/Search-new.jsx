@@ -114,6 +114,7 @@ const SearchBar = () => {
 
     try {
       const response = await checkRoute(diemSanBay, diemKetThuc);
+      console.log(diemKetThuc)
       console.log("checkRoute",response);
       let maTuyens = "";
       if (response.data.success) {
