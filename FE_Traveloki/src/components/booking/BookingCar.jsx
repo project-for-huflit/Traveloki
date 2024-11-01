@@ -266,7 +266,7 @@ const BookingCar = () => {
                 amount: ThanhTien,
                 currency: bookingCar.currency,
                 message: bookingCar.Description,
-                return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}list/cars/result`,
+                return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}/list/cars/result`,
                 orderID: datXeOto._id,
                 userID: "userO1",
               }),
