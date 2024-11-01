@@ -104,7 +104,7 @@ const ListBookingBus = () => {
 
   const handleSubmit = (busID) => {
     navigate(
-      `//airport-transfer/search/list/bus?SanBay=${encodeURIComponent(
+      `/airport-transfer/search/list/bus?SanBay=${encodeURIComponent(
         SanBay
       )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
         Time

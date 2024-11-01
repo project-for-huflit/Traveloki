@@ -55,7 +55,7 @@ const EditDetailCar = () => {
 
       if (res.ok) {
         alert("Cập nhật thành công");
-        navigate("/ListDetailCar"); // Sử dụng navigate để điều hướng
+        navigate("/detail-car/list"); // Sử dụng navigate để điều hướng
       } else {
         alert(`Cập nhật thất bại: ${res.message}`);
       }
@@ -157,7 +157,7 @@ const EditDetailCar = () => {
           >
             Lưu thay đổi
           </button>
-          <Link className=" -translate-x-1 " to={`/ListDetailCar`}>
+          <Link className=" -translate-x-1 " to={`/detail-car/list`}>
             <button className="bg-red-500 px-4 py-2 hover:bg-red-700 text-white font-bold rounded">
               <FontAwesomeIcon icon={faXmark} /> Cancel
             </button>

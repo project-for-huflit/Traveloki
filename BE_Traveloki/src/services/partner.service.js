@@ -1,6 +1,6 @@
 'use strict'
 
-const partnerModel = require('../models/partner.model')
+const { DoiTac } = require('../models/partner.model')
 
 class PartnerService {
 
@@ -13,7 +13,7 @@ class PartnerService {
     phone: 1,
     status: 1
   }}) => {
-    return await partnerModel.findOne({ _id }).select(select).lean()
+    return await DoiTac.findOne({ _id }).select(select).lean()
   }
   static findByEmail = async ({ email, select = {
     email: 1,
@@ -23,7 +23,21 @@ class PartnerService {
     phone: 1,
     status: 1
   }}) => {
-    return await partnerModel.findOne({ email }).select(select).lean()
+    return await DoiTac.findOne({ email }).select(select).lean()
+  }
+
+  static findOrCreatePartner = async (email) => {
+    const existPartner = await DoiTac.findOne({ email })
+    if(existPartner) {
+      // throw new BadRequestError('Error: Partner already registered!')
+      console.log("Partner already registered:", existPartner);
+      return existPartner
+    } else {
+      existPartner = await DoiTac.create({ email })
+      console.log("New user created: ", existPartner)
+    }
+
+    return existPartner
   }
 }
 

@@ -8,18 +8,14 @@ const bcrypt = require('bcrypt');
 // const { format } = require("node:path");
 
 // depenc...
-const { DoiTac } = require('../models/partner.model');
-const { Account } = require('../models/account.model');
-const {
-  BadRequestError,
-  ForbidenError,
-  AuthFailureError,
-} = require('../middlewares/error.response');
-const UserService = require('./account.service');
-const PartnerService = require('./partner.service');
-const KeyTokenService = require('./keyToken.service');
-const { getInfoData } = require('../utils/');
-const { createTokenPair } = require('./auth/utils');
+const { DoiTac } = require('../models/partner.model')
+const { Account } = require('../models/account.model')
+const { BadRequestError, ForbidenError, AuthFailureError } = require('../middlewares/error.response')
+const UserService = require('./account.service')
+const PartnerService = require('./partner.service')
+const KeyTokenService = require('./keyToken.service')
+const { getInfoData } = require('../utils/')
+const { createTokenPair , getAccessToken, getUserProfile } = require('./auth/utils');
 
 const Role = {
   USER: 'USER',
@@ -372,78 +368,71 @@ class AuthSSOService {
       tokens,
     };
   }
-  static async loginWithPointer(code) {
-    // const getPartnerId = await PartnerService.getPartnerId({ _id })
-    // if(!getPartnerId) throw new BadRequestError('Partner not registered!')
+  static async loginWithPointer({ code }) {
+    console.log(`Received code::${code}`);
+    if(!code) throw new NotFoundError('Authorization code is required!')
 
-    // const pointer = new PointerStrategy({
-    //   clientId: getPartnerId._id,
-    //   clientSecret: SECRET_POINTER,
-    //   callbackUrl: ".",
-    // });
-    const pointer = new PointerStrategy({ apiKey: '' });
+    try {
+      const { accessToken, email, id } = await getAccessToken(code) // { accessToken, email, id }
+      const partner = await getUserProfile(accessToken)
+      // 3. check if isUser, if user isn't exist then create profile
+      const isPartner = await PartnerService.findOrCreatePartner(email)
 
-    const getAccessToken = async () => {
-      try {
-        const rs = await pointer.getAccessToken('dd34c58f8000a0e4e573e8eb');
-        console.log(rs);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const { accessToken } = getAccessToken();
-
-    const verifyToken = async () => {
-      try {
-        const rs = await pointer.verifyAccessToken({
-          accessToken: accessToken,
-          // Synchronizes login sessions between apps but increases response time
-          session: false, //option
+      // 4. create token jwt
+      if(isPartner) {
+        const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+          modulusLength: 2048,
+          publicKeyEncoding: { type: 'pkcs1', format: 'pem' },
+          privateKeyEncoding: { type: 'pkcs1', format: 'pem' },
         });
-        console.log(rs);
-      } catch (error) {
-        console.log(error);
+        console.log({ privateKey, publicKey });
+
+        const publicKeyString = await KeyTokenService.createKeyTokenForPartner({
+          partnerId: isPartner._id,
+          publicKey,
+          privateKey,
+        });
+
+        if (!publicKeyString) {
+          return {
+            code: '400',
+            message: 'Bad Request: publicKeyString error! - line 113',
+          };
+        }
+        console.log(`publicKeyString::`, publicKeyString);
+
+        const publicKeyObject = crypto.createPublicKey(publicKeyString);
+        console.log(`publicKeyObject::`, publicKeyObject);
+
+        const tokens = await createTokenPair(
+          { partnerId: isPartner._id, email },
+          publicKeyObject,
+          privateKey,
+        );
+        console.log(`create tokens pair success::`, tokens);
+
+        return {
+          code: 201,
+          metadata: {
+            partner: getInfoData({
+              fields: ['_id', 'name', 'email'],
+              object: isPartner,
+            }),
+            tokens,
+          },
+          isPartner,
+          tokens: accessToken,
+          partnerEmail: email,
+          partnerId: id
+        };
       }
-    };
-    verifyToken();
-
-    const getAT = await pointer.getAccessToken(code);
-    const parter = await pointer.getUser(getAT.accessToken);
-
-    // const userId = user?._id;
-    // if (!userId) throw new BadRequestError('User ID not found in user data');
-
-    //Sau khi lấy thông tin người dùng thì xử lý theo nghiệp vụ của app
-    // const foundPartner = await PartnerService.findByEmail({ email: parter._id })
-    // if(!foundPartner) throw new BadRequestError('Parter is not registered!')
-
-    // const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
-    //   modulusLength: 2048,
-    //   publicKeyEncoding: {
-    //     type: "pkcs1",
-    //     format: "pem"
-    //   },
-    //   privateKeyEncoding: {
-    //     type: "pkcs1",
-    //     format: "pem"
-    //   }
-    // })
-
-    // // tao cap tokens
-    // const { _id: userId } = foundPartner
-    // const tokens = await createTokenPair({userId: userId, email}, publicKey, privateKey)
-
-    // await KeyTokenService.createKeyToken({
-    //   refreshToken: tokens.refreshToken,
-    //   userId: userId,
-    //   privateKey,
-    //   publicKey
-    // })
-
-    return {
-      getAT,
-      parter,
-    };
+    } catch (error) {
+      return {
+        code: '500',
+        message: error.message,
+        status: 'error',
+      };
+    }
   }
   static logout = async (keyStore) => {
     const delKey = await KeyTokenService.removeKeyById(keyStore._id);

@@ -69,7 +69,7 @@ const ListDetailCar = () => {
         <h1 className="text-black w-1/2 p-4 text-4xl">Danh sách phương tiện</h1>
         <div className="flex w-1/2 mr-2 justify-end">
           <button className="bg-blue-500 px-4 py-2 mt-4 w-fit h-fit hover:bg-blue-700 text-white font-bold rounded">
-            <a className="no-underline text-white" href="/CreateDetailCar">
+            <a className="no-underline text-white" href="/detail-car/list/create">
               Thêm phương tiện
             </a>
           </button>

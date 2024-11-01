@@ -14,8 +14,9 @@ import buoc3 from "../../assets/Buoc3.png";
 import buoc4 from "../../assets/Buoc4.png";
 import buoc5 from "../../assets/Buoc5.png";
 import buoc6 from "../../assets/Buoc6.png";
+import { useEffect } from "react";
 // import SearchBar from "./Search";
-import SearchBar2 from "./Search-old";
+import SearchBar2 from "./Search-new.jsx";
 
 const HomePage = () => {
   const reasons = [
@@ -39,6 +40,17 @@ const HomePage = () => {
     },
   ];
 
+  // const checkLoginStatus = () => {
+  //   const token = localStorage.getItem('token')
+  //   if(!token) {
+  //     const redirectToPointer = encodeURIComponent(`${import.meta.env.VITE_FE_URL}/auth/callback`)
+  //     window.location.href = `https://sso-pointer.vercel.app/authorize?callbackUrl=${redirectToPointer}`
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   checkLoginStatus()
+  // }, [])
   return (
     <div>
       <SearchBar2 />

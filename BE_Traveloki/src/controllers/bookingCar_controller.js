@@ -159,6 +159,10 @@ const FindBookingCarMaDX = async (req, res) => {
   }
 };
 
+const createOrder = async () => {
+
+}
+
 module.exports = {
   GetDatXeOto,
   BookingCar,

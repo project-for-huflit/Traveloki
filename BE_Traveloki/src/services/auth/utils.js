@@ -38,7 +38,7 @@ const createTokenPair = async ( payLoad, publicKey, privateKey ) => {
     }
 }
 
-const authenticationUser = asyncHandler(async (req, res, next) => {
+const  authenticationUser = asyncHandler(async (req, res, next) => {
   /*
   1 - Check userId missing??
   2 - get accessToken
@@ -204,10 +204,37 @@ const verifyJWT = async ( token, keySecret ) => {
   return await JWT.verify( token, keySecret )
 }
 
+const { PointerStrategy } = require("sso-pointer");
+const pointer = new PointerStrategy('123');
+const getAccessToken = async (code) => {
+  try {
+    const { accessToken, email, id } = await pointer.getAccessToken(code);
+    console.log({ accessToken, email, id })
+    return { accessToken, email, id }
+  } catch (error) {
+    throw new Error('Failed to get access token!')
+  }
+}
+
+const getUserProfile = async (accessToken) => {
+  try {
+    const userProfile = await pointer.verifyAccessToken({ accessToken: accessToken, session: false });
+
+    console.log(`verifyAccessToken after userProfile::${userProfile}`);
+    if (!userProfile || !userProfile.email) { throw new NotFoundError('Invalid user profile') }
+
+    return userProfile
+  } catch (error) {
+    throw new Error('Failed to get user profile!')
+  }
+}
+
 module.exports = {
     createTokenPair,
     authenticationUser,
     // authenticationAdmin,
     authenticationPartner,
-    verifyJWT
+    verifyJWT,
+    getAccessToken,
+    getUserProfile
 }
