@@ -60,7 +60,7 @@ const DanhSachPhuongTien = () => {
   return (
     <div className="w-auto h-full bg-white p-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-black text-4xl">Danh sách phương tiện</h1>
+        <h1 className="text-black text-4xl">Danh sách phương tiện công cộng</h1>
         <Link to="/vehicle/list/create">
           <Button variant="contained" color="primary">Thêm phương tiện</Button>
         </Link>

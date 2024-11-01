@@ -22,7 +22,6 @@ const DanhSachLichChay = () => {
     DanhSachLichChay();
   }, []);
 
-
   const showModal = (lichChay) => {
     setLichChayToDelete(lichChay);
     setIsModalVisible(true);

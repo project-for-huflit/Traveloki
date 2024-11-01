@@ -3,7 +3,7 @@ const COLLECTION_NAME = 'PhieuDatXeBuses'
 
 const PhieuDatXeBusSchema = new Schema({
   MaVeBus: { type: String, required: true, maxlength: 5 },
-  MaPT: { type: String, ref: "PhuongTien" },
+  MaPT: { type: Schema.Types.ObjectId, ref: "PhuongTien" },
   SLVe: { type: Number, required: true },
   DiemDon: { type: String, required: true, maxlength: 100 },
   DiemTra: { type: String, required: true, maxlength: 100 },

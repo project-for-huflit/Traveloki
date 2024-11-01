@@ -84,7 +84,11 @@ const router = createBrowserRouter([
       {
         path: "schedule/list/create",
         element: <CreateLichChay/>
-      }
+      },
+      {
+        path: "transactions/list",
+        element: <CreateLichChay/>
+      },
     ],
   },
 ]);

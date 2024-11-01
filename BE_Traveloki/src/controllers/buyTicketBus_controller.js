@@ -35,10 +35,12 @@ const BuyTicketBus = async (req, res) => {
     }
 
     // Kiểm tra lịch chạy và số vé còn lại
-    const lichChay = await LichChay.findOne({ MaPT, NgayGioKhoiHanh: new Date(NgayGioKhoiHanh) });
+    const lichChay = await LichChay.findOne({ MaPT });
     if (!lichChay) {
       return res.status(404).json({ message: "Không tìm thấy lịch chạy." });
     }
+
+    console.log("ve",lichChay)
 
     // Kiểm tra xem còn đủ vé không
     if (lichChay.SLVeConLai < SLVe) {
