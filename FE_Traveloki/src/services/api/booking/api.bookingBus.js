@@ -15,8 +15,11 @@ const getTramDungId = (id) => {
   return axios.get(URL_BACKEND)
 }
 
-const buyTicketBus = (data) => {
-  const URL_BACKEND = `/BuyTicketBus`;
+const buyTicketBus = (MaPT, SLVe, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien) => {
+  const URL_BACKEND = `/api/BuyTicketBus`;
+  const data = {
+    MaPT, SLVe, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien
+  }
   return axios.post(URL_BACKEND, data)
 }
 export {
