@@ -23,18 +23,18 @@ const BookingBus = () => {
   const [error, setError] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   // const [isLoading, setIsLoading] = useState(true);
-  // const [bookingBus, setBookingBus] = useState({
-  //   MaPT: busId,
-  //   SLVe: "",
-  //   DiemDon: SanBay,
-  //   DiemTra: DiemKetThuc,
-  //   NgayGioKhoiHanh: `${dateParam}T${timeParam}`,
-  //   ThanhTien: 0,
-  //   TrangThai: false,
-  //   currency: "VND"
-  // });
+  const [bookingBus, setBookingBus] = useState({
+    MaPT: busId,
+    SLVe: count,
+    DiemDon: SanBay,
+    DiemTra: DiemKetThuc,
+    NgayGioKhoiHanh: `${dateParam}T${timeParam}`,
+    ThanhTien: totalPrice,
+    TrangThai: false,
+    currency: "VND"
+  });
 
-  // console.log("busId", bookingBus)
+  // console.log("busId", busId)
 
   const increaseCount = () => {
     setCount((prevCount) => (prevCount < 10 ? prevCount + 1 : 10));
@@ -64,26 +64,26 @@ const BookingBus = () => {
 
   const handle_Submit = async (e) => {
     e.preventDefault();
-    console.log("Dữ liệu gửi đi:", bookingBus);
+    // console.log("Dữ liệu gửi đi:", bookingBus);
 
     // const { MaPT, MaTram, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } =
     //   bookingBus;
 
-    if (
-      !MaPT ||
-      !DiemDon ||
-      !DiemTra ||
-      !NgayGioKhoiHanh ||
-      !ThanhTien
-    ) {
-      alert("Vui lòng nhập đầy đủ thông tin");
-      return;
-    }
+    // if (
+    //   !MaPT ||
+    //   !DiemDon ||
+    //   !DiemTra ||
+    //   !NgayGioKhoiHanh ||
+    //   !ThanhTien
+    // ) {
+    //   alert("Vui lòng nhập đầy đủ thông tin");
+    //   return;
+    // }
 
-    const formattedDate = new Date(NgayGioKhoiHanh).toISOString();
+    // const formattedDate = new Date(`${dateParam}T${timeParam}`).toISOString();
 
     try {
-      const res = await buyTicketBus(busId, count, SanBay, DiemKetThuc, formattedDate, totalPrice);
+      const res = await buyTicketBus(bookingBus);
       if (res && res.data) {
         console.log("Đã nhận được ID đơn hàng:", res.data.buyTicketBus._id);
       }
@@ -93,77 +93,77 @@ const BookingBus = () => {
     }
 
 
-    try {
-      const res = await fetch(`${url}/BuyTicketBus`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          MaPT,
-          MaTram,
-          SLVe: count,
-          DiemDon,
-          DiemTra,
-          NgayGioKhoiHanh: formattedDate,
-          ThanhTien,
-          TrangThai: false,
-        }),
-      });
-
-      const data = await res.json();
-      console.log("Phản hồi từ server:", data);
-
-      if (res.ok) {
-        const buyTicketBus = data.buyTicketBus;
-        console.log("Đã nhận được ID đơn hàng:", buyTicketBus._id);
-
-        if (!buyTicketBus._id) {
-          alert("Không tìm thấy ID đơn hàng trong phản hồi");
-          return;
-        }
-
-        try {
-          const resVoucher = await fetch(
-            "https://voucher-server-alpha.vercel.app/api/vouchers/createPartNerRequest",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                OrderID: buyTicketBus._id,
-                PartnerID: "1000000003",
-                ServiceName: "Mua vé xe Buýt",
-                TotalMoney: ThanhTien,
-                CustomerCode: "1000000024",
-                Description: `Dịch vụ mua vé bus từ ${DiemDon} đến ${DiemTra}`,
-                LinkHome:
-                  `${import.meta.env.VITE_FE_URL}/home`,
-                LinkReturnSuccess: `${import.meta.env.VITE_BACKEND_URL}/api/UpdateState/${buyTicketBus._id}`,
-              }),
-            }
-          );
-
-          const voucherData = await resVoucher.json();
-          console.log("Phản hồi từ server tạo yêu cầu đối tác:", voucherData);
-
-          if (resVoucher.ok) {
-            window.location.href = `https://checkout-page-54281a5e23aa.herokuapp.com/?OrderID=${buyTicketBus._id}`;
-          } else {
-            alert(voucherData.error || "Đã xảy ra lỗi khi truyền dữ liệu");
-          }
-        } catch (error) {
-          console.error("Lỗi khi truyền dữ liệu:", error);
-          alert("Không thể truyền dữ liệu");
-        }
-      } else {
-        alert(data.error || "Đã xảy ra lỗi khi mua vé xe");
-      }
-    } catch (error) {
-      console.error("Lỗi khi kết nối tới máy chủ:", error);
-      alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
-    }
+    // try {
+    //   const res = await fetch(`${url}/BuyTicketBus`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       MaPT,
+    //       MaTram,
+    //       SLVe: count,
+    //       DiemDon,
+    //       DiemTra,
+    //       NgayGioKhoiHanh: formattedDate,
+    //       ThanhTien,
+    //       TrangThai: false,
+    //     }),
+    //   });
+    //
+    //   const data = await res.json();
+    //   console.log("Phản hồi từ server:", data);
+    //
+    //   if (res.ok) {
+    //     const buyTicketBus = data.buyTicketBus;
+    //     console.log("Đã nhận được ID đơn hàng:", buyTicketBus._id);
+    //
+    //     if (!buyTicketBus._id) {
+    //       alert("Không tìm thấy ID đơn hàng trong phản hồi");
+    //       return;
+    //     }
+    //
+    //     // try {
+    //     //   const resVoucher = await fetch(
+    //     //     "https://voucher-server-alpha.vercel.app/api/vouchers/createPartNerRequest",
+    //     //     {
+    //     //       method: "POST",
+    //     //       headers: {
+    //     //         "Content-Type": "application/json",
+    //     //       },
+    //     //       body: JSON.stringify({
+    //     //         OrderID: buyTicketBus._id,
+    //     //         PartnerID: "1000000003",
+    //     //         ServiceName: "Mua vé xe Buýt",
+    //     //         TotalMoney: ThanhTien,
+    //     //         CustomerCode: "1000000024",
+    //     //         Description: `Dịch vụ mua vé bus từ ${DiemDon} đến ${DiemTra}`,
+    //     //         LinkHome:
+    //     //           `${import.meta.env.VITE_FE_URL}/home`,
+    //     //         LinkReturnSuccess: `${import.meta.env.VITE_BACKEND_URL}/api/UpdateState/${buyTicketBus._id}`,
+    //     //       }),
+    //     //     }
+    //     //   );
+    //     //
+    //     //   const voucherData = await resVoucher.json();
+    //     //   console.log("Phản hồi từ server tạo yêu cầu đối tác:", voucherData);
+    //     //
+    //     //   if (resVoucher.ok) {
+    //     //     window.location.href = `https://checkout-page-54281a5e23aa.herokuapp.com/?OrderID=${buyTicketBus._id}`;
+    //     //   } else {
+    //     //     alert(voucherData.error || "Đã xảy ra lỗi khi truyền dữ liệu");
+    //     //   }
+    //     // } catch (error) {
+    //     //   console.error("Lỗi khi truyền dữ liệu:", error);
+    //     //   alert("Không thể truyền dữ liệu");
+    //     // }
+    //   } else {
+    //     alert(data.error || "Đã xảy ra lỗi khi mua vé xe");
+    //   }
+    // } catch (error) {
+    //   console.error("Lỗi khi kết nối tới máy chủ:", error);
+    //   alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
+    // }
   };
 
   const handlePayment = async (e) => {
