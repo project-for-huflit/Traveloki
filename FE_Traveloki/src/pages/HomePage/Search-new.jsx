@@ -114,14 +114,8 @@ const SearchBar = () => {
     }
 
     try {
-      const responseCheckRoute = await checkRoute(diemSanBay, diemKetThuc);
-      /** region Add
-       * @author LOQ
-      */
-
-     const tramDungs = responseCheckRoute.data || [];
-     console.log("checkRoute", tramDungs);
-      //==================================================
+      const response = await checkRoute(diemSanBay, diemKetThuc);
+      console.log("checkRoute",response);
       let maTuyens = "";
       let maTramDung = "";
       if (responseCheckRoute.data.success) {
