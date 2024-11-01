@@ -34,7 +34,7 @@ import Login from "../pages/Auth/LogIn";
 import SignUp from "../pages/Auth/Register.jsx";
 import CallBack from "../pages/Auth/CallBackPage.jsx";
 import Loading from '../pages/loading/index.jsx'
-import ProfilePage from '../pages/Profile/index.jsx'
+// import ProfilePage from '../pages/Profile/index.jsx'
 // import { TextEditorReact } from "../Customer/Rating/TextEditorReact.jsx";
 
 // layouts
