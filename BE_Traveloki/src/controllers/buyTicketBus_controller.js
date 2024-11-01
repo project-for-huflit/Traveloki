@@ -5,6 +5,7 @@ const { LichSuDatXeBus } = require("../models/lichSuDatXeBus.model");
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 const asyncHandler = require('../middlewares/asyncHandler.middeware')
+const {LichChay} = require("../models/lichChay.model");
 
 class BookingBusController {
 
@@ -25,7 +26,7 @@ const BuyTicketBus = async (req, res) => {
   try {
     const { MaPT, SLVe, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } = req.body;
 
-    if ( !MaPT || !SLVe || !DiemDon || !DiemTra || !NgayGioKhoiHanh || !ThanhTien ) {
+    if (!MaPT || !SLVe || !DiemDon || !DiemTra || !NgayGioKhoiHanh || !ThanhTien) {
       return res.status(400).json("Missing information");
     }
 
@@ -33,6 +34,18 @@ const BuyTicketBus = async (req, res) => {
       return res.status(400).json({ message: "Số lượng vé phải lớn hơn 0." });
     }
 
+    // Kiểm tra lịch chạy và số vé còn lại
+    const lichChay = await LichChay.findOne({ MaPT, NgayGioKhoiHanh: new Date(NgayGioKhoiHanh) });
+    if (!lichChay) {
+      return res.status(404).json({ message: "Không tìm thấy lịch chạy." });
+    }
+
+    // Kiểm tra xem còn đủ vé không
+    if (lichChay.SLVeConLai < SLVe) {
+      return res.status(400).json({ message: "Số lượng vé còn lại không đủ." });
+    }
+
+    // Tăng mã vé bus
     const CounterdatBuyt = await CounterDatBuyt.findOneAndUpdate(
       { _id: "datbuytCounter" },
       { $inc: { seq: 1 } },
@@ -41,6 +54,7 @@ const BuyTicketBus = async (req, res) => {
 
     const MaVeBus = `DB${CounterdatBuyt.seq}`;
 
+    // Tạo phiếu đặt xe bus
     const buyTicketBus = new PhieuDatXeBus({
       MaVeBus,
       MaPT,
@@ -53,12 +67,18 @@ const BuyTicketBus = async (req, res) => {
     });
 
     await buyTicketBus.save();
+
+    // Cập nhật lại số lượng vé trong lịch chạy
+    lichChay.SLVeConLai -= SLVe;
+    await lichChay.save();
+
     res.status(200).json({ buyTicketBus });
   } catch (e) {
     console.error(e);
     res.status(500).json("Can not create buy ticket bus");
   }
 };
+
 
 const FindBuyTicketBusMaDX = async (req, res) => {
   try {

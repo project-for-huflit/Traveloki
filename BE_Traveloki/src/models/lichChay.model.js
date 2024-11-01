@@ -24,6 +24,14 @@ const LichChaySchema = new Schema({
       type: String,
       required: true
     },
+    SLVe: {
+      type: Number,
+      required: true
+    },
+    SLVeConLai: {
+      type: Number,
+      required: true
+    },
     trangThai: {
       type: String,
       enum: ["Đã lên lịch", "Đang hoạt động", "Bị trì hoãn", "Đã hoàn thành", "Đã hủy", "Bảo trì"],
