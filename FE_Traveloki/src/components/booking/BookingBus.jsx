@@ -22,6 +22,7 @@ const BookingBus = () => {
   const [phuongtien, setPhuongTien] = useState(null);
   const [error, setError] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+
   // const [isLoading, setIsLoading] = useState(true);
   const [bookingBus, setBookingBus] = useState({
     MaPT: busId,
