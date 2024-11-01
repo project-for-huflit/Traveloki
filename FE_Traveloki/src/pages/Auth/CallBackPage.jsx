@@ -34,9 +34,10 @@ function callbackPage() {
             localStorage.setItem('token', data.metadata.tokens);
             localStorage.setItem('email', data.metadata.partnerEmail);
             localStorage.setItem('userId', data.metadata.partnerId);
+            localStorage.setItem('partner', data.metadata);
 
             const userId = data.metadata.partnerId;
-            console.log("userId: ", userId);
+            // console.log("userId: ", userId);
 
             navigate('/home', { state: { userId } });
           } else {

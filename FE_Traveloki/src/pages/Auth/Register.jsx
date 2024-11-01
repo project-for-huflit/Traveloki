@@ -54,12 +54,20 @@ const SignUp = () => {
       console.log(response?.data.metadata);
       console.log(response?.data.metadata.tokens.accessToken);
       console.log(response?.data.metadata.tokens.refreshToken);
+      // console.log(response.data.status);
       console.log(JSON.stringify(response))
 
       // Store the tokens in localStorage or secure cookie for later use
       localStorage.setItem('token', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('user', JSON.stringify(response.data.metadata.user));
+
+      // if (response.data.status === 201) {
+      //   setSuccess("Đăng ký thành công!");
+      //   navigate('/home');
+      // } else {
+      //   throw new Error("Response was not ok");
+      // }
 
       if (response.data.status === 201) {
         setSuccess("Đăng ký thành công!");
@@ -97,7 +105,7 @@ const SignUp = () => {
               type="text"
               name='name'
               value={credentials.name}
-onChange={(e) => handleChange(credentials.name)}
+              onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
               required
             />
@@ -111,7 +119,7 @@ onChange={(e) => handleChange(credentials.name)}
                 type="email"
                 name='email'
                 value={credentials.email}
-onChange={(e) => handleChange(credentials.email)}
+                onChange={handleChange}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
                 placeholder="you@example.com"
                 required
@@ -128,7 +136,7 @@ onChange={(e) => handleChange(credentials.email)}
               type="tel"
               name='phone'
               value={credentials.phone}
-onChange={(e) => handleChange(credentials.phone)}
+              onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
             />
           </div>
@@ -141,7 +149,7 @@ onChange={(e) => handleChange(credentials.phone)}
                 type="password"
                 name='password'
                 value={credentials.password}
-onChange={(e) => handleChange(credentials.password)}
+                onChange={handleChange}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
                 placeholder="Mật khẩu của bạn"
                 required
@@ -157,7 +165,7 @@ onChange={(e) => handleChange(credentials.password)}
                 type="password"
                 name="confirmPassword"
                 value={credentials.confirmPassword}
-onChange={(e) => handleChange(credentials.confirmPassword)}
+                onChange={handleChange}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
                 placeholder="Xác nhận mật khẩu"
                 required

@@ -61,11 +61,10 @@ class AuthJWTService {
     return { user, tokens };
   };
 
-  static register = async ({ name, email, password }) => {
+  static register = async ({ name, email, phone, password }) => {
     try {
       const modelUser = await Account.findOne({ email }).lean();
-      if (modelUser)
-        throw new BadRequestError('Error: Shop already registered!');
+      if (modelUser) throw new BadRequestError('Error: Shop already registered!');
 
       const passwordHash = await bcrypt.hash(password, 10);
 
