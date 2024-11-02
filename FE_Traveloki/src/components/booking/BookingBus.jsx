@@ -22,20 +22,22 @@ const BookingBus = () => {
   const [phuongtien, setPhuongTien] = useState(null);
   const [error, setError] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   // const [isLoading, setIsLoading] = useState(true);
-  // const [bookingBus, setBookingBus] = useState({
-  //   MaPT: busId,
-  //   SLVe: "",
-  //   DiemDon: SanBay,
-  //   DiemTra: DiemKetThuc,
-  //   NgayGioKhoiHanh: `${dateParam}T${timeParam}`,
-  //   ThanhTien: 0,
-  //   TrangThai: false,
-  //   currency: "VND"
-  // });
+  // const { MaPT, SLVe, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } = req.body;
+  const [bookingBus, setBookingBus] = useState({
+    MaPT: busId,
+    SLVe: count,
+    DiemDon: SanBay,
+    DiemTra: DiemKetThuc,
+    NgayGioKhoiHanh: `${dateParam}T${timeParam}`,
+    ThanhTien: totalPrice || 0,
+    TrangThai: false,
+    currency: "VND"
+  });
 
-  // console.log("busId", bookingBus)
+  console.log("busId", bookingBus)
 
   const increaseCount = () => {
     setCount((prevCount) => (prevCount < 10 ? prevCount + 1 : 10));
@@ -47,29 +49,36 @@ const BookingBus = () => {
 
   useEffect(() => {
     setTotalPrice(GiaVe * count);
-  }, [count]);
+    console.log("Tong::", totalPrice)
 
-  useEffect(() => {
     const fetchPhuongTien = async () => {
       try {
         const res = await getPhuongTienId(busId);
+        console.log("fetch phuong tien::", res.data.phuongTien)
         if (res && res.data.phuongTien) {
-          setPhuongTien(res.data.phuongTien);
+          // setPhuongTien(res.data.phuongTien);
+          setPhuongTien((prevBookingCar) => ({
+            ...prevBookingCar,
+            ThanhTien: totalPrice
+          }))
         }
       } catch (error) {
         setError("Không thể lấy dữ liệu từ máy chủ phuongtien: " + error.message);
       }
     };
     fetchPhuongTien();
-  }, [busId]);
+  }, [count, GiaVe, busId]);
+
+  // useEffect(() => {
+
+  // }, [busId]);
 
   const handle_Submit = async (e) => {
     e.preventDefault();
     console.log("Dữ liệu gửi đi:", bookingBus);
 
-    // const { MaPT, MaTram, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } =
-    //   bookingBus;
-
+    const { MaPT, MaTram, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } = bookingBus;
+    // const { MaPT, SLVe, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } = req.body;
     if (
       !MaPT ||
       !DiemDon ||
@@ -81,7 +90,7 @@ const BookingBus = () => {
       return;
     }
 
-    const formattedDate = new Date(NgayGioKhoiHanh).toISOString();
+    const formattedDate = new Date(`${dateParam}T${timeParam}`).toISOString();
 
     try {
       const res = await buyTicketBus(busId, count, SanBay, DiemKetThuc, formattedDate, totalPrice);
@@ -92,7 +101,6 @@ const BookingBus = () => {
       console.error("Lỗi khi kết nối tới máy chủ:", error);
       alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
     }
-
 
     try {
       const res = await fetch(`${url}/BuyTicketBus`, {
@@ -262,12 +270,12 @@ const BookingBus = () => {
   //       Loading...
   //     </div>
   //   );
-  // if (error)
-  //   return (
-  //     <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-  //       Error: {error}
-  //     </div>
-  //   );
+  if (error)
+    return (
+      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
+        Error: {error}
+      </div>
+    );
   //
   // const formatPrice = (price) => {
   //   return new Intl.NumberFormat().format(price);

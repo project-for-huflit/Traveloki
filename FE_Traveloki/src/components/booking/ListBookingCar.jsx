@@ -8,6 +8,7 @@ import {getAllCar} from "../../services/api/phuongTien/api.phuongTien.js";
 const ListBookingCar = () => {
   const navigate = useNavigate();
   const [detailCar, setDetailCar] = useState([]);
+  // const [detailCarUrl, setDetailCarUrl] = useState(null);
   const [fetchError, setFetchError] = useState(null);
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay") || "Default San Bay";
@@ -26,6 +27,7 @@ const ListBookingCar = () => {
         const res = await getAllCar()
         if (res && res.status === 200){
           setDetailCar(res.data.chiTietXeOto);
+          console.log("resAllCar::", res.data.chiTietXeOto);
         }
       }catch (error){
         console.error("Error fetching bus:", error);
@@ -53,6 +55,8 @@ const ListBookingCar = () => {
   }, [])
 
   const handleSubmit = (detailCarID) => {
+    console.log("url image::", detailCar)
+    // setDetailCarUrl(detailCar)
     navigate(
       `/airport-transfer/search/list/cars?
       &SanBay=${encodeURIComponent(SanBay)}
@@ -63,7 +67,7 @@ const ListBookingCar = () => {
       &DetailCarID=${detailCarID}`
     );
   };
-
+// &ImageCar=${encodeURIComponent(detailCar.Image)}
   return (
     <div className="w-full h-full mx-auto container">
       <img src={imagelist} alt="List Booking" />

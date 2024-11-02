@@ -4,8 +4,15 @@ const { DatXeOto } = require("../models/datXeOto.model");
 const { TramDung } = require("../models/tramDung.model");
 const { ChiTietXeOto } = require("../models/detailsCar.model");
 const CounterDatXeOto = require("../models/counter.model").CounterDatXe;
+const {
+  OK,
+  CREATED,
+  SuccessResponse,
+} = require('../middlewares/success.response');
 
-// const asyncHandler = require('../middlewares/asyncHandler.middeware')
+const { BookingCarService } = require('../services/booking.service')
+
+
 
 // const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
@@ -78,6 +85,20 @@ const BookingCar = async (req, res) => {
     res.status(500).json({ error: "Can not create booking car!!" });
   }
 };
+
+const PaymentPointerWallet = async (req, res, next) => {
+  new SuccessResponse({
+    message: 'success!',
+    metadata: await BookingCarService.PaymentPointerWallet(req.body),
+  }).send(res);
+}
+
+const CancelPaymentPointerWallet = async (req, res, next) => {
+  new SuccessResponse({
+    message: 'success!',
+    metadata: await BookingCarService.CancelPaymentPointerWallet(req.params),
+  }).send(res);
+}
 
 const SchedularChange = async (req, res) => {
   try {
@@ -159,9 +180,7 @@ const FindBookingCarMaDX = async (req, res) => {
   }
 };
 
-const createOrder = async () => {
 
-}
 
 module.exports = {
   GetDatXeOto,
@@ -170,4 +189,6 @@ module.exports = {
   CancelBooking,
   FindBookingCarID,
   FindBookingCarMaDX,
+  PaymentPointerWallet,
+  CancelPaymentPointerWallet
 };

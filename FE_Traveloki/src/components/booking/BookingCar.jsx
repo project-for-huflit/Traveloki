@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "react-router-dom";
 // import { paymentSend } from '../../services/api/payment/index'
-import { createBookingCar, GetBookingCarId } from '../../services/api/booking/api.bookingCar'
+// import { createBookingCar, GetBookingCarId } from '../../services/api/booking/api.bookingCar'
 
 import {
   faUser,
@@ -44,7 +44,12 @@ const BookingCar = () => {
     ThanhTien: "" || 0,
     TrangThai: false,
     Description: "",
-    currency:"VND"
+    currency:"VND",
+    name: "Booking car",
+    image: "https://www.youtube.com/watch?v=TD7sBUigDIU",
+    quantity: 1,
+    price: "" || 0,
+    return_url: "http://localhost:5173/list/cars/result"
   });
 
   const fetchDetailCar = async () => {
@@ -105,6 +110,8 @@ const BookingCar = () => {
         Sdt: prevBookingCar.Sdt,
         Description: prevBookingCar.Description,
         TrangThai: prevBookingCar.TrangThai,
+        price: detail?.SoTien_1km,
+        return_url: `${import.meta.env.VITE_FE_URL}/list/cars/result`
       }));
     }
   }, [detail, tram]);
@@ -114,86 +121,6 @@ const BookingCar = () => {
    * @param {*} e
    * @returns
    */
-
-  // const handle_Submit = async (e) => {
-  //   e.preventDefault();
-  //   console.log("Dữ liệu gửi đi:", bookingCar);
-
-  //   const {
-  //     Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm,
-  //     ThanhTien, Description,
-  //   } = bookingCar;
-
-  //   // Kiểm tra dữ liệu đầu vào
-  //   if (
-  //     !Sdt || !MaTram || !DiemSanBay || !DiemDon_Tra ||
-  //     !NgayGioDat || !SoKm || !ThanhTien || !Description
-  //   ) {
-  //     alert("Vui lòng nhập đầy đủ thông tin");
-  //     return;
-  //   }
-
-  //   try {
-  //     // Gửi yêu cầu đến server
-  //     const res = await fetch(
-  //       `${import.meta.env.VITE_BACKEND_URL}/api/BookingCar`,
-  //       {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json", },
-  //         body: JSON.stringify({ MaDetailCar: id, Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm, ThanhTien, Description }),
-  //       }
-  //     );
-
-  //     // Xử lý phản hồi từ server
-  //     const data = await res.json();
-  //     console.log("Phản hồi từ server đặt xe:", data);
-
-  //     if (res.ok) {
-  //       const datXeOto = data; // Chỉnh sửa nếu cần thiết để phù hợp với cấu trúc dữ liệu trả về
-  //       console.log("Đã nhận được ID đơn hàng:", datXeOto._id);
-
-  //       try {
-  //         // Gửi yêu cầu tạo voucher
-  //         const resVoucher = await fetch(
-  //           "https://voucher-server-alpha.vercel.app/api/vouchers/createPartNerRequest",
-  //           {
-  //             method: "POST",
-  //             headers: { "Content-Type": "application/json" },
-  //             body: JSON.stringify({
-  //               OrderID: datXeOto._id,
-  //               PartnerID: "1000000003",
-  //               ServiceName: "Đặt xe ô tô",
-  //               TotalMoney: ThanhTien,
-  //               CustomerCode: "1000000024",
-  //               Description: `Dịch vụ đặt xe ô tô từ ${DiemSanBay} đến ${tram?.DiaChi}`,
-  //               LinkHome:
-  //                 `${import.meta.env.VITE_FE_URL}/home`,
-  //               LinkReturnSuccess: `${import.meta.env.VITE_BACKEND_URL}/api/UpdateState/${datXeOto._id}`,
-  //             }),
-  //           }
-  //         );
-
-  //         const voucherData = await resVoucher.json();
-  //         console.log("Phản hồi từ server tạo yêu cầu đối tác:", voucherData);
-
-  //         if (resVoucher.ok) {
-  //           // Chuyển hướng sau khi thành công
-  //           window.location.href = `https://checkout-page-54281a5e23aa.herokuapp.com/?OrderID=${datXeOto._id}`;
-  //         } else {
-  //           alert(voucherData.error || "Đã xảy ra lỗi khi truyền dữ liệu");
-  //         }
-  //       } catch (error) {
-  //         console.error("Lỗi khi truyền dữ liệu:", error);
-  //         alert("Không thể truyền dữ liệu");
-  //       }
-  //     } else {
-  //       alert(data.error || "Đã xảy ra lỗi khi đặt xe");
-  //     }
-  //   } catch (error) {
-  //     console.error("Lỗi khi kết nối tới máy chủ:", error);
-  //     alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
-  //   }
-  // };
 
   const handlePayment = async (e) => {
     e.preventDefault()
@@ -225,7 +152,16 @@ const BookingCar = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json", },
-          body: JSON.stringify({ MaDetailCar: id, Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm, ThanhTien, Description }),
+          body: JSON.stringify({
+            MaDetailCar: id,
+            Sdt, MaTram,
+            DiemSanBay,
+            DiemDon_Tra,
+            NgayGioDat,
+            SoKm,
+            ThanhTien,
+            Description
+          }),
         }
       );
 
@@ -250,12 +186,14 @@ const BookingCar = () => {
             amount: ThanhTien,
             currency: bookingCar.currency,
             message: bookingCar.Description,
-            return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}list/cars/result`,
+            return_url: `${import.meta.env.VITE_FE_URL}/list/cars/result`,
             orderID: datXeOto._id,
             userID: "userO1",
           })
+
+          // Goi api server den thư viện pointer
           const response = await fetch(
-            `${import.meta.env.VITE_API_PRESSPAY_BASE_URL}/api/v1/payment`,
+            `${import.meta.env.VITE_BACKEND_URL}/api/payment/pointer-wallet/car`,
             {
               method: "POST",
               headers: {
@@ -266,29 +204,23 @@ const BookingCar = () => {
                 amount: ThanhTien,
                 currency: bookingCar.currency,
                 message: bookingCar.Description,
-                return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}/list/cars/result`,
-                orderID: datXeOto._id,
                 userID: "userO1",
+                orderID: datXeOto._id,
+                returnUrl: bookingCar.return_url,
+                name: bookingCar.name,
+                image: bookingCar.image,
+                description: bookingCar.Description,
+                quantity: bookingCar.quantity,
+                price: bookingCar.ThanhTien,
               }),
             }
           );
-          // const body = {
-          //   private_key:import.meta.env.VITE_SECRET_API_KEY_POINTER,
-          //   amount:bookingCar.ThanhTien,
-          //   currency:bookingCar.currency,
-          //   message:bookingCar.Description,
-          //   return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}list/cars/result`,
-          //   orderID:datXeOto._id,
-          //   userID:"userO1"
-          // }
-          // const response = await paymentSend(body)
 
-          // const paymentData = await response.json();
-          // console.log("Phản hồi từ server tạo yêu cầu từ pointer:", paymentData);
-          console.log("Phản hồi từ server tạo yêu cầu từ pointer:", response);
-          console.log(response.data.url)
-          if(response.status === 200){
-              window.location.replace(response.data.url)
+          // console.log(response.data.url)
+          if(response.ok){
+              const data = await response.json(); // Đọc nội dung từ body của phản hồi
+              console.log("Phản hồi từ server tạo payment:", data);
+              window.location.replace(data.metadata)
           } else {
             alert(response.error || "Đã xảy ra lỗi khi truyền dữ liệu - 265");
           }
