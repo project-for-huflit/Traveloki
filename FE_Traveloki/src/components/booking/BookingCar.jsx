@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSearchParams } from "react-router-dom";
+
+import Loading from '../../pages/loading/index'
+
 // import { paymentSend } from '../../services/api/payment/index'
 // import { createBookingCar, GetBookingCarId } from '../../services/api/booking/api.bookingCar'
 
@@ -126,15 +129,6 @@ const BookingCar = () => {
     e.preventDefault()
     console.log("Dữ liệu gửi đi:", bookingCar);
 
-    /**
-     * {MaDetailCar: '66a928805951552933eb1b2d',
-     * Sdt: '0374444252',
-     * MaTram: undefined,
-     * DiemSanBay: 'Tân Sơn Nhất',
-     * DiemDon_Tra: 'Ngã tư An Sương',...}
-     * SoKm, MaTram ??
-     */
-
     const {
       Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm,
       ThanhTien, Description,
@@ -165,10 +159,6 @@ const BookingCar = () => {
         }
       );
 
-      // const resBooking = await createBookingCar({
-      //   MaDetailCar: id, Sdt, MaTram, DiemSanBay, DiemDon_Tra,
-      //   NgayGioDat, SoKm, ThanhTien, Description
-      // })
       // Xử lý phản hồi từ server
       const data = await resBooking.json();
       console.log("Phản hồi từ server đặt xe:", data);
@@ -177,10 +167,6 @@ const BookingCar = () => {
         const datXeOto = data; // Chỉnh sửa nếu cần thiết để phù hợp với cấu trúc dữ liệu trả về
         console.log("Đã nhận được ID đơn hàng:", datXeOto._id);
 
-        // req lên server pointer để chuyển hướng đến payment gateway
-        // setTimeout(() => {
-        //   window.location.replace("https://pointer.io.vn/payment-gateway?token=671717b9dd003cf4eca7d461")
-        // }, 2000);
         try {
           console.log({
             amount: ThanhTien,
@@ -239,9 +225,10 @@ const BookingCar = () => {
 
   if (isLoading)
     return (
-      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-        Loading...
-      </div>
+      // <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
+      //   Loading...
+      // </div>
+      <Loading />
     );
   if (error)
     return (
