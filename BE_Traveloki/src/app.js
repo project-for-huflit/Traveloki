@@ -21,6 +21,7 @@ app.use(cors({
     "https://dash-traveloki.netlify.app",
     "https://traveloki.netlify.app",
     "https://api-traveloki.onrender.com",
+    "https://pointer.io.vn",
     "https://wallet.pointer.io.vn",
     "https://presspay-wallet.vercel.app",
     "https://presspay.vercel.app",
