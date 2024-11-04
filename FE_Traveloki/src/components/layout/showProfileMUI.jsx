@@ -1,12 +1,12 @@
-import * as React from 'react';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
-import { logoutApi } from '../../services/api/auth/auth_api.js';
+// import { logoutApi } from '../../services/api/auth/auth_api.js';
 
 function showProfile(user) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {

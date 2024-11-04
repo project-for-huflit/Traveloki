@@ -54,12 +54,20 @@ const SignUp = () => {
       console.log(response?.data.metadata);
       console.log(response?.data.metadata.tokens.accessToken);
       console.log(response?.data.metadata.tokens.refreshToken);
+      // console.log(response.data.status);
       console.log(JSON.stringify(response))
 
       // Store the tokens in localStorage or secure cookie for later use
       localStorage.setItem('token', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('user', JSON.stringify(response.data.metadata.user));
+
+      // if (response.data.status === 201) {
+      //   setSuccess("Đăng ký thành công!");
+      //   navigate('/home');
+      // } else {
+      //   throw new Error("Response was not ok");
+      // }
 
       if (response.data.status === 201) {
         setSuccess("Đăng ký thành công!");

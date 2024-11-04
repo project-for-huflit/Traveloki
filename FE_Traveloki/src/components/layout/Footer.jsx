@@ -12,7 +12,7 @@ import btnHopTac from "../../assets/btnHopTac.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-white py-10 mt-6">
+    <footer className="bg-white pb-10 border-[0.5px] border-slate-200">
       {/* <div>
         <img src={bannerTopFooter} alt="banner" className="w-full" />
       </div> */}

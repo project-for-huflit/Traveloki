@@ -1,3 +1,4 @@
+// import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -113,23 +114,47 @@ const SearchBar = () => {
     }
 
     try {
-      const response = await checkRoute(diemSanBay, diemKetThuc);
-      console.log("checkRoute",response);
+      const responseCheckRoute = await checkRoute(diemSanBay, diemKetThuc);
+      console.log("checkRoute::",responseCheckRoute);
       let maTuyens = "";
-      if (response.data.success) {
-        maTuyens = response.data.data.map((route) => route.MaTuyen.trim()).join(",");
-        console.log("maTuyens",maTuyens);
+      let maTramDung = "";
+      if (responseCheckRoute.data.success) {
+        maTuyens = responseCheckRoute.data.data.map((route) => route.MaTuyen.trim()).join(",");
+        maTramDung = responseCheckRoute.data.data.map((route) => route.MaTramDung.trim()).join(",");
+        // const sanBayResponse = await axios.get(
+        //   `${import.meta.env.VITE_BACKEND_URL}/api/getSanBaybyTenSanBay?TenSanBay=${encodeURIComponent(diemSanBay)}`
+        // );
+        // const sanBay = sanBayResponse.data.sanbays[0];
+        // const tuyenResponse = await axios.get(
+        //   `${import.meta.env.VITE_BACKEND_URL}/api/TuyenDiemSanBay?diemSanBay=${encodeURIComponent(sanBay.MaSB)}`
+        // );
+        // const tuyens = tuyenResponse.data.tuyens
+        // const tuyen = tuyens[0];
+        // const tramDung = tramDungs.find((tram) => tram.MaTuyen === tuyen.MaTuyen);
+
+        /**
+         * @LOQ-burh
+         */
+        // const maTuyen = tuyen.MaTuyen;
+        // const tramDung = tramDungs.find((tram) => tram.MaTuyen === maTuyen);
+        // const IDTram = tramDung._id;
+        // ===============================================
+        console.log("maTuyens:: ", maTuyens);
+        // const IDTram = tramDung._id;
         navigate(
-          `/airport-transfer/search/list?SanBay=${encodeURIComponent(diemSanBay)}
+          `/airport-transfer/search/list?
+          &SanBay=${encodeURIComponent(diemSanBay)}
           &DiemKetThuc=${encodeURIComponent(diemKetThuc)}
           &Date=${encodeURIComponent(selectedDate)}
           &Time=${encodeURIComponent(selectedHour)}
           &MaTuyen=${encodeURIComponent(maTuyens)}
-          &GiaVe=${encodeURIComponent(response.data.data[0].GiaVe)}`
+          &MaTram=${encodeURIComponent(maTramDung)}
+          &GiaVe=${encodeURIComponent(responseCheckRoute.data.data[0].GiaVe)}`
         );
       } else {
         navigate(
-          `/airport-transfer/search/list?SanBay=${encodeURIComponent(diemSanBay)}
+          `/airport-transfer/search/list?
+          &SanBay=${encodeURIComponent(diemSanBay)}
           &DiemKetThuc=${encodeURIComponent(diemKetThuc)}
           &Date=${encodeURIComponent(selectedDate)}
           &Time=${encodeURIComponent(selectedHour)}`
