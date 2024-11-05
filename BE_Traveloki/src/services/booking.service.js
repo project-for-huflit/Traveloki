@@ -1,4 +1,5 @@
 'use strict';
+require('dotenv').config()
 const { Pointer } = require('pointer-wallet');
 
 const pointer = new Pointer(process.env.POINTER_SECRET_KEY);
@@ -51,7 +52,7 @@ class BookingCarService {
         },
       ],
     });
-    console.log(url);
+    console.log({ url });
     return url;
   }
 
