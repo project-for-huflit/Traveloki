@@ -10,6 +10,7 @@ import "swagger-ui-react/swagger-ui.css"
  * @code element={<AuthGuard><Profile /></AuthGuard>}
  */
 // import AuthGuard from "../guards/AuthGuard.js";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 import BookingCar from "../components/booking/BookingCar.jsx";
 import ListVehicle from "../components/booking/ListMain.jsx";
@@ -41,6 +42,8 @@ import Loading from '../pages/loading/index.jsx'
 import MainLayout from '../layouts/mainLayout.jsx'
 import SecondLayout from "../layouts/secondLayout.jsx"
 import OnlyCanvas from '../layouts/centerLayout.jsx'
+
+
 const router = createBrowserRouter([
   {
     path: 'auth',
@@ -71,7 +74,7 @@ const router = createBrowserRouter([
       { path: "history-booking", element: <LichSuDatCho /> },
       {
         path: "my-booking",
-        element: <DatChoCuaToi />,
+        element: <ProtectedRoute><DatChoCuaToi /></ProtectedRoute>,
       },
       {
         path: "rate",
