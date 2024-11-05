@@ -60,12 +60,12 @@ const Login = () => {
       const { user } = response.data.metadata;
       console.log(response.data);
       // Store the tokens in localStorage or secure cookie for later use
-      console.log(response?.data.metadata);
+      // console.log(response?.data.metadata);
       console.log(response?.data.metadata.user);
-      console.log(response?.data.metadata.tokens);
+      // console.log(response?.data.metadata.tokens);
       // console.log(response?.metadata.tokens.accessToken);
       // console.log(response?.metadata.tokens.refreshToken);
-      console.log(JSON.stringify(response))
+      // console.log(JSON.stringify(response))
 
       localStorage.setItem('token', accessToken);
       localStorage.setItem('refreshToken', refreshToken);

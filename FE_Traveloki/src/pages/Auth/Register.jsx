@@ -50,15 +50,23 @@ const SignUp = () => {
       const response = await registerApi(credentials)
       const { accessToken, refreshToken } = response.metadata.tokens;
 
-      console.log(response?.metadata);
-      console.log(response?.metadata.tokens.accessToken);
-      console.log(response?.metadata.tokens.refreshToken);
+      console.log(response?.data.metadata);
+      console.log(response?.data.metadata.tokens.accessToken);
+      console.log(response?.data.metadata.tokens.refreshToken);
+      // console.log(response.data.status);
       console.log(JSON.stringify(response))
 
       // Store the tokens in localStorage or secure cookie for later use
       localStorage.setItem('token', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('user', JSON.stringify(response.metadata.user));
+      localStorage.setItem('user', JSON.stringify(response.data.metadata.user));
+
+      // if (response.data.status === 201) {
+      //   setSuccess("Đăng ký thành công!");
+      //   navigate('/home');
+      // } else {
+      //   throw new Error("Response was not ok");
+      // }
 
       if (response.status === 201 || response.status === 200) {
         setSuccess("Đăng ký thành công!");

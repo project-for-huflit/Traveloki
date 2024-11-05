@@ -5,6 +5,7 @@ import ListBookingCar from "./ListBookingCar";
 import ListBookingBus from "./ListBookingBus";
 import ListBookingTrain from "./ListBookingTrain";
 import { useSearchParams } from "react-router-dom";
+import { FormatToVI } from "../../utils/dateFormat";
 
 const ListMain = () => {
   const [selected, setSelected] = useState("Car");
@@ -39,26 +40,26 @@ const ListMain = () => {
         />
       </div>
 
-      <div className="w-full mx-auto flex border-b-2 pb-4">
+      <div className="w-full mx-auto flex border-b-[1px] pb-4">
         <div className="pt-9 w-3/4">
-          <p className="font-extrabold text-3xl">From {SanBay} (CGK)</p>
+          <p className="text-3xl text-black font-bold font-['Inter']">From {SanBay} (CGK)</p>
           <span className="text-xl">
             {Date} | {Time}
           </span>
         </div>
         <div className="flex w-1/4 justify-end">
-          <button className="font-bold bg-[#0094F3] w-fit h-fit p-2 text-white rounded-md mt-8">
+          <button className="font-bold bg-[#1D4886] w-fit h-fit p-2 text-white rounded-md mt-8">
             Change Search
           </button>
         </div>
       </div>
 
-      <div className="flex w-full h-fit border mt-6 font-bold p-4 rounded-lg bg-white">
+      <div className="flex w-full h-fit border mt-12 font-bold p-4 rounded-lg bg-white">
         <span
           onClick={() => handleClick("Car")}
           className={`cursor-pointer text-2xl px-2 ${
             selected === "Car"
-              ? "border-b-2 border-[#0094F3] text-[#0094F3]"
+              ? "border-b-2 border-[#1D4886] text-[#1D4886]"
               : "text-gray-500"
           }`}
         >
@@ -68,7 +69,7 @@ const ListMain = () => {
           onClick={() => handleClick("Bus")}
           className={`mx-9 px-2 text-2xl cursor-pointer ${
             selected === "Bus"
-              ? "border-b-2 border-[#0094F3] text-[#0094F3]"
+              ? "border-b-2 border-[#1D4886] text-[#1D4886]"
               : "text-gray-500"
           }`}
         >
@@ -78,7 +79,7 @@ const ListMain = () => {
           onClick={() => handleClick("Train")}
           className={`cursor-pointer text-2xl px-2 ${
             selected === "Train"
-              ? "border-b-2 border-[#0094F3] text-[#0094F3]"
+              ? "border-b-2 border-[#1D4886] text-[#1D4886]"
               : "text-gray-500"
           }`}
         >

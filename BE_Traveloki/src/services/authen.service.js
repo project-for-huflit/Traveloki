@@ -8,22 +8,14 @@ const bcrypt = require('bcrypt');
 // const { format } = require("node:path");
 
 // depenc...
-const { DoiTac } = require('../models/partner.model');
-const { Account } = require('../models/account.model');
-const {
-  BadRequestError,
-  ForbidenError,
-  AuthFailureError,
-} = require('../middlewares/error.response');
-const UserService = require('./account.service');
-const PartnerService = require('./partner.service');
-const KeyTokenService = require('./keyToken.service');
-const { getInfoData } = require('../utils/');
-const {
-  createTokenPair,
-  getAccessToken,
-  getUserProfile,
-} = require('./auth/utils');
+const { DoiTac } = require('../models/partner.model')
+const { Account } = require('../models/account.model')
+const { BadRequestError, ForbidenError, AuthFailureError } = require('../middlewares/error.response')
+const UserService = require('./account.service')
+const PartnerService = require('./partner.service')
+const KeyTokenService = require('./keyToken.service')
+const { getInfoData } = require('../utils/')
+const { createTokenPair , getAccessToken, getUserProfile } = require('./auth/utils');
 
 const Role = {
   USER: 'USER',
@@ -69,11 +61,10 @@ class AuthJWTService {
     return { user, tokens };
   };
 
-  static register = async ({ name, email, password }) => {
+  static register = async ({ name, email, phone, password }) => {
     try {
       const modelUser = await Account.findOne({ email }).lean();
-      if (modelUser)
-        throw new BadRequestError('Error: Shop already registered!');
+      if (modelUser) throw new BadRequestError('Error: Shop already registered!');
 
       const passwordHash = await bcrypt.hash(password, 10);
 

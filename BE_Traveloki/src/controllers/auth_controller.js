@@ -12,9 +12,8 @@ class AuthController {
     new CREATED({
       message: 'Register OK!',
       metadata: await AuthJWTService.register(req.body),
-      option: 'abc'
-    }).send(res)
-  }
+    }).send(res);
+  };
 
   login = async (req, res, next) => {
     new SuccessResponse({
@@ -47,7 +46,7 @@ class AuthController {
   }
   loginPointer = async (req, res, next) => {
     new SuccessResponse({
-      message: 'success with post!',
+      message: ' success!',
       metadata: await AuthSSOService.loginWithPointer(req.body),
     }).send(res);
   };

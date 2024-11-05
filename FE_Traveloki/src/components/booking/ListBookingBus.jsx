@@ -14,7 +14,7 @@ const ListBookingBus = (props) => {
   const SanBay = searchParams.get("SanBay");
   const Date = searchParams.get("Date");
   const Time = searchParams.get("Time");
-  const IDTram = searchParams.get("IDTram");
+  const IDTram = searchParams.get("MaTram") || "Default MaTram";
   const GiaVe = searchParams.get("GiaVe");
   const DiemKetThuc = searchParams.get("DiemKetThuc");
 
@@ -138,11 +138,14 @@ const ListBookingBus = (props) => {
 
   const handleSubmit = (busID) => {
     navigate(
-      `//airport-transfer/search/list/bus?SanBay=${encodeURIComponent(
-        SanBay
-      )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
-        Time
-      )}&IDTram=${IDTram}&PhuongTienID=${busID}`
+      `/airport-transfer/search/list/bus?
+      &SanBay=${encodeURIComponent(SanBay)}
+      &Date=${encodeURIComponent(Date)}
+      &Time=${encodeURIComponent(Time)}
+      &DiemKetThuc=${encodeURIComponent(DiemKetThuc)}
+      &GiaVe=${encodeURIComponent(GiaVe)}
+      &MaTram=${encodeURIComponent(IDTram)}
+      &PhuongTienID=${busID}`
     );
   };
 
@@ -176,36 +179,38 @@ const ListBookingBus = (props) => {
       ) : (
         bus.map((item) => (
           <div
-            className="bg-white my-4 rounded-lg hover:border-green-500 border-2 transition-all duration-300"
+            className="bg-white my-4 hover:drop-shadow-md border-2 transition-all duration-300"
             key={item._id}
           >
             <div className="flex">
-              <img
-                src={item.image}
-                className="w-auto h-44 rounded-s-lg"
-                alt="Bus"
-              />
+              <div className="border-2">
+                <img
+                  src={item.image}
+                  className="w-auto h-44 rounded-s-lg"
+                  alt="Bus"
+                />
+              </div>
               <div className="grid w-full grid-cols-12 gap-4">
                 <div className="p-4 col-span-7">
-                  <p className="text-4xl">
+                  <p className="text-2xl mr-1">
                     {item.TenPhuongTien}
                     <span className="text-2xl text-gray-500">(Standard)</span>
                   </p>
                   <span className="text-gray-300 mr-4">
                     <FontAwesomeIcon icon={faUser} /> {item.SoGheToiDa}
                   </span>
-                  <p className="text-xl">Flexible Schedule</p>
+                  <p className="">Flexible Schedule</p>
                 </div>
                 <div className="col-span-5 p-4 mt-3 flex justify-end">
                   <div>
                     <div className="w-fit">
-                      <span className="text-lg text-orange-400">
+                      <span className="text-lg text-[#1D4886]">
                         {formatPrice(GiaVe || 0)} VND / 1 ticket
                       </span>
                     </div>
                     <button
                       onClick={() => handleSubmit(item._id)}
-                      className="bg-orange-500 w-full text-white font-bold rounded-lg p-2"
+                      className="bg-[#1D4886] w-full text-white font-bold rounded-lg p-2"
                     >
                       Choose
                     </button>
