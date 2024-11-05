@@ -33,7 +33,7 @@ const Header2 = () => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     if (user) {
-      console.log(user.name);
+      console.log(user);
       // const _user = JSON.parse(user);
       setUser(user.name);
     }

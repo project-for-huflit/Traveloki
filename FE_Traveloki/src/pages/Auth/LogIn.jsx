@@ -58,6 +58,7 @@ const Login = () => {
       // console.log(response.data)
       const { accessToken, refreshToken } = response.data.metadata.tokens;
       const { user } = response.data.metadata;
+      console.log(response.data);
       // Store the tokens in localStorage or secure cookie for later use
       console.log(response?.data.metadata);
       console.log(response?.data.metadata.user);

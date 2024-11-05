@@ -16,10 +16,12 @@ import ErrorPage from "./ErrorPage.jsx";
 import {Dashboard} from "../components/DashBoard/DashBoard.jsx";
 import DanhSachLichChay from "../components/LichChay/DanhSachLichChay.jsx";
 import CreateLichChay from "../components/LichChay/CreateLichChay.jsx";
+import DanhSachTaiKhoan from "../components/Partner/DanhSachTaiKhoan.jsx";
+import DanhSachGiaoDich from "../components/Transaction/DanhSachGiaoDich.jsx"
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/admin",
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
@@ -76,6 +78,66 @@ const router = createBrowserRouter([
       {
         path: `EditDetailCar/:id`,
         element: <EditDetailCar />,
+      },
+      {
+        path: 'schedule/list',
+        element: <DanhSachLichChay />,
+      },
+      {
+        path: "schedule/list/create",
+        element: <CreateLichChay/>
+      },
+      {
+        path: "transactions/list",
+        element: <CreateLichChay/>
+      },
+      {
+        path: "account/list",
+        element: <DanhSachTaiKhoan/>
+      },
+      {
+        path: "transaction/list",
+        element: <DanhSachGiaoDich />,
+      }
+    ],
+  },
+  {
+    path: "/partern",
+    element: <App />,
+    errorElement: <ErrorPage />,
+    children: [
+      
+      {
+        path: "airport/list",
+        element: <DanhSachSanBay />,
+      },
+      {
+        path: "airport/list/create",
+        element: <CreateDanhSachSanBay />,
+      },
+      {
+        path: "road/list",
+        element: <DanhSachTuyenXe />,
+      },
+      {
+        path: "road/list/create",
+        element: <CreateTuyenXe />,
+      },
+      {
+        path: "vehicle/list",
+        element: <PhuongTien />,
+      },
+      {
+        path: "vehicle/list/create",
+        element: <CreatePhuongTien />,
+      },
+      {
+        path: "waypoint/list",
+        element: <DanhSachTramDung />,
+      },
+      {
+        path: "waypoint/list/create",
+        element: <CreateTramDung />,
       },
       {
         path: 'schedule/list',
