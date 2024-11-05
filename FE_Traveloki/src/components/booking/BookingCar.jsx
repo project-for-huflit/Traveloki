@@ -28,6 +28,7 @@ const BookingCar = () => {
   const Time = searchParams.get("Time");
   const diemKetThuc = searchParams.get("DiemKetThuc");
   const IDTram = searchParams.get("IDTram");
+  const MaTuyen = searchParams.get("MaTuyen");
   const id = searchParams.get("DetailCarID");
   const [detail, setDetail] = useState(null);
   const [tram, setTram] = useState(null);
@@ -74,6 +75,8 @@ const BookingCar = () => {
   console.log("BookingCar parameters:", { SanBay,diemKetThuc ,Date, Time, IDTram });
   const fetchTram = async () => {
     try {
+      console.log("IDTram:", IDTram);
+      console.log("BookingCar parameters:", { SanBay, Date, Time, IDTram });
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/api/GetTramDungID/${IDTram}`
       );
@@ -272,8 +275,16 @@ const BookingCar = () => {
           //   userID:"userO1"
           // }
           // const response = await paymentSend(body)
-          const paymentData = await response.json();
-          console.log("Phản hồi từ server tạo yêu cầu từ pointer:", paymentData);
+          // const paymentData = await response.json();
+          console.log("Phản hồi từ server tạo yêu cầu từ pointer:", response);
+          console.log(response.data.url)
+
+
+          if(response.status === 200){
+              window.location.replace(response.data.url)
+          } else {
+            alert(response.error || "Đã xảy ra lỗi khi truyền dữ liệu - 265");
+          }
         } catch (error) {
           console.error("Lỗi khi truyền dữ liệu:", error);
           alert("Không thể truyền dữ liệu");

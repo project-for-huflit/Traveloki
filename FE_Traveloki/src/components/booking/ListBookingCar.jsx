@@ -14,6 +14,8 @@ const ListBookingCar = () => {
   const DiemKetThuc = searchParams.get("DiemKetThuc") || "Default Diem Ket Thuc";
   const Date = searchParams.get("Date") || "Default Date";
   const Time = searchParams.get("Time") || "Default Time";
+  const IDTram = searchParams.get("IDTram") || "Default IDTram";
+  const MaSB = searchParams.get("MaSB") || "";
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat().format(price);
@@ -53,12 +55,11 @@ const ListBookingCar = () => {
 
   const handleSubmit = (detailCarID) => {
     navigate(
-      `/airport-transfer/search/list/cars?
-      SanBay=${encodeURIComponent(SanBay)}
-      &DiemKetThuc=${encodeURIComponent(DiemKetThuc)}
-      &Date=${encodeURIComponent(Date)}
-      &Time=${encodeURIComponent(Time)}
-      &DetailCarID=${detailCarID}`
+      `/airport-transfer/search/list/cars?SanBay=${encodeURIComponent(
+        SanBay
+      )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
+        Time
+      )}&IDTram=${IDTram}&DetailCarID=${detailCarID}`
     );
   };
 

@@ -15,27 +15,23 @@ const BookingBus = () => {
   const SanBay = searchParams.get(`SanBay`);
   const dateParam = searchParams.get("Date");
   const timeParam = searchParams.get("Time");
-  const busId = searchParams.get("PhuongTienID");
-  const DiemKetThuc = searchParams.get(`DiemKetThuc`);
-  const GiaVe = parseFloat(searchParams.get("GiaVe")) || 0;
+  const IDTram = searchParams.get("IDTram");
+  const id = searchParams.get("PhuongTienID");
   const [count, setCount] = useState(1);
   const [phuongtien, setPhuongTien] = useState(null);
   const [error, setError] = useState(null);
-  const [totalPrice, setTotalPrice] = useState(0);
-
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [bookingBus, setBookingBus] = useState({
-  //   MaPT: busId,
-  //   SLVe: "",
-  //   DiemDon: SanBay,
-  //   DiemTra: DiemKetThuc,
-  //   NgayGioKhoiHanh: `${dateParam}T${timeParam}`,
-  //   ThanhTien: 0,
-  //   TrangThai: false,
-  //   currency: "VND"
-  // });
-
-  // console.log("busId", bookingBus)
+  const [isLoading, setIsLoading] = useState(true);
+  const [bookingBus, setBookingBus] = useState({
+    MaPT: id,
+    MaTram: IDTram,
+    SLVe: "",
+    DiemDon: SanBay,
+    DiemTra: "",
+    NgayGioKhoiHanh: `${dateParam}T${timeParam}`,
+    ThanhTien: 0,
+    TrangThai: false,
+    currency: "VND"
+  });
 
   const increaseCount = () => {
     setCount((prevCount) => (prevCount < 10 ? prevCount + 1 : 10));

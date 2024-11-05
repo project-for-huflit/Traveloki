@@ -14,9 +14,55 @@ const ListBookingBus = (props) => {
   const SanBay = searchParams.get("SanBay");
   const Date = searchParams.get("Date");
   const Time = searchParams.get("Time");
+  const DiemKetThuc = searchParams.get("DiemKetThuc") || "Default Diem Ket Thuc";
+
   const IDTram = searchParams.get("IDTram");
-  const GiaVe = searchParams.get("GiaVe");
-  const DiemKetThuc = searchParams.get("DiemKetThuc");
+  const MaSB = searchParams.get("MaSB");
+
+  const fetchTrains = async () => {
+    setFetchError(null);
+    try {
+      const res = await fetch(`${url}/SearchFindPhuongTien/false`);
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await res.json();
+      console.log("Fetched trains:", result);
+      setTrains(result.buses || []);
+    } catch (e) {
+      console.error("Error fetching trains:", e);
+    }
+  };
+
+  const fetchTramTrain = async () => {
+    if (!IDTram) return;
+    try {
+      const res = await fetch(`${url}/GetTramDungID/${IDTram}`);
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await res.json();
+      console.log("Fetched tramTrain:", result);
+      setTramTrain(result || {});
+    } catch (e) {
+      console.error("Error fetching tramTrain:", e);
+    }
+  };
+
+  const fetchTuyenSB = async (MaSB) => {
+    if (!MaSB) return;
+    try {
+      const res = await fetch(`${url}/TuyenDiemSanBay?diemSanBay=${MaSB}`);
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await res.json();
+      console.log("Fetched tuyenSB:", result);
+      setTuyenSB(result.tuyens || []);
+    } catch (e) {
+      console.error("Error fetching tuyenSB:", e);
+    }
+  };
 
   useEffect(() => {
     const fetchTrainByLichChay = async() => {
@@ -59,23 +105,12 @@ const ListBookingBus = (props) => {
   };
 
   const handleSubmit = (TrainID) => {
-    // navigate(
-    //   `/airport-transfer/search/list/trains?
-    //   SanBay=${encodeURIComponent(
-    //     SanBay
-    //   )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
-    //     Time
-    //   )}&IDTram=${IDTram}&PhuongTienID=${TrainID}`
-    // );
-
     navigate(
-      `/airport-transfer/search/list/bus?
-      SanBay=${encodeURIComponent(SanBay)}
-      &Date=${encodeURIComponent(Date)}
-      &Time=${encodeURIComponent(Time)}
-      &DiemKetThuc=${encodeURIComponent(DiemKetThuc)}
-      &GiaVe=${encodeURIComponent(GiaVe)}
-      &PhuongTienID=${TrainID}`
+      `//airport-transfer/search/list/train?SanBay=${encodeURIComponent(
+        SanBay
+      )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
+        Time
+      )}&IDTram=${IDTram}&PhuongTienID=${TrainID}`
     );
   };
 

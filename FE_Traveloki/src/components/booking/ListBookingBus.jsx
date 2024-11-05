@@ -138,13 +138,11 @@ const ListBookingBus = (props) => {
 
   const handleSubmit = (busID) => {
     navigate(
-      `/airport-transfer/search/list/bus?
-      SanBay=${encodeURIComponent(SanBay)}
-      &Date=${encodeURIComponent(Date)}
-      &Time=${encodeURIComponent(Time)}
-      &DiemKetThuc=${encodeURIComponent(DiemKetThuc)}
-      &GiaVe=${encodeURIComponent(GiaVe)}
-      &PhuongTienID=${busID}`
+      `//airport-transfer/search/list/bus?SanBay=${encodeURIComponent(
+        SanBay
+      )}&Date=${encodeURIComponent(Date)}&Time=${encodeURIComponent(
+        Time
+      )}&IDTram=${IDTram}&PhuongTienID=${busID}`
     );
   };
 
