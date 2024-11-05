@@ -21,7 +21,7 @@ import DanhSachGiaoDich from "../components/Transaction/DanhSachGiaoDich.jsx"
 
 const router = createBrowserRouter([
   {
-    path: "/admin",
+    path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
@@ -102,7 +102,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/partern",
+    path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
     children: [

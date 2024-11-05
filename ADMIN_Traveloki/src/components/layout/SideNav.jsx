@@ -99,7 +99,7 @@ const SideNav = () => {
         <List>
           <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/admin/home"
+              to="/home"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -128,7 +128,7 @@ const SideNav = () => {
           </ListItem>
           <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/admin/detail-car/list"
+              to="/detail-car/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -158,7 +158,7 @@ const SideNav = () => {
 
           <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/admin/transaction/list"
+              to="/transaction/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -188,7 +188,7 @@ const SideNav = () => {
 
           <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/admin/account/list"
+              to="/account/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -215,12 +215,12 @@ const SideNav = () => {
               </ListItemButton>
 
 
-              {/* 
+              
               
 
               <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/partern/airport/list"
+              to="/airport/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -249,7 +249,7 @@ const SideNav = () => {
           </ListItem>
           <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/partern/vehicle/list"
+              to="/vehicle/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -278,7 +278,7 @@ const SideNav = () => {
           </ListItem>
           <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/partern/waypoint/list"
+              to="/waypoint/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -307,7 +307,7 @@ const SideNav = () => {
           </ListItem>
           <ListItem  disablePadding sx={{ display: 'block' }} >
             <NavLink
-              to="/partern/road/list"
+              to="/road/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -336,7 +336,7 @@ const SideNav = () => {
           </ListItem>
           <ListItem  disablePadding sx={{ display: 'block' }}>
             <NavLink
-              to="/partern/schedule/list"
+              to="/schedule/list"
               className={({ isActive }) =>
                 isActive
                   ? 'text-blue-500 bg-gray-200' // Màu khi active
@@ -363,8 +363,6 @@ const SideNav = () => {
               </ListItemButton>
             </NavLink>
           </ListItem>
-              
-              */}
             </NavLink>
           </ListItem>
         </List>
