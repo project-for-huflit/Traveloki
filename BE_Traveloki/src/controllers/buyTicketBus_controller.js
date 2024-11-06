@@ -144,28 +144,17 @@ const SchedularChange = async (req, res) => {
 
 const CancelBookingBus = async (req, res) => {
   const { MaVeBus } = req.params;
-
+  const { isActive } = req.body;
   if (!MaVeBus) {
-    return res.status(400).json({ message: 'Missing information' });
+    return res.status(400).json({ message: 'Missing information'});
   }
-
   try {
-    const deletedBooking = await PhieuDatXeBus.deleteOne({ MaVeBus });
-    const deletedHistory = await LichSuDatXeBus.deleteOne({ MaDX: MaVeBus });
+   const bookingBus = await PhieuDatXeBus.findOne({MaVeBus});
+   const ngayGioKhoiHanh = new Date(bookingBus.NgayGioKhoiHanh);
+   const nowDate = new Date();
 
-    if (!deletedBooking) {
-      return res.status(404).json({ message: 'Không tìm thấy PhieuDatXeBus' });
-    }
+   // if ()
 
-    if (deletedHistory.deletedCount === 0) {
-      return res
-        .status(404)
-        .json({ message: 'Không tìm thấy lịch sử đặt xe tương ứng' });
-    }
-
-    res.status(200).json({
-      message: 'PhieuDatXeBus và lịch sử đặt xe đã được xóa thành công',
-    });
   } catch (e) {
     console.error(e);
     res
