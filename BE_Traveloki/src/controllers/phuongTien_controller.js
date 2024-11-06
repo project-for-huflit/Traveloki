@@ -37,7 +37,7 @@ const GetPhuongTienID = async (req, res) => {
 };
 
 const CreatePhuongTien = async (req, res) => {
-  const {TenPhuongTien, LoaiPT, SoGheToiDa, MaSoXe, Image, MaSB} = req.body;
+  const {TenPhuongTien, LoaiPT, SoGheToiDa, MaSoXe, Image, MaSB, SLVe} = req.body;
   const data = await createPhuongTienService(LoaiPT, TenPhuongTien,MaSoXe, SoGheToiDa, Image, MaSB);
   return res.status(200).json(data);
 };

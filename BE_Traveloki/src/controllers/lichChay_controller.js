@@ -6,8 +6,8 @@ const getAllLichChay = async (req, res) => {
 }
 
 const createLichChay = async (req, res) => {
-  const { MaPT, MaTuyen, ngayKhoiHanh, gioKhoiHanh, gioKetThuc } = req.body;
-  const data = await createLichChayService(MaPT, MaTuyen, ngayKhoiHanh, gioKhoiHanh, gioKetThuc);
+  const { MaPT, MaTuyen, ngayKhoiHanh, gioKhoiHanh, gioKetThuc, SLVe } = req.body;
+  const data = await createLichChayService(MaPT, MaTuyen, ngayKhoiHanh, gioKhoiHanh, gioKetThuc, SLVe);
   return res.status(200).json(data);
 }
 

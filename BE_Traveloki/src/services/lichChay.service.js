@@ -21,7 +21,7 @@ const getAllLichChayService = async () => {
   }
 }
 
-const createLichChayService = async (MaPT, MaTuyen, ngayKhoiHanh, gioKhoiHanh, gioKetThuc) => {
+const createLichChayService = async (MaPT, MaTuyen, ngayKhoiHanh, gioKhoiHanh, gioKetThuc, SLVe) => {
   try {
     const result = await LichChay.create({
       MaPT: MaPT,
@@ -29,21 +29,24 @@ const createLichChayService = async (MaPT, MaTuyen, ngayKhoiHanh, gioKhoiHanh, g
       ngayKhoiHanh: ngayKhoiHanh,
       gioKhoiHanh: gioKhoiHanh,
       gioKetThuc: gioKetThuc,
+      SLVe: SLVe,
+      SLVeConLai: SLVe
     });
+
     return {
       EC: 0,
       EM: "Tạo lịch chạy thành công",
       data: result
-    }
-  }catch (error){
+    };
+  } catch (error) {
     console.error('Error in createLichChayService:', error);
     return {
       EC: 1,
       EM: "Không thể tạo lịch chạy",
       data: []
-    }
+    };
   }
-}
+};
 
 const deleteLichChayService = async (id) => {
   try {

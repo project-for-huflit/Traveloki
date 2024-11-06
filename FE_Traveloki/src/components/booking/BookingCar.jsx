@@ -16,8 +16,17 @@ import {
   faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
 const BookingCar = () => {
+  const location = useLocation();
+
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay");
+
+  const queryParams = new URLSearchParams(location.search);
+  const sanBay = queryParams.get('SanBay');
+  console.log('SanBay::', decodeURIComponent(SanBay))
+  const decodedSanBay = decodeURIComponent(sanBay);
+  console.log('SanBay:', decodedSanBay);
+
   const Date = searchParams.get("Date");
   const Time = searchParams.get("Time");
   const IDTram = searchParams.get("MaTram"); // 66a928805951552933eb1b2d
@@ -75,6 +84,8 @@ const BookingCar = () => {
     }
   };
 
+  console.log("IDTram:", IDTram);
+  console.log("BookingCar parameters:", { SanBay,diemKetThuc ,Date, Time, IDTram });
   const fetchTram = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/GetTramDungID/${IDTram}`);
@@ -187,6 +198,7 @@ const BookingCar = () => {
                 Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
               },
               body: JSON.stringify({
+                private_key: import.meta.env.VITE_SECRET_API_KEY_POINTER,
                 amount: ThanhTien,
                 currency: bookingCar.currency,
                 message: bookingCar.Description,
@@ -211,7 +223,7 @@ const BookingCar = () => {
             alert(response.error || "Đã xảy ra lỗi khi truyền dữ liệu - 265");
           }
         } catch (error) {
-          console.log("Lỗi khi truyền dữ liệu:", error);
+          console.error("Lỗi khi truyền dữ liệu:", error);
           alert("Không thể truyền dữ liệu");
         }
       } else {
