@@ -1,0 +1,17 @@
+@url_dev=http://localhost:3062
+
+### login
+
+POST {{url_dev}}/api/GetDetailCarID/66a928805951552933eb1b2d
+Content-Type: application/json
+x-api-key: f1a4d0822489e2c14f909da786167c796fc0842b3ce24f909d4b5dfe538a584460dd7cb4380f3afd7df4ced759e4f66c0de808c31a94eae9e066e3d12986dba3
+
+# {
+#     "email": "shoptipjsDEV_main4@gmail.com",
+#     "password": "abc123"
+# }
+
+POST {{url_dev}}/api/GetTramDungID/6719a9ae1fe7d830388e9607
+Content-Type: application/json
+x-api-key: f1a4d0822489e2c14f909da786167c796fc0842b3ce24f909d4b5dfe538a584460dd7cb4380f3afd7df4ced759e4f66c0de808c31a94eae9e066e3d12986dba3
+

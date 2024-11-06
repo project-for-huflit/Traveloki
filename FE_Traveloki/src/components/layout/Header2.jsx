@@ -28,14 +28,19 @@ const Header2 = () => {
    */
   // const { handleContextLogin, isLogin, handleContextLogout } = useContext(AuthProvider);
   const [user, setUser] = useState('');
+  const [partner, setPartner] = useState('');
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
+    const partner = localStorage.getItem('email');
 
     if (user) {
-      console.log(user.name);
-      // const _user = JSON.parse(user);
-      setUser(user.name);
+      const { name } = user
+      setUser(name);
+    }
+    if (partner){
+      console.log(partner);
+      setPartner(partner);
     }
   }, []);
 
@@ -88,7 +93,7 @@ const Header2 = () => {
             {/* {
               if (!user) { return <div>Loading...</div>;}
             } */}
-            {user ? (<ShowProfile user={user} />) : (<DirectToAuthPage />)}
+            {user || partner ? (<ShowProfile user={user || partner} />) : (<DirectToAuthPage />)}
 
           </nav>
         </div>

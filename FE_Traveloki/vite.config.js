@@ -19,4 +19,13 @@ export default defineConfig({
       // include other packages that may broke the build
     ],
   },
+  server: {
+    proxy: {
+      '/payment': {
+        target: 'https://traveloki.netlify.app',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });

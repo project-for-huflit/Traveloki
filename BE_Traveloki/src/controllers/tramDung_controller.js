@@ -1,7 +1,7 @@
 const {Tuyen} = require("../models/tuyen.model");
 const {TramDung} = require("../models/tramDung.model");
 const {CounterTramDung} = require("../models/counter.model");
-
+const { TuyenTramDung } = require('../models/tuyenTramDung.model')
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 const asyncHandler = require('../middlewares/asyncHandler.middeware')
@@ -30,13 +30,25 @@ const GetTramDungID = async (req, res) => {
     const { id } = req.params;
     console.log("Fetching TramDung with id:", id);
     const tramDung = await TramDung.findById(id);
+    const tramDungWithTuyen = await TuyenTramDung.findOne({ MaTramDung: id })
+
     console.log("Fetched TramDung:", tramDung);
+    console.log("Fetched tramDungWithTuyen:", tramDungWithTuyen);
 
     if (!tramDung) {
       return res.status(404).json({ message: "Trạm dừng không tồn tại" });
     }
 
-    res.status(200).json(tramDung);
+    if (!tramDungWithTuyen) {
+      return res.status(404).json({ message: "Trạm dừng với tuyến không tồn tại" });
+    }
+
+    const cost = tramDungWithTuyen.SoKM
+
+    res.status(200).json({
+      tramDung,
+      cost
+    });
   } catch (e) {
     console.error("Server error:", e); // Log the error
     res.status(500).json({ message: "Lỗi máy chủ" });

@@ -8,241 +8,187 @@ import {buyTicketBus} from "../../services/api/booking/api.bookingBus.js";
 //   faPlaneArrival,
 //   faCalendarDays,
 // } from "@fontawesome/free-solid-svg-icons";
+import Loading from '../../pages/loading/index'
 
 const BookingBus = () => {
-  const url = `${import.meta.env.VITE_BACKEND_URL}/api/`;
+  // const url = `${import.meta.env.VITE_BACKEND_URL}/api/`;
   const [searchParams] = useSearchParams();
-  const SanBay = searchParams.get(`SanBay`);
-  const dateParam = searchParams.get("Date");
-  const timeParam = searchParams.get("Time");
+  const SanBay = decodeURIComponent(searchParams.get("SanBay")).trim();
+  const dateParam = decodeURIComponent(searchParams.get("Date")).trim();
+  const timeParam = decodeURIComponent(searchParams.get("Time")).trim();
   const busId = searchParams.get("PhuongTienID");
-  const DiemKetThuc = searchParams.get(`DiemKetThuc`);
-  const GiaVe = parseFloat(searchParams.get("GiaVe")) || 0;
+  const IDTram = decodeURIComponent(searchParams.get("MaTram")).trim();
+  const DiemKetThuc = decodeURIComponent(searchParams.get("DiemKetThuc")).trim();
+  const GiaVe = parseFloat(searchParams.get("GiaVe")) || 1;
+  // const GiaVe = searchParams.get("GiaVe");
   const [count, setCount] = useState(1);
   const [phuongtien, setPhuongTien] = useState(null);
   const [error, setError] = useState(null);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(GiaVe);
+  const [isLoading, setIsLoading] = useState(true);
 
   // const [isLoading, setIsLoading] = useState(true);
+  // const { MaPT, SLVe, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } = req.body;
   const [bookingBus, setBookingBus] = useState({
     MaPT: busId,
-    SLVe: count,
+    Sdt: "0374444252",
+    MaTram: IDTram,
     DiemDon: SanBay,
     DiemTra: DiemKetThuc,
-    NgayGioKhoiHanh: `${dateParam}T${timeParam}`,
-    ThanhTien: totalPrice,
+    DiemDon_Tra: SanBay + "-" + DiemKetThuc,
+    NgayGioKhoiHanh: dateParam + "T" + timeParam,
+    ThanhTien: GiaVe || 1,
     TrangThai: false,
-    currency: "VND"
+    Description: "Thanh toán vé xe buýt",
+    currency: "VND",
+    name: "Thanh toán vé xe buýt tuyến " + SanBay + "-" + DiemKetThuc,
+    image: "https://www.youtube.com/watch?v=TD7sBUigDIU",
+    SLVe: count,
+    price: "" || 1,
+    return_url: "http://localhost:5173/list/cars/result"
   });
 
-  // console.log("busId", busId)
+  console.log("busId", bookingBus)
 
   const increaseCount = () => {
-    setCount((prevCount) => (prevCount < 10 ? prevCount + 1 : 10));
+    setCount((prevCount) => {
+      const newCount = prevCount < 10 ? prevCount + 1 : 10;
+      setTotalPrice(GiaVe * newCount);
+      return newCount;
+    });
+    // setTotalPrice(GiaVe * count);
+    // console.log("Gia ve::", GiaVe)
+    // console.log("Tong ve::", count)
+    // console.log("Tong::", totalPrice)
   };
 
   const decreaseCount = () => {
-    setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : 1));
+    setCount((prevCount) => {
+      const newCount = prevCount > 1 ? prevCount - 1 : 1;
+      setTotalPrice(GiaVe * newCount);
+      return newCount;
+    });
+    // setTotalPrice(GiaVe * count);
+    // console.log("Gia ve::", GiaVe)
+    // console.log("Tong ve::", count)
+    // console.log("Tong::", totalPrice)
   };
-
-  useEffect(() => {
-    setTotalPrice(GiaVe * count);
-  }, [count]);
 
   useEffect(() => {
     const fetchPhuongTien = async () => {
       try {
         const res = await getPhuongTienId(busId);
+        console.log("fetch phuong tien::", res.data)
         if (res && res.data.phuongTien) {
-          setPhuongTien(res.data.phuongTien);
+
+          // setPhuongTien(res.data.phuongTien);
+          setPhuongTien((prevBookingCar) => ({
+            ...prevBookingCar,
+            phuongtien: res.data.phuongTien.TenPhuongTien,
+          }))
+          setBookingBus((prevBookingCar) => ({
+            ...prevBookingCar,
+            name: res.data.phuongTien.TenPhuongTien,
+            ThanhTien: totalPrice,
+            price: GiaVe,
+            return_url: `${import.meta.env.VITE_FE_URL}/list/cars/result`
+          }))
+          console.log("phuongtien::", phuongtien)
         }
       } catch (error) {
         setError("Không thể lấy dữ liệu từ máy chủ phuongtien: " + error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchPhuongTien();
-  }, [busId]);
-
-  const handle_Submit = async (e) => {
-    e.preventDefault();
-    // console.log("Dữ liệu gửi đi:", bookingBus);
-
-    // const { MaPT, MaTram, DiemDon, DiemTra, NgayGioKhoiHanh, ThanhTien } =
-    //   bookingBus;
-
-    // if (
-    //   !MaPT ||
-    //   !DiemDon ||
-    //   !DiemTra ||
-    //   !NgayGioKhoiHanh ||
-    //   !ThanhTien
-    // ) {
-    //   alert("Vui lòng nhập đầy đủ thông tin");
-    //   return;
-    // }
-
-    // const formattedDate = new Date(`${dateParam}T${timeParam}`).toISOString();
-
-    try {
-      const res = await buyTicketBus(bookingBus);
-      if (res && res.data) {
-        console.log("Đã nhận được ID đơn hàng:", res.data.buyTicketBus._id);
-      }
-    }catch (error) {
-      console.error("Lỗi khi kết nối tới máy chủ:", error);
-      alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
-    }
-
-
-    // try {
-    //   const res = await fetch(`${url}/BuyTicketBus`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       MaPT,
-    //       MaTram,
-    //       SLVe: count,
-    //       DiemDon,
-    //       DiemTra,
-    //       NgayGioKhoiHanh: formattedDate,
-    //       ThanhTien,
-    //       TrangThai: false,
-    //     }),
-    //   });
-    //
-    //   const data = await res.json();
-    //   console.log("Phản hồi từ server:", data);
-    //
-    //   if (res.ok) {
-    //     const buyTicketBus = data.buyTicketBus;
-    //     console.log("Đã nhận được ID đơn hàng:", buyTicketBus._id);
-    //
-    //     if (!buyTicketBus._id) {
-    //       alert("Không tìm thấy ID đơn hàng trong phản hồi");
-    //       return;
-    //     }
-    //
-    //     // try {
-    //     //   const resVoucher = await fetch(
-    //     //     "https://voucher-server-alpha.vercel.app/api/vouchers/createPartNerRequest",
-    //     //     {
-    //     //       method: "POST",
-    //     //       headers: {
-    //     //         "Content-Type": "application/json",
-    //     //       },
-    //     //       body: JSON.stringify({
-    //     //         OrderID: buyTicketBus._id,
-    //     //         PartnerID: "1000000003",
-    //     //         ServiceName: "Mua vé xe Buýt",
-    //     //         TotalMoney: ThanhTien,
-    //     //         CustomerCode: "1000000024",
-    //     //         Description: `Dịch vụ mua vé bus từ ${DiemDon} đến ${DiemTra}`,
-    //     //         LinkHome:
-    //     //           `${import.meta.env.VITE_FE_URL}/home`,
-    //     //         LinkReturnSuccess: `${import.meta.env.VITE_BACKEND_URL}/api/UpdateState/${buyTicketBus._id}`,
-    //     //       }),
-    //     //     }
-    //     //   );
-    //     //
-    //     //   const voucherData = await resVoucher.json();
-    //     //   console.log("Phản hồi từ server tạo yêu cầu đối tác:", voucherData);
-    //     //
-    //     //   if (resVoucher.ok) {
-    //     //     window.location.href = `https://checkout-page-54281a5e23aa.herokuapp.com/?OrderID=${buyTicketBus._id}`;
-    //     //   } else {
-    //     //     alert(voucherData.error || "Đã xảy ra lỗi khi truyền dữ liệu");
-    //     //   }
-    //     // } catch (error) {
-    //     //   console.error("Lỗi khi truyền dữ liệu:", error);
-    //     //   alert("Không thể truyền dữ liệu");
-    //     // }
-    //   } else {
-    //     alert(data.error || "Đã xảy ra lỗi khi mua vé xe");
-    //   }
-    // } catch (error) {
-    //   console.error("Lỗi khi kết nối tới máy chủ:", error);
-    //   alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
-    // }
-  };
+  }, [count, GiaVe, busId]);
 
   const handlePayment = async (e) => {
     e.preventDefault()
     console.log("Dữ liệu gửi đi:", bookingBus);
 
     const {
-      Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm,
+      Sdt, MaTram, DiemDon, DiemDon_Tra, DiemTra, NgayGioKhoiHanh, SLVe,
       ThanhTien, Description,
     } = bookingBus;
 
+    console.log("Dữ liệu nhận vào:", {
+      Sdt, MaTram, DiemDon, DiemTra, DiemDon_Tra, NgayGioKhoiHanh, SLVe,
+      ThanhTien, Description,
+    });
     // Kiểm tra dữ liệu đầu vào
     if (
-      !Sdt || !MaTram || !DiemSanBay || !DiemDon_Tra ||
-      !NgayGioDat || !SoKm || !ThanhTien || !Description
+      !Sdt || !MaTram || !DiemDon || !DiemTra || !DiemDon_Tra || !SLVe ||
+      !NgayGioKhoiHanh || !ThanhTien || !Description
     ) { alert("Vui lòng nhập đầy đủ thông tin"); return; }
 
     try {
       const resBooking = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/BookingCar`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/BuyTicketBus`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json", },
-          body: JSON.stringify({ MaDetailCar: busId, Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm, ThanhTien, Description }),
+          body: JSON.stringify({
+            MaPT: busId,
+            SLVe,
+            DiemDon,
+            DiemTra,
+            NgayGioKhoiHanh,
+            ThanhTien,
+          }),
         }
       );
 
       // Xử lý phản hồi từ server
       const data = await resBooking.json();
-      console.log("Phản hồi từ server đặt xe:", data);
+      console.log("Phản hồi từ server đặt xe bus:", data);
 
       if (resBooking.ok) {
-        const datXeBus = data; // Chỉnh sửa nếu cần thiết để phù hợp với cấu trúc dữ liệu trả về
-        console.log("Đã nhận được ID đơn hàng:", datXeBus._id);
+        const datXeBusId = data; // Chỉnh sửa nếu cần thiết để phù hợp với cấu trúc dữ liệu trả về
+        console.log("Đã nhận được ID đơn hàng:", datXeBusId._id);
 
-        // req lên server pointer để chuyển hướng đến payment gateway
-        setTimeout(() => {
-          window.location.replace("https://pointer.io.vn/payment-gateway?token=671717b9dd003cf4eca7d461")
-        }, 2000);
         try {
+          // console.log({
+          //   amount: ThanhTien,
+          //   currency: bookingCar.currency,
+          //   message: bookingCar.Description,
+          //   return_url: `${import.meta.env.VITE_FE_URL}/list/cars/result`,
+          //   orderID: datXeBus._id,
+          //   userID: "userO1",
+          // })
+
           const response = await fetch(
-            `${import.meta.env.VITE_API_PRESSPAY_BASE_URL}/api/v1/payment`,
+            `${import.meta.env.VITE_BACKEND_URL}/api/payment/pointer-wallet/bus`,
             {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: 'Bearer pk_presspay_82fad953e33c472656094ab3b6a3d7d3553d3215ea09fda4e7d363caae555811'
+                Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
               },
               body: JSON.stringify({
-                private_key: import.meta.env.VITE_SECRET_API_KEY_POINTER,
                 amount: ThanhTien,
                 currency: bookingBus.currency,
                 message: bookingBus.Description,
-                return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}list/cars/result`,
-                orderID: datXeBus._id,
                 userID: "userO1",
+                orderID: datXeBusId._id,
+                returnUrl: bookingBus.return_url,
+                name: bookingBus.name,
+                image: bookingBus.image,
+                description: bookingBus.Description,
+                quantity: bookingBus.SLVe,
+                price: bookingBus.ThanhTien,
               }),
             }
           );
-          // const body = {
-          //   private_key:import.meta.env.VITE_SECRET_API_KEY_POINTER,
-          //   amount:bookingCar.ThanhTien,
-          //   currency:bookingCar.currency,
-          //   message:bookingCar.Description,
-          //   return_url: `${import.meta.env.VITE_BASE_URL_CLIENT}list/cars/result`,
-          //   orderID:datXeOto._id,
-          //   userID:"userO1"
-          // }
-          // const response = await paymentSend(body)
-          const paymentData = await response.json();
-          console.log("Phản hồi từ server tạo yêu cầu từ pointer:", paymentData);
 
-
-          // if(response.status === 200){
-          //     window.location.replace(response.data.url)
-          // } else {
-          //   alert(paymentData.error || "Đã xảy ra lỗi khi truyền dữ liệu - 265");
-          // }
+          if(response.ok){
+              const data = await response.json();
+              console.log("Phản hồi từ server tạo yêu cầu từ pointer:", data);
+              window.location.replace(data.metadata)
+          } else {
+            alert(response.error || "Đã xảy ra lỗi khi truyền dữ liệu - 200");
+          }
         } catch (error) {
           console.error("Lỗi khi truyền dữ liệu:", error);
           alert("Không thể truyền dữ liệu");
@@ -256,25 +202,24 @@ const BookingBus = () => {
     }
   }
 
-  // if (isLoading)
-  //   return (
-  //     <div className="text-center text-4xl translate-y-1/2 h-3/4 font-extrabold">
-  //       Loading...
-  //     </div>
-  //   );
-  // if (error)
-  //   return (
-  //     <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
-  //       Error: {error}
-  //     </div>
-  //   );
+  if (isLoading)
+    return (
+      <Loading />
+    );
+  if (error)
+    return (
+      <div className="text-center text-4xl translate-y-1/2 h-full font-extrabold">
+        Error: {error}
+      </div>
+    );
   //
   // const formatPrice = (price) => {
   //   return new Intl.NumberFormat().format(price);
   // };
 
   return (
-    <div className="p-4 w-full h-fit overflow-y-auto">
+    <div className="">
+      <div className="p-4 w-full h-fit overflow-y-auto">
       <span className="bg-white h-fit w-[96%] p-2 -top-0 font-bold text-xl">
         <span className="font-extrabold text-green-500 px-4">{SanBay}</span> -
         <span className="font-extrabold text-green-500 px-4">
@@ -302,7 +247,7 @@ const BookingBus = () => {
             <label className="font-bold">Tên xe </label>
             <p className="border mt-2 text-slate-500 border-gray-500 bg-slate-50 rounded-md p-2">
               <FontAwesomeIcon icon={faCalendarDays} />
-              <span className="ml-2">{phuongtien?.TenPhuongTien}</span>
+              <span className="ml-2">{phuongtien?.phuongtien}</span>
             </p>
             <div className=" mt-4 ">
               <label className="font-bold">Số lượng vé</label>
@@ -346,13 +291,14 @@ const BookingBus = () => {
             </span>
           </div>
           <button
-            onClick={handle_Submit}
+            onClick={handlePayment}
             className="bg-orange-500 ml-4 w-fit text-white font-bold rounded-lg p-2"
           >
             Booking Now
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -114,12 +114,13 @@ const SearchBar = () => {
     }
 
     try {
-      const response = await checkRoute(diemSanBay, diemKetThuc);
-      console.log("checkRoute",response);
+      const responseCheckRoute = await checkRoute(diemSanBay, diemKetThuc);
+      console.log("checkRoute::",responseCheckRoute);
       let maTuyens = "";
+      let maTramDung = "";
       if (responseCheckRoute.data.success) {
         maTuyens = responseCheckRoute.data.data.map((route) => route.MaTuyen.trim()).join(",");
-
+        maTramDung = responseCheckRoute.data.data.map((route) => route.MaTramDung.trim()).join(",");
         // const sanBayResponse = await axios.get(
         //   `${import.meta.env.VITE_BACKEND_URL}/api/getSanBaybyTenSanBay?TenSanBay=${encodeURIComponent(diemSanBay)}`
         // );
@@ -141,16 +142,19 @@ const SearchBar = () => {
         console.log("maTuyens:: ", maTuyens);
         // const IDTram = tramDung._id;
         navigate(
-          `/airport-transfer/search/list?SanBay=${encodeURIComponent(diemSanBay)}
+          `/airport-transfer/search/list?
+          &SanBay=${encodeURIComponent(diemSanBay)}
           &DiemKetThuc=${encodeURIComponent(diemKetThuc)}
           &Date=${encodeURIComponent(selectedDate)}
           &Time=${encodeURIComponent(selectedHour)}
           &MaTuyen=${encodeURIComponent(maTuyens)}
+          &MaTram=${encodeURIComponent(maTramDung)}
           &GiaVe=${encodeURIComponent(responseCheckRoute.data.data[0].GiaVe)}`
         );
       } else {
         navigate(
-          `/airport-transfer/search/list?SanBay=${encodeURIComponent(diemSanBay)}
+          `/airport-transfer/search/list?
+          &SanBay=${encodeURIComponent(diemSanBay)}
           &DiemKetThuc=${encodeURIComponent(diemKetThuc)}
           &Date=${encodeURIComponent(selectedDate)}
           &Time=${encodeURIComponent(selectedHour)}`

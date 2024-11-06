@@ -1,6 +1,6 @@
 'use strict'
 // lib
-require('dotenv').config()
+require('dotenv').config();
 // const { PointerStrategy } = require("sso-pointer");
 const crypto = require('node:crypto');
 const bcrypt = require('bcrypt')
@@ -57,10 +57,10 @@ class  AuthJWTService {
     return { user, tokens }
   }
 
-  static register = async ({ name, email, password }) => {
+  static register = async ({ name, email, phone, password }) => {
     try {
-      const modelUser = await Account.findOne({ email }).lean()
-      if (modelUser) throw new BadRequestError('Error: Shop already registered!')
+      const modelUser = await Account.findOne({ email }).lean();
+      if (modelUser) throw new BadRequestError('Error: Shop already registered!');
 
       const passwordHash = await bcrypt.hash(password, 10)
 
@@ -382,11 +382,11 @@ class AuthSSOService {
       };
     }
   }
-  static logout = async ( keyStore ) => {
-    const delKey = await KeyTokenService.removeKeyById( keyStore._id )
-    console.log({delKey})
-    return delKey
-  }
+  static logout = async (keyStore) => {
+    const delKey = await KeyTokenService.removeKeyById(keyStore._id);
+    console.log({ delKey });
+    return delKey;
+  };
 }
 
 module.exports = {
