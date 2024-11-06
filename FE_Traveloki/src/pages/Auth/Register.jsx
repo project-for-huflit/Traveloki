@@ -48,8 +48,7 @@ const SignUp = () => {
 
     try {
       const response = await registerApi(credentials)
-      console.log(response)
-      const { accessToken, refreshToken } = response.data.metadata.tokens;
+      const { accessToken, refreshToken } = response.metadata.tokens;
 
       console.log(response?.data.metadata);
       console.log(response?.data.metadata.tokens.accessToken);

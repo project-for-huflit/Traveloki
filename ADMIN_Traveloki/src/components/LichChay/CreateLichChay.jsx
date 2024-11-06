@@ -6,17 +6,17 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { fetchAllTuyenXe } from "../../services/api/TuyenXe/apiDanhSachTuyenXe.js";
 import { fetchAllPhuongTien } from "../../services/api/PhuongTien/apiDanhSachPhuongTien.js";
-import { createLichChay } from "../../services/api/LichChay/apiCreateLichChay.js"; // Import API tạo Lịch Chạy
-import { format } from "date-fns"; // Import thư viện format ngày
+import { createLichChay } from "../../services/api/LichChay/apiCreateLichChay.js";
+import { format } from "date-fns";
 
 const CreateLichChay = () => {
-  // State lưu trữ thông tin của lịch chạy
   const [lichChay, setLichChay] = useState({
     MaPT: "",
     MaTuyen: "",
     ngayKhoiHanh: new Date(),
     gioKhoiHanh: "",
     gioKetThuc: "",
+    SLVe: "",
   });
   const [tuyen, setTuyen] = useState([]);
   const [phuongTien, setPhuongTien] = useState([]);
@@ -73,9 +73,15 @@ const CreateLichChay = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!lichChay.MaPT || !lichChay.MaTuyen || !lichChay.ngayKhoiHanh || !lichChay.gioKhoiHanh || !lichChay.gioKetThuc) {
+    if (!lichChay.MaPT || !lichChay.MaTuyen || !lichChay.ngayKhoiHanh || !lichChay.gioKhoiHanh ||
+      !lichChay.gioKetThuc || !lichChay.SLVe) {
       alert("Vui lòng nhập đầy đủ thông tin");
       return;
+    }
+
+    if (lichChay.SLVe < 0 ){
+      alert("SlVe phải lớn hon 0")
+      return
     }
 
     if (lichChay.gioKhoiHanh >= lichChay.gioKetThuc) {
@@ -85,15 +91,14 @@ const CreateLichChay = () => {
 
     const formattedDate = format(lichChay.ngayKhoiHanh, 'dd/MM/yyyy');
 
-
-
     try {
       const res = await createLichChay(
         lichChay.MaPT,
         lichChay.MaTuyen,
         formattedDate,
         lichChay.gioKhoiHanh,
-        lichChay.gioKetThuc
+        lichChay.gioKetThuc,
+        lichChay.SLVe
       );
       if (res && res.EC === 0) {
         notification.success({
@@ -186,10 +191,22 @@ const CreateLichChay = () => {
             />
           </div>
 
+          <div className="mb-4">
+            <label className="text-black">Số lượng vé</label>
+            <input
+              type="number"
+              name="SLVe"
+              value={lichChay.SLVe}
+              onChange={handleChange}
+              className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
+            />
+          </div>
+
           <div className="flex justify-center mt-4">
             <button
               disabled={
-                !lichChay.MaPT || !lichChay.MaTuyen || !lichChay.ngayKhoiHanh || !lichChay.gioKhoiHanh || !lichChay.gioKetThuc
+                !lichChay.MaPT || !lichChay.MaTuyen || !lichChay.ngayKhoiHanh || !lichChay.gioKhoiHanh ||
+                !lichChay.gioKetThuc || !lichChay.SLVe
               }
               onClick={handleSubmit}
               className="bg-blue-500 px-4 py-2 hover:bg-blue-700 text-white font-bold rounded"

@@ -16,8 +16,17 @@ import {
   faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
 const BookingCar = () => {
+  const location = useLocation();
+
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay");
+
+  const queryParams = new URLSearchParams(location.search);
+  const sanBay = queryParams.get('SanBay');
+  console.log('SanBay::', decodeURIComponent(SanBay))
+  const decodedSanBay = decodeURIComponent(sanBay);
+  console.log('SanBay:', decodedSanBay);
+
   const Date = searchParams.get("Date");
   const Time = searchParams.get("Time");
   const IDTram = searchParams.get("MaTram"); // 66a928805951552933eb1b2d
@@ -75,6 +84,8 @@ const BookingCar = () => {
     }
   };
 
+  console.log("IDTram:", IDTram);
+  console.log("BookingCar parameters:", { SanBay,diemKetThuc ,Date, Time, IDTram });
   const fetchTram = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/GetTramDungID/${IDTram}`);

@@ -3,9 +3,11 @@ const CounterDatTau = require("../models/counter.model").CounterDatTau;
 const { PhuongTien } = require("../models/phuongTien.model.js");
 const { LichSuDatTau } = require("../models/lichSuDatTau.model");
 
+
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 const asyncHandler = require('../middlewares/asyncHandler.middeware')
+const {LichChay} = require("../models/lichChay.model");
 
 class BookingTrainController {
 
@@ -24,27 +26,11 @@ const GetPhieusdattau = async (req, res) => {
 
 const BuyTicketTrain = async (req, res) => {
   try {
-    const {
-      MaPT,
-      MaTram,
-      SLVeNguoiLon,
-      SLVeTreEm,
-      DiemDon,
-      DiemTra,
-      NgayGioKhoiHanh,
-      ThanhTien,
-      TrangThai,
-    } = req.body;
+    const {MaPT, SLVeNguoiLon, SLVeTreEm, DiemDon, DiemTra, NgayGioKhoiHanh,
+      ThanhTien, TrangThai } = req.body;
 
-    if (
-      !MaPT ||
-      !MaTram ||
-      !SLVeNguoiLon ||
-      !DiemDon ||
-      !DiemTra ||
-      !NgayGioKhoiHanh ||
-      !ThanhTien
-    ) {
+    if (!MaPT || !SLVeNguoiLon || !DiemDon || !DiemTra ||
+      !NgayGioKhoiHanh || !ThanhTien) {
       return res.status(400).json({ error: "Thiếu thông tin" });
     }
 
@@ -59,29 +45,50 @@ const BuyTicketTrain = async (req, res) => {
         .json({ message: "Số lượng vé người lớn phải lớn hơn 0." });
     }
 
+    // Kiểm tra lịch chạy và số vé còn lại
+    const lichChay = await LichChay.findOne({ MaPT });
+    if (!lichChay) {
+      return res.status(404).json({ message: "Không tìm thấy lịch chạy." });
+    }
+
+    const tongSLVe = SLVeNguoiLon + (SLVeTreEm || 0);
+
+    // Kiểm tra xem còn đủ vé không
+    if (lichChay.SLVeConLai < tongSLVe) {
+      return res.status(400).json({ message: "Số lượng vé còn lại không đủ." });
+    }
+
+    // Tăng mã vé tàu
     const countterdattau = await CounterDatTau.findOneAndUpdate(
       { _id: "datbuytCounter" },
       { $inc: { seq: 1 } },
       { new: true, upsert: true }
     );
+
     const MaVeTau = `DT${countterdattau.seq}`;
 
+    // Tạo phiếu đặt tàu
     const phieuDatTau = new PhieuDatTau({
       MaVeTau,
       MaPT,
-      MaTram,
       SLVeNguoiLon,
       SLVeTreEm,
       DiemDon,
       DiemTra,
-      NgayGioKhoiHanh,
+      NgayGioKhoiHanh: new Date(NgayGioKhoiHanh),
       ThanhTien,
-      TrangThai,
+      TrangThai: false,
     });
 
     await phieuDatTau.save();
+
+    // Cập nhật lại số lượng vé trong lịch chạy
+    lichChay.SLVeConLai -= tongSLVe;
+    await lichChay.save();
+
     res.status(200).json({ phieuDatTau });
   } catch (e) {
+    console.error(e);
     res.status(500).json("Không tạo được phiếu đặt tàu");
   }
 };
