@@ -18,8 +18,13 @@ import DanhSachLichChay from "../components/LichChay/DanhSachLichChay.jsx";
 import CreateLichChay from "../components/LichChay/CreateLichChay.jsx";
 import DanhSachTaiKhoan from "../components/Partner/DanhSachTaiKhoan.jsx";
 import DanhSachGiaoDich from "../components/Transaction/DanhSachGiaoDich.jsx"
+import Login from "../page/Login.jsx";
 
 const router = createBrowserRouter([
+  {
+    path:"/login",
+    element: <Login/>
+  },
   {
     path: "/",
     element: <App />,

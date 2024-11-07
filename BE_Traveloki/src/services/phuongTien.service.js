@@ -48,7 +48,7 @@ const createPhuongTienService = async (LoaiPT, TenPhuongTien, MaSoXe, SoGheToiDa
       MaSoXe: MaSoXe,
       SoGheToiDa: SoGheToiDa,
       Image: Image,
-      MaSB: MaSB
+      MaSB: MaSB,
     });
 
     return {
