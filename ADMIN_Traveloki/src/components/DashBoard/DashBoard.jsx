@@ -12,6 +12,17 @@ export const Dashboard = () => {
     const [slBus,setSlBus] = useState([]);
     const [error, setError] = useState(null);
 
+    window.addEventListener('message', (event) => {
+      if (event.origin === 'http://localhost:5173') {
+        const { token, refreshToken, user } = event.data;
+        
+        localStorage.setItem('token', token);
+        localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('user', user);
+      }
+    });
+    
+
     //get History
     useEffect(() => {
         //get HistoryCar

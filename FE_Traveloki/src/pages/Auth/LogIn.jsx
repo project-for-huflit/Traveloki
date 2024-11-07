@@ -28,8 +28,10 @@ const Login = () => {
   // Navigate to Pointer
   const redirectToSSOPointer = () => {
     navigate('/load');
-    const redirectToPointer = encodeURIComponent(`${import.meta.env.VITE_FE_URL}/auth/callback`)
-    window.location.href = `https://sso-pointer.vercel.app/authorize?callbackUrl=${redirectToPointer}`
+    const redirectToPointer = encodeURIComponent(
+      `${import.meta.env.VITE_FE_URL}/auth/callback`,
+    );
+    window.location.href = `https://sso-pointer.vercel.app/authorize?callbackUrl=${redirectToPointer}`;
   };
 
   /**
@@ -38,23 +40,24 @@ const Login = () => {
    */
   const [credentials, setCredentials] = useState({
     email: '',
-    password: ''
+    password: '',
   });
   const handleChange = (e) => {
     e.preventDefault();
     setCredentials({
       ...credentials,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await loginApi(credentials)
+      const response = await loginApi(credentials);
       // console.log(response.data)
       const { accessToken, refreshToken } = response.data.metadata.tokens;
       const { user } = response.data.metadata;
+      console.log(response.data);
       // Store the tokens in localStorage or secure cookie for later use
       // console.log(response?.data.metadata);
       console.log(response?.data.metadata.user);
@@ -66,18 +69,19 @@ const Login = () => {
       localStorage.setItem('token', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('user', JSON.stringify(user));
-
+      const users = JSON.parse(localStorage.getItem('user'));
+      const roles = users.roles[0];
+      console.log(roles);
       // Redirect or perform other actions upon successful login
-      if(response.data.status == 200) {
-        // setSuccess('Đăng nhập thành công!');
+      if (response.data.status == 200) {
         navigate('/home');
       } else {
-        throw new Error("Response was not ok");
+        throw new Error('Response was not ok');
       }
     } catch (error) {
       setError('Có lỗi xảy ra trong quá trình đăng nhập. Vui lòng thử lại.');
     }
-  }
+  };
   return (
     <div
       className="flex items-center justify-center py-9 min-h-screen bg-center bg-cover"
@@ -88,7 +92,7 @@ const Login = () => {
     >
       <div className="w-full max-w-md p-6 mx-auto bg-white rounded-md shadow-md">
         <h2 className="mb-4 text-2xl font-bold text-center">Đăng Nhập</h2>
-        <form onSubmit={handleSubmit} method='post'>
+        <form onSubmit={handleSubmit} method="post">
           <div className="mb-4">
             <label className="block"> </label>
           </div>
@@ -99,7 +103,7 @@ const Login = () => {
               </span>
               <input
                 type="email"
-                name='email'
+                name="email"
                 value={credentials.email}
                 // onChange={(e) => setEmail(e.target.value)}
                 onChange={handleChange}
@@ -116,7 +120,7 @@ const Login = () => {
               </span>
               <input
                 type="password"
-                name='password'
+                name="password"
                 value={credentials.password}
                 onChange={handleChange}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"

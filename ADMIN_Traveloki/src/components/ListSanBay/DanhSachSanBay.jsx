@@ -1,9 +1,22 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useEffect, useState } from "react";
-import { deleteSanBay, fetchAllSanBay } from "../../services/api/ListSanBay/apiDanhSachSanBay.js";
-import { Link } from "react-router-dom";
-import {Modal as AntdModal, notification} from "antd";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  Button,
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useEffect, useState } from 'react';
+import {
+  deleteSanBay,
+  fetchAllSanBay,
+} from '../../services/api/ListSanBay/apiDanhSachSanBay.js';
+import { Link } from 'react-router-dom';
+import { Modal as AntdModal, notification } from 'antd';
 
 const DanhSachSanBay = () => {
   const [sanbay, setSanBay] = useState([]);
@@ -34,16 +47,18 @@ const DanhSachSanBay = () => {
         const response = await deleteSanBay(sanBayToDelete._id);
         if (response && response.EC === 0) {
           notification.success({
-            message: "Xóa sân bay",
-            description: "Xóa sân bay thành công"
+            message: 'Xóa sân bay',
+            description: 'Xóa sân bay thành công',
           });
-          setSanBay(prev => prev.filter(sanBay => sanBay._id !== sanBayToDelete._id));
+          setSanBay((prev) =>
+            prev.filter((sanBay) => sanBay._id !== sanBayToDelete._id),
+          );
         } else {
           alert(response.EM);
         }
       } catch (error) {
-        console.error("Error deleting san bay:", error);
-        alert("Đã xảy ra lỗi khi xóa sân bay");
+        console.error('Error deleting san bay:', error);
+        alert('Đã xảy ra lỗi khi xóa sân bay');
       }
     }
     setIsModalVisible(false);
@@ -55,27 +70,51 @@ const DanhSachSanBay = () => {
     setSanBayToDelete(null);
   };
 
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem('user'));
+    const roles = users?.roles?.[0];
+    if (roles === 'admin') {
+      setIsAdmin(true);
+    }
+  }, []);
+
   return (
     <div className="w-auto h-full bg-white p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-black text-4xl">Danh sách sân bay</h1>
-        <Link to="/airport/list/create">
-          <Button variant="contained" color="primary">Thêm sân bay</Button>
-        </Link>
+        {!isAdmin && (
+          <Link to="/airport/list/create">
+            <Button variant="contained" color="primary">
+              Thêm sân bay
+            </Button>
+          </Link>
+        )}
       </div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow sx={{ backgroundColor: '#e3f2fd' }}>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Mã sân bay</TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Tên sân bay</TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Thành phố</TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Hành động</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                Mã sân bay
+              </TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                Tên sân bay
+              </TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                Thành phố
+              </TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                Hành động
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {sanbay.map((sanBay) => (
-              <TableRow key={sanBay._id} sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}>
+              <TableRow
+                key={sanBay._id}
+                sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}
+              >
                 <TableCell>{sanBay.MaSB}</TableCell>
                 <TableCell>{sanBay.TenSanBay}</TableCell>
                 <TableCell>{sanBay.ThanhPho}</TableCell>

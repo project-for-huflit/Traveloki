@@ -8,7 +8,7 @@ const loginApi = async (body) => {
     body,
     {
       withCredentials: true,
-    }
+    },
   );
 };
 
@@ -18,7 +18,7 @@ const registerApi = async (body) => {
     body,
     {
       withCredentials: true,
-    }
+    },
   );
 };
 
@@ -28,7 +28,7 @@ const logoutApi = async (body) => {
     body,
     {
       withCredentials: true,
-    }
+    },
   );
 };
 
@@ -38,7 +38,7 @@ const handlerRefreshTokenUserApi = async (body) => {
     body,
     {
       withCredentials: true,
-    }
+    },
   );
 };
 //#endregion user
@@ -50,7 +50,7 @@ const loginPartnerApi = async (body) => {
     body,
     {
       withCredentials: true,
-    }
+    },
   );
 };
 
@@ -60,17 +60,18 @@ const regisPartnerApi = async (body) => {
     body,
     {
       withCredentials: true,
-    }
+    },
   );
 };
 
 const pointerApi = async (body) => {
   return await axios.post(
-    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/partner/continue-with-pointer',
+    import.meta.env.VITE_BACKEND_URL +
+      '/api/v2/auth/partner/continue-with-pointer',
     body,
     {
       withCredentials: true,
-    }
+    },
   );
 };
 
@@ -109,22 +110,30 @@ const logoutPartnerApi = async (body) => {
     body,
     {
       withCredentials: true,
-    }
+    },
   );
 };
 
 const handlerRefreshTokenPointerApi = async (body) => {
   return await axios.post(
-    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/handle-refresh-token-pointer',
+    import.meta.env.VITE_BACKEND_URL +
+      '/api/v2/auth/handle-refresh-token-pointer',
     body,
     {
       withCredentials: true,
-    }
+    },
   );
 };
 //#endregion partner
 
 export {
-  loginApi, registerApi, logoutApi, handlerRefreshTokenUserApi,
-  pointerApi, loginPartnerApi, regisPartnerApi, logoutPartnerApi, handlerRefreshTokenPointerApi
- };
+  loginApi,
+  registerApi,
+  logoutApi,
+  handlerRefreshTokenUserApi,
+  pointerApi,
+  loginPartnerApi,
+  regisPartnerApi,
+  logoutPartnerApi,
+  handlerRefreshTokenPointerApi,
+};
