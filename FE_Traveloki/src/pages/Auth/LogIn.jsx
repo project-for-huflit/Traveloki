@@ -71,11 +71,24 @@ const Login = () => {
       localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('user', JSON.stringify(user));
       const users = JSON.parse(localStorage.getItem('user'));
-      const roles = users?.roles;
+      const roles = users.roles[0];
       console.log(roles);
       // Redirect or perform other actions upon successful login
       if(response.data.status == 200) {
-        navigate('/home');
+        if (roles === 'USER'){
+          navigate('/home');
+        }else{
+          const newWindow = window.open('http://localhost:5174/home');
+
+          newWindow.onload = function() {
+            const message = {
+              token: accessToken,
+              refreshToken: refreshToken,
+              user: JSON.stringify(user),
+            };
+            newWindow.postMessage(message, 'http://localhost:5174');
+          };
+        }
       } else {
         throw new Error("Response was not ok");
       }
