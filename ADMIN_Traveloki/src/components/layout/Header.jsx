@@ -36,14 +36,16 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import {useState} from "react";
-import {useAppStore} from "../../appStore.jsx";
-import logo from "../../assets/logoTravelokiWhite.png";
+import { useState } from 'react';
+import { useAppStore } from '../../appStore.jsx';
+import logo from '../../assets/logoTravelokiWhite.png';
 
-const AppBar = styled(MuiAppBar, {
-  })(({theme}) => ({
-    zIndex: theme.zIndex.drawer + 1,
-  }));
+const AppBar = styled(
+  MuiAppBar,
+  {},
+)(({ theme }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+}));
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -218,7 +220,11 @@ const Header = () => {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+            <IconButton
+              size="large"
+              aria-label="show 4 new mails"
+              color="inherit"
+            >
               <Badge badgeContent={4} color="error">
                 <MailIcon />
               </Badge>
@@ -259,9 +265,10 @@ const Header = () => {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
+
       {renderMenu}
     </Box>
   );
-}
+};
 
 export default Header;

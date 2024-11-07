@@ -1,9 +1,22 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button } from "@mui/material";
-import { useEffect, useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Link } from "react-router-dom";
-import { fetchAllTramDung, deleteTramDung } from "../../services/api/TramDung/apiDanhSachTramDung";
-import {Modal as AntdModal, notification} from "antd";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  Button,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Link } from 'react-router-dom';
+import {
+  fetchAllTramDung,
+  deleteTramDung,
+} from '../../services/api/TramDung/apiDanhSachTramDung';
+import { Modal as AntdModal, notification } from 'antd';
 
 const DanhSachTramDung = () => {
   const [tramDung, setTramDung] = useState([]);
@@ -16,7 +29,7 @@ const DanhSachTramDung = () => {
         const res = await fetchAllTramDung();
         setTramDung(res.data || []);
       } catch (error) {
-        console.error("Không thể lấy dữ liệu trạm dừng:", error);
+        console.error('Không thể lấy dữ liệu trạm dừng:', error);
       }
     };
     danhSachTramDung();
@@ -33,16 +46,18 @@ const DanhSachTramDung = () => {
         const res = await deleteTramDung(tramToDelete._id);
         if (res && res.EC === 0) {
           notification.success({
-            message: "Xóa trạm dừng",
-            description: "Xóa trạm dừng thành công"
+            message: 'Xóa trạm dừng',
+            description: 'Xóa trạm dừng thành công',
           });
-          setTramDung((prev) => prev.filter((tram) => tram._id !== tramToDelete._id));
+          setTramDung((prev) =>
+            prev.filter((tram) => tram._id !== tramToDelete._id),
+          );
         } else {
           alert(res.EM);
         }
       } catch (error) {
-        console.error("Error deleting tram dung:", error);
-        alert("Đã xảy ra lỗi khi xóa trạm dừng");
+        console.error('Error deleting tram dung:', error);
+        alert('Đã xảy ra lỗi khi xóa trạm dừng');
       }
     }
     setIsModalVisible(false);
@@ -54,27 +69,51 @@ const DanhSachTramDung = () => {
     setTramToDelete(null);
   };
 
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem('user'));
+    const roles = users?.roles?.[0];
+    if (roles === 'admin') {
+      setIsAdmin(true);
+    }
+  }, []);
+
   return (
     <div className="w-auto h-full bg-white p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-black text-4xl">Danh sách trạm dừng</h1>
-        <Link to="/waypoint/list/create">
-          <Button variant="contained" color="primary">Thêm trạm dừng</Button>
-        </Link>
+        {!isAdmin && (
+          <Link to="/airport/list/create">
+            <Button variant="contained" color="primary">
+              Thêm trạm dừng
+            </Button>
+          </Link>
+        )}
       </div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow sx={{ backgroundColor: '#e3f2fd' }}>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Mã Trạm</TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Tên Trạm Dừng</TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Địa Chỉ</TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>Hành động</TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                Mã Trạm
+              </TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                Tên Trạm Dừng
+              </TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                Địa Chỉ
+              </TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                Hành động
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {tramDung.map((tram) => (
-              <TableRow key={tram._id} sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}>
+              <TableRow
+                key={tram._id}
+                sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}
+              >
                 <TableCell>{tram.MaTramDung}</TableCell>
                 <TableCell>{tram.TenTramDung}</TableCell>
                 <TableCell>{tram.DiaChi}</TableCell>
