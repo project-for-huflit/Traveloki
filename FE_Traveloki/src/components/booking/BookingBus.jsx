@@ -249,7 +249,7 @@ const BookingBus = () => {
               <FontAwesomeIcon icon={faCalendarDays} />
               <span className="ml-2">{phuongtien?.phuongtien}</span>
             </p>
-            <div className=" mt-4 ">
+            <div className=" mt-4">
               <label className="font-bold">Số lượng vé</label>
               <div className="grid border border-slate-300 bg-white rounded-md mt-2 grid-cols-3 ">
                 <button
