@@ -112,9 +112,11 @@ const DanhSachLichChay = () => {
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                 Giờ hoạt động
               </TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
-                Hành động
-              </TableCell>
+              {!isAdmin && (
+                <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                  Hành động
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -135,11 +137,16 @@ const DanhSachLichChay = () => {
                 <TableCell>
                   {lichChay.gioKhoiHanh} - {lichChay.gioKetThuc}
                 </TableCell>
-                <TableCell>
-                  <IconButton color="error" onClick={() => showModal(lichChay)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
+                {!isAdmin && (
+                  <TableCell>
+                    <IconButton
+                      color="error"
+                      onClick={() => showModal(lichChay)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>

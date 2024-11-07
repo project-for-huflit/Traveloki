@@ -89,9 +89,11 @@ const DanhSachTuyenXe = () => {
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                 Số trạm dừng
               </TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
-                Hành động
-              </TableCell>
+              {!isAdmin && (
+                <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                  Hành động
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -107,18 +109,20 @@ const DanhSachTuyenXe = () => {
                   {tuyenXe.ThoiGianKhoiHanh} - {tuyenXe.ThoiGianKetThuc}
                 </TableCell>
                 <TableCell>{tuyenXe.tramDungs.length}</TableCell>
-                <TableCell>
-                  <Popconfirm
-                    title="Bạn có chắc chắn muốn xóa tuyến xe này?"
-                    onConfirm={() => handleDeleteTuyenXe(tuyenXe._id)}
-                    okText="Có"
-                    cancelText="Không"
-                  >
-                    <IconButton color="error">
-                      <DeleteIcon />
-                    </IconButton>
-                  </Popconfirm>
-                </TableCell>
+                {!isAdmin && (
+                  <TableCell>
+                    <Popconfirm
+                      title="Bạn có chắc chắn muốn xóa tuyến xe này?"
+                      onConfirm={() => handleDeleteTuyenXe(tuyenXe._id)}
+                      okText="Có"
+                      cancelText="Không"
+                    >
+                      <IconButton color="error">
+                        <DeleteIcon />
+                      </IconButton>
+                    </Popconfirm>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>

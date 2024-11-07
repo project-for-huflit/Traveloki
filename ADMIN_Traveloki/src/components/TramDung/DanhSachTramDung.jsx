@@ -103,9 +103,11 @@ const DanhSachTramDung = () => {
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                 Địa Chỉ
               </TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
-                Hành động
-              </TableCell>
+              {!isAdmin && (
+                <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                  Hành động
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>

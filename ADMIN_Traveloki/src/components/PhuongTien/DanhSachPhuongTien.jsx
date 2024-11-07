@@ -120,9 +120,11 @@ const DanhSachPhuongTien = () => {
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                 Hình ảnh
               </TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
-                Hành động
-              </TableCell>
+              {!isAdmin && (
+                <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                  Hành động
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
