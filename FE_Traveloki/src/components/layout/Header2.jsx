@@ -9,7 +9,7 @@ import backgroundImage from "../../assets/introPic.png";
 // import api from '../../services/axios.customize'
 
 import DirectToAuthPage from './directToAuthPage'
-import ShowProfile from './showProfileMUI';
+// import ShowProfile from './showProfileMUI';
 
 // import { AuthProvider } from "../../context/auth.provider";
 

@@ -1,8 +1,9 @@
 import axios from "../../axiosCustomize.js";
 
-const createTramDung = async (TenTramDung, DiaChi) => {
+const createTramDung = async (ThanhPho, TenTramDung, DiaChi) => {
   const URL_BACKEND = '/api/CreateTramDung'
   const data ={
+    ThanhPho: ThanhPho,
     TenTramDung: TenTramDung,
     DiaChi: DiaChi,
   }

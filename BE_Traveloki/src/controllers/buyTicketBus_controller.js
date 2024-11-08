@@ -11,6 +11,7 @@ const {
 const { BookingBusService } = require('../services/booking.service');
 
 const asyncHandler = require('../middlewares/asyncHandler.middeware');
+const {LichChay} = require("../models/lichChay.model");
 
 class BookingBusController {}
 
@@ -60,6 +61,15 @@ const BuyTicketBus = async (req, res) => {
       return res.status(400).json({ message: 'Số lượng vé phải lớn hơn 0.' });
     }
 
+    const lichChay = await LichChay.findOne({ MaPT });
+    if (!lichChay) {
+      return res.status(404).json({ message: "Không tìm thấy lịch chạy." });
+    }
+
+    if (lichChay.SLVeConLai < SLVe) {
+      return res.status(400).json({ message: "Số lượng vé còn lại không đủ." });
+    }
+
     const CounterdatBuyt = await CounterDatBuyt.findOneAndUpdate(
       { _id: 'datbuytCounter' },
       { $inc: { seq: 1 } },
@@ -80,6 +90,10 @@ const BuyTicketBus = async (req, res) => {
         TrangThai: false,
       });
       const result = await buyTicketBus.save();
+
+      lichChay.SLVeConLai -= SLVe;
+      await lichChay.save();
+
       res.status(200).json(result);
     } else {
       console.error('Ngày giờ không hợp lệ');
