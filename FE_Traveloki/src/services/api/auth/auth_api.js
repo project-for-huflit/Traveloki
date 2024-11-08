@@ -3,6 +3,7 @@ import axios from '../../axios.customize.js';
 
 // region user
 const loginApi = async (body) => {
+  console.log(body);
   return await axios.post(
     import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/login',
     body,
