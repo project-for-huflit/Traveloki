@@ -38,6 +38,8 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import { useAppStore } from '../../appStore.jsx';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/slice/authSlice.js'
 import logo from '../../assets/logoTravelokiWhite.png';
 
 const AppBar = styled(
@@ -88,6 +90,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header = () => {
+  const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const updateOpen = useAppStore((state) => state.updateOpen);
@@ -114,9 +117,10 @@ const Header = () => {
   };
 
   const handleLogOut = () => {
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    dispatch(logout())
+    // localStorage.removeItem('refreshToken');
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('user');
     window.location.reload();
   };
 

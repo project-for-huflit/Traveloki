@@ -33,7 +33,7 @@ const Login = () => {
     const redirectToPointer = encodeURIComponent(
       `${import.meta.env.VITE_FE_URL}/auth/callback`,
     );
-    window.location.href = `https://sso-pointer.vercel.app/authorize?callbackUrl=${redirectToPointer}`;
+    window.location.href = `https://sso-pointer.vercel.app/authorize?clientId=${redirectToPointer}`;
   };
 
   /**
