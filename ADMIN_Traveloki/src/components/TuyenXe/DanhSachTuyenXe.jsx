@@ -53,7 +53,7 @@ const DanhSachTuyenXe = () => {
   useEffect(() => {
     const users = JSON.parse(localStorage.getItem('user'));
     const roles = users?.roles?.[0];
-    if (roles === 'admin') {
+    if (roles === 'ADMIN') {
       setIsAdmin(true);
     }
   }, []);

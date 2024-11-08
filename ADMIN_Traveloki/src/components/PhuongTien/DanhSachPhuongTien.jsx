@@ -78,7 +78,7 @@ const DanhSachPhuongTien = () => {
   useEffect(() => {
     const users = JSON.parse(localStorage.getItem('user'));
     const roles = users?.roles?.[0];
-    if (roles === 'admin') {
+    if (roles === 'ADMIN') {
       setIsAdmin(true);
     }
   }, []);
@@ -147,14 +147,16 @@ const DanhSachPhuongTien = () => {
                     style={{ width: '100px', height: 'auto' }}
                   />
                 </TableCell>
-                <TableCell>
-                  <IconButton
-                    color="error"
-                    onClick={() => showModal(phuongTien)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
+                {!isAdmin && (
+                  <TableCell>
+                    <IconButton
+                      color="error"
+                      onClick={() => showModal(phuongTien)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>
