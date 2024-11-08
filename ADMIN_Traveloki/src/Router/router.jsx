@@ -48,7 +48,8 @@ const router = createBrowserRouter([
       { path: '', element: <Navigate to="/home" replace /> },
       {
         path: 'home',
-        element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
+        // element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
+        element: <Dashboard />,
       },
       {
         path: 'airport/list',

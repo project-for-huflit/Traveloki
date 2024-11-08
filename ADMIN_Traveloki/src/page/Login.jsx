@@ -26,7 +26,9 @@ const Login = () => {
       const roles = users.roles[0];
       console.log(roles);
       if (roles == 'ADMIN') {
-        navigate('/home');
+
+        navigate('/');
+        window.location.reload();
       } else {
         throw new Error('Response was not ok');
       }

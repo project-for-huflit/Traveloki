@@ -27,7 +27,7 @@ const BookingCar = () => {
   // console.log("San bay:", SanBay);
   // console.log("ID Time:", Time);
   // console.log("ID Date:", Date);
-  // console.log("ID IDTram:", IDTram);
+  console.log("ID IDTram:", IDTram); // ???
   // console.log("ID DetailCarID:", id);
   // console.log("Diem don tra:", diemDonTra);
 
@@ -82,7 +82,7 @@ const BookingCar = () => {
       const result = await res.json();
       setTram(result);
       // console.log("fetTram::",[tram.tramDung._id]) // ??
-      console.log("result fetTram::", result)
+      console.log("result fetTram:: ", result)
       setBookingCar((prevBookingCar) => ({
         ...prevBookingCar,
         SoKm: result.cost,

@@ -114,8 +114,11 @@ const SearchBar = () => {
     }
 
     try {
+      console.log("Du lieu dau vao cua responseCheckRoute::", {diemSanBay, diemKetThuc});
+
       const responseCheckRoute = await checkRoute(diemSanBay, diemKetThuc);
-      console.log("checkRoute::",responseCheckRoute);
+
+      console.log("checkRoute::", responseCheckRoute.data);
       let maTuyens = "";
       let maTramDung = "";
       if (responseCheckRoute.data.success) {
@@ -140,6 +143,7 @@ const SearchBar = () => {
         // const IDTram = tramDung._id;
         // ===============================================
         console.log("maTuyens:: ", maTuyens);
+        console.log("maTramDung:: ", maTramDung);
         // const IDTram = tramDung._id;
         navigate(
           `/airport-transfer/search/list?

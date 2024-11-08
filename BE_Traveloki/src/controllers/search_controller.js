@@ -77,15 +77,16 @@ const checkTuyenTramDung = async (req, res) => {
       DiaChi: { $in: diemKetThuc },
     })
 
-    // const result = await TuyenTramDung.find({
-    //   MaTuyen: { $in: maTuyenTuongUng.map((tuyen) => tuyen._id) },
-    //   MaTramDung: { $in: tramDungTuongUng.map((tram) => tram._id) },
-    // })
-
-    const result = await TuyenTramDung.findOne({
-      MaTuyen: maTuyenTuongUng._id
+    const result = await TuyenTramDung.find({
+      MaTuyen: { $in: maTuyenTuongUng.map((tuyen) => tuyen._id) },
+      MaTramDung: { $in: tramDungTuongUng.map((tram) => tram._id) },
     })
 
+    // const result = await TuyenTramDung.findOne({
+    //   MaTuyen: maTuyenTuongUng._id
+    // })
+
+    console.log("result TuyenTramDung::", result)
     if (!result.length) {
       return res.status(200).json({
         success: false,
@@ -97,7 +98,7 @@ const checkTuyenTramDung = async (req, res) => {
   }catch(error){
     res.status(500).json({
       message: "Có lỗi xảy ra khi lấy gợi ý sân bay.",
-      error: err.message,
+      error: error.message,
     });
   }
 }
