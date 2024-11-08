@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/slice/authSlice.js';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { loginApi } from '../../services/api/auth/auth_api.js';
@@ -8,7 +10,7 @@ import MaterialUISwitch from './CustomSwitch.jsx';
 
 const Login = () => {
   // const { setUser } = useContext(AuthContext);
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // const [email, setEmail] = useState('');
@@ -66,9 +68,18 @@ const Login = () => {
       // console.log(response?.metadata.tokens.refreshToken);
       // console.log(JSON.stringify(response))
 
-      localStorage.setItem('token', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('user', JSON.stringify(user));
+      const userData = {
+        user: user,
+        name: user.name,
+        token: accessToken,
+        refreshToken: refreshToken,
+      };
+
+      dispatch(login(userData));
+
+      // localStorage.setItem('token', accessToken);
+      // localStorage.setItem('refreshToken', refreshToken);
+      // localStorage.setItem('user', JSON.stringify(user));
       const users = JSON.parse(localStorage.getItem('user'));
       const roles = users.roles[0];
       console.log(roles);

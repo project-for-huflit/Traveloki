@@ -52,7 +52,7 @@ const router = createBrowserRouter([
       { path: 'login', element: <Login /> },
       { path: 'register', element: <SignUp />},
       { path: 'callback', element: <CallBack />},
-      { path: 'loading', element: <Loading />}
+      { path: 'load', element: <Loading />}
     ]
   },
   {
@@ -71,7 +71,10 @@ const router = createBrowserRouter([
     path: 'user',
     element: <SecondLayout />,
     children: [
-      { path: "history-booking", element: <LichSuDatCho /> },
+      {
+        path: "history-booking",
+        element: <ProtectedRoute><LichSuDatCho /></ProtectedRoute>
+      },
       {
         path: "my-booking",
         element: <ProtectedRoute><DatChoCuaToi /></ProtectedRoute>,
@@ -111,10 +114,10 @@ const router = createBrowserRouter([
     element: <SecondLayout />,
     children: [
       { path: "list", element: <ListVehicle/>, },
-      { path: "list/cars", element: <BookingCar />, },
-      { path: "list/bus", element: <BookingBus />, },
-      { path: "list/trains", element: <BookingTrain />, },
-      { path: "list/cars/result", element: <Paymentsuccess /> },
+      { path: "list/cars", element: <ProtectedRoute><BookingCar /></ProtectedRoute>, },
+      { path: "list/bus", element: <ProtectedRoute><BookingBus /></ProtectedRoute>, },
+      { path: "list/trains", element: <ProtectedRoute><BookingTrain /></ProtectedRoute>, },
+      { path: "list/cars/result", element: <ProtectedRoute><Paymentsuccess /></ProtectedRoute> },
     ],
   },
   { path: 'swagger', element: <SwaggerUI url="https://petstore.swagger.io/v2/swagger.json" /> }

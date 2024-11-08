@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from '../App.jsx';
 import DanhSachSanBay from '../components/ListSanBay/DanhSachSanBay.jsx';
 import CreateDanhSachSanBay from '../components/ListSanBay/CreateDanhSachSanBay.jsx';
@@ -19,21 +19,36 @@ import CreateLichChay from '../components/LichChay/CreateLichChay.jsx';
 import DanhSachTaiKhoan from '../components/Partner/DanhSachTaiKhoan.jsx';
 import DanhSachGiaoDich from '../components/Transaction/DanhSachGiaoDich.jsx';
 import Login from '../page/Login.jsx';
+import SignUp from "../page/Register.jsx";
+import CallBack from "../page/CallBackPage";
+import Loading from '../page/loading/index.jsx'
+
+import OnlyCanvas from '../layouts/centerLayout.jsx'
+
+import ProtectedRoute from './ProtectedRoute.jsx';
+
+
 
 const router = createBrowserRouter([
   {
-    path: '/login',
-    element: <Login />,
+    path: 'auth',
+    element: <OnlyCanvas />,
+    children: [
+      { path: 'login', element: <Login /> },
+      { path: 'register', element: <SignUp />},
+      { path: 'callback', element: <CallBack />},
+      { path: 'load', element: <Loading />}
+    ]
   },
   {
     path: '/',
-    element: <App />,
+    element:   <App />,
     errorElement: <ErrorPage />,
     children: [
+      { path: '', element: <Navigate to="/home" replace /> },
       {
-        index: true,
         path: 'home',
-        element: <Dashboard />,
+        element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
       },
       {
         path: 'airport/list',

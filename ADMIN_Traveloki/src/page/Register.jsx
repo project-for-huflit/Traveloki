@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import axios from "../../services/axios.customize";
+import { useState } from "react";
+// import axios from "../../services/axios.customize";
 import {Link, useNavigate} from "react-router-dom";
-import { registerApi } from '../../services/api/auth/auth_api.js';
+import { registerApi } from '../services/auth/auth_api';
 
 const SignUp = () => {
 
@@ -22,17 +22,17 @@ const SignUp = () => {
     password: '',
     confirmPassword: "",
   });
-
   const handleChange = (e) => {
-    e.preventDefault();
     setCredentials({
       ...credentials,
       [e.target.name]: e.target.value
     });
   };
-
   const handleSignUp = async (e) => {
     e.preventDefault();
+    // setError("");
+    // setSuccess("");
+    setIsLoading(true);
 
     if (!credentials.name || !credentials.email || !credentials.password || !credentials.confirmPassword) {
       setError("Vui lòng điền đầy đủ thông tin.");
@@ -48,29 +48,37 @@ const SignUp = () => {
 
     try {
       const response = await registerApi(credentials)
-      console.log("response register::", response)
-      const { accessToken, refreshToken } = response.data.metadata.metadata.tokens;
+      const { accessToken, refreshToken } = response.metadata.tokens;
 
       console.log(response?.data.metadata);
-      console.log(response?.data.metadata.metadata.tokens.accessToken);
-      console.log(response?.data.metadata.metadata.tokens.refreshToken);
+      console.log(response?.data.metadata.tokens.accessToken);
+      console.log(response?.data.metadata.tokens.refreshToken);
       // console.log(response.data.status);
       console.log(JSON.stringify(response))
 
       // Store the tokens in localStorage or secure cookie for later use
       localStorage.setItem('token', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('user', JSON.stringify(response.data.metadata.metadata.user));
+      localStorage.setItem('user', JSON.stringify(response.data.metadata.user));
 
-      if (response.data.status == 201) {
+      // if (response.data.status === 201) {
+      //   setSuccess("Đăng ký thành công!");
+      //   navigate('/home');
+      // } else {
+      //   throw new Error("Response was not ok");
+      // }
+
+      if (response.status === 201 || response.status === 200) {
         setSuccess("Đăng ký thành công!");
         navigate('/home');
       } else {
         throw new Error("Response was not ok");
       }
     } catch (e) {
-      console.log("error", e);
-      setError("Có lỗi xảy ra trong quá trình đăng ký. Vui lòng thử lại.", e);
+      console.log(e);
+      setError("Có lỗi xảy ra trong quá trình đăng ký. Vui lòng thử lại.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -94,9 +102,8 @@ const SignUp = () => {
             <input
               placeholder=". . ."
               type="text"
-              name='name'
               value={credentials.name}
-              onChange={handleChange}
+              onChange={(e) => setLastName(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
               required
             />
@@ -108,9 +115,8 @@ const SignUp = () => {
               </span>
               <input
                 type="email"
-                name='email'
                 value={credentials.email}
-                onChange={handleChange}
+                onChange={(e) => setEmail(e.target.value)}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
                 placeholder="you@example.com"
                 required
@@ -125,9 +131,8 @@ const SignUp = () => {
             </label>
             <input
               type="tel"
-              name='phone'
               value={credentials.phone}
-              onChange={handleChange}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
             />
           </div>
@@ -138,9 +143,8 @@ const SignUp = () => {
               </span>
               <input
                 type="password"
-                name='password'
                 value={credentials.password}
-                onChange={handleChange}
+                onChange={(e) => setPassword(e.target.value)}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
                 placeholder="Mật khẩu của bạn"
                 required
@@ -154,9 +158,8 @@ const SignUp = () => {
               </span>
               <input
                 type="password"
-                name="confirmPassword"
                 value={credentials.confirmPassword}
-                onChange={handleChange}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 className="block w-full px-3 py-2 mt-1 bg-white border rounded-md shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm focus:ring-1"
                 placeholder="Xác nhận mật khẩu"
                 required
