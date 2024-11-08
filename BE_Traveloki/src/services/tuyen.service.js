@@ -38,6 +38,7 @@ const getAllTuyenService = async () => {
       });
     });
 
+
     // Chuyển đổi map thành array
     const resultArray = Object.values(tuyenMap).map(item => item.tuyen);
 
