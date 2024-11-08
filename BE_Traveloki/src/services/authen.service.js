@@ -152,7 +152,7 @@ class AuthJWTService {
       },
     });
 
-    const { _id: userId } = foundUser;
+    const { _id: userId, roles } = foundUser;
     const tokens = await createTokenPair(
       { userId: userId, email },
       publicKey,
@@ -168,7 +168,7 @@ class AuthJWTService {
 
     return {
       user: getInfoData({
-        fields: ['_id', 'name', 'email'],
+        fields: ['_id', 'name', 'email', 'roles'],
         object: foundUser,
       }),
       tokens,
@@ -312,7 +312,6 @@ class AuthSSOService {
       };
     }
   }
-
   /**
    * @LOQ-burh
    * @steps
@@ -369,16 +368,16 @@ class AuthSSOService {
   }
   static async loginWithPointer({ code }) {
     console.log(`Received code::${code}`);
-    if(!code) throw new NotFoundError('Authorization code is required!')
+    if (!code) throw new NotFoundError('Authorization code is required!');
 
     try {
-      const { accessToken, email, id } = await getAccessToken(code) // { accessToken, email, id }
-      const partner = await getUserProfile(accessToken)
+      const { accessToken, email, id } = await getAccessToken(code); // { accessToken, email, id }
+      const partner = await getUserProfile(accessToken);
       // 3. check if isUser, if user isn't exist then create profile
-      const isPartner = await PartnerService.findOrCreatePartner(email)
+      const isPartner = await PartnerService.findOrCreatePartner(email);
 
       // 4. create token jwt
-      if(isPartner) {
+      if (isPartner) {
         const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
           modulusLength: 2048,
           publicKeyEncoding: { type: 'pkcs1', format: 'pem' },
@@ -422,7 +421,7 @@ class AuthSSOService {
           isPartner,
           tokens: accessToken,
           partnerEmail: email,
-          partnerId: id
+          partnerId: id,
         };
       }
     } catch (error) {

@@ -21,6 +21,6 @@ route.post("/payment/pointer-wallet/bus/cancel/:id", asyncHandler(CancelPaymentP
 
 route.get("/FindBuyTicketBusMaDX/:MaVeBus", FindBuyTicketBusMaDX);
 route.put("/BuyTicketBus/SchedularChange/:id", SchedularChange);
-route.delete("/CancelTicketBus/:MaVeBus", CancelBookingBus);
+route.post("/CancelTicketBus/:MaVeBus", CancelBookingBus);
 
 module.exports = route;

@@ -14,8 +14,9 @@ const BookingTrain = () => {
   const SanBay = searchParams.get("SanBay");
   const dateParam = searchParams.get("Date");
   const timeParam = searchParams.get("Time");
-  const IDTram = searchParams.get("IDTram");
-  const id = searchParams.get("PhuongTienID");
+  const IDTram = searchParams.get("IDTram"); // ?
+  const MaTuyen = searchParams.get("MaTuyen"); // ?
+  const id = searchParams.get("DetailTrainID");
   const [count, setCount] = useState(1);
   const [counttreem, setCountTreem] = useState(0);
   const [phuongtien, setPhuongTien] = useState(null);
