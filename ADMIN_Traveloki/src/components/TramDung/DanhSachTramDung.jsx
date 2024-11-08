@@ -73,7 +73,7 @@ const DanhSachTramDung = () => {
   useEffect(() => {
     const users = JSON.parse(localStorage.getItem('user'));
     const roles = users?.roles?.[0];
-    if (roles === 'admin') {
+    if (roles === 'ADMIN') {
       setIsAdmin(true);
     }
   }, []);
@@ -119,11 +119,13 @@ const DanhSachTramDung = () => {
                 <TableCell>{tram.MaTramDung}</TableCell>
                 <TableCell>{tram.TenTramDung}</TableCell>
                 <TableCell>{tram.DiaChi}</TableCell>
-                <TableCell>
-                  <IconButton color="error" onClick={() => showModal(tram)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
+                {!isAdmin && (
+                  <TableCell>
+                    <IconButton color="error" onClick={() => showModal(tram)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>

@@ -88,7 +88,7 @@ const SideNav = () => {
   useEffect(() => {
     const users = JSON.parse(localStorage.getItem('user'));
     const roles = users?.roles?.[0];
-    if (roles === 'admin') {
+    if (roles === 'ADMIN') {
       setIsAdmin(true);
     }
   }, []);
@@ -111,180 +111,6 @@ const SideNav = () => {
         </DrawerHeader>
         <Divider />
         <List>
-          {isAdmin && (
-            <>
-              {/* Dashboard */}
-              <ListItem disablePadding sx={{ display: 'block' }}>
-                <NavLink
-                  to="/home"
-                  className={({ isActive }) =>
-                    isActive
-                      ? 'text-blue-500 bg-gray-200'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }
-                >
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? 'initial' : 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        justifyContent: 'center',
-                        mr: open ? 3 : 'auto',
-                      }}
-                    >
-                      <DashboardIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Dashboard"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </NavLink>
-              </ListItem>
-
-              {/* Danh sách Xe */}
-              <ListItem disablePadding sx={{ display: 'block' }}>
-                <NavLink
-                  to="/detail-car/list"
-                  className={({ isActive }) =>
-                    isActive
-                      ? 'text-blue-500 bg-gray-200'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }
-                >
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? 'initial' : 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        justifyContent: 'center',
-                        mr: open ? 3 : 'auto',
-                      }}
-                    >
-                      <DirectionsCarIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Danh sách Xe"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </NavLink>
-              </ListItem>
-
-              {/* Danh sách giao dịch */}
-              <ListItem disablePadding sx={{ display: 'block' }}>
-                <NavLink
-                  to="/transaction/list"
-                  className={({ isActive }) =>
-                    isActive
-                      ? 'text-blue-500 bg-gray-200'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }
-                >
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? 'initial' : 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        justifyContent: 'center',
-                        mr: open ? 3 : 'auto',
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faCoins} />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Danh sách giao dịch"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </NavLink>
-              </ListItem>
-
-              {/* Tài khoản */}
-              <ListItem disablePadding sx={{ display: 'block' }}>
-                <NavLink
-                  to="/account/list"
-                  className={({ isActive }) =>
-                    isActive
-                      ? 'text-blue-500 bg-gray-200'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }
-                >
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? 'initial' : 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        justifyContent: 'center',
-                        mr: open ? 3 : 'auto',
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faUser} />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Tài khoản"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </NavLink>
-              </ListItem>
-            </>
-          )}
-
-          {/* Danh sách sân bay */}
-          <ListItem disablePadding sx={{ display: 'block' }}>
-            <NavLink
-              to="/airport/list"
-              className={({ isActive }) =>
-                isActive
-                  ? 'text-blue-500 bg-gray-200'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }
-            >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    justifyContent: 'center',
-                    mr: open ? 3 : 'auto',
-                  }}
-                >
-                  <LocalAirportIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Danh sách sân bay"
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </NavLink>
-          </ListItem>
-
           {/* Danh sách phương tiện công cộng */}
           <ListItem disablePadding sx={{ display: 'block' }}>
             <NavLink
@@ -420,6 +246,177 @@ const SideNav = () => {
               </ListItemButton>
             </NavLink>
           </ListItem>
+          {isAdmin && (
+            <>
+              {/* Danh sách sân bay */}
+              <ListItem disablePadding sx={{ display: 'block' }}>
+                <NavLink
+                  to="/airport/list"
+                  className={({ isActive }) =>
+                    isActive
+                      ? 'text-blue-500 bg-gray-200'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }
+                >
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        justifyContent: 'center',
+                        mr: open ? 3 : 'auto',
+                      }}
+                    >
+                      <LocalAirportIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Danh sách sân bay"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </NavLink>
+              </ListItem>
+              {/* Danh sách Xe */}
+              <ListItem disablePadding sx={{ display: 'block' }}>
+                <NavLink
+                  to="/detail-car/list"
+                  className={({ isActive }) =>
+                    isActive
+                      ? 'text-blue-500 bg-gray-200'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }
+                >
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        justifyContent: 'center',
+                        mr: open ? 3 : 'auto',
+                      }}
+                    >
+                      <DirectionsCarIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Danh sách Xe"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </NavLink>
+              </ListItem>
+
+              {/* Danh sách giao dịch */}
+              <ListItem disablePadding sx={{ display: 'block' }}>
+                <NavLink
+                  to="/transaction/list"
+                  className={({ isActive }) =>
+                    isActive
+                      ? 'text-blue-500 bg-gray-200'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }
+                >
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        justifyContent: 'center',
+                        mr: open ? 3 : 'auto',
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faCoins} />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Danh sách giao dịch"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </NavLink>
+              </ListItem>
+
+              {/* Dashboard */}
+              <ListItem disablePadding sx={{ display: 'block' }}>
+                <NavLink
+                  to="/home"
+                  className={({ isActive }) =>
+                    isActive
+                      ? 'text-blue-500 bg-gray-200'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }
+                >
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        justifyContent: 'center',
+                        mr: open ? 3 : 'auto',
+                      }}
+                    >
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Dashboard"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </NavLink>
+              </ListItem>
+              {/* Tài khoản */}
+              <ListItem disablePadding sx={{ display: 'block' }}>
+                <NavLink
+                  to="/account/list"
+                  className={({ isActive }) =>
+                    isActive
+                      ? 'text-blue-500 bg-gray-200'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }
+                >
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        justifyContent: 'center',
+                        mr: open ? 3 : 'auto',
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faUser} />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Tài khoản"
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </NavLink>
+              </ListItem>
+            </>
+          )}
         </List>
       </Drawer>
     </Box>

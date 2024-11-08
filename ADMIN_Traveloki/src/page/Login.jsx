@@ -24,8 +24,9 @@ const Login = () => {
       localStorage.setItem('user', JSON.stringify(user));
       const users = JSON.parse(localStorage.getItem('user'));
       const roles = users.roles[0];
+      console.log(roles);
       if (roles == 'ADMIN') {
-        navigate('/home', { replace: true });
+        navigate('/home');
       } else {
         throw new Error('Response was not ok');
       }
