@@ -1,5 +1,5 @@
 const {Tuyen} = require("../models/tuyen.model");
-const {TuyenTramDung} = require("../models/tuyenTramDung.model");
+const {TuyenTramDung} = require("../models/tuyenTramDung.model")
 const {startSession} = require("mongoose");
 
 const getAllTuyenService = async () => {
@@ -8,6 +8,7 @@ const getAllTuyenService = async () => {
       .populate( "MaTuyen")
       .populate( "MaTramDung");
 
+    console.log("Tuyen::", result)
     // thay đổi cấu trúc thể hiện dữ liệu
     const tuyenMap = {};
 
