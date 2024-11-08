@@ -1,12 +1,10 @@
 import leftLogin from '../assets/left-login.png';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../components/context/AuthContext.jsx';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { loginAPI } from '../services/api/Auth/apiAuth.js';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 
 const Login = () => {
-  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,20 +16,18 @@ const Login = () => {
 
     try {
       const res = await loginAPI(email, password);
-      console.log('check res: ', res);
-      if (res && res.EC === 0) {
-        localStorage.setItem('access_token', res.access_token);
-        setUser({
-          isAuthenticated: true,
-          user: {
-            email: res?.admin?.email ?? '',
-            name: res?.admin?.name ?? '',
-            role: res?.admin?.role ?? '',
-          },
-        });
+      console.log(res);
+      const { accessToken, refreshToken } = res.metadata.tokens;
+      const { user } = res.metadata;
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('user', JSON.stringify(user));
+      const users = JSON.parse(localStorage.getItem('user'));
+      const roles = users.roles[0];
+      if (roles == 'ADMIN') {
         navigate('/home', { replace: true });
       } else {
-        setError(res.EM);
+        throw new Error('Response was not ok');
       }
     } catch (e) {
       setError('Không thể kết nối tới server. Vui lòng thử lại sau.');
@@ -96,12 +92,12 @@ const Login = () => {
             </button>
 
             <button
-            type="button"
-            className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 mb-2"
-            onClick={redirectToSSOPointer}
-          >
-            Login with SSO-Pointer
-          </button>
+              type="button"
+              className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 mb-2"
+              onClick={redirectToSSOPointer}
+            >
+              Login with SSO-Pointer
+            </button>
           </form>
         </div>
       </div>
