@@ -83,7 +83,7 @@ const DanhSachTramDung = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-black text-4xl">Danh sách trạm dừng</h1>
         {!isAdmin && (
-          <Link to="/airport/list/create">
+          <Link to="/waypoint/list/create">
             <Button variant="contained" color="primary">
               Thêm trạm dừng
             </Button>
@@ -96,6 +96,9 @@ const DanhSachTramDung = () => {
             <TableRow sx={{ backgroundColor: '#e3f2fd' }}>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                 Mã Trạm
+              </TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                Thành phố
               </TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                 Tên Trạm Dừng
@@ -117,6 +120,7 @@ const DanhSachTramDung = () => {
                 sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}
               >
                 <TableCell>{tram.MaTramDung}</TableCell>
+                <TableCell>{tram.ThanhPho}</TableCell>
                 <TableCell>{tram.TenTramDung}</TableCell>
                 <TableCell>{tram.DiaChi}</TableCell>
                 {!isAdmin && (

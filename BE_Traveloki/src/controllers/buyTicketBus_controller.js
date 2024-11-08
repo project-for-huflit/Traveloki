@@ -11,6 +11,7 @@ const {
 const { BookingBusService } = require('../services/booking.service');
 
 const asyncHandler = require('../middlewares/asyncHandler.middeware');
+const {LichChay} = require("../models/lichChay.model");
 
 class BookingBusController {}
 
@@ -60,6 +61,15 @@ const BuyTicketBus = async (req, res) => {
       return res.status(400).json({ message: 'Số lượng vé phải lớn hơn 0.' });
     }
 
+    const lichChay = await LichChay.findOne({ MaPT });
+    if (!lichChay) {
+      return res.status(404).json({ message: "Không tìm thấy lịch chạy." });
+    }
+
+    if (lichChay.SLVeConLai < SLVe) {
+      return res.status(400).json({ message: "Số lượng vé còn lại không đủ." });
+    }
+
     const CounterdatBuyt = await CounterDatBuyt.findOneAndUpdate(
       { _id: 'datbuytCounter' },
       { $inc: { seq: 1 } },
@@ -80,6 +90,10 @@ const BuyTicketBus = async (req, res) => {
         TrangThai: false,
       });
       const result = await buyTicketBus.save();
+
+      lichChay.SLVeConLai -= SLVe;
+      await lichChay.save();
+
       res.status(200).json(result);
     } else {
       console.error('Ngày giờ không hợp lệ');
@@ -144,33 +158,38 @@ const SchedularChange = async (req, res) => {
 
 const CancelBookingBus = async (req, res) => {
   const { MaVeBus } = req.params;
-
   if (!MaVeBus) {
-    return res.status(400).json({ message: 'Missing information' });
+    return res.status(400).json({ message: 'Missing information'});
   }
-
   try {
-    const deletedBooking = await PhieuDatXeBus.deleteOne({ MaVeBus });
-    const deletedHistory = await LichSuDatXeBus.deleteOne({ MaDX: MaVeBus });
+   const bookingBus = await PhieuDatXeBus.findOne({MaVeBus});
+   const ngayGioKhoiHanh = new Date(bookingBus.NgayGioKhoiHanh);
+   const nowDate = new Date();
+   const timeDifference = (ngayGioKhoiHanh - nowDate) / (1000 * 60);
 
-    if (!deletedBooking) {
-      return res.status(404).json({ message: 'Không tìm thấy PhieuDatXeBus' });
+    if (timeDifference >= 60) {
+      // Hủy miễn phí trước 1 giờ
+      bookingBus.isActive = false;
+      await bookingBus.save();
+      return res.status(200).json({ message: 'Đặt chỗ đã được hủy miễn phí' });
+    } else if (timeDifference >= 30) {
+      // Hủy trong khoảng 30 đến 60 phút trước giờ khởi hành, mất phí 3%
+      const cancellationFee = bookingBus.price * 0.03;
+      bookingBus.isActive = false;
+      await bookingBus.save();
+      return res.status(200).json({
+        message: 'Đặt chỗ đã được hủy, phí hủy là 3%',
+        cancellationFee: cancellationFee,
+      });
+    } else {
+      // Không cho phép hủy trong vòng 30 phút trước giờ khởi hành
+      return res.status(400).json({ message: 'Không thể hủy trong vòng 30 phút trước giờ khởi hành' });
     }
-
-    if (deletedHistory.deletedCount === 0) {
-      return res
-        .status(404)
-        .json({ message: 'Không tìm thấy lịch sử đặt xe tương ứng' });
-    }
-
-    res.status(200).json({
-      message: 'PhieuDatXeBus và lịch sử đặt xe đã được xóa thành công',
-    });
   } catch (e) {
     console.error(e);
     res
       .status(500)
-      .json({ message: 'Không thể xóa PhieuDatXeBus và lịch sử đặt xe' });
+      .json({ message: 'Không thể hủy PhieuDatXeBus và lịch sử đặt xe' });
   }
 };
 

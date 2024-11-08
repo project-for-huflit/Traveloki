@@ -3,6 +3,7 @@ const COLLECTION_NAME = 'TramDungs'
 
 const TramDungSchema = new Schema({
   MaTramDung: { type: String, required: true, maxlength: 5},
+  ThanhPho: { type: String, required: true },
   DiaChi: { type: String, required: true },
   TenTramDung: { type: String, required: true },
 },{

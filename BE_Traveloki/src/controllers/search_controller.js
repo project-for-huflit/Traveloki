@@ -77,9 +77,13 @@ const checkTuyenTramDung = async (req, res) => {
       DiaChi: { $in: diemKetThuc },
     })
 
-    const result = await TuyenTramDung.find({
-      MaTuyen: { $in: maTuyenTuongUng.map((tuyen) => tuyen._id) },
-      MaTramDung: { $in: tramDungTuongUng.map((tram) => tram._id) },
+    // const result = await TuyenTramDung.find({
+    //   MaTuyen: { $in: maTuyenTuongUng.map((tuyen) => tuyen._id) },
+    //   MaTramDung: { $in: tramDungTuongUng.map((tram) => tram._id) },
+    // })
+
+    const result = await TuyenTramDung.findOne({
+      MaTuyen: maTuyenTuongUng._id
     })
 
     if (!result.length) {

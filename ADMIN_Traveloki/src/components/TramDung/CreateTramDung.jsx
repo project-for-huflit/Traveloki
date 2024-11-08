@@ -1,38 +1,59 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { createTramDung } from "../../services/api/TramDung/apiCreateTramDung.js";
-import {notification} from "antd";
+import { notification } from "antd";
+import { getThanhPho } from "../../services/api/ThanhPho/apiThanhPho.js";
+import Select from "react-select";
 
 const CreateTramDung = () => {
+  const [thanhPhoOptions, setThanhPhoOptions] = useState([]);
+  const [selectedThanhPho, setSelectedThanhPho] = useState(null);
   const [TenTramDung, setTenTramDung] = useState("");
   const [DiaChi, setDiaChi] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchThanhPho = async () => {
+      try {
+        const res = await getThanhPho();
+        const options = res.map((item) => ({
+          value: item.code,
+          label: item.name,
+        }));
+        setThanhPhoOptions(options);
+      } catch (error) {
+        console.error("Error fetching city data:", error);
+      }
+    };
+    fetchThanhPho();
+  }, []);
+  console.log("ThanhPhoOption", thanhPhoOptions);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!TenTramDung || !DiaChi) {
+    if (!TenTramDung || !DiaChi || !selectedThanhPho) {
       alert("Vui lòng nhập đầy đủ thông tin.");
       return;
     }
 
     try {
-      const res = await createTramDung(TenTramDung, DiaChi);
+      const res = await createTramDung(selectedThanhPho.label, TenTramDung, DiaChi);
       if (res && res.EC === 0) {
         notification.success({
           message: "Thêm trạm dừng",
-          description: "Thêm trạm dừng thành công"
-        })
+          description: "Thêm trạm dừng thành công",
+        });
         setTenTramDung("");
         setDiaChi("");
+        setSelectedThanhPho(null);
         navigate("/waypoint/list");
       } else {
         notification.error({
           message: "Thêm trạm dừng",
-          description: `Thêm thất bại: ${res.EM}`
+          description: `Thêm thất bại: ${res.EM}`,
         });
       }
     } catch (error) {
@@ -46,6 +67,17 @@ const CreateTramDung = () => {
       <h1 className="text-center text-2xl text-black mb-4">Thêm Trạm Dừng</h1>
 
       <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
+        <div className="mb-4">
+          <label className="block text-black mb-2">Thành Phố</label>
+          <Select
+            options={thanhPhoOptions}
+            value={selectedThanhPho}
+            onChange={setSelectedThanhPho}
+            placeholder="Chọn thành phố"
+            isClearable
+          />
+        </div>
+
         <div className="mb-4">
           <label className="block text-black mb-2">Tên Trạm Dừng</label>
           <input
