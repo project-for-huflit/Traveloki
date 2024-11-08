@@ -27,7 +27,7 @@ const CreateTramDung = async (req, res) => {
 
 const GetTramDungID = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params.id.split(","); // Tách thành mảng các ObjectId;
     console.log("Fetching TramDung with id:", id);
     const tramDung = await TramDung.findById(id);
     const tramDungWithTuyen = await TuyenTramDung.findOne({ MaTramDung: id })

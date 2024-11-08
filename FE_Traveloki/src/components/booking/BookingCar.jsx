@@ -21,13 +21,14 @@ const BookingCar = () => {
   const Date = searchParams.get("Date");
   const Time = searchParams.get("Time");
   const IDTram = searchParams.get("MaTram"); // 66a928805951552933eb1b2d
+  // const IDTram = decodeURIComponent(searchParams.get("MaTram")); // 66a928805951552933eb1b2d
   const id = searchParams.get("DetailCarID");
   const diemDonTra = searchParams.get("DiemKetThuc")
 
   // console.log("San bay:", SanBay);
   // console.log("ID Time:", Time);
   // console.log("ID Date:", Date);
-  // console.log("ID IDTram:", IDTram);
+  console.log("ID IDTram:", IDTram);
   // console.log("ID DetailCarID:", id);
   // console.log("Diem don tra:", diemDonTra);
 
@@ -148,7 +149,8 @@ const BookingCar = () => {
           headers: { "Content-Type": "application/json", },
           body: JSON.stringify({
             MaDetailCar: id,
-            Sdt, MaTram,
+            Sdt,
+            MaTram,
             DiemSanBay,
             DiemDon_Tra,
             NgayGioDat,

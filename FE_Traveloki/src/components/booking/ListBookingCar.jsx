@@ -19,6 +19,9 @@ const ListBookingCar = () => {
   const Time = searchParams.get("Time") || "Default Time";
   const IDTram = searchParams.get("MaTram") || "Default MaTram";
 
+
+  console.log("ID IDTram:", IDTram);
+
   const formatPrice = (price) => {
     return new Intl.NumberFormat().format(price);
   };
