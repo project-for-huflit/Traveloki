@@ -20,6 +20,7 @@
 // };
 //
 // export default Header;
+import { useNavigate } from 'react-router-dom'
 import { styled, alpha } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -88,6 +89,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header = () => {
+  const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const updateOpen = useAppStore((state) => state.updateOpen);
@@ -107,6 +109,13 @@ const Header = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
+  };
+
+  const handleMenuLogin = () => {
+    navigate('/auth/login')
+    window.location.reload()
+    // setAnchorEl(null);
+    // handleMobileMenuClose();
   };
 
   const handleMobileMenuOpen = (event) => {
@@ -137,9 +146,10 @@ const Header = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleLogOut}>Log out</MenuItem>
+      <MenuItem onClick={handleMenuLogin}>Đăng nhập với tư cách admin</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Hồ sơ</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Tài khoản của tôi</MenuItem>
+      <MenuItem onClick={handleLogOut}>Đăng xuất</MenuItem>
     </Menu>
   );
 
