@@ -23,13 +23,14 @@ const BookingCar = () => {
   const IDTram = searchParams.get("MaTram"); // 66a928805951552933eb1b2d
   const id = searchParams.get("DetailCarID");
   const diemDonTra = searchParams.get("DiemKetThuc")
-
+  const userId = JSON.parse(localStorage.getItem("user"));
   // console.log("San bay:", SanBay);
   // console.log("ID Time:", Time);
   // console.log("ID Date:", Date);
-  console.log("ID IDTram:", IDTram); // ???
+  // console.log("ID IDTram:", IDTram); // ???
   // console.log("ID DetailCarID:", id);
   // console.log("Diem don tra:", diemDonTra);
+  // console.log("userId:", userId._id);
 
   const [detail, setDetail] = useState(null);
   const [tram, setTram] = useState(null);
@@ -47,6 +48,7 @@ const BookingCar = () => {
     ThanhTien: "" || 0,
     TrangThai: false,
     Description: "",
+    userId: userId._id,
     currency:"VND",
     name: "Booking car",
     image: "https://www.youtube.com/watch?v=TD7sBUigDIU",
@@ -55,6 +57,7 @@ const BookingCar = () => {
     return_url: "http://localhost:5173/list/cars/result"
   });
 
+  console.log("bookingCar begin::", bookingCar)
   const fetchDetailCar = async () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/GetDetailCarID/${id}`);
@@ -131,7 +134,7 @@ const BookingCar = () => {
 
     const {
       Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm,
-      ThanhTien, Description,
+      ThanhTien, Description, userId
     } = bookingCar;
 
     // Kiểm tra dữ liệu đầu vào
@@ -148,13 +151,15 @@ const BookingCar = () => {
           headers: { "Content-Type": "application/json", },
           body: JSON.stringify({
             MaDetailCar: id,
-            Sdt, MaTram,
+            Sdt,
+            MaTram,
             DiemSanBay,
             DiemDon_Tra,
             NgayGioDat,
             SoKm,
             ThanhTien,
-            Description
+            Description,
+            userId
           }),
         }
       );
@@ -174,7 +179,7 @@ const BookingCar = () => {
             message: bookingCar.Description,
             return_url: `${import.meta.env.VITE_FE_URL}/list/cars/result`,
             orderID: datXeOto._id,
-            userID: "userO1",
+            userID: bookingCar.userId,
           })
 
           // Goi api server den thư viện pointer
@@ -190,7 +195,7 @@ const BookingCar = () => {
                 amount: ThanhTien,
                 currency: bookingCar.currency,
                 message: bookingCar.Description,
-                userID: "userO1",
+                userID: bookingCar.userId,
                 orderID: datXeOto._id,
                 returnUrl: bookingCar.return_url,
                 name: bookingCar.name,

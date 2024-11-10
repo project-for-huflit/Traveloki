@@ -33,7 +33,7 @@ const CancelTicket = () => {
     const getDatXeMaDX = async () => {
       try {
         const res = await axios.get(`${url}/FindBookingCarMaDX?MaDX=${MaDX}`);
-        console.log(res.data);
+        console.log("res::",res.data);
         setDetailBookingCar(res.data.datXes);
 
         // Giả sử chỉ có một đối tượng trong mảng datXes
@@ -142,7 +142,65 @@ const CancelTicket = () => {
             );
             if (cancelResponse.status === 200) {
               alert("Hủy vé thành công.");
-              navigate("/my-booking");
+              navigate("/user/my-booking");
+            } else {
+              alert("Có lỗi xảy ra khi hủy vé đặt xe.");
+            }
+          } catch (cancelError) {
+            console.error("Error cancelling ticket: ", cancelError);
+            alert("Có lỗi xảy ra khi hủy vé.");
+          }
+        } else {
+          alert("Có lỗi xảy ra khi xử lý hoàn tiền.");
+        }
+      } catch (refundError) {
+        console.error("Error processing refund: ", refundError);
+        alert("Có lỗi xảy ra khi xử lý hoàn tiền.");
+      }
+    }
+  };
+
+  const handleCancelPressPay = async () => {
+    if (!canCancelTicket()) {
+      alert("Không thể hủy vé vì thời gian chuẩn bị đi còn ít hơn 1 tiếng.");
+    } else {
+      try {
+        console.log("detailBookingCar[0]?._id::", detailBookingCar[0]?._id)
+        // const refundResponse = await axios.post(
+        //   `${import.meta.env.VITE_BACKEND_URL}/payment/pointer-wallet/car/cancel/${detailBookingCar[0]?._id}`,
+        //   {
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
+        //       },
+        //   }
+        // );
+
+        const refundResponse = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/payment/pointer-wallet/car/cancel`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
+            },
+            body: JSON.stringify({
+                orderId: detailBookingCar[0]?._id,
+              }),
+          }
+        );
+
+        console.log("refundResponse::", refundResponse)
+        if (refundResponse.status === 200) {
+          alert("Hoàn tiền thành công.");
+
+          try {
+            const cancelResponse = await axios.delete(
+              `${url}/CancelBooking/${MaDX}`
+            );
+            if (cancelResponse.status === 200) {
+              alert("Hủy vé thành công.");
+              navigate("/user/my-booking");
             } else {
               alert("Có lỗi xảy ra khi hủy vé đặt xe.");
             }
@@ -181,7 +239,7 @@ const CancelTicket = () => {
           const { message } = response.data;
           if (response.status === 200) {
             alert(message);
-            navigate("/my-booking");
+            navigate("/user/my-booking");
           } else {
             alert(message || "Có lỗi xảy ra khi đổi lịch.");
           }
@@ -406,7 +464,7 @@ const CancelTicket = () => {
               </span>
             </div>
             <button
-              onClick={handleCancel}
+              onClick={handleCancelPressPay}
               className={`bg-orange-500 ml-4 w-fit text-white font-bold rounded-lg p-2 ${
                 detailCar[0]?.TrangThai ? "hidden" : "block"
               }`}
@@ -423,7 +481,7 @@ const CancelTicket = () => {
               Đổi lịch
             </button>
             <button
-              onClick={() => navigate("/RatingCar")}
+              onClick={() => navigate("/user/rate")}
               className={`bg-orange-500 ml-4 w-fit text-white font-bold rounded-lg p-2 ${
                 detailCar[0]?.TrangThai ? "hidden" : "block"
               }`}

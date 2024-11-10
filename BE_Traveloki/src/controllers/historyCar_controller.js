@@ -18,6 +18,21 @@ const GetLichSuDatXeOto = async (req, res) => {
   }
 };
 
+const GetLichSuDatXeOtoV2 = async (req, res, next) => {
+  try {
+    const lichSuDatXeOto = await LichSuDatXeOto.find({})
+    .populate({
+      path: 'MaDX',
+      // select: 'field1 field2' // Chỉ lấy các trường cần thiết
+    })
+    .exec()
+    console.log("lichSuDatXeOto::", lichSuDatXeOto)
+    res.status(200).json({ lichSuDatXeOto });
+  } catch (e) {
+    res.status(500).json("not get lich su dat xe o to");
+  }
+};
+
 const createHistory = async (req, res) => {
   try {
     const { MaKH, MaDX } = req.body;

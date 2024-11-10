@@ -12,8 +12,6 @@ const {
 
 const { BookingCarService } = require('../services/booking.service')
 
-
-
 // const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 class BookingCarController {
@@ -56,8 +54,10 @@ const BookingCar = async (req, res) => {
   try {
     const {
       MaDetailCar, Sdt, MaTram, DiemSanBay,
-      DiemDon_Tra, NgayGioDat, ThanhTien, SoKm, Description,
+      DiemDon_Tra, NgayGioDat, ThanhTien, SoKm, Description, userId
     } = req.body;
+
+    console.log("userId::", userId)
 
     const tramDung = await TramDung.findById(MaTram);
     const chiTietXe = await ChiTietXeOto.findById(MaDetailCar);
@@ -74,10 +74,14 @@ const BookingCar = async (req, res) => {
 
     const CreateDatXeOto = new DatXeOto({
       MaDX, MaDetailCar, Sdt, MaTram, DiemSanBay, DiemDon_Tra,
-      NgayGioDat, SoKm, ThanhTien, Trangthai: false, Description,
+      NgayGioDat, SoKm, ThanhTien, Trangthai: false, Description, userId
     });
 
     const result = await CreateDatXeOto.save();
+
+    const newHistory = new LichSuDatXeOto({ MaKH: userId, MaDX });
+    const resultHistoryCar = await newHistory.save();
+    console.log("resultHistoryCar::", resultHistoryCar)
 
     // console.log("Check id::", result)
     res.status(200).json(result); // Đảm bảo result chứa trường Sdt
@@ -95,9 +99,10 @@ const PaymentPointerWallet = async (req, res, next) => {
 }
 
 const CancelPaymentPointerWallet = async (req, res, next) => {
+  // console.log("req.params.id::", req.params.id)
   new SuccessResponse({
     message: 'success!',
-    metadata: await BookingCarService.CancelPaymentPointerWallet(req.params),
+    metadata: await BookingCarService.CancelPaymentPointerWallet(req.body),
   }).send(res);
 }
 
