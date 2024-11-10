@@ -33,7 +33,10 @@ const Login = () => {
     const redirectToPointer = encodeURIComponent(
       `${import.meta.env.VITE_FE_URL}/auth/callback`,
     );
-    window.location.href = `https://sso-pointer.vercel.app/authorize?callbackUrl=${redirectToPointer}`;
+
+    // https://traveloki.netlify.app/
+    // https://sso-pointer.vercel.app/authorize?https://traveloki.netlify.app/auth/callback
+    window.location.href = `https://sso-pointer.vercel.app/authorize?${redirectToPointer}`;
   };
 
   /**
