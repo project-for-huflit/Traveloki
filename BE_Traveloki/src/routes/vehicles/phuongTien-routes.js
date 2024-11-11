@@ -7,7 +7,7 @@ const {
   CreatePhuongTien,
   SearchFindPhuongTien,
   DeletePhuongTien,
-  GetPhuongTienID, GetPhuongTienByLichChay,
+  GetPhuongTienID, GetPhuongTienByLichChay, updatePhuongTien
 } = require("../../controllers/phuongTien_controller");
 
 route.get("/GetPhuongTien", GetPhuongTien);
@@ -16,5 +16,6 @@ route.post("/CreatePhuongTien", CreatePhuongTien);
 route.delete("/DeletePhuongTien/:id", DeletePhuongTien);
 route.get("/GetPhuongTienID/:id", GetPhuongTienID);
 route.post("/GetPhuongTienByLichChay", GetPhuongTienByLichChay)
+route.put("/UpdatePhuongTien", updatePhuongTien)
 
 module.exports = route;

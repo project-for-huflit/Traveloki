@@ -5,7 +5,7 @@ const CounterPhuongTien = require("../models/counter.model").CounterPhuongTien;
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 const asyncHandler = require('../middlewares/asyncHandler.middeware')
-const {getAllPhuongTienService, createPhuongTienService, getPhuongTienByLichChayService} = require("../services/phuongTien.service");
+const {updatePhuongTienService, getAllPhuongTienService, createPhuongTienService, getPhuongTienByLichChayService} = require("../services/phuongTien.service");
 
 class VehicleController {
 
@@ -83,11 +83,18 @@ const GetPhuongTienByLichChay = async (req, res) => {
   return res.status(200).json(data)
 }
 
+const updatePhuongTien = async (req, res) => {
+  const { _id, LoaiPT, MaSoXe, TenPhuongTien, SoGheToiDa, Image, MaSB} = req.body
+  const data = await updatePhuongTienService( _id, LoaiPT, MaSoXe, TenPhuongTien, SoGheToiDa, Image, MaSB)
+  return res.status(200).json(data);
+}
+
 module.exports = {
   GetPhuongTien,
   CreatePhuongTien,
   DeletePhuongTien,
   SearchFindPhuongTien,
   GetPhuongTienID,
-  GetPhuongTienByLichChay
+  GetPhuongTienByLichChay,
+  updatePhuongTien
 };
