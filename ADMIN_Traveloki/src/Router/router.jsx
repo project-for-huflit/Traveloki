@@ -2,7 +2,9 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from '../App.jsx';
 import DanhSachSanBay from '../components/ListSanBay/DanhSachSanBay.jsx';
 import CreateDanhSachSanBay from '../components/ListSanBay/CreateDanhSachSanBay.jsx';
+
 import DanhSachTuyenXe from '../components/TuyenXe/DanhSachTuyenXe.jsx';
+import ChiTietTuyenXe from '../page/detailRoute/index.jsx'
 import CreateTuyenXe from '../components/TuyenXe/CreateTuyenXe.jsx';
 
 import PhuongTien from '../components/PhuongTien/DanhSachPhuongTien.jsx';
@@ -67,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: 'road/list',
         element: <DanhSachTuyenXe />,
+      },
+      {
+        path: 'road/list/:slug',
+        element: <ChiTietTuyenXe />,
       },
       {
         path: 'road/list/create',

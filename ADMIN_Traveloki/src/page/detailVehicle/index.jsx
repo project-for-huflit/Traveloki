@@ -115,8 +115,8 @@ function detailVehicle() {
                         <section className="h-full overflow-auto p-8 w-full flex flex-col">
                           <header className="border-dashed border-2 border-gray-400 py-12 flex flex-col justify-center items-center">
                             <p className="mb-3 font-semibold text-gray-900 flex flex-wrap justify-center">
-                              <span>Drag and drop your</span>&nbsp;
-                              <span>files anywhere or</span>
+                              <span>Kéo và thả</span>&nbsp;
+                              <span>tệp của bạn ở bất kì đâu hoặc</span>
                             </p>
                             <input
                               id="hidden-input"

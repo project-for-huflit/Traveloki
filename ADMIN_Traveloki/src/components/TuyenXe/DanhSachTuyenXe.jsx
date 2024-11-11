@@ -18,7 +18,16 @@ import {
 import { Link } from 'react-router-dom';
 import { Popconfirm } from 'antd';
 
+import { useDispatch, useSelector } from 'react-redux';
+import slugify from 'slugify';
+import { setSelectedRow } from '../../redux/slice/routeSlice';
+
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
 const DanhSachTuyenXe = () => {
+  const dispatch = useDispatch();
+
   const [tuyenxe, setTuyenxe] = useState([]);
 
   useEffect(() => {
@@ -58,6 +67,14 @@ const DanhSachTuyenXe = () => {
     }
   }, []);
 
+  const handleRowClick = (row) => {
+    dispatch(setSelectedRow(row));
+  };
+
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(10);
   return (
     <div className="w-auto h-full bg-white p-4">
       <div className="flex justify-between items-center mb-4">
@@ -99,8 +116,11 @@ const DanhSachTuyenXe = () => {
           <TableBody>
             {tuyenxe.map((tuyenXe) => (
               <TableRow
+              component={Link}
+              to={`${slugify(`${tuyenXe.DiemKhoiHanh}` + `-`+ `${tuyenXe.DiemKetThuc}`, { lower: true, strict: true })}`}
                 key={tuyenXe._id}
                 sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}
+                onClick={() => handleRowClick(tuyenXe)}
               >
                 <TableCell>{tuyenXe.MaTuyen}</TableCell>
                 <TableCell>{tuyenXe.DiemKhoiHanh}</TableCell>
@@ -128,6 +148,12 @@ const DanhSachTuyenXe = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <div className="mt-12 flex justify-center items-center">
+        <Stack spacing={2}>
+          <Pagination count={10} variant="outlined" shape="rounded" />
+        </Stack>
+      </div>
     </div>
   );
 };
