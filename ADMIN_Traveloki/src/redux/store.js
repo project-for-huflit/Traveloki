@@ -13,6 +13,7 @@ import storage from "redux-persist/lib/storage";
 
  import userReducer from "./slice/userSlice";
  import authReducer from './slice/authSlice';
+ import vehicleReducer from './slice/vehicleSlice'
 
 const persistConfig = {
   key: "root",
@@ -25,7 +26,8 @@ const rootReducer = persistReducer(persistConfig, userReducer);
 const store = configureStore({
   reducer: {
     user: rootReducer,
-    auth: authReducer
+    auth: authReducer,
+    vehicle: vehicleReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

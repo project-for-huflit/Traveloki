@@ -4,8 +4,11 @@ import DanhSachSanBay from '../components/ListSanBay/DanhSachSanBay.jsx';
 import CreateDanhSachSanBay from '../components/ListSanBay/CreateDanhSachSanBay.jsx';
 import DanhSachTuyenXe from '../components/TuyenXe/DanhSachTuyenXe.jsx';
 import CreateTuyenXe from '../components/TuyenXe/CreateTuyenXe.jsx';
+
 import PhuongTien from '../components/PhuongTien/DanhSachPhuongTien.jsx';
 import CreatePhuongTien from '../components/PhuongTien/CreatePhuongTien.jsx';
+import DetailPhuongTien from '../page/detailVehicle/index.jsx';
+
 import DanhSachTramDung from '../components/TramDung/DanhSachTramDung.jsx';
 import CreateTramDung from '../components/TramDung/CreateTramDung.jsx';
 import ListDetailCar from '../components/DetailCar/ListDetailCar.jsx';
@@ -70,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: 'vehicle/list',
         element: <PhuongTien />,
+      },
+      {
+        path: 'vehicle/list/:slug',
+        element: <DetailPhuongTien />,
       },
       {
         path: 'vehicle/list/create',
