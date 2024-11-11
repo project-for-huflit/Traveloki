@@ -48,13 +48,13 @@ const router = createBrowserRouter([
     ]
   },
   {
-    path: '/',
+    path: '',
     element:   <App />,
     errorElement: <ErrorPage />,
     children: [
-      { path: '', element: <Navigate to="/home" replace /> },
+      // { path: '', element: <Navigate to="/home" replace /> },
       {
-        path: 'home',
+        path: '',
         // element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
         element: <Dashboard />,
       },

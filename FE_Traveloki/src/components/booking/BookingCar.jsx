@@ -184,6 +184,7 @@ const BookingCar = () => {
 
           // Goi api server den thư viện pointer
           const response = await fetch(
+            // https://api-traveloki.onrender.com/api/payment/pointer-wallet/car
             `${import.meta.env.VITE_BACKEND_URL}/api/payment/pointer-wallet/car`,
             {
               method: "POST",
