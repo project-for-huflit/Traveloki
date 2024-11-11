@@ -21,6 +21,7 @@ app.use(cors({
     "http://localhost:3000",
 
     // MY DEPLOY
+    "https://client-traveloki-ziu9.onrender.com",
     "https://traveloki-dash.onrender.com",
     "https://dash-traveloki-testing.netlify.app",
     "https://dash-traveloki.netlify.app",
