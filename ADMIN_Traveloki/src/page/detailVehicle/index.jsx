@@ -26,8 +26,7 @@ function detailVehicle() {
     },
     {
       label: 'Loại phương tiện',
-      placeHolder: `${selectedRow.LoaiPT
-}`,
+      placeHolder: `${selectedRow.LoaiPT}`,
     },
     {
       label: 'Sân bay hoạt động',
@@ -50,6 +49,10 @@ function detailVehicle() {
       placeHolder: `${selectedRow.Image}`,
     },
   ];
+
+  const handleUpdateVehicle = () => {
+    alert("i'm fine, OK!")
+  }
   return (
     <div className="w-full flex justify-center items-start mt-6">
       {/* Center */}
@@ -86,7 +89,8 @@ function detailVehicle() {
               </Link>
 
               <div className="">
-                <button className="rounded-2xl py-2 bg-[#1E1E1E] w-full text-white text-2xl font-extrabold font-['Roboto'] leading-normal">
+                <button onClick={handleUpdateVehicle}
+                className="rounded-2xl py-2 bg-[#1E1E1E] w-full text-white text-2xl font-extrabold font-['Roboto'] leading-normal">
                   Cập nhật thông tin
                 </button>
               </div>
