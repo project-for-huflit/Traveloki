@@ -19,15 +19,21 @@ app.use(cors({
     'http://localhost:5174',
     'http://localhost:5181',
     "http://localhost:3000",
-    "https://dash-traveloki-testing.netlify.app",
+
+    // MY DEPLOY
     "https://traveloki-dash.onrender.com",
+    "https://dash-traveloki-testing.netlify.app",
     "https://dash-traveloki.netlify.app",
     "https://traveloki.netlify.app",
+
     "https://api-traveloki.onrender.com",
+
+    // NGUYEN
     "https://pointer.io.vn",
     "https://wallet.pointer.io.vn",
     "https://presspay-wallet.vercel.app",
     "https://presspay.vercel.app",
+
     "https://presspay-api.azurewebsites.net",
     "https://api-presspay.azurewebsites.net",
     "https://api-wallet.pointer.io.vn"
