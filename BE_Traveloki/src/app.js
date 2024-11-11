@@ -21,6 +21,7 @@ app.use(cors({
     "http://localhost:3000",
 
     // MY DEPLOY
+    'https://traveloki.vercel.app',
     'https://traveloki-dash.vercel.app',
     "https://client-traveloki-ziu9.onrender.com",
     "https://traveloki-dash.onrender.com",
