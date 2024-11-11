@@ -38,7 +38,7 @@ app.use(cors({
     "https://api-presspay.azurewebsites.net",
     "https://api-wallet.pointer.io.vn"
   ],
-  // methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true, // Cho phép credentials (cookies, headers...)
 }));
 app.use(morgan("dev"))
