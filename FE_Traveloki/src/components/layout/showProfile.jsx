@@ -33,7 +33,7 @@ function showProfile(user) {
     window.location.reload()
   };
   return (
-    <div className="relative">
+    <div className="relative z-10">
       <button onClick={handleShowHide}>
         <div className="text-white">
           <h2>Welcome, {user.user}!</h2>

@@ -21,6 +21,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import slugify from 'slugify';
 import { setSelectedRow } from '../../redux/slice/vehicleSlice';
 
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
 const DanhSachPhuongTien = (props) => {
   const dispatch = useDispatch();
   const [phuongTien, setPhuongTien] = useState([]); // Trạng thái lưu danh sách phương tiện
@@ -95,6 +98,11 @@ const DanhSachPhuongTien = (props) => {
   const handleRowClick = (row) => {
     dispatch(setSelectedRow(row));
   };
+
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(10);
   return (
     <div className="w-auto h-full bg-white p-4">
       <div className="flex justify-between items-center mb-4">
@@ -183,6 +191,12 @@ const DanhSachPhuongTien = (props) => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <div className="mt-12 flex justify-center items-center">
+        <Stack spacing={2}>
+          <Pagination count={10} variant="outlined" shape="rounded" />
+        </Stack>
+      </div>
 
       {/* Modal xác nhận xóa */}
       <AntdModal

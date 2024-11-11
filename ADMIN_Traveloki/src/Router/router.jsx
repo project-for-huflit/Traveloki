@@ -11,6 +11,8 @@ import DetailPhuongTien from '../page/detailVehicle/index.jsx';
 
 import DanhSachTramDung from '../components/TramDung/DanhSachTramDung.jsx';
 import CreateTramDung from '../components/TramDung/CreateTramDung.jsx';
+import ChiTietTramDung from '../page/detailWaypoint/index.jsx'
+
 import ListDetailCar from '../components/DetailCar/ListDetailCar.jsx';
 import CreateDetailCar from '../components/DetailCar/CreateDetailCar.jsx';
 import GetDetailCar from '../components/DetailCar/GetDetailCar.jsx';
@@ -85,6 +87,10 @@ const router = createBrowserRouter([
       {
         path: 'waypoint/list',
         element: <DanhSachTramDung />,
+      },
+      {
+        path: 'waypoint/list/:slug',
+        element: <ChiTietTramDung />,
       },
       {
         path: 'waypoint/list/create',

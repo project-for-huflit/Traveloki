@@ -14,6 +14,7 @@ import storage from "redux-persist/lib/storage";
  import userReducer from "./slice/userSlice";
  import authReducer from './slice/authSlice';
  import vehicleReducer from './slice/vehicleSlice'
+ import waypointReducer from './slice/waypointSlice'
 
 const persistConfig = {
   key: "root",
@@ -27,7 +28,8 @@ const store = configureStore({
   reducer: {
     user: rootReducer,
     auth: authReducer,
-    vehicle: vehicleReducer
+    vehicle: vehicleReducer,
+    waypoint: waypointReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

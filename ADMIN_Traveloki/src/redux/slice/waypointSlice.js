@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const vehicleSlice = createSlice({
-  name: 'chiTietPhuongTien',
+const waypointSlice = createSlice({
+  name: 'chiTietTramDung',
   initialState: {
     selectedRow: null,
   },
@@ -12,5 +12,5 @@ const vehicleSlice = createSlice({
   },
 });
 
-export const { setSelectedRow } = vehicleSlice.actions;
-export default vehicleSlice.reducer;
+export const { setSelectedRow } = waypointSlice.actions;
+export default waypointSlice.reducer;

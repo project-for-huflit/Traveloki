@@ -18,7 +18,13 @@ import {
 } from '../../services/api/TramDung/apiDanhSachTramDung';
 import { Modal as AntdModal, notification } from 'antd';
 
+import { useDispatch, useSelector } from 'react-redux';
+import slugify from 'slugify';
+import { setSelectedRow } from '../../redux/slice/vehicleSlice';
+
 const DanhSachTramDung = () => {
+  const dispatch = useDispatch();
+
   const [tramDung, setTramDung] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [tramToDelete, setTramToDelete] = useState(null);
@@ -78,6 +84,10 @@ const DanhSachTramDung = () => {
     }
   }, []);
 
+  const handleRowClick = (row) => {
+    dispatch(setSelectedRow(row));
+  };
+
   return (
     <div className="w-auto h-full bg-white p-4">
       <div className="flex justify-between items-center mb-4">
@@ -116,8 +126,11 @@ const DanhSachTramDung = () => {
           <TableBody>
             {tramDung.map((tram) => (
               <TableRow
+              component={Link}
+              to={`${slugify(tram.TenTramDung, { lower: true, strict: true })}`}
                 key={tram._id}
                 sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}
+                onClick={() => handleRowClick(tram)}
               >
                 <TableCell>{tram.MaTramDung}</TableCell>
                 <TableCell>{tram.ThanhPho}</TableCell>
