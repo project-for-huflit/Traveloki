@@ -116,8 +116,8 @@ const DanhSachTuyenXe = () => {
           <TableBody>
             {tuyenxe.map((tuyenXe) => (
               <TableRow
-              component={Link}
-              to={`${slugify(`${tuyenXe.DiemKhoiHanh}` + `-`+ `${tuyenXe.DiemKetThuc}`, { lower: true, strict: true })}`}
+                component={Link}
+                to={`${slugify(`${tuyenXe.DiemKhoiHanh}` + `-` + `${tuyenXe.DiemKetThuc}`, { lower: true, strict: true })}`}
                 key={tuyenXe._id}
                 sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}
                 onClick={() => handleRowClick(tuyenXe)}

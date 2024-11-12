@@ -1,13 +1,16 @@
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 
 import {
   faTrash,
   faEdit,
   faCircleInfo,
-} from "@fortawesome/free-solid-svg-icons";
-import {deleteDetailCar, fetchListDetailCar} from "../../services/api/DetailCar/apiListDetailCar.js";
+} from '@fortawesome/free-solid-svg-icons';
+import {
+  deleteDetailCar,
+  fetchListDetailCar,
+} from '../../services/api/DetailCar/apiListDetailCar.js';
 
 const ListDetailCar = () => {
   const [detailCar, setDetailCar] = useState([]);
@@ -16,15 +19,15 @@ const ListDetailCar = () => {
 
   const fetchDetailCar = async () => {
     try {
-      const res = await fetchListDetailCar()
+      const res = await fetchListDetailCar();
       // if (!res.ok) {
       //   throw new Error("Network response was not ok");
       // }
 
-      console.log("API Response:", res); // Debugging statement
+      console.log('API Response:', res); // Debugging statement
       setDetailCar(res.chiTietXeOto || []); // Updated to match API response structure
     } catch (error) {
-      setError("Không thể lấy dữ liệu từ máy chủ");
+      setError('Không thể lấy dữ liệu từ máy chủ');
     } finally {
       setIsLoading(false);
     }
@@ -36,17 +39,17 @@ const ListDetailCar = () => {
 
   const handleDeleteDetailCar = async (_id) => {
     try {
-      const res = await deleteDetailCar(_id)
-      if (res.ok) {
-        alert("Xóa thành công");
+      const res = await deleteDetailCar(_id);
+      if (res) {
+        alert('Xóa thành công');
         fetchDetailCar();
       } else {
         const { message } = await res.json();
         alert(`Xóa thất bại: ${message}`);
       }
     } catch (error) {
-      console.error("Error deleting detail car:", error);
-      alert("Đã xảy ra lỗi khi xóa phương tiện");
+      console.error('Error deleting detail car:', error);
+      alert('Đã xảy ra lỗi khi xóa phương tiện');
     }
   };
 
@@ -69,7 +72,10 @@ const ListDetailCar = () => {
         <h1 className="text-black w-1/2 p-4 text-4xl">Danh sách phương tiện</h1>
         <div className="flex w-1/2 mr-2 justify-end">
           <button className="bg-blue-500 px-4 py-2 mt-4 w-fit h-fit hover:bg-blue-700 text-white font-bold rounded">
-            <a className="no-underline text-white" href="/detail-car/list/create">
+            <a
+              className="no-underline text-white"
+              href="/detail-car/list/create"
+            >
               Thêm phương tiện
             </a>
           </button>

@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import {getDetailCar} from "../../services/api/DetailCar/apiGetDetailCar.js";
-import {updateDetailCar} from "../../services/api/DetailCar/apiUpdateDetailCar.js";
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { getDetailCar } from '../../services/api/DetailCar/apiGetDetailCar.js';
+import { updateDetailCar } from '../../services/api/DetailCar/apiUpdateDetailCar.js';
 
 const EditDetailCar = () => {
   const { id } = useParams();
   const navigate = useNavigate(); // Thay thế useNavigation bằng useNavigate
   const [formData, setFormData] = useState({
-    TenChuSoHuu: "",
-    BienSoXe: "",
-    SDT_TaiXe: "",
+    TenChuSoHuu: '',
+    BienSoXe: '',
+    SDT_TaiXe: '',
     SoTien_1km: 0,
-    Image: "",
+    Image: '',
   });
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -24,16 +24,16 @@ const EditDetailCar = () => {
       // if (!res.ok) {
       //   throw new Error("Network response was not ok");
       // }
-      const result = await res.json();
+      console.log(res);
       setFormData({
-        TenChuSoHuu: result.TenChuSoHuu,
-        BienSoXe: result.BienSoXe,
-        SDT_TaiXe: result.SDT_TaiXe,
-        SoTien_1km: result.SoTien_1km,
-        Image: result.Image,
+        TenChuSoHuu: res.TenChuSoHuu,
+        BienSoXe: res.BienSoXe,
+        SDT_TaiXe: res.SDT_TaiXe,
+        SoTien_1km: res.SoTien_1km,
+        Image: res.Image,
       });
     } catch (error) {
-      setError("Không thể lấy dữ liệu từ máy chủ");
+      setError('Không thể lấy dữ liệu từ máy chủ');
     } finally {
       setIsLoading(false);
     }
@@ -51,17 +51,18 @@ const EditDetailCar = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await updateDetailCar(id, formData)
+      const res = await updateDetailCar(id, formData);
+      console.res;
 
-      if (res.ok) {
-        alert("Cập nhật thành công");
-        navigate("/detail-car/list"); // Sử dụng navigate để điều hướng
+      if (res) {
+        alert('Cập nhật thành công');
+        navigate('/detail-car/list'); // Sử dụng navigate để điều hướng
       } else {
         alert(`Cập nhật thất bại: ${res.message}`);
       }
     } catch (error) {
-      console.error("Error updating detail car:", error);
-      alert("Đã xảy ra lỗi khi cập nhật phương tiện");
+      console.error('Error updating detail car:', error);
+      alert('Đã xảy ra lỗi khi cập nhật phương tiện');
     }
   };
 
