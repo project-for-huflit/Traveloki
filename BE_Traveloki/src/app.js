@@ -19,18 +19,29 @@ app.use(cors({
     'http://localhost:5174',
     'http://localhost:5181',
     "http://localhost:3000",
+
+    // MY DEPLOY
+    'https://traveloki.vercel.app',
+    'https://traveloki-dash.vercel.app',
+    "https://client-traveloki-ziu9.onrender.com",
+    "https://traveloki-dash.onrender.com",
+    "https://dash-traveloki-testing.netlify.app",
     "https://dash-traveloki.netlify.app",
     "https://traveloki.netlify.app",
+
     "https://api-traveloki.onrender.com",
+
+    // NGUYEN
     "https://pointer.io.vn",
     "https://wallet.pointer.io.vn",
     "https://presspay-wallet.vercel.app",
     "https://presspay.vercel.app",
+
     "https://presspay-api.azurewebsites.net",
     "https://api-presspay.azurewebsites.net",
     "https://api-wallet.pointer.io.vn"
   ],
-  // methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true, // Cho phép credentials (cookies, headers...)
 }));
 app.use(morgan("dev"))

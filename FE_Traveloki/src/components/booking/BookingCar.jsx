@@ -17,20 +17,20 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 const BookingCar = () => {
   const [searchParams] = useSearchParams();
-  const SanBay = searchParams.get('SanBay');
-  const Date = searchParams.get('Date');
-  const Time = searchParams.get('Time');
-  const IDTram = searchParams.get('MaTram'); // 66a928805951552933eb1b2d
-  // const IDTram = decodeURIComponent(searchParams.get("MaTram")); // 66a928805951552933eb1b2d
-  const id = searchParams.get('DetailCarID');
-  const diemDonTra = searchParams.get('DiemKetThuc');
-
+  const SanBay = searchParams.get("SanBay");
+  const Date = searchParams.get("Date");
+  const Time = searchParams.get("Time");
+  const IDTram = searchParams.get("MaTram"); // 66a928805951552933eb1b2d
+  const id = searchParams.get("DetailCarID");
+  const diemDonTra = searchParams.get("DiemKetThuc")
+  const userId = JSON.parse(localStorage.getItem("user"));
   // console.log("San bay:", SanBay);
   // console.log("ID Time:", Time);
   // console.log("ID Date:", Date);
-  console.log('ID IDTram:', IDTram);
+  // console.log("ID IDTram:", IDTram); // ???
   // console.log("ID DetailCarID:", id);
   // console.log("Diem don tra:", diemDonTra);
+  // console.log("userId:", userId._id);
 
   const [detail, setDetail] = useState(null);
   const [tram, setTram] = useState(null);
@@ -47,15 +47,17 @@ const BookingCar = () => {
     SoKm: '',
     ThanhTien: '' || 0,
     TrangThai: false,
-    Description: '',
-    currency: 'VND',
-    name: 'Booking car',
-    image: 'https://www.youtube.com/watch?v=TD7sBUigDIU',
+    Description: "",
+    userId: userId._id,
+    currency:"VND",
+    name: "Booking car",
+    image: "https://www.youtube.com/watch?v=TD7sBUigDIU",
     quantity: 1,
     price: '' || 0,
     return_url: 'http://localhost:5173/list/cars/result',
   });
 
+  console.log("bookingCar begin::", bookingCar)
   const fetchDetailCar = async () => {
     try {
       const res = await fetch(
@@ -90,7 +92,8 @@ const BookingCar = () => {
       }
       const result = await res.json();
       setTram(result);
-      console.log('result fetTram::', result);
+      // console.log("fetTram::",[tram.tramDung._id]) // ??
+      console.log("result fetTram:: ", result)
       setBookingCar((prevBookingCar) => ({
         ...prevBookingCar,
         SoKm: result.cost,
@@ -138,14 +141,8 @@ const BookingCar = () => {
     console.log('Dữ liệu gửi đi:', bookingCar);
 
     const {
-      Sdt,
-      MaTram,
-      DiemSanBay,
-      DiemDon_Tra,
-      NgayGioDat,
-      SoKm,
-      ThanhTien,
-      Description,
+      Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm,
+      ThanhTien, Description, userId
     } = bookingCar;
 
     // Kiểm tra dữ liệu đầu vào
@@ -179,6 +176,7 @@ const BookingCar = () => {
             SoKm,
             ThanhTien,
             Description,
+            userId
           }),
         },
       );
@@ -198,11 +196,12 @@ const BookingCar = () => {
             message: bookingCar.Description,
             return_url: `${import.meta.env.VITE_FE_URL}/list/cars/result`,
             orderID: datXeOto._id,
-            userID: 'userO1',
-          });
+            userID: bookingCar.userId,
+          })
 
           // Goi api server den thư viện pointer
           const response = await fetch(
+            // https://api-traveloki.onrender.com/api/payment/pointer-wallet/car
             `${import.meta.env.VITE_BACKEND_URL}/api/payment/pointer-wallet/car`,
             {
               method: 'POST',
@@ -215,7 +214,7 @@ const BookingCar = () => {
                 amount: ThanhTien,
                 currency: bookingCar.currency,
                 message: bookingCar.Description,
-                userID: 'userO1',
+                userID: bookingCar.userId,
                 orderID: datXeOto._id,
                 returnUrl: bookingCar.return_url,
                 name: bookingCar.name,

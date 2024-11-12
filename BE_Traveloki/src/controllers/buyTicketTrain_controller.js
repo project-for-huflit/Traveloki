@@ -8,6 +8,7 @@ const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.respon
 
 const asyncHandler = require('../middlewares/asyncHandler.middeware')
 const {LichChay} = require("../models/lichChay.model");
+const {PhieuDatXeBus} = require("../models/phieuDatXeBus.model");
 
 class BookingTrainController {
 
@@ -132,27 +133,39 @@ const SchedularChange = async (req, res) => {
 };
 
 const CancelTicketTrain = async (req, res) => {
+  const { MaVeTrain } = req.params;
+  if (!MaVeTrain) {
+    return res.status(400).json({ message: 'Missing information'});
+  }
   try {
-    const { MaVeTau } = req.params;
-    if (!MaVeTau) {
-      return res.status(400).json({ message: "Thiếu thông tin" });
+    const bookingTrain = await PhieuDatTau.findOne({MaVeTrain});
+    const ngayGioKhoiHanh = new Date(bookingTrain.NgayGioKhoiHanh);
+    const nowDate = new Date();
+    const timeDifference = (ngayGioKhoiHanh - nowDate) / (1000 * 60);
+
+    if (timeDifference >= 60) {
+      // Hủy miễn phí trước 1 giờ
+      bookingTrain.isActive = false;
+      await bookingTrain.save();
+      return res.status(200).json({ message: 'Đặt chỗ đã được hủy miễn phí' });
+    } else if (timeDifference >= 30) {
+      // Hủy trong khoảng 30 đến 60 phút trước giờ khởi hành, mất phí 3%
+      const cancellationFee = bookingTrain.price * 0.03;
+      bookingTrain.isActive = false;
+      await bookingTrain.save();
+      return res.status(200).json({
+        message: 'Đặt chỗ đã được hủy, phí hủy là 3%',
+        cancellationFee: cancellationFee,
+      });
+    } else {
+      // Không cho phép hủy trong vòng 30 phút trước giờ khởi hành
+      return res.status(400).json({ message: 'Không thể hủy trong vòng 30 phút trước giờ khởi hành' });
     }
-
-    const deleteBookingResult = await PhieuDatTau.deleteOne({ MaVeTau });
-    if (deleteBookingResult.deletedCount === 0) {
-      return res.status(404).json({ message: "Booking not found" });
-    }
-
-    const deleteHistoryResult = await LichSuDatTau.deleteOne({ MaDX: MaVeTau });
-
-    if (!deleteHistoryResult) {
-      return res.status(404).json({ message: "Booking history not found" });
-    }
-
-    return res.status(200).json({ message: "Delete phieu dat tau success" });
   } catch (e) {
-    console.error("Error deleting phieu dat tau:", e);
-    return res.status(500).json({ message: "Error deleting phieu dat tau" });
+    console.error(e);
+    res
+      .status(500)
+      .json({ message: 'Không thể hủy PhieuDatXeBus và lịch sử đặt xe' });
   }
 };
 

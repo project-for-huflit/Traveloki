@@ -11,6 +11,7 @@ const PhieuDatXeBusSchema = new Schema({
   ThanhTien: { type: Number, required: true },
   TrangThai: { type: Boolean, required: true },
   userId:{ type:Schema.Types.ObjectId, ref:'user', required:false },
+  isActive: { type: Boolean, default: true }
 },{
   timestamps: true,
   collection: COLLECTION_NAME

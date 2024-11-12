@@ -17,8 +17,15 @@ import {
   deletePhuongTien,
 } from '../../services/api/PhuongTien/apiDanhSachPhuongTien'; // API của phương tiện
 import { Modal as AntdModal, notification } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import slugify from 'slugify';
+import { setSelectedRow } from '../../redux/slice/vehicleSlice';
 
-const DanhSachPhuongTien = () => {
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
+const DanhSachPhuongTien = (props) => {
+  const dispatch = useDispatch();
   const [phuongTien, setPhuongTien] = useState([]); // Trạng thái lưu danh sách phương tiện
   const [isModalVisible, setIsModalVisible] = useState(false); // Trạng thái hiển thị Modal
   const [phuongTienToDelete, setPhuongTienToDelete] = useState(null); // Trạng thái lưu phương tiện cần xóa
@@ -53,8 +60,8 @@ const DanhSachPhuongTien = () => {
           });
           setPhuongTien((prev) =>
             prev.filter(
-              (phuongTien) => phuongTien._id !== phuongTienToDelete._id,
-            ),
+              (phuongTien) => phuongTien._id !== phuongTienToDelete._id
+            )
           ); // Cập nhật danh sách sau khi xóa
         } else {
           alert(res.EM);
@@ -83,6 +90,19 @@ const DanhSachPhuongTien = () => {
     }
   }, []);
 
+  // const slug = slugify(title, { lower: true, strict: true })
+  // const productPath = `${slug}`;
+  //<Link to={`${slugify(phuongTien.TenPhuongTien, { lower: true, strict: true })}`} >
+
+
+  const handleRowClick = (row) => {
+    dispatch(setSelectedRow(row));
+  };
+
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(10);
   return (
     <div className="w-auto h-full bg-white p-4">
       <div className="flex justify-between items-center mb-4">
@@ -130,8 +150,15 @@ const DanhSachPhuongTien = () => {
           <TableBody>
             {phuongTien.map((phuongTien) => (
               <TableRow
+                component={Link}
+                to={`${slugify(phuongTien.TenPhuongTien, { lower: true, strict: true })}`} // URL đến chi tiết phương tiện
                 key={phuongTien._id}
-                sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}
+                sx={{
+                  '&:hover': { backgroundColor: '#e3f2fd' },
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                }}
+                onClick={() => handleRowClick(phuongTien)}
               >
                 <TableCell>{phuongTien.MaPT}</TableCell>
                 <TableCell>{phuongTien.TenPhuongTien}</TableCell>
@@ -140,7 +167,6 @@ const DanhSachPhuongTien = () => {
                 <TableCell>{phuongTien.SoGheToiDa}</TableCell>
                 <TableCell>{phuongTien.MaSoXe}</TableCell>
                 <TableCell>
-                  {' '}
                   <img
                     src={phuongTien.Image}
                     alt={phuongTien.TenPhuongTien}
@@ -151,7 +177,10 @@ const DanhSachPhuongTien = () => {
                   <TableCell>
                     <IconButton
                       color="error"
-                      onClick={() => showModal(phuongTien)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Ngăn sự kiện click lan ra hàng
+                        showModal(phuongTien);
+                      }}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -162,6 +191,12 @@ const DanhSachPhuongTien = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <div className="mt-12 flex justify-center items-center">
+        <Stack spacing={2}>
+          <Pagination count={10} variant="outlined" shape="rounded" />
+        </Stack>
+      </div>
 
       {/* Modal xác nhận xóa */}
       <AntdModal

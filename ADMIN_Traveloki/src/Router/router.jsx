@@ -2,12 +2,19 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from '../App.jsx';
 import DanhSachSanBay from '../components/ListSanBay/DanhSachSanBay.jsx';
 import CreateDanhSachSanBay from '../components/ListSanBay/CreateDanhSachSanBay.jsx';
+
 import DanhSachTuyenXe from '../components/TuyenXe/DanhSachTuyenXe.jsx';
+import ChiTietTuyenXe from '../page/detailRoute/index.jsx'
 import CreateTuyenXe from '../components/TuyenXe/CreateTuyenXe.jsx';
+
 import PhuongTien from '../components/PhuongTien/DanhSachPhuongTien.jsx';
 import CreatePhuongTien from '../components/PhuongTien/CreatePhuongTien.jsx';
+import DetailPhuongTien from '../page/detailVehicle/index.jsx';
+
 import DanhSachTramDung from '../components/TramDung/DanhSachTramDung.jsx';
 import CreateTramDung from '../components/TramDung/CreateTramDung.jsx';
+import ChiTietTramDung from '../page/detailWaypoint/index.jsx'
+
 import ListDetailCar from '../components/DetailCar/ListDetailCar.jsx';
 import CreateDetailCar from '../components/DetailCar/CreateDetailCar.jsx';
 import GetDetailCar from '../components/DetailCar/GetDetailCar.jsx';
@@ -41,13 +48,13 @@ const router = createBrowserRouter([
     ]
   },
   {
-    path: '/',
+    path: '',
     element:   <App />,
     errorElement: <ErrorPage />,
     children: [
-      { path: '', element: <Navigate to="/home" replace /> },
+      // { path: '', element: <Navigate to="/home" replace /> },
       {
-        path: 'home',
+        path: '',
         // element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
         element: <Dashboard />,
       },
@@ -64,6 +71,10 @@ const router = createBrowserRouter([
         element: <DanhSachTuyenXe />,
       },
       {
+        path: 'road/list/:slug',
+        element: <ChiTietTuyenXe />,
+      },
+      {
         path: 'road/list/create',
         element: <CreateTuyenXe />,
       },
@@ -72,12 +83,20 @@ const router = createBrowserRouter([
         element: <PhuongTien />,
       },
       {
+        path: 'vehicle/list/:slug',
+        element: <DetailPhuongTien />,
+      },
+      {
         path: 'vehicle/list/create',
         element: <CreatePhuongTien />,
       },
       {
         path: 'waypoint/list',
         element: <DanhSachTramDung />,
+      },
+      {
+        path: 'waypoint/list/:slug',
+        element: <ChiTietTramDung />,
       },
       {
         path: 'waypoint/list/create',

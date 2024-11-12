@@ -18,7 +18,7 @@ const getAllTramDungService = async () => {
   }
 }
 
-const createTramDungService = async (DiaChi, TenTramDung) => {
+const createTramDungService = async (ThanhPho, DiaChi, TenTramDung) => {
   try{
     const existTenTramDung = await TramDung.exists({TenTramDung});
     if (existTenTramDung){
@@ -48,6 +48,7 @@ const createTramDungService = async (DiaChi, TenTramDung) => {
 
     const result = await TramDung.create({
       MaTramDung: newMaTramDung,
+      ThanhPho: ThanhPho,
       DiaChi: DiaChi,
       TenTramDung: TenTramDung
     });

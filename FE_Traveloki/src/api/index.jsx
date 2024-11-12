@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3052";
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const API_ROUTES = {
   LOGIN: `${API_BASE_URL}/auth/login`,

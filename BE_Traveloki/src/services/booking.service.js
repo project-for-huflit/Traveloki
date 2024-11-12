@@ -56,18 +56,24 @@ class BookingCarService {
       console.log(url);
       return url;
     } catch (error) {
-      console.error("error return url::", error)
+      console.error('error return url::', error);
     }
   }
 
   /**
-    * @param transactionID: _id
-    * @returns { "url":"https://pointer.io.vn/payment-gateway?token={token}", "status":200 }
-    */
+   * @param transactionID: _id
+   * @returns { "url":"https://pointer.io.vn/payment-gateway?token={token}", "status":200 }
+   */
   static async CancelPaymentPointerWallet({ _id }) {
-    const data = await pointer.cancelOrder(_id);
-    console.log(data);
-    return data
+    console.log('_id::', _id);
+    try {
+      console.log('_id::', { _id });
+      const data = await pointer.cancelOrder(_id);
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error('error::', error);
+    }
   }
 }
 

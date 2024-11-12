@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 function RightContent() {
   const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const [lichSuCar, setLichSuCar] = useState([]);
-  const currentMaKH = "KHthanh"; //TODO thay thế mã bằng giá trị động từ khách hàng đăng nhập
+  const userId = JSON.parse(localStorage.getItem("user"));
+  const currentMaKH = userId._id; //TODO thay thế mã bằng giá trị động từ khách hàng đăng nhập
   const filteredLichSuCar = lichSuCar.filter(
     (item) => item.MaKH === currentMaKH
   ); // Lọc lịch sử đặt xe theo mã khách hàng hiện tại
@@ -19,7 +20,7 @@ function RightContent() {
           `${url}/GetLichSuDatXeOto`,
           { params: { MaKH: currentMaKH } } //TODO Nếu Controller API không hỗ trợ thì xóa dòng này
         );
-        console.log(res.data);
+        console.log("res::", res.data);
         setLichSuCar(res.data.lichSuDatXeOto);
       } catch (error) {
         console.error(

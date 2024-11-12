@@ -104,6 +104,52 @@ const getPhuongTienByLichChayService = async (MaTuyen) => {
   }
 }
 
+const updatePhuongTienService = async ( _id, LoaiPT, MaSoXe, TenPhuongTien, SoGheToiDa, Image, MaSB) => {
+  try{
+    const existingPhuongTien = await PhuongTien.findOne({ MaSoXe, _id: { $ne: _id } }).exec();
+    if (existingPhuongTien) {
+      return {
+        EC: 1,
+        EM: "Mã số xe đã tồn tại, vui lòng chọn mã số khác",
+        data: []
+      };
+    }
+    const phuongTien = await PhuongTien.findOneAndUpdate(
+      {_id: _id },
+      {
+        $set: {
+          LoaiPT: LoaiPT,
+          MaSoXe: MaSoXe,
+          TenPhuongTien: TenPhuongTien,
+          SoGheToiDa: SoGheToiDa,
+          Image: Image,
+          MaSB: MaSB,
+        }
+      },
+      {new: true}
+    )
+    if (!phuongTien) {
+      return {
+        EC: 1,
+        EM: "Phương tiện không tồn tại hoặc đã bị xóa",
+        data: []
+      };
+    }
+    return {
+      EC: 0,
+      EM: "Cập nhật phương tiện thành công",
+      data: phuongTien
+    };
+  }catch (error) {
+    console.error("Có lỗi xảy ra khi cập nhật phương tiện:", error);
+    return {
+      EC: 1,
+      EM: "Không thể cập nhật phương tiện",
+      data: []
+    };
+  }
+}
+
 module.exports = {
-  getAllPhuongTienService, createPhuongTienService, deletePhuongTienService, getPhuongTienByLichChayService
+  getAllPhuongTienService, createPhuongTienService, deletePhuongTienService, getPhuongTienByLichChayService, updatePhuongTienService
 }
