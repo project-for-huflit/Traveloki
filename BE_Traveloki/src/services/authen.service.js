@@ -371,60 +371,63 @@ class AuthSSOService {
     if (!code) throw new NotFoundError('Authorization code is required!');
 
     try {
-      const { accessToken, email, id } = await getAccessToken(code); // { accessToken, email, id }
+      const { accessToken, user } = await getAccessToken(code); // { accessToken, email, id }
+      console.log({ accessToken, user })
       const partner = await getUserProfile(accessToken);
-      // 3. check if isUser, if user isn't exist then create profile
-      const isPartner = await PartnerService.findOrCreatePartner(email);
+      console.log("getUserProfile::", partner)
 
-      // 4. create token jwt
-      if (isPartner) {
-        const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
-          modulusLength: 2048,
-          publicKeyEncoding: { type: 'pkcs1', format: 'pem' },
-          privateKeyEncoding: { type: 'pkcs1', format: 'pem' },
-        });
-        console.log({ privateKey, publicKey });
+      // // 3. check if isUser, if user isn't exist then create profile
+      // const isPartner = await PartnerService.findOrCreatePartner(email);
 
-        const publicKeyString = await KeyTokenService.createKeyTokenForPartner({
-          partnerId: isPartner._id,
-          publicKey,
-          privateKey,
-        });
+      // // 4. create token jwt
+      // if (isPartner) {
+      //   const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+      //     modulusLength: 2048,
+      //     publicKeyEncoding: { type: 'pkcs1', format: 'pem' },
+      //     privateKeyEncoding: { type: 'pkcs1', format: 'pem' },
+      //   });
+      //   console.log({ privateKey, publicKey });
 
-        if (!publicKeyString) {
-          return {
-            code: '400',
-            message: 'Bad Request: publicKeyString error! - line 113',
-          };
-        }
-        console.log(`publicKeyString::`, publicKeyString);
+      //   const publicKeyString = await KeyTokenService.createKeyTokenForPartner({
+      //     partnerId: isPartner._id,
+      //     publicKey,
+      //     privateKey,
+      //   });
 
-        const publicKeyObject = crypto.createPublicKey(publicKeyString);
-        console.log(`publicKeyObject::`, publicKeyObject);
+      //   if (!publicKeyString) {
+      //     return {
+      //       code: '400',
+      //       message: 'Bad Request: publicKeyString error! - line 113',
+      //     };
+      //   }
+      //   console.log(`publicKeyString::`, publicKeyString);
 
-        const tokens = await createTokenPair(
-          { partnerId: isPartner._id, email },
-          publicKeyObject,
-          privateKey,
-        );
-        console.log(`create tokens pair success::`, tokens);
+      //   const publicKeyObject = crypto.createPublicKey(publicKeyString);
+      //   console.log(`publicKeyObject::`, publicKeyObject);
+
+      //   const tokens = await createTokenPair(
+      //     { partnerId: isPartner._id, email },
+      //     publicKeyObject,
+      //     privateKey,
+      //   );
+      //   console.log(`create tokens pair success::`, tokens);
 
         return {
           code: 201,
-          metadata: {
-            partner: getInfoData({
-              fields: ['_id', 'name', 'email'],
-              object: isPartner,
-            }),
-            tokens,
-          },
-          isPartner,
+          // metadata: {
+          //   partner: getInfoData({
+          //     fields: ['_id', 'name', 'email'],
+          //     object: isPartner,
+          //   }),
+          //   tokens,
+          // },
+          partner: user,
           tokens: accessToken,
-          partnerEmail: email,
-          partnerId: id,
+          partnerEmail: user.email,
+          partnerId: user._id,
         };
       }
-    } catch (error) {
+    catch (error) {
       return {
         code: '500',
         message: error.message,

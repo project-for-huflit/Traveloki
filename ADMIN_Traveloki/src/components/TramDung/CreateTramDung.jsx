@@ -15,19 +15,20 @@ const CreateTramDung = () => {
   const [DiaChi, setDiaChi] = useState("");
   const navigate = useNavigate();
 
+  const fetchThanhPho = async () => {
+    try {
+      const res = await getThanhPho();
+      const options = res.map((item) => ({
+        value: item.code,
+        label: item.name,
+      }));
+      setThanhPhoOptions(options);
+    } catch (error) {
+      console.error("Error fetching city data:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchThanhPho = async () => {
-      try {
-        const res = await getThanhPho();
-        const options = res.map((item) => ({
-          value: item.code,
-          label: item.name,
-        }));
-        setThanhPhoOptions(options);
-      } catch (error) {
-        console.error("Error fetching city data:", error);
-      }
-    };
     fetchThanhPho();
   }, []);
   console.log("ThanhPhoOption", thanhPhoOptions);

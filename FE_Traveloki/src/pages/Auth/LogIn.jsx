@@ -36,7 +36,9 @@ const Login = () => {
 
     // https://traveloki.netlify.app/
     // https://sso-pointer.vercel.app/authorize?https://traveloki.netlify.app/auth/callback
-    window.location.href = `https://sso-pointer.vercel.app/authorize?${redirectToPointer}`;
+    // https://sso-pointer.vercel.app/authorize?http://localhost:5173/auth/callback
+    // window.location.href = `https://sso-pointer.vercel.app/authorize?${redirectToPointer}`;
+    window.location.href = `https://sso-pointer.vercel.app/authorize?clientId=673619f3a2e9285438e3da6f`;
   };
 
   /**

@@ -1,5 +1,5 @@
 'use strict'
-
+require('dotenv').config()
 const JWT = require('jsonwebtoken')
 
 const asyncHandler  = require('../../middlewares/asyncHandler.middeware')
@@ -205,25 +205,31 @@ const verifyJWT = async ( token, keySecret ) => {
 }
 
 const { PointerStrategy } = require("sso-pointer");
-const pointer = new PointerStrategy('123');
+// const pointer = new PointerStrategy('123');
+const pointer = new PointerStrategy(
+  process.env.POINTER_CLIENT_ID,
+  process.env.POINTER_CLIENT_SECRET
+);
+
 const getAccessToken = async (code) => {
   try {
-    const { accessToken, email, id } = await pointer.getAccessToken(code);
-    console.log({ accessToken, email, id })
-    return { accessToken, email, id }
+    console.log({
+      POINTER_CLIENT_ID: process.env.POINTER_CLIENT_ID,
+      POINTER_CLIENT_SECRET: process.env.POINTER_CLIENT_SECRET
+    })
+    const data = await pointer.getAccessToken(code);
+    console.log("getAccessToken::", data)
+    return data
   } catch (error) {
-    throw new Error('Failed to get access token!')
+    throw new Error('Failed to get access token!', error)
   }
 }
 
 const getUserProfile = async (accessToken) => {
   try {
-    const userProfile = await pointer.verifyAccessToken({ accessToken: accessToken, session: false });
-
-    console.log(`verifyAccessToken after userProfile::${userProfile}`);
-    if (!userProfile || !userProfile.email) { throw new NotFoundError('Invalid user profile') }
-
-    return userProfile
+    const payload = await pointer.verifyAccessToken(accessToken);
+    console.log(`verifyAccessToken after userProfile::${payload}`);
+    return payload
   } catch (error) {
     throw new Error('Failed to get user profile!')
   }
