@@ -1,11 +1,26 @@
+import { useEffect, useState } from "react";
+
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark, faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+
 import { setSelectedRow } from '../../redux/slice/vehicleSlice';
 
 function detailVehicle() {
   const navigate = useNavigate();
 
+  const [phuongtien, setPhuongTien] = useState({
+    MaSB: "",
+    LoaiPT: "bus",
+    TenPhuongTien: "",
+    MaSoXe: "",
+    SoGheToiDa: "",
+    Image: "",
+  });
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const selectedRow = useSelector((store) => store.vehicle.selectedRow);
   console.log('selectedRow::', selectedRow);
 
@@ -21,35 +36,55 @@ function detailVehicle() {
     {
       label: 'Tên phương tiện',
       placeHolder: `${selectedRow.TenPhuongTien}`,
+      isDisabled: false
     },
-    {
-      label: 'Loại phương tiện',
-      placeHolder: `${selectedRow.LoaiPT}`,
-    },
+    // {
+    //   label: 'Loại phương tiện',
+    //   placeHolder: `${selectedRow.LoaiPT}`,
+    // },
     {
       label: 'Sân bay hoạt động',
       placeHolder: `${selectedRow.MaSB.TenSanBay}`,
+      isDisabled: false
     },
     {
       label: 'Thành phố',
       placeHolder: `${selectedRow.MaSB.ThanhPho}`,
+      isDisabled: true
     },
     {
       label: 'Số ghế',
       placeHolder: `${selectedRow.SoGheToiDa}`,
+      isDisabled: false
     },
     {
       label: 'Biển Số',
       placeHolder: `${selectedRow.MaSoXe}`,
+      isDisabled: false
     },
     {
       label: 'Hình ảnh',
       placeHolder: `${selectedRow.Image}`,
+      isDisabled: false
     },
   ];
 
   const handleUpdateVehicle = () => {
     alert("i'm fine, OK!");
+  };
+
+  const handleToggle = (direction) => {
+    setPhuongTien((prevPhuongTien) => ({
+      ...prevPhuongTien,
+      LoaiPT:
+        prevPhuongTien.LoaiPT === "bus"
+          ? direction === "next"
+            ? "train"
+            : "bus"
+          : direction === "next"
+            ? "bus"
+            : "train",
+    }));
   };
   return (
     <div className="w-full flex justify-center items-start mt-6">
@@ -73,9 +108,30 @@ function detailVehicle() {
                           placeholder={label.placeHolder}
                           type="text"
                           className="p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          // isDisabled={label.isDisabled}
+
                         />
                       </div>
                     ))}
+
+                    <div className="">
+                    <label className="mb-2 text-gray-700">Loại Phương Tiện</label>
+                    <div className="flex items-center justify-between bg-slate-100 border-black rounded-lg p-2 mt-2">
+                      <FontAwesomeIcon
+                        icon={faArrowLeft}
+                        className="cursor-pointer text-xl"
+                        onClick={() => handleToggle('prev')}
+                      />
+                      <span className="text-black font-bold">
+                        {phuongtien.LoaiPT === 'bus' ? 'Bus' : 'Train'}
+                      </span>
+                      <FontAwesomeIcon
+                        icon={faArrowRight}
+                        className="cursor-pointer text-xl"
+                        onClick={() => handleToggle('next')}
+                      />
+                    </div>
+                    </div>
                   </div>
 
                   {/* ==================================================================================== */}

@@ -2,9 +2,15 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { setSelectedRow } from '../../redux/slice/waypointSlice';
+import Select from "react-select";
+import { useEffect, useState } from 'react';
+import { getThanhPho } from "../../services/api/ThanhPho/apiThanhPho.js";
 
 function ChiTietTramDung() {
   const navigate = useNavigate();
+
+  const [thanhPhoOptions, setThanhPhoOptions] = useState([]);
+  const [selectedThanhPho, setSelectedThanhPho] = useState(null);
 
   const selectedRow = useSelector((store) => store.vehicle.selectedRow);
   console.log('selectedRow::', selectedRow);
@@ -17,15 +23,34 @@ function ChiTietTramDung() {
     );
   }
 
+
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    const fetchThanhPho = async () => {
+      try {
+        const res = await getThanhPho();
+        const options = res.map((item) => ({
+          value: item.code,
+          label: item.name,
+        }));
+        setThanhPhoOptions(options);
+      } catch (error) {
+        console.error("Error fetching city data:", error);
+      }
+    };
+    fetchThanhPho();
+  }, []);
+
   const ListInput = [
     {
       label: 'Tên trạm dừng',
       placeHolder: `${selectedRow.TenTramDung}`,
     },
-    {
-      label: 'Thành phố',
-      placeHolder: `${selectedRow.ThanhPho}`,
-    },
+    // {
+    //   label: 'Thành phố',
+    //   placeHolder: `${selectedRow.ThanhPho}`,
+    // },
     {
       label: 'Địa chỉ',
       placeHolder: `${selectedRow.DiaChi}`,
@@ -60,6 +85,17 @@ function ChiTietTramDung() {
                         />
                       </div>
                     ))}
+                    <div className="mb-4">
+                      <label className="block text-black mb-2">Thành Phố</label>
+                      <Select
+                        className="py-4"
+                        options={thanhPhoOptions}
+                        value={selectedThanhPho}
+                        onChange={setSelectedThanhPho}
+                        placeholder="Chọn thành phố"
+                        isClearable
+                      />
+                    </div>
                   </div>
                 </form>
               </div>
