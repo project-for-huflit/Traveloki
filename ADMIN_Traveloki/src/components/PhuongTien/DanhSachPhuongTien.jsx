@@ -96,6 +96,7 @@ const DanhSachPhuongTien = (props) => {
 
 
   const handleRowClick = (row) => {
+    // row.preventDefault()
     dispatch(setSelectedRow(row));
   };
 
@@ -150,15 +151,15 @@ const DanhSachPhuongTien = (props) => {
           <TableBody>
             {phuongTien.map((phuongTien) => (
               <TableRow
-                component={Link}
-                to={`${slugify(phuongTien.TenPhuongTien, { lower: true, strict: true })}`} // URL đến chi tiết phương tiện
+                // component={Link}
+                // to={`${slugify(phuongTien.TenPhuongTien, { lower: true, strict: true })}`} // URL đến chi tiết phương tiện
                 key={phuongTien._id}
                 sx={{
                   '&:hover': { backgroundColor: '#e3f2fd' },
                   textDecoration: 'none',
                   cursor: 'pointer',
                 }}
-                onClick={() => handleRowClick(phuongTien)}
+                // onClick={() => handleRowClick(phuongTien)}
               >
                 <TableCell>{phuongTien.MaPT}</TableCell>
                 <TableCell>{phuongTien.TenPhuongTien}</TableCell>

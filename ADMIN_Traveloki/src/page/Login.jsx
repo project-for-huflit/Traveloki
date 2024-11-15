@@ -40,10 +40,11 @@ const Login = () => {
 
   const redirectToSSOPointer = () => {
     navigate('/load');
-    const redirectToPointer = encodeURIComponent(
-      `${import.meta.env.VITE_FE_URL}/auth/callback`,
-    );
-    window.location.href = `https://sso-pointer.vercel.app/authorize?callbackUrl=${redirectToPointer}`;
+    // const redirectToPointer = encodeURIComponent(
+    //   `${import.meta.env.VITE_FE_URL}/auth/callback`,
+    // );
+
+    window.location.href = `https://sso-pointer.vercel.app/authorize?clientId=${import.meta.env.VITE_CLIENTID_POINTER}`;
   };
 
   return (
