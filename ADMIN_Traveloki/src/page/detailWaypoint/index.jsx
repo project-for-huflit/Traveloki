@@ -1,31 +1,18 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { setSelectedRow } from '../../redux/slice/waypointSlice';
 import Select from "react-select";
-import { useEffect, useState } from 'react';
-import { getThanhPho } from "../../services/api/ThanhPho/apiThanhPho.js";
+import {useEffect, useState} from "react";
+import {getThanhPho} from "../../services/api/ThanhPho/apiThanhPho.js";
+import {updateTramDung} from "../../services/api/TramDung/apiUpdateTramDung.js";
+import {notification} from "antd";
 
 function ChiTietTramDung() {
-  const navigate = useNavigate();
-
   const [thanhPhoOptions, setThanhPhoOptions] = useState([]);
   const [selectedThanhPho, setSelectedThanhPho] = useState(null);
+  const [TenTramDung, setTenTramDung] = useState("");
+  const [DiaChi, setDiaChi] = useState("");
+  const navigate = useNavigate();
 
-  const selectedRow = useSelector((store) => store.vehicle.selectedRow);
-  console.log('selectedRow::', selectedRow);
-
-  if (!selectedRow) {
-    return (
-      <div className="mt-20 font-semibold text-2xl">
-        Không tìm thấy dữ liệu phương tiện.
-      </div>
-    );
-  }
-
-
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const fetchThanhPho = async () => {
       try {
@@ -42,23 +29,35 @@ function ChiTietTramDung() {
     fetchThanhPho();
   }, []);
 
-  const ListInput = [
-    {
-      label: 'Tên trạm dừng',
-      placeHolder: `${selectedRow.TenTramDung}`,
-    },
-    // {
-    //   label: 'Thành phố',
-    //   placeHolder: `${selectedRow.ThanhPho}`,
-    // },
-    {
-      label: 'Địa chỉ',
-      placeHolder: `${selectedRow.DiaChi}`,
-    },
-  ];
+  const selectedRow = useSelector((store) => store.vehicle.selectedRow);
 
-  const handleUpdateVehicle = () => {
-    alert("i'm fine, OK!");
+  if (!selectedRow) {
+    return (
+      <div className="mt-20 font-semibold text-2xl">
+        Không tìm thấy dữ liệu phương tiện.
+      </div>
+    );
+  }
+
+  const handleUpdateVehicle = async () => {
+    try {
+      const res = await updateTramDung(selectedRow._id, selectedThanhPho.label, TenTramDung, DiaChi);
+      if (res && res.EC === 0) {
+        notification.success({
+          message: "Cập nhật trạm dừng",
+          description: "Cập nhật trạm dừng thành công",
+        });
+        navigate("/waypoint/list");
+      } else {
+        notification.error({
+          message: "Cập nhật trạm dừng",
+          description: `Cập nhật trạm dừng thất bại: ${res.EM}`,
+        });
+      }
+    }catch (e) {
+      console.error("Error updating vehicle:", e);
+      alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
+    }
   };
   return (
     <div className="w-full flex justify-center items-start mt-6">
@@ -73,27 +72,38 @@ function ChiTietTramDung() {
               <div className="">
                 <form>
                   <div className="grid grid-cols-2 gap-6">
-                    {ListInput.map((label, index) => (
-                      <div key={index} className="flex flex-col">
-                        <label className="mb-2 text-gray-700">
-                          {label.label}
-                        </label>
-                        <input
-                          placeholder={label.placeHolder}
-                          type="text"
-                          className="p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-                    ))}
-                    <div className="mb-4">
-                      <label className="block text-black mb-2">Thành Phố</label>
+                    <div className="flex flex-col">
+                      <label className="mb-2 text-gray-700">
+                        Tên trạm dừng
+                      </label>
+                      <input
+                        placeholder={`${selectedRow.TenTramDung}`}
+                        type="text"
+                        className="p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        onChange={(e) => setTenTramDung(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex flex-col">
+                      <label className="mb-2 text-gray-700">
+                        Địa chỉ
+                      </label>
+                      <input
+                        placeholder={`${selectedRow.DiaChi}`}
+                        type="text"
+                        className="p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        onChange={(e) => setDiaChi(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex flex-col">
+                      <label className="mb-2 text-gray-700">
+                        Thành phố
+                      </label>
                       <Select
-                        className="py-4"
                         options={thanhPhoOptions}
-                        value={selectedThanhPho}
+                        placeholder={`${selectedRow.ThanhPho}`}
                         onChange={setSelectedThanhPho}
-                        placeholder="Chọn thành phố"
-                        isClearable
+                        value={selectedThanhPho}
+                        type="text"
                       />
                     </div>
                   </div>

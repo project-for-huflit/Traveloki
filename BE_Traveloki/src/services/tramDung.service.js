@@ -100,7 +100,28 @@ const deleteTramDungService = async (id) => {
   }
 };
 
+const updateTramDungService = async (_id, ThanhPho, DiaChi, TenTramDung) => {
+  try{
+    const result = await TramDung.findOneAndUpdate(
+      { _id: _id },
+      { ThanhPho, DiaChi, TenTramDung },
+      { new: true }
+    )
+    return  {
+      EC: 0,
+      EM: "Cập nhật trạm dừng thành công",
+      data: result,
+    }
+  }catch (error) {
+    console.log(error);
+    return {
+      EC: 1,
+      EM: "Không thể cập nhật trạm dừng",
+      data: [],
+    }
+  }
+}
 
 module.exports = {
-  getAllTramDungService, createTramDungService, deleteTramDungService
+  getAllTramDungService, createTramDungService, deleteTramDungService, updateTramDungService
 }

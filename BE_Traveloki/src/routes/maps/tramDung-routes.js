@@ -8,7 +8,8 @@ const {
   CreateTramDung,
   GetTramDungID,
   DeleteTramDung,
-  getThanhPho
+  getThanhPho,
+  updateTramDung
 } = require("../../controllers/tramDung_controller");
 
 route.get("/GetTramDung", GetTramDung);
@@ -17,5 +18,6 @@ route.get("/GetTramDungID/:id", GetTramDungID);
 route.delete("/DeleteTramDung/:id", DeleteTramDung);
 route.get("/TramDungByDiaChi", getTramDungByDiaChi);
 route.get("/ThanhPho", getThanhPho)
+route.post("/UpdateTramDung", updateTramDung)
 
 module.exports = route;

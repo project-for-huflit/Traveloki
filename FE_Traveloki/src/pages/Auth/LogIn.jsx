@@ -30,15 +30,15 @@ const Login = () => {
   // Navigate to Pointer
   const redirectToSSOPointer = () => {
     navigate('/load');
-    const redirectToPointer = encodeURIComponent(
-      `${import.meta.env.VITE_FE_URL}/auth/callback`,
-    );
+    // const redirectToPointer = encodeURIComponent(
+    //   `${import.meta.env.VITE_FE_URL}/auth/callback`,
+    // );
 
     // https://traveloki.netlify.app/
     // https://sso-pointer.vercel.app/authorize?https://traveloki.netlify.app/auth/callback
     // https://sso-pointer.vercel.app/authorize?http://localhost:5173/auth/callback
     // window.location.href = `https://sso-pointer.vercel.app/authorize?${redirectToPointer}`;
-    window.location.href = `https://sso-pointer.vercel.app/authorize?clientId=6736316d11bf388d7bed7261`;
+    window.location.href = `https://sso-pointer.vercel.app/authorize?clientId=${import.meta.env.VITE_CLIENTID_POINTER}`;
   };
 
   /**

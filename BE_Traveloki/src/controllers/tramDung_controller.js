@@ -6,11 +6,17 @@ const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.respon
 const axios = require('axios')
 const asyncHandler = require('../middlewares/asyncHandler.middeware')
 const {getAllTramDungService, createTramDungService,
-  deleteTramDungService
+  deleteTramDungService, updateTramDungService
 } = require("../services/tramDung.service");
 
 class WayPointController {}
 // module.exports = new WayPointController()
+
+const updateTramDung = async (req, res) => {
+  const {_id, ThanhPho, DiaChi, TenTramDung } = req.body;
+  const data = await updateTramDungService(_id, ThanhPho, DiaChi, TenTramDung);
+  return res.status(200).json(data);
+}
 
 const GetTramDung = async (req, res) => {
   const data = await getAllTramDungService();
@@ -92,5 +98,6 @@ module.exports = {
   GetTramDungID,
   DeleteTramDung,
   getTramDungByDiaChi,
-  getThanhPho
+  getThanhPho,
+  updateTramDung
 };
