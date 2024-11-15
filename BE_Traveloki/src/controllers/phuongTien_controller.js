@@ -19,6 +19,18 @@ const {
 class VehicleController {}
 // module.exports = new VehicleController()
 
+const GetPhuongTienAdmin = async (req, res) => {
+  try {
+    const phuongTien = await getAllPhuongTienService();
+    res.status(200).json(phuongTien);
+  } catch (err) {
+    res.status(500).json({
+      status: 'fail',
+      message: 'Server Error',
+    });
+  }
+};
+
 const GetPhuongTien = async (req, res) => {
   try {
     const parternId = req.params.id;
@@ -139,6 +151,7 @@ const updatePhuongTien = async (req, res) => {
 
 module.exports = {
   GetPhuongTien,
+  GetPhuongTienAdmin,
   CreatePhuongTien,
   DeletePhuongTien,
   SearchFindPhuongTien,

@@ -4,6 +4,7 @@ const express = require('express');
 const route = express.Router();
 const {
   GetPhuongTien,
+  GetPhuongTienAdmin,
   CreatePhuongTien,
   SearchFindPhuongTien,
   DeletePhuongTien,
@@ -13,6 +14,7 @@ const {
 } = require('../../controllers/phuongTien_controller');
 
 route.get('/GetPhuongTien/:id', GetPhuongTien);
+route.get('/GetPhuongTienAdmin', GetPhuongTienAdmin);
 route.get('/SearchFindPhuongTien/:type', SearchFindPhuongTien);
 route.post('/CreatePhuongTien', CreatePhuongTien);
 route.delete('/DeletePhuongTien/:id', DeletePhuongTien);

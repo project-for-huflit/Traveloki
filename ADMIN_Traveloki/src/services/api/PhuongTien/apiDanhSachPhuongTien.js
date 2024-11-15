@@ -6,7 +6,7 @@ const fetchAllPhuongTienPartern = async (_id) => {
 };
 
 const fetchAllPhuongTien = async () => {
-  const URL_BACKEND = '/api/GetPhuongTien';
+  const URL_BACKEND = '/api/GetPhuongTienAdmin';
   return axios.get(URL_BACKEND);
 };
 
@@ -15,4 +15,4 @@ const deletePhuongTien = async (_id) => {
   return axios.delete(URL_BACKEND);
 };
 
-export { fetchAllPhuongTien, deletePhuongTien };
+export { fetchAllPhuongTien, deletePhuongTien, fetchAllPhuongTienPartern };
