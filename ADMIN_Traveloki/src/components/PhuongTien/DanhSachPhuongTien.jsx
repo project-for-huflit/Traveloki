@@ -30,6 +30,9 @@ const DanhSachPhuongTien = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false); // Trạng thái hiển thị Modal
   const [phuongTienToDelete, setPhuongTienToDelete] = useState(null); // Trạng thái lưu phương tiện cần xóa
 
+  // if(isAdmin){
+
+  // }
   useEffect(() => {
     const danhSachPhuongTien = async () => {
       try {
@@ -60,8 +63,8 @@ const DanhSachPhuongTien = (props) => {
           });
           setPhuongTien((prev) =>
             prev.filter(
-              (phuongTien) => phuongTien._id !== phuongTienToDelete._id
-            )
+              (phuongTien) => phuongTien._id !== phuongTienToDelete._id,
+            ),
           ); // Cập nhật danh sách sau khi xóa
         } else {
           alert(res.EM);
@@ -93,7 +96,6 @@ const DanhSachPhuongTien = (props) => {
   // const slug = slugify(title, { lower: true, strict: true })
   // const productPath = `${slug}`;
   //<Link to={`${slugify(phuongTien.TenPhuongTien, { lower: true, strict: true })}`} >
-
 
   const handleRowClick = (row) => {
     dispatch(setSelectedRow(row));
