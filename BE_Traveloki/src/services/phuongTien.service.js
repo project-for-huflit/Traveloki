@@ -68,6 +68,14 @@ const createPhuongTienService = async (LoaiPT, TenPhuongTien, MaSoXe, SoGheToiDa
 
 const deletePhuongTienService = async (id) => {
   try {
+    const checkPhuongTienInLichChay = await LichChay.findOne({ MaPT: id });
+    if (checkPhuongTienInLichChay) {
+      return {
+        EC: 1,
+        EM: "Không thể xóa phương tiện vì phương tiện đang được sử dụng trong lịch chạy",
+      };
+    }
+    
     const result = await PhuongTien.deleteOne({ _id: id });
     if (result.deletedCount === 0) {
       return {

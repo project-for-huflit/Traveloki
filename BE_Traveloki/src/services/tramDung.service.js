@@ -19,53 +19,68 @@ const getAllTramDungService = async () => {
 }
 
 const createTramDungService = async (ThanhPho, DiaChi, TenTramDung) => {
-  try{
-    const existTenTramDung = await TramDung.exists({TenTramDung});
-    if (existTenTramDung){
+  try {
+    // Kiểm tra trùng tên trạm dừng
+    const existTenTramDung = await TramDung.exists({ TenTramDung });
+    if (existTenTramDung) {
       console.log(`TramDung exists ${TenTramDung}`);
       return {
         EC: 1,
         EM: "Tên trạm dừng đã tồn tại",
-      }
+      };
     }
 
-    const existDiaChi = await TramDung.exists({DiaChi});
-    if (existDiaChi){
+    // Kiểm tra trùng địa chỉ
+    const existDiaChi = await TramDung.exists({ DiaChi });
+    if (existDiaChi) {
       console.log(`DiaChi exists ${DiaChi}`);
       return {
         EC: 1,
         EM: "Địa chỉ đã tồn tại",
-      }
-    }
-    // Lấy trạm dừng có mã lớn nhất để tạo mã mới
-    const lastTramDung = await TramDung.findOne().sort({ MaTramDung: -1 }).exec();
-    let newMaTramDung = "TD1"; // Nếu chưa có trạm dừng nào, khởi tạo mặc định là TD1
-
-    if (lastTramDung && lastTramDung.MaTramDung) {
-      const lastNumber = parseInt(lastTramDung.MaTramDung.slice(2), 10); // Lấy phần số
-      newMaTramDung = `TD${lastNumber + 1}`; // Tăng số lên
+      };
     }
 
+    // Sử dụng aggregate để lấy mã trạm dừng lớn nhất
+    const lastTramDung = await TramDung.aggregate([
+      {
+        $addFields: {
+          numericMaTramDung: { $toInt: { $substr: ["$MaTramDung", 2, -1] } }
+        }
+      },
+      { $sort: { numericMaTramDung: -1 } },
+      { $limit: 1 }
+    ]);
+
+    // Khởi tạo mã trạm dừng mới
+    let newMaTramDung = "TD1";
+    if (lastTramDung.length > 0 && lastTramDung[0].numericMaTramDung) {
+      const lastNumber = lastTramDung[0].numericMaTramDung;
+      newMaTramDung = `TD${lastNumber + 1}`;
+    }
+
+    // Tạo trạm dừng mới
     const result = await TramDung.create({
       MaTramDung: newMaTramDung,
       ThanhPho: ThanhPho,
       DiaChi: DiaChi,
       TenTramDung: TenTramDung
     });
+
     return {
       EC: 0,
       EM: "Tạo trạm dừng thành công",
       data: result,
     };
-  }catch (error){
+  } catch (error) {
     console.log(error);
     return {
       EC: 1,
       EM: "Không thể tạo trạm dừng",
       data: [],
-    }
+    };
   }
-}
+};
+
 
 const deleteTramDungService = async (id) => {
   try {
