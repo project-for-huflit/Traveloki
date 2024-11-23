@@ -7,6 +7,7 @@ import { fetchAllSanBay } from "../../services/api/ListSanBay/apiDanhSachSanBay.
 import { createTuyenXe } from "../../services/api/TuyenXe/apiCreateTuyenXe.js";
 import {fetchAllTramDung} from "../../services/api/TramDung/apiDanhSachTramDung.js";
 import {notification} from "antd";
+import Select from "react-select";
 
 const CreateTuyenXe = () => {
   const [tuyenxe, setTuyenXe] = useState({
@@ -50,6 +51,32 @@ const CreateTuyenXe = () => {
     }
     danhSachTramDung();
   }, []);
+
+  const optionsDiemKetThuc = tramDung.map((tramdung) => ({
+    value: tramdung.TenTramDung,
+    label: `${tramdung.MaTramDung} - ${tramdung.ThanhPho} - ${tramdung.TenTramDung}`,
+  }));
+
+  const handleSelectChangeDiemKetThuc = (selectedOption) => {
+    // Lưu MaSB từ selectedOption (giả sử value chứa ObjectId)
+    setTuyenXe((prevTuyenXe) => ({
+      ...prevTuyenXe,
+      DiemKetThuc: selectedOption ? selectedOption.value : "",
+    }));
+  };
+
+  const optionsDiemKhoiHanh = sanBays.map((sanbay) => ({
+    value: sanbay.TenSanBay,
+    label: `${sanbay.MaSB} - ${sanbay.ThanhPho} - ${sanbay.TenSanBay}`,
+  }));
+
+  const handleSelectChangeDiemKhoiHanh = (selectedOption) => {
+    // Lưu MaSB từ selectedOption (giả sử value chứa ObjectId)
+    setTuyenXe((prevTuyenXe) => ({
+      ...prevTuyenXe,
+      DiemKhoiHanh: selectedOption ? selectedOption.value : "",
+    }));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -130,28 +157,36 @@ const CreateTuyenXe = () => {
       <div className="pt-4 flex justify-center">
         <div className="w-1/2">
           <label className="text-black">Điểm khởi hành</label>
-          <select
-            name="DiemKhoiHanh"
-            value={tuyenxe.DiemKhoiHanh}
-            onChange={handleChange}
-            className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
-          >
-            <option value="">Chọn điểm khởi hành</option>
-            {sanBays.map((sanBay) => (
-              <option key={sanBay._id} value={sanBay.TenSanBay}>
-                {sanBay.TenSanBay} ({sanBay.MaSB})
-              </option>
-            ))}
-          </select>
-          <label className="text-black pb-4 ">Điểm kết thúc</label>
-          <input
-            type="text"
-            name="DiemKetThuc"
-            value={tuyenxe.DiemKetThuc}
-            onChange={handleChange}
-            className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
+          <Select
+            options={optionsDiemKhoiHanh}
+            onChange={handleSelectChangeDiemKhoiHanh}
+            className="basic-single"
+            classNamePrefix="select"
+            isClearable={true}
+            placeholder="Chọn Điểm Kết Thúc"
           />
-
+          {/*<select*/}
+          {/*  name="DiemKhoiHanh"*/}
+          {/*  value={tuyenxe.DiemKhoiHanh}*/}
+          {/*  onChange={handleChange}*/}
+          {/*  className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"*/}
+          {/*>*/}
+          {/*  <option value="">Chọn điểm khởi hành</option>*/}
+          {/*  {sanBays.map((sanBay) => (*/}
+          {/*    <option key={sanBay._id} value={sanBay.TenSanBay}>*/}
+          {/*      {sanBay.TenSanBay} ({sanBay.MaSB})*/}
+          {/*    </option>*/}
+          {/*  ))}*/}
+          {/*</select>*/}
+          <label className="text-black pb-4 ">Điểm kết thúc</label>
+          <Select
+            options={optionsDiemKetThuc}
+            onChange={handleSelectChangeDiemKetThuc}
+            className="basic-single"
+            classNamePrefix="select"
+            isClearable={true}
+            placeholder="Chọn Điểm Kết Thúc"
+          />
           <label className="text-black pb-4">Thời gian khởi hành</label>
           <input
             type="time"

@@ -17,14 +17,13 @@ import {
   deletePhuongTien,
 } from '../../services/api/PhuongTien/apiDanhSachPhuongTien'; // API của phương tiện
 import { Modal as AntdModal, notification } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
-import slugify from 'slugify';
+import { useDispatch } from 'react-redux';
 import { setSelectedRow } from '../../redux/slice/vehicleSlice';
 
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
-const DanhSachPhuongTien = (props) => {
+const DanhSachPhuongTien = () => {
   const dispatch = useDispatch();
   const [phuongTien, setPhuongTien] = useState([]); // Trạng thái lưu danh sách phương tiện
   const [isModalVisible, setIsModalVisible] = useState(false); // Trạng thái hiển thị Modal
@@ -53,7 +52,8 @@ const DanhSachPhuongTien = (props) => {
     if (phuongTienToDelete) {
       try {
         const res = await deletePhuongTien(phuongTienToDelete._id); // Xóa phương tiện dựa trên ID
-        if (res && res.EC === 0) {
+        console.log("res",res)
+        if (res) {
           notification.success({
             message: 'Xóa phương tiện',
             description: 'Xóa phương tiện thành công',
@@ -205,8 +205,8 @@ const DanhSachPhuongTien = (props) => {
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        okText="Có"
-        cancelText="Không"
+        okText="Xác nhận"
+        cancelText="Hủy"
       >
         <p>Bạn có chắc chắn muốn xóa phương tiện này?</p>
       </AntdModal>
