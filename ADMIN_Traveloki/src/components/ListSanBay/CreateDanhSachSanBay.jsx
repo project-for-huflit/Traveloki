@@ -1,14 +1,42 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import {createDanhSachSanBay} from "../../services/api/ListSanBay/apiCreateDanhSachSanBay.js";
 import { notification } from "antd";
+import {getThanhPho} from "../../services/api/ThanhPho/apiThanhPho.js";
+import Select from "react-select";
 
 const CreateDanhSachSanBay = () => {
+  const [thanhPhoOptions, setThanhPhoOptions] = useState([]);
+  const [selectedThanhPho, setSelectedThanhPho] = useState(null);
   const [danhSachSanBay, setDanhSachSanBay] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchThanhPho = async () => {
+      try {
+        const res = await getThanhPho();
+        const options = res.map((item) => ({
+          value: item.code,
+          label: item.name,
+        }));
+        setThanhPhoOptions(options);
+      } catch (error) {
+        console.error("Error fetching city data:", error);
+      }
+    };
+    fetchThanhPho();
+  }, []);
+
+  const handleThanhPhoChange = (selectedOption) => {
+    setSelectedThanhPho(selectedOption);
+    setDanhSachSanBay({
+      ...danhSachSanBay,
+      ThanhPho: selectedOption ? selectedOption.label : null, // Lưu giá trị thành phố vào danhSachSanBay
+    });
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,16 +85,12 @@ const CreateDanhSachSanBay = () => {
             className="w-full mt-2 bg-slate-100 border-black rounded-lg  p-2"
           />
           <label className="text-black pb-4">Thành phố</label>
-          <input
-            type="text"
-            value={danhSachSanBay.ThanhPho || ""}
-            onChange={(e) =>
-              setDanhSachSanBay({
-                ...danhSachSanBay,
-                ThanhPho: e.target.value,
-              })
-            }
-            className="w-full mt-2 bg-slate-100 border-black rounded-lg  p-2"
+          <Select
+            options={thanhPhoOptions}
+            value={selectedThanhPho}
+            onChange={handleThanhPhoChange}
+            placeholder="Chọn thành phố"
+            isClearable
           />
           <div className="flex justify-center">
             <button
