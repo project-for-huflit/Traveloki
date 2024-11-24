@@ -126,8 +126,8 @@ const DanhSachTramDung = () => {
           <TableBody>
             {tramDung.map((tram) => (
               <TableRow
-              component={Link}
-              to={`${slugify(tram.TenTramDung, { lower: true, strict: true })}`}
+                component={Link}
+                to={`${slugify(tram.TenTramDung, { lower: true, strict: true })}`}
                 key={tram._id}
                 sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}
                 onClick={() => handleRowClick(tram)}
@@ -138,7 +138,13 @@ const DanhSachTramDung = () => {
                 <TableCell>{tram.DiaChi}</TableCell>
                 {!isAdmin && (
                   <TableCell>
-                    <IconButton color="error" onClick={() => showModal(tram)}>
+                    <IconButton
+                      color="error"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        showModal(tram);
+                      }}
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>

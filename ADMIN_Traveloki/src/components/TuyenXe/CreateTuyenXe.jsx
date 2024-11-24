@@ -7,6 +7,7 @@ import { fetchAllSanBay } from "../../services/api/ListSanBay/apiDanhSachSanBay.
 import { createTuyenXe } from "../../services/api/TuyenXe/apiCreateTuyenXe.js";
 import {fetchAllTramDung} from "../../services/api/TramDung/apiDanhSachTramDung.js";
 import {notification} from "antd";
+import Select from "react-select";
 
 const CreateTuyenXe = () => {
   const [tuyenxe, setTuyenXe] = useState({
@@ -15,6 +16,8 @@ const CreateTuyenXe = () => {
     ThoiGianKhoiHanh: "",
     ThoiGianKetThuc: "",
   });
+  const [cityKhoiHanh, setCityKhoiHanh] = useState("");
+  const [cityKetThuc, setCityKetThuc] = useState("");
   const [sanBays, setSanBays] = useState([]);
   const [tramDung, setTramDung] = useState([]);
   const [tramList, setTramList] = useState([{ MaTramDung: "", SoKM: "", GiaVe: "" }]);
@@ -51,6 +54,51 @@ const CreateTuyenXe = () => {
     danhSachTramDung();
   }, []);
 
+  const handleSelectChangeDiemKetThuc = (selectedOption) => {
+    if (selectedOption) {
+      const city = selectedOption.label.split(" - ")[1];
+      setCityKetThuc(city);
+      setTuyenXe((prevTuyenXe) => ({
+        ...prevTuyenXe,
+        DiemKetThuc: selectedOption.value,
+      }));
+    } else {
+      setCityKetThuc("");
+    }
+  };
+
+  const handleSelectChangeDiemKhoiHanh = (selectedOption) => {
+    if (selectedOption) {
+      const city = selectedOption.label.split(" - ")[1];
+      setCityKhoiHanh(city);
+      setTuyenXe((prevTuyenXe) => ({
+        ...prevTuyenXe,
+        DiemKhoiHanh: selectedOption.value,
+      }));
+    } else {
+      setCityKhoiHanh("");
+    }
+  };
+
+  const filteredSanBays = cityKetThuc
+    ? sanBays.filter((sanBay) => sanBay.ThanhPho === cityKetThuc)
+    : sanBays;
+
+  const filteredTramDung = cityKhoiHanh
+    ? tramDung.filter((tram) => tram.ThanhPho === cityKhoiHanh)
+    : tramDung;
+
+  const getFilteredTramDungOptions = (index) => {
+    const DiemKetThucId = filteredTramDung.find((tram) => tram.TenTramDung === tuyenxe.DiemKetThuc)?._id;
+    const selectedMaTramDung = tramList.map((tram) => tram.MaTramDung);
+    const excludedTrams = [...selectedMaTramDung, DiemKetThucId];
+    return filteredTramDung.filter(
+      (tram) =>
+        !excludedTrams.includes(tram._id) ||
+        tram._id === tramList[index]?.MaTramDung
+    );
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTuyenXe((prevTuyenXe) => ({
@@ -59,10 +107,19 @@ const CreateTuyenXe = () => {
     }));
   };
 
+  console.log("tuyenxe", tuyenxe);
+  console.log("tramList", tramList);
+
   const handleTramChange = (e, index) => {
     const { name, value } = e.target;
     const updatedTramList = [...tramList];
     updatedTramList[index][name] = value;
+    setTramList(updatedTramList);
+  };
+
+  const handleTramMaTramChange = (selectedOption, index) => {
+    const updatedTramList = [...tramList];
+    updatedTramList[index].MaTramDung = selectedOption ? selectedOption.value : ""; // Gán giá trị hoặc chuỗi rỗng nếu không chọn
     setTramList(updatedTramList);
   };
 
@@ -130,28 +187,29 @@ const CreateTuyenXe = () => {
       <div className="pt-4 flex justify-center">
         <div className="w-1/2">
           <label className="text-black">Điểm khởi hành</label>
-          <select
-            name="DiemKhoiHanh"
-            value={tuyenxe.DiemKhoiHanh}
-            onChange={handleChange}
-            className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
-          >
-            <option value="">Chọn điểm khởi hành</option>
-            {sanBays.map((sanBay) => (
-              <option key={sanBay._id} value={sanBay.TenSanBay}>
-                {sanBay.TenSanBay} ({sanBay.MaSB})
-              </option>
-            ))}
-          </select>
-          <label className="text-black pb-4 ">Điểm kết thúc</label>
-          <input
-            type="text"
-            name="DiemKetThuc"
-            value={tuyenxe.DiemKetThuc}
-            onChange={handleChange}
-            className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
+          <Select
+            options={filteredSanBays.map((sanbay) => ({
+              value: sanbay.TenSanBay,
+              label: `${sanbay.MaSB} - ${sanbay.ThanhPho} - ${sanbay.TenSanBay}`,
+            }))}
+            onChange={handleSelectChangeDiemKhoiHanh}
+            className="basic-single"
+            classNamePrefix="select"
+            isClearable={true}
+            placeholder="Chọn Điểm Kết Thúc"
           />
-
+          <label className="text-black pb-4 ">Điểm kết thúc</label>
+          <Select
+            options={filteredTramDung.map((tramdung) => ({
+              value: tramdung.TenTramDung,
+              label: `${tramdung.MaTramDung} - ${tramdung.ThanhPho} - ${tramdung.TenTramDung}`,
+            }))}
+            onChange={handleSelectChangeDiemKetThuc}
+            className="basic-single"
+            classNamePrefix="select"
+            isClearable={true}
+            placeholder="Chọn Điểm Kết Thúc"
+          />
           <label className="text-black pb-4">Thời gian khởi hành</label>
           <input
             type="time"
@@ -171,51 +229,51 @@ const CreateTuyenXe = () => {
           />
 
           {tramList.map((tram, index) => (
-            <div key={index} className="flex space-x-4 mt-4 items-center">
+            <div key={index} className="flex flex-col space-y-4 mt-4">
               <div>
                 <label className="text-black pb-4">Mã trạm</label>
-                <select
+                <Select
                   name="MaTramDung"
-                  value={tram.MaTramDung}
-                  onChange={(e) => handleTramChange(e, index)}
-                  className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
+                  placeholder="Chọn Trạm dừng"
+                  options={getFilteredTramDungOptions(index).map((tramOption) => ({
+                    value: tramOption._id,
+                    label: `${tramOption.MaTramDung} - ${tramOption.ThanhPho} - ${tramOption.TenTramDung}`,
+                  }))}
+                  className="basic-single"
+                  classNamePrefix="select"
+                  isClearable={true}
+                  onChange={(selectedOption) => handleTramMaTramChange(selectedOption, index)}
+                ></Select>
+              </div>
+              <div className="flex space-x-4 items-center">
+                <div>
+                  <label className="text-black pb-4">Số km</label>
+                  <input
+                    name="SoKM"
+                    value={tram.SoKM}
+                    onChange={(e) => handleTramChange(e, index)}
+                    className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
+                  />
+                </div>
+                <div>
+                  <label className="text-black pb-4">Giá vé</label>
+                  <input
+                    name="GiaVe"
+                    value={tram.GiaVe}
+                    onChange={(e) => handleTramChange(e, index)}
+                    className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeTramAtIndex(index)}
+                  className="bg-red-500 p-2 hover:bg-red-700 text-white font-bold rounded"
                 >
-                  <option value="">Chọn trạm</option>
-                  {tramDung.map((tramOption) => (
-                    <option key={tramOption._id} value={tramOption._id}>
-                      {tramOption.TenTramDung} ({tramOption.MaTramDung})
-                    </option>
-                  ))}
-                </select>
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
               </div>
-              <div>
-                <label className="text-black pb-4">Số km</label>
-                <input
-                  name="SoKM"
-                  value={tram.SoKM}
-                  onChange={(e) => handleTramChange(e, index)}
-                  className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
-                />
-              </div>
-              <div>
-                <label className="text-black pb-4">Giá vé</label>
-                <input
-                  name="GiaVe"
-                  value={tram.GiaVe}
-                  onChange={(e) => handleTramChange(e, index)}
-                  className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => removeTramAtIndex(index)}
-                className="bg-red-500 p-2 hover:bg-red-700 text-white font-bold rounded mt-8"
-              >
-                <FontAwesomeIcon icon={faTrash}/>
-              </button>
             </div>
           ))}
-
           <div className="flex justify-end space-x-4 mt-4">
             <button
               type="button"
