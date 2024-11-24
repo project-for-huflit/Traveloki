@@ -28,7 +28,6 @@ function callbackPage() {
             throw new Error('Network response was not ok');
           }
           const data = await response.json();
-          console.log('data dau buoi', data);
           console.log(
             'Phản hồi từ server tạo yêu cầu từ sso-pointer: ',
             data.metadata,
@@ -41,7 +40,8 @@ function callbackPage() {
             localStorage.setItem('partner', data.metadata);
 
             const userId = data.metadata.partnerId;
-            console.log('userId: ', userId);
+            // console.log("userId: ", userId);
+
             navigate('/', { state: { userId } });
           } else {
             console.error('No token found in response: ', data);
