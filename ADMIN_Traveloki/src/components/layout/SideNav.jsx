@@ -246,41 +246,41 @@ const SideNav = () => {
               </ListItemButton>
             </NavLink>
           </ListItem>
+          {/* Danh sách sân bay */}
+          <ListItem disablePadding sx={{ display: 'block' }}>
+            <NavLink
+              to="/airport/list"
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-blue-500 bg-gray-200'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    justifyContent: 'center',
+                    mr: open ? 3 : 'auto',
+                  }}
+                >
+                  <LocalAirportIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Danh sách sân bay"
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </NavLink>
+          </ListItem>
           {isAdmin && (
             <>
-              {/* Danh sách sân bay */}
-              <ListItem disablePadding sx={{ display: 'block' }}>
-                <NavLink
-                  to="/airport/list"
-                  className={({ isActive }) =>
-                    isActive
-                      ? 'text-blue-500 bg-gray-200'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }
-                >
-                  <ListItemButton
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? 'initial' : 'center',
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        justifyContent: 'center',
-                        mr: open ? 3 : 'auto',
-                      }}
-                    >
-                      <LocalAirportIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Danh sách sân bay"
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </NavLink>
-              </ListItem>
               {/* Danh sách Xe */}
               <ListItem disablePadding sx={{ display: 'block' }}>
                 <NavLink

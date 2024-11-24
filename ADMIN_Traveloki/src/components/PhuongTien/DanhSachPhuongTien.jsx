@@ -1,3 +1,4 @@
+import slugify from 'slugify';
 import {
   Table,
   TableBody,
@@ -46,7 +47,15 @@ const DanhSachPhuongTien = () => {
       danhSachPhuongTien();
     }
   }, []);
-
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem('user'));
+    const roles = users?.roles?.[0];
+    console.log(roles);
+    if (roles === 'ADMIN') {
+      setIsAdmin(true);
+    }
+  }, []);
   useEffect(() => {
     if (isAdmin) {
       const danhSachPhuongTien = async () => {
@@ -73,7 +82,7 @@ const DanhSachPhuongTien = () => {
     if (phuongTienToDelete) {
       try {
         const res = await deletePhuongTien(phuongTienToDelete._id); // Xóa phương tiện dựa trên ID
-        console.log("res",res)
+        console.log('res', res);
         if (res) {
           notification.success({
             message: 'Xóa phương tiện',
@@ -105,7 +114,6 @@ const DanhSachPhuongTien = () => {
   // const slug = slugify(title, { lower: true, strict: true })
   // const productPath = `${slug}`;
   // <Link to={`${slugify(phuongTien.TenPhuongTien, { lower: true, strict: true })}`} >
-
 
   const handleRowClick = (row) => {
     // row.preventDefault()

@@ -83,7 +83,7 @@ const DanhSachSanBay = () => {
     <div className="w-auto h-full bg-white p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-black text-4xl">Danh sách sân bay</h1>
-        {!isAdmin && (
+        {isAdmin && (
           <Link to="/airport/list/create">
             <Button variant="contained" color="primary">
               Thêm sân bay
@@ -104,9 +104,11 @@ const DanhSachSanBay = () => {
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                 Thành phố
               </TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
-                Hành động
-              </TableCell>
+              {isAdmin && (
+                <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                  Hành động
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -118,11 +120,13 @@ const DanhSachSanBay = () => {
                 <TableCell>{sanBay.MaSB}</TableCell>
                 <TableCell>{sanBay.TenSanBay}</TableCell>
                 <TableCell>{sanBay.ThanhPho}</TableCell>
-                <TableCell>
-                  <IconButton color="error" onClick={() => showModal(sanBay)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
+                {isAdmin && (
+                  <TableCell>
+                    <IconButton color="error" onClick={() => showModal(sanBay)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>

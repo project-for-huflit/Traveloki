@@ -39,8 +39,8 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useEffect, useState } from 'react';
 import { useAppStore } from '../../appStore.jsx';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../redux/slice/authSlice.js';
+// import { useDispatch } from 'react-redux';
+// import { logout } from '../../redux/slice/authSlice.js';
 import logo from '../../assets/logoTravelokiWhite.png';
 
 const AppBar = styled(
@@ -110,6 +110,15 @@ const Header = () => {
     }
   }, [roles]);
 
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem('user'));
+    const roles = users?.roles?.[0];
+    if (roles === 'admin') {
+      setIsAdmin(true);
+    }
+  }, []);
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -159,7 +168,11 @@ const Header = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuLogin}>Đăng nhập với tư cách admin</MenuItem>
+      {isAdmin && (
+        <MenuItem onClick={handleMenuLogin}>
+          Đăng nhập với tư cách admin
+        </MenuItem>
+      )}
       <MenuItem onClick={handleMenuClose}>Hồ sơ</MenuItem>
       <MenuItem onClick={handleMenuClose}>Tài khoản của tôi</MenuItem>
       <MenuItem onClick={handleLogOut}>Đăng xuất</MenuItem>
