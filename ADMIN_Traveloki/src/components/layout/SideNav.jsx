@@ -352,7 +352,7 @@ const SideNav = () => {
               {/* Dashboard */}
               <ListItem disablePadding sx={{ display: 'block' }}>
                 <NavLink
-                  to="/home"
+                  to="dashboard"
                   className={({ isActive }) =>
                     isActive
                       ? 'text-blue-500 bg-gray-200'
