@@ -32,10 +32,7 @@ const authSlice = createSlice({
       state.refreshToken = null;
       state.isAuthenticated = false;
 
-      localStorage.removeItem('name');
-      localStorage.removeItem('token');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('user');
+      localStorage.clear()
     },
   },
 });

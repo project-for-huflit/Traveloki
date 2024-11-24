@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -11,54 +11,35 @@ import {
   Button,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Link } from 'react-router-dom';
+import { Modal as AntdModal, notification } from 'antd';
 import {
   deleteTuyenXe,
   fetchAllTuyenXe,
 } from '../../services/api/TuyenXe/apiDanhSachTuyenXe';
-import { Link } from 'react-router-dom';
-import { Popconfirm } from 'antd';
-
-import { useDispatch, useSelector } from 'react-redux';
 import slugify from 'slugify';
+import { useDispatch } from 'react-redux';
 import { setSelectedRow } from '../../redux/slice/routeSlice';
-
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 
 const DanhSachTuyenXe = () => {
   const dispatch = useDispatch();
-
-  const [tuyenxe, setTuyenxe] = useState([]);
+  const [tuyenXe, setTuyenXe] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [routeToDelete, setRouteToDelete] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const fetchTuyenXe = async () => {
+    const fetchData = async () => {
       try {
         const res = await fetchAllTuyenXe();
-        setTuyenxe(res.data || []);
+        setTuyenXe(res.data || []);
       } catch (error) {
-        console.error('Không thể lấy dữ liệu phương tiện:', error);
+        console.error('Không thể lấy dữ liệu tuyến xe:', error);
       }
     };
-    fetchTuyenXe();
+    fetchData();
   }, []);
 
-  console.log('check tuyenxe', tuyenxe);
-  const handleDeleteTuyenXe = async (_id) => {
-    try {
-      const res = await deleteTuyenXe(_id);
-      if (res.ok) {
-        alert('Xóa thành công');
-        setTuyenxe((prev) => prev.filter((tuyenXe) => tuyenXe._id !== _id));
-      } else {
-        const { message } = await res.json();
-        alert(`Xóa thất bại: ${message}`);
-      }
-    } catch (error) {
-      console.error('Error deleting route:', error);
-      alert('Đã xảy ra lỗi khi xóa tuyến');
-    }
-  };
-  const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
     const users = JSON.parse(localStorage.getItem('user'));
     const roles = users?.roles?.[0];
@@ -67,14 +48,50 @@ const DanhSachTuyenXe = () => {
     }
   }, []);
 
+  const showModal = (route) => {
+    setRouteToDelete(route);
+    setIsModalVisible(true);
+  };
+
+  const handleOk = async () => {
+    if (routeToDelete) {
+      try {
+        const res = await deleteTuyenXe(routeToDelete._id);
+        if (res && res.EC === 0) {
+          notification.success({
+            message: 'Xóa tuyến xe',
+            description: 'Xóa tuyến xe thành công',
+          });
+          setTuyenXe((prev) =>
+            prev.filter((tuyen) => tuyen._id !== routeToDelete._id),
+          );
+        } else {
+          notification.error({
+            message: 'Lỗi xóa tuyến xe',
+            description: res.EM || 'Không thể xóa tuyến xe',
+          });
+        }
+      } catch (error) {
+        console.error('Error deleting route:', error);
+        notification.error({
+          message: 'Lỗi hệ thống',
+          description: 'Đã xảy ra lỗi khi xóa tuyến xe',
+        });
+      }
+    }
+    setIsModalVisible(false);
+    setRouteToDelete(null);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setRouteToDelete(null);
+  };
+
   const handleRowClick = (row) => {
     dispatch(setSelectedRow(row));
   };
 
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(10);
   return (
     <div className="w-auto h-full bg-white p-4">
       <div className="flex justify-between items-center mb-4">
@@ -114,33 +131,35 @@ const DanhSachTuyenXe = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {tuyenxe.map((tuyenXe) => (
+            {tuyenXe.map((route) => (
               <TableRow
                 component={Link}
-                to={`${slugify(`${tuyenXe.DiemKhoiHanh}` + `-` + `${tuyenXe.DiemKetThuc}`, { lower: true, strict: true })}`}
-                key={tuyenXe._id}
+                to={`${slugify(
+                  `${route.DiemKhoiHanh}-${route.DiemKetThuc}`,
+                  { lower: true, strict: true },
+                )}`}
+                key={route._id}
                 sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}
-                onClick={() => handleRowClick(tuyenXe)}
+                onClick={() => handleRowClick(route)}
               >
-                <TableCell>{tuyenXe.MaTuyen}</TableCell>
-                <TableCell>{tuyenXe.DiemKhoiHanh}</TableCell>
-                <TableCell>{tuyenXe.DiemKetThuc}</TableCell>
+                <TableCell>{route.MaTuyen}</TableCell>
+                <TableCell>{route.DiemKhoiHanh}</TableCell>
+                <TableCell>{route.DiemKetThuc}</TableCell>
                 <TableCell>
-                  {tuyenXe.ThoiGianKhoiHanh} - {tuyenXe.ThoiGianKetThuc}
+                  {route.ThoiGianKhoiHanh} - {route.ThoiGianKetThuc}
                 </TableCell>
-                <TableCell>{tuyenXe.tramDungs.length}</TableCell>
+                <TableCell>{route.tramDungs.length}</TableCell>
                 {!isAdmin && (
                   <TableCell>
-                    <Popconfirm
-                      title="Bạn có chắc chắn muốn xóa tuyến xe này?"
-                      onConfirm={() => handleDeleteTuyenXe(tuyenXe._id)}
-                      okText="Có"
-                      cancelText="Không"
+                    <IconButton
+                      color="error"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        showModal(route);
+                      }}
                     >
-                      <IconButton color="error">
-                        <DeleteIcon />
-                      </IconButton>
-                    </Popconfirm>
+                      <DeleteIcon />
+                    </IconButton>
                   </TableCell>
                 )}
               </TableRow>
@@ -149,11 +168,17 @@ const DanhSachTuyenXe = () => {
         </Table>
       </TableContainer>
 
-      <div className="mt-12 flex justify-center items-center">
-        <Stack spacing={2}>
-          <Pagination count={10} variant="outlined" shape="rounded" />
-        </Stack>
-      </div>
+      {/* Modal xác nhận xóa */}
+      <AntdModal
+        title="Xác nhận xóa"
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText="Có"
+        cancelText="Không"
+      >
+        <p>Bạn có chắc chắn muốn xóa tuyến xe này?</p>
+      </AntdModal>
     </div>
   );
 };

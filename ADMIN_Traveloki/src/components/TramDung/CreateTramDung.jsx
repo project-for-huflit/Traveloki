@@ -31,7 +31,7 @@ const CreateTramDung = () => {
   useEffect(() => {
     fetchThanhPho();
   }, []);
-  console.log("ThanhPhoOption", thanhPhoOptions);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 

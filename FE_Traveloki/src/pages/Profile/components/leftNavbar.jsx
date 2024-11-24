@@ -57,7 +57,7 @@ function LeftNavBar() {
                 />
               </div>
               <div
-                onClick={() => navigate("/user/my-booking")}
+                onClick={() => navigate("/user/profile")}
                 className="text-lg font-semibold cursor-pointer"
               >
                 Hồ sơ công khai
@@ -66,9 +66,9 @@ function LeftNavBar() {
           </div>
 
           <a
-            href="/user/history-booking"
+            href="/user/account"
             onClick={(event) =>
-              event.preventDefault() || navigate("/user/history-booking")
+              event.preventDefault() || navigate("/user/account")
             }
           >
             <div className="w-full hover:bg-slate-100">

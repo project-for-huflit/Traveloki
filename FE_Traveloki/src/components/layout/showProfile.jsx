@@ -26,8 +26,6 @@ function showProfile(user) {
     };
   }, []);
 
-
-
   const handleLogout = () => {
     dispatch(logout());
     window.location.reload()
@@ -45,7 +43,7 @@ function showProfile(user) {
         style={showFlyMenus ? { display: 'block' } : { display: 'none' }}
       >
         <div className="flex flex-col justify-center items-center px-8 py-4">
-          <Link to={'#'}>
+          <Link to={'/user/profile'}>
             <div className="text-black font-sans font-semibold text-xl mb-2 hover:border-b-2">
               Tài khoản
             </div>

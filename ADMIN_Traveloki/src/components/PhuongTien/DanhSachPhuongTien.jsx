@@ -18,23 +18,14 @@ import {
   deletePhuongTien,
 } from '../../services/api/PhuongTien/apiDanhSachPhuongTien'; // API của phương tiện
 import { Modal as AntdModal, notification } from 'antd';
-// import { useDispatch, useSelector } from 'react-redux';
-// import slugify from 'slugify';
-// import { setSelectedRow } from '../../redux/slice/vehicleSlice';
+import { useDispatch } from 'react-redux';
+import { setSelectedRow } from '../../redux/slice/vehicleSlice';
 
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
 const DanhSachPhuongTien = () => {
-  const [isAdmin, setIsAdmin] = useState(false);
-  useEffect(() => {
-    const users = JSON.parse(localStorage.getItem('user'));
-    const roles = users?.roles?.[0];
-    if (roles === 'ADMIN') {
-      setIsAdmin(true);
-    }
-  }, []);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [phuongTien, setPhuongTien] = useState([]); // Trạng thái lưu danh sách phương tiện
   const [isModalVisible, setIsModalVisible] = useState(false); // Trạng thái hiển thị Modal
   const [phuongTienToDelete, setPhuongTienToDelete] = useState(null); // Trạng thái lưu phương tiện cần xóa
@@ -82,7 +73,8 @@ const DanhSachPhuongTien = () => {
     if (phuongTienToDelete) {
       try {
         const res = await deletePhuongTien(phuongTienToDelete._id); // Xóa phương tiện dựa trên ID
-        if (res && res.EC === 0) {
+        console.log("res",res)
+        if (res) {
           notification.success({
             message: 'Xóa phương tiện',
             description: 'Xóa phương tiện thành công',
@@ -112,12 +104,13 @@ const DanhSachPhuongTien = () => {
 
   // const slug = slugify(title, { lower: true, strict: true })
   // const productPath = `${slug}`;
-  //<Link to={`${slugify(phuongTien.TenPhuongTien, { lower: true, strict: true })}`} >
+  // <Link to={`${slugify(phuongTien.TenPhuongTien, { lower: true, strict: true })}`} >
 
-  // const handleRowClick = (row) => {
-  //   // row.preventDefault()
-  //   dispatch(setSelectedRow(row));
-  // };
+
+  const handleRowClick = (row) => {
+    // row.preventDefault()
+    dispatch(setSelectedRow(row));
+  };
 
   // const [posts, setPosts] = useState([]);
   // const [loading, setLoading] = useState(false);
@@ -174,15 +167,15 @@ const DanhSachPhuongTien = () => {
           <TableBody>
             {phuongTien.map((phuongTien) => (
               <TableRow
-                // component={Link}
-                // to={`${slugify(phuongTien.TenPhuongTien, { lower: true, strict: true })}`} // URL đến chi tiết phương tiện
+                component={Link}
+                to={`${slugify(phuongTien.TenPhuongTien, { lower: true, strict: true })}`} // URL đến chi tiết phương tiện
                 key={phuongTien._id}
                 sx={{
                   '&:hover': { backgroundColor: '#e3f2fd' },
                   textDecoration: 'none',
                   cursor: 'pointer',
                 }}
-                // onClick={() => handleRowClick(phuongTien)}
+                onClick={() => handleRowClick(phuongTien)}
               >
                 <TableCell>{phuongTien.MaPT}</TableCell>
                 <TableCell>{phuongTien.TenPhuongTien}</TableCell>
@@ -229,8 +222,8 @@ const DanhSachPhuongTien = () => {
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        okText="Có"
-        cancelText="Không"
+        okText="Xác nhận"
+        cancelText="Hủy"
       >
         <p>Bạn có chắc chắn muốn xóa phương tiện này?</p>
       </AntdModal>

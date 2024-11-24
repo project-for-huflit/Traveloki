@@ -8,13 +8,8 @@ const {
   SuccessResponse,
 } = require('../middlewares/success.response');
 
-const asyncHandler = require('../middlewares/asyncHandler.middeware');
-const {
-  updatePhuongTienService,
-  getAllPhuongTienService,
-  createPhuongTienService,
-  getPhuongTienByLichChayService,
-} = require('../services/phuongTien.service');
+const asyncHandler = require('../middlewares/asyncHandler.middeware')
+const {deletePhuongTienService, updatePhuongTienService, getAllPhuongTienService, createPhuongTienService, getPhuongTienByLichChayService} = require("../services/phuongTien.service");
 
 class VehicleController {}
 // module.exports = new VehicleController()
@@ -94,13 +89,9 @@ const CreatePhuongTien = async (req, res) => {
 };
 
 const DeletePhuongTien = async (req, res) => {
-  try {
-    const { id } = req.params;
-    await PhuongTien.findByIdAndDelete(id);
-    res.status(200).json({ message: 'PhuongTien deleted successfully' });
-  } catch (e) {
-    res.status(500).json('not delete phuong tien');
-  }
+  const { id } = req.params;
+  const data = await deletePhuongTienService(id);
+  return res.status(200).json(data);
 };
 
 const SearchFindPhuongTien = async (req, res) => {
