@@ -70,12 +70,12 @@ AND
 
 ## 9 - Return
 
-GET / collection: trả về danh sách các đối tượng tài nguyên (mảng)
-GET / collection / resource: trả về một đối tượng tài nguyên duy nhất
-POST / collection: trả về đối tượng tài nguyên mới được tạo
-PUT / collection / resource: trả về đối tượng tài nguyên hoàn chỉnh
-PATCH / collection / resource: trả về đối tượng tài nguyên hoàn chỉnh
-DELETE / collection / resource: trả về một tài liệu trống
+* GET / collection: trả về danh sách các đối tượng tài nguyên (mảng)
+* GET / collection / resource: trả về một đối tượng tài nguyên duy nhất
+* POST / collection: trả về đối tượng tài nguyên mới được tạo
+* PUT / collection / resource: trả về đối tượng tài nguyên hoàn chỉnh
+* PATCH / collection / resource: trả về đối tượng tài nguyên hoàn chỉnh
+* DELETE / collection / resource: trả về một tài liệu trống
 
 ## 10 - HATEOAS [Hypermedia as the engine of application state]
 

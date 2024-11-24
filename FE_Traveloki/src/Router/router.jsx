@@ -30,7 +30,7 @@ import { RatingTau } from "../components/rating/RatingTau.jsx";
 import { ErrorPage } from "../pages/SystemPage/ErrorPage.jsx";
 import HomePage from "../pages/HomePage/HomePage.jsx";
 import ProfilePage from '../pages/Profile/index.jsx'
-// import Login from "../pages/Auth/LogIn.jsx";
+import Account from "../pages/account/index.jsx";
 import Login from "../pages/Auth/LogIn";
 import SignUp from "../pages/Auth/Register.jsx";
 import CallBack from "../pages/Auth/CallBackPage.jsx";
@@ -94,7 +94,7 @@ const router = createBrowserRouter([
       },
       {
         path: "account",
-        element: <Paymentsuccess />,
+        element: <Account />,
       }
     ]
   },

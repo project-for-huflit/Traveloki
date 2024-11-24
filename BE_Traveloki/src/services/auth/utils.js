@@ -228,7 +228,7 @@ const getAccessToken = async (code) => {
 const getUserProfile = async (accessToken) => {
   try {
     const payload = await pointer.verifyAccessToken(accessToken);
-    console.log(`verifyAccessToken after userProfile::${payload}`);
+    console.log(`verifyAccessToken after userProfile::`, payload);
     return payload
   } catch (error) {
     throw new Error('Failed to get user profile!')

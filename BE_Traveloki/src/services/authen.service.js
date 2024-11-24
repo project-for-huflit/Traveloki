@@ -376,41 +376,42 @@ class AuthSSOService {
       const partner = await getUserProfile(accessToken);
       console.log("getUserProfile::", partner)
 
-      // // 3. check if isUser, if user isn't exist then create profile
-      // const isPartner = await PartnerService.findOrCreatePartner(email);
+      // 3. check if isUser, if user isn't exist then create profile
+      const isPartner = await PartnerService.findOrCreatePartner(partner.email);
 
-      // // 4. create token jwt
-      // if (isPartner) {
-      //   const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
-      //     modulusLength: 2048,
-      //     publicKeyEncoding: { type: 'pkcs1', format: 'pem' },
-      //     privateKeyEncoding: { type: 'pkcs1', format: 'pem' },
-      //   });
-      //   console.log({ privateKey, publicKey });
+      // 4. create token jwt
+      if (isPartner) {
+        const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+          modulusLength: 2048,
+          publicKeyEncoding: { type: 'pkcs1', format: 'pem' },
+          privateKeyEncoding: { type: 'pkcs1', format: 'pem' },
+        });
+        console.log({ privateKey, publicKey });
 
-      //   const publicKeyString = await KeyTokenService.createKeyTokenForPartner({
-      //     partnerId: isPartner._id,
-      //     publicKey,
-      //     privateKey,
-      //   });
+        const publicKeyString = await KeyTokenService.createKeyTokenForPartner({
+          partnerId: isPartner._id,
+          publicKey,
+          privateKey,
+        });
 
-      //   if (!publicKeyString) {
-      //     return {
-      //       code: '400',
-      //       message: 'Bad Request: publicKeyString error! - line 113',
-      //     };
-      //   }
-      //   console.log(`publicKeyString::`, publicKeyString);
+        if (!publicKeyString) {
+          return {
+            code: '400',
+            message: 'Bad Request: publicKeyString error! - line 113',
+          };
+        }
+        console.log(`publicKeyString::`, publicKeyString);
 
-      //   const publicKeyObject = crypto.createPublicKey(publicKeyString);
-      //   console.log(`publicKeyObject::`, publicKeyObject);
+        const publicKeyObject = crypto.createPublicKey(publicKeyString);
+        console.log(`publicKeyObject::`, publicKeyObject);
 
-      //   const tokens = await createTokenPair(
-      //     { partnerId: isPartner._id, email },
-      //     publicKeyObject,
-      //     privateKey,
-      //   );
-      //   console.log(`create tokens pair success::`, tokens);
+        const tokens = await createTokenPair(
+          { partnerId: isPartner._id, email: partner.email },
+          publicKeyObject,
+          privateKey,
+        );
+        console.log(`create tokens pair success::`, tokens);
+      }
 
         return {
           code: 201,
@@ -423,8 +424,8 @@ class AuthSSOService {
           // },
           partner: user,
           tokens: accessToken,
-          partnerEmail: user.email,
-          partnerId: user._id,
+          partnerEmail: partner.email,
+          partnerId: partner._id,
         };
       }
     catch (error) {
@@ -435,6 +436,7 @@ class AuthSSOService {
       };
     }
   }
+
   static logout = async (keyStore) => {
     const delKey = await KeyTokenService.removeKeyById(keyStore._id);
     console.log({ delKey });
