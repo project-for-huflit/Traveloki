@@ -10,13 +10,15 @@ const {
   FindBookingCarID,
   FindBookingCarMaDX,
   PaymentPointerWallet,
-  CancelPaymentPointerWallet
+  CancelPaymentPointerWallet,
+  RefundPaymentPointerWallet
 } = require("../../controllers/bookingCar_controller");
 
 route.get("/GetDatXeOto", GetDatXeOto);
 route.post("/BookingCar", BookingCar);
 
 route.post("/payment/pointer-wallet/car", asyncHandler(PaymentPointerWallet))
+route.post("/payment/pointer-wallet/car/refund", asyncHandler(RefundPaymentPointerWallet))
 route.post("/payment/pointer-wallet/car/cancel", asyncHandler(CancelPaymentPointerWallet))
 
 route.get("/FindBookingCarID/:id", FindBookingCarID);

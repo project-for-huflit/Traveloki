@@ -43,6 +43,7 @@ class BookingCarService {
         userID: userID,
         orderID: orderID,
         returnUrl: returnUrl,
+        providerID: "provider_id", // Tùy chọn thêm id nhà cung cấp
         orders: [
           {
             name: name,
@@ -69,6 +70,18 @@ class BookingCarService {
     try {
       console.log('_id::', { _id });
       const data = await pointer.cancelOrder(_id);
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error('error::', error);
+    }
+  }
+
+  static async RefundPaymentPointerWallet({ _id }) {
+    console.log('_id::', _id);
+    try {
+      console.log('_id::', { _id });
+      const data = await pointer.refundMoney(_id);
       console.log(data);
       return data;
     } catch (error) {
