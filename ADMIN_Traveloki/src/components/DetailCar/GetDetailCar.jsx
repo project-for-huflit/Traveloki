@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useParams, Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit, faXmark } from "@fortawesome/free-solid-svg-icons";
-import {deleteDetailCar, getDetailCar} from "../../services/api/DetailCar/apiGetDetailCar.js";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faEdit, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {
+  deleteDetailCar,
+  getDetailCar,
+} from '../../services/api/DetailCar/apiGetDetailCar.js';
 
 const ListDetailCar = () => {
   const { id } = useParams();
@@ -19,7 +22,7 @@ const ListDetailCar = () => {
       // }
       setDetail(res);
     } catch (error) {
-      setError("Không thể lấy dữ liệu từ máy chủ");
+      setError('Không thể lấy dữ liệu từ máy chủ');
     } finally {
       setIsLoading(false);
     }
@@ -33,15 +36,15 @@ const ListDetailCar = () => {
     try {
       const res = await deleteDetailCar(id);
       if (res.ok) {
-        alert("Xóa thành công");
-        navigate("/ListDetailCar");
+        alert('Xóa thành công');
+        navigate('/ListDetailCar');
       } else {
         const { message } = await res.json();
         alert(`Xóa thất bại: ${message}`);
       }
     } catch (error) {
-      console.error("Error deleting detail car:", error);
-      alert("Đã xảy ra lỗi khi xóa phương tiện");
+      console.error('Error deleting detail car:', error);
+      alert('Đã xảy ra lỗi khi xóa phương tiện');
     }
   };
 

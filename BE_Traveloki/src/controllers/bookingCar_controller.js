@@ -1,9 +1,9 @@
-const { LichSuDatXeOto } = require("../models/lichSuDatXeOto.model");
+const { LichSuDatXeOto } = require('../models/lichSuDatXeOto.model');
 
-const { DatXeOto } = require("../models/datXeOto.model");
-const { TramDung } = require("../models/tramDung.model");
-const { ChiTietXeOto } = require("../models/detailsCar.model");
-const CounterDatXeOto = require("../models/counter.model").CounterDatXe;
+const { DatXeOto } = require('../models/datXeOto.model');
+const { TramDung } = require('../models/tramDung.model');
+const { ChiTietXeOto } = require('../models/detailsCar.model');
+const CounterDatXeOto = require('../models/counter.model').CounterDatXe;
 const {
   OK,
   CREATED,
@@ -15,29 +15,17 @@ const { BookingCarService } = require('../services/booking.service')
 // const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 class BookingCarController {
-  getDatXeOto = async ( req, res, next ) => {
+  getDatXeOto = async (req, res, next) => {};
 
-  }
+  BookingCar = async (req, res, next) => {};
 
-  BookingCar = async ( req, res, next ) => {
+  schedularChange = async (req, res, next) => {};
 
-  }
+  cancelBooking = async (req, res, next) => {};
 
-  schedularChange = async ( req, res, next ) => {
+  findBookingCarID = async (req, res, next) => {};
 
-  }
-
-  cancelBooking = async ( req, res, next ) => {
-
-  }
-
-  findBookingCarID = async ( req, res, next ) => {
-
-  }
-
-  findBookingCarMaDX = async ( req, res, next ) => {
-
-  }
+  findBookingCarMaDX = async (req, res, next) => {};
 }
 // module.exports = new BookingCarController()
 
@@ -46,7 +34,7 @@ const GetDatXeOto = async (req, res) => {
     const datXeOto = await DatXeOto.find({});
     res.status(200).json({ datXeOto });
   } catch (e) {
-    res.status(500).json("Can not get booking car!");
+    res.status(500).json('Can not get booking car!');
   }
 };
 
@@ -61,13 +49,19 @@ const BookingCar = async (req, res) => {
 
     const tramDung = await TramDung.findById(MaTram);
     const chiTietXe = await ChiTietXeOto.findById(MaDetailCar);
-    if (!chiTietXe) { return res.status(404).json({ message: "Vehicle details do not exist!!" }); }
-    if (!tramDung) { return res.status(404).json({ message: "Waypoint do not exist" }); }
+    if (!chiTietXe) {
+      return res
+        .status(404)
+        .json({ message: 'Vehicle details do not exist!!' });
+    }
+    if (!tramDung) {
+      return res.status(404).json({ message: 'Waypoint do not exist' });
+    }
 
     const CounterDatXe = await CounterDatXeOto.findOneAndUpdate(
-      { _id: "datXeCounter" },
+      { _id: 'datXeCounter' },
       { $inc: { seq: 1 } },
-      { new: true, upsert: true }
+      { new: true, upsert: true },
     );
 
     const MaDX = `DX${CounterDatXe.seq}`;
@@ -86,8 +80,8 @@ const BookingCar = async (req, res) => {
     // console.log("Check id::", result)
     res.status(200).json(result); // Đảm bảo result chứa trường Sdt
   } catch (e) {
-    console.error("Can not create booking car:", e);
-    res.status(500).json({ error: "Can not create booking car!!" });
+    console.error('Can not create booking car:', e);
+    res.status(500).json({ error: 'Can not create booking car!!' });
   }
 };
 
@@ -96,7 +90,7 @@ const PaymentPointerWallet = async (req, res, next) => {
     message: 'success!',
     metadata: await BookingCarService.PaymentPointerWallet(req.body),
   }).send(res);
-}
+};
 
 const CancelPaymentPointerWallet = async (req, res, next) => {
   // console.log("req.params.id::", req.params.id)
@@ -104,7 +98,7 @@ const CancelPaymentPointerWallet = async (req, res, next) => {
     message: 'success!',
     metadata: await BookingCarService.CancelPaymentPointerWallet(req.body),
   }).send(res);
-}
+};
 
 const SchedularChange = async (req, res) => {
   try {
@@ -114,17 +108,17 @@ const SchedularChange = async (req, res) => {
     const newNgayGioDat = new Date(NgayGioDat);
     if (newNgayGioDat < new Date()) {
       return res.status(400).json({
-        message: "Ngày giờ đặt phải lớn hơn hoặc bằng ngày hiện tại.",
+        message: 'Ngày giờ đặt phải lớn hơn hoặc bằng ngày hiện tại.',
       });
     }
 
     await DatXeOto.findByIdAndUpdate(id, {
       $set: { NgayGioDat: newNgayGioDat },
     });
-    res.status(200).json({ message: "Đã cập nhật Ngày giờ đặt thành công." });
+    res.status(200).json({ message: 'Đã cập nhật Ngày giờ đặt thành công.' });
   } catch (e) {
-    console.error("Can not update DatXeOto:", e);
-    res.status(500).json({ error: "Can not update schedule booking car!" });
+    console.error('Can not update DatXeOto:', e);
+    res.status(500).json({ error: 'Can not update schedule booking car!' });
   }
 };
 
@@ -132,16 +126,16 @@ const CancelBooking = async (req, res) => {
   try {
     const { MaDX } = req.params;
     if (!MaDX) {
-      return res.status(400).json("Missing information");
+      return res.status(400).json('Missing information');
     }
 
     await DatXeOto.deleteOne({ MaDX });
     await LichSuDatXeOto.deleteOne({ MaDX });
 
-    res.status(200).json({ message: "Cancel booking successfully!." });
+    res.status(200).json({ message: 'Cancel booking successfully!.' });
   } catch (e) {
-    console.error("Can not cancel DatXeOto:", e);
-    res.status(500).json({ error: "Can not cancel booking" });
+    console.error('Can not cancel DatXeOto:', e);
+    res.status(500).json({ error: 'Can not cancel booking' });
   }
 };
 
@@ -151,13 +145,13 @@ const FindBookingCarID = async (req, res) => {
     const datXeOto = await DatXeOto.findOne(id);
 
     if (!datXeOto) {
-      return res.status(404).json({ message: "DatXeOto not found" });
+      return res.status(404).json({ message: 'DatXeOto not found' });
     }
 
     return res.status(200).json(datXeOto);
   } catch (e) {
-    console.error("Error fetching DatXeOto by ID:", e);
-    return res.status(500).json({ message: "Internal server error" });
+    console.error('Error fetching DatXeOto by ID:', e);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -165,28 +159,26 @@ const FindBookingCarMaDX = async (req, res) => {
   const { MaDX } = req.query;
 
   if (!MaDX) {
-    return res.status(400).json({ message: "MaDX is required" });
+    return res.status(400).json({ message: 'MaDX is required' });
   }
 
   try {
     const datXes = await DatXeOto.find({
-      MaDX: { $regex: MaDX, $options: "i" },
+      MaDX: { $regex: MaDX, $options: 'i' },
     });
 
     if (!datXes.length) {
       return res
         .status(404)
-        .json({ message: "No booking found with the given MaDX" });
+        .json({ message: 'No booking found with the given MaDX' });
     }
 
     res.status(200).json({ datXes });
   } catch (error) {
-    console.error("Error finding cars by MaDX:", error);
-    res.status(500).json({ message: "Error finding cars", error });
+    console.error('Error finding cars by MaDX:', error);
+    res.status(500).json({ message: 'Error finding cars', error });
   }
 };
-
-
 
 module.exports = {
   GetDatXeOto,
@@ -196,5 +188,5 @@ module.exports = {
   FindBookingCarID,
   FindBookingCarMaDX,
   PaymentPointerWallet,
-  CancelPaymentPointerWallet
+  CancelPaymentPointerWallet,
 };

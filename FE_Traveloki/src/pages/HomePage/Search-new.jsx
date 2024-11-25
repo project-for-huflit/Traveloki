@@ -124,6 +124,8 @@ const SearchBar = () => {
       if (responseCheckRoute.data.success) {
         maTuyens = responseCheckRoute.data.data.map((route) => route.MaTuyen.trim()).join(",");
         maTramDung = responseCheckRoute.data.data.map((route) => route.MaTramDung.trim()).join(",");
+
+        console.log("maTramDung::", maTramDung)
         // const sanBayResponse = await axios.get(
         //   `${import.meta.env.VITE_BACKEND_URL}/api/getSanBaybyTenSanBay?TenSanBay=${encodeURIComponent(diemSanBay)}`
         // );

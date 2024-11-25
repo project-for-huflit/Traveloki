@@ -24,9 +24,8 @@ const Login = () => {
       localStorage.setItem('user', JSON.stringify(user));
       const users = JSON.parse(localStorage.getItem('user'));
       const roles = users.roles[0];
-      console.log(roles);
+      console.log('role: ', roles);
       if (roles == 'ADMIN') {
-
         navigate('/');
         window.location.reload();
       } else {

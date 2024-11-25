@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSearchParams } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSearchParams } from 'react-router-dom';
 
-import Loading from '../../pages/loading/index'
+import Loading from '../../pages/loading/index';
 
 // import { paymentSend } from '../../services/api/payment/index'
 // import { createBookingCar, GetBookingCarId } from '../../services/api/booking/api.bookingCar'
@@ -14,7 +14,7 @@ import {
   faCaretUp,
   faPlaneArrival,
   faCalendarDays,
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
 const BookingCar = () => {
   const [searchParams] = useSearchParams();
   const SanBay = searchParams.get("SanBay");
@@ -39,13 +39,13 @@ const BookingCar = () => {
   const [show, setShow] = useState(false);
   const [bookingCar, setBookingCar] = useState({
     MaDetailCar: id,
-    Sdt: "",
-    MaTram: "",
+    Sdt: '',
+    MaTram: '',
     DiemSanBay: SanBay,
-    DiemDon_Tra: "",
+    DiemDon_Tra: '',
     NgayGioDat: `${Date}-${Time}`,
-    SoKm: "",
-    ThanhTien: "" || 0,
+    SoKm: '',
+    ThanhTien: '' || 0,
     TrangThai: false,
     Description: "",
     userId: userId._id,
@@ -53,17 +53,21 @@ const BookingCar = () => {
     name: "Booking car",
     image: "https://www.youtube.com/watch?v=TD7sBUigDIU",
     quantity: 1,
-    price: "" || 0,
-    return_url: "http://localhost:5173/list/cars/result"
+    price: '' || 0,
+    return_url: 'http://localhost:5173/list/cars/result',
   });
 
   console.log("bookingCar begin::", bookingCar)
   const fetchDetailCar = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/GetDetailCarID/${id}`);
-      if (!res.ok) { throw new Error("Network response was not ok") }
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/GetDetailCarID/${id}`,
+      );
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
       const result = await res.json();
-      console.log("detail car::", result)
+      console.log('detail car::', result);
       setDetail(result);
 
       setBookingCar((prevBookingCar) => ({
@@ -72,7 +76,7 @@ const BookingCar = () => {
         ThanhTien: result.SoTien_1km * (tram?.cost || 0),
       }));
     } catch (error) {
-      setError("Không thể lấy dữ liệu từ máy chủ detail cars");
+      setError('Không thể lấy dữ liệu từ máy chủ detail cars');
     } finally {
       setIsLoading(false);
     }
@@ -80,8 +84,12 @@ const BookingCar = () => {
 
   const fetchTram = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/GetTramDungID/${IDTram}`);
-      if (!res.ok) { throw new Error("Network response was not ok") }
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/GetTramDungID/${IDTram}`,
+      );
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
       const result = await res.json();
       setTram(result);
       // console.log("fetTram::",[tram.tramDung._id]) // ??
@@ -93,7 +101,7 @@ const BookingCar = () => {
         DiemDon_Tra: diemDonTra,
       }));
     } catch (error) {
-      setError("Không thể lấy dữ liệu từ máy chủ tram");
+      setError('Không thể lấy dữ liệu từ máy chủ tram');
     } finally {
       setIsLoading(false);
     }
@@ -117,7 +125,7 @@ const BookingCar = () => {
         Description: prevBookingCar.Description,
         TrangThai: prevBookingCar.TrangThai,
         price: detail?.SoTien_1km,
-        return_url: `${import.meta.env.VITE_FE_URL}/list/cars/result`
+        return_url: `${import.meta.env.VITE_FE_URL}/list/cars/result`,
       }));
     }
   }, [detail, tram]);
@@ -129,8 +137,8 @@ const BookingCar = () => {
    */
 
   const handlePayment = async (e) => {
-    e.preventDefault()
-    console.log("Dữ liệu gửi đi:", bookingCar);
+    e.preventDefault();
+    console.log('Dữ liệu gửi đi:', bookingCar);
 
     const {
       Sdt, MaTram, DiemSanBay, DiemDon_Tra, NgayGioDat, SoKm,
@@ -139,16 +147,25 @@ const BookingCar = () => {
 
     // Kiểm tra dữ liệu đầu vào
     if (
-      !Sdt || !MaTram || !DiemSanBay || !DiemDon_Tra ||
-      !NgayGioDat || !SoKm || !ThanhTien || !Description
-    ) { alert("Vui lòng nhập đầy đủ thông tin"); return; }
+      !Sdt ||
+      !MaTram ||
+      !DiemSanBay ||
+      !DiemDon_Tra ||
+      !NgayGioDat ||
+      !SoKm ||
+      !ThanhTien ||
+      !Description
+    ) {
+      alert('Vui lòng nhập đầy đủ thông tin');
+      return;
+    }
 
     try {
       const resBooking = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/api/BookingCar`,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json", },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             MaDetailCar: id,
             Sdt,
@@ -161,16 +178,16 @@ const BookingCar = () => {
             Description,
             userId
           }),
-        }
+        },
       );
 
       // Xử lý phản hồi từ server
       const data = await resBooking.json();
-      console.log("Phản hồi từ server đặt xe:", data);
+      console.log('Phản hồi từ server đặt xe:', data);
 
       if (resBooking.ok) {
         const datXeOto = data; // Chỉnh sửa nếu cần thiết để phù hợp với cấu trúc dữ liệu trả về
-        console.log("Đã nhận được ID đơn hàng:", datXeOto._id);
+        console.log('Đã nhận được ID đơn hàng:', datXeOto._id);
 
         try {
           console.log({
@@ -187,10 +204,11 @@ const BookingCar = () => {
             // https://api-traveloki.onrender.com/api/payment/pointer-wallet/car
             `${import.meta.env.VITE_BACKEND_URL}/api/payment/pointer-wallet/car`,
             {
-              method: "POST",
+              method: 'POST',
               headers: {
-                "Content-Type": "application/json",
-                Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
+                'Content-Type': 'application/json',
+                Authorization:
+                  'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER,
               },
               body: JSON.stringify({
                 amount: ThanhTien,
@@ -205,29 +223,29 @@ const BookingCar = () => {
                 quantity: bookingCar.quantity,
                 price: bookingCar.ThanhTien,
               }),
-            }
+            },
           );
 
           // console.log(response.data.url)
-          if(response.ok){
-              const data = await response.json(); // Đọc nội dung từ body của phản hồi
-              console.log("Phản hồi từ server tạo payment:", data);
-              window.location.replace(data.metadata)
+          if (response.ok) {
+            const data = await response.json(); // Đọc nội dung từ body của phản hồi
+            console.log('Phản hồi từ server tạo payment:', data);
+            window.location.replace(data.metadata);
           } else {
-            alert(response.error || "Đã xảy ra lỗi khi truyền dữ liệu - 265");
+            alert(response.error || 'Đã xảy ra lỗi khi truyền dữ liệu - 265');
           }
         } catch (error) {
-          console.log("Lỗi khi truyền dữ liệu:", error);
-          alert("Không thể truyền dữ liệu");
+          console.log('Lỗi khi truyền dữ liệu:', error);
+          alert('Không thể truyền dữ liệu');
         }
       } else {
-        alert(data.error || "Đã xảy ra lỗi khi đặt xe");
+        alert(data.error || 'Đã xảy ra lỗi khi đặt xe');
       }
     } catch (error) {
-      console.error("Lỗi khi kết nối tới máy chủ:", error);
-      alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
+      console.error('Lỗi khi kết nối tới máy chủ:', error);
+      alert('Đã xảy ra lỗi khi kết nối tới máy chủ');
     }
-  }
+  };
 
   if (isLoading)
     return (
@@ -263,9 +281,7 @@ const BookingCar = () => {
     <div className="p-4 w-full h-full pb-28 overflow-y-auto">
       <span className="bg-white w-[96%] p-2 -top-0 absolute font-bold text-xl">
         <span className="font-extrabold text-green-500 px-4">{SanBay}</span> -
-        <span className="font-extrabold text-green-500 px-4">
-          {diemDonTra}
-        </span>
+        <span className="font-extrabold text-green-500 px-4">{diemDonTra}</span>
       </span>
       <div className="w-full mt-8">
         <div className="flex text-gray-500">

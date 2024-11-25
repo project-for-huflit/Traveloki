@@ -9,9 +9,7 @@ const {getAllTramDungService, createTramDungService,
   deleteTramDungService, updateTramDungService
 } = require("../services/tramDung.service");
 
-class WayPointController {
-
-}
+class WayPointController {}
 // module.exports = new WayPointController()
 
 const updateTramDung = async (req, res) => {
@@ -33,34 +31,36 @@ const CreateTramDung = async (req, res) => {
 
 const GetTramDungID = async (req, res) => {
   try {
-    const { id } = req.params;
-    console.log("Fetching TramDung with id:", id);
+    const id = req.params.id;
+    console.log('Fetching TramDung with id:', id);
     const tramDung = await TramDung.findById(id);
     const tramDungWithTuyen = await TuyenTramDung.findOne({ MaTramDung: id })
 
     if (!tramDung) {
-      return res.status(404).json({ message: "Trạm dừng không tồn tại" });
+      return res.status(404).json({ message: 'Trạm dừng không tồn tại' });
     }
 
     if (!tramDungWithTuyen) {
-      return res.status(404).json({ message: "Trạm dừng với tuyến không tồn tại" });
+      return res
+        .status(404)
+        .json({ message: 'Trạm dừng với tuyến không tồn tại' });
     }
 
-    const cost = tramDungWithTuyen.SoKM
+    const cost = tramDungWithTuyen.SoKM;
 
     res.status(200).json({
       tramDung,
-      cost
+      cost,
     });
   } catch (e) {
-    console.error("Server error:", e); // Log the error
-    res.status(500).json({ message: "Lỗi máy chủ" });
+    console.error('Server error:', e); // Log the error
+    res.status(500).json({ message: 'Lỗi máy chủ' });
   }
 };
 
 const DeleteTramDung = async (req, res) => {
   const { id } = req.params;
-  console.log("ID received:", id); // Kiểm tra ID nhận được
+  console.log('ID received:', id); // Kiểm tra ID nhận được
   const data = await deleteTramDungService(id);
   return res.status(200).json(data);
 };
@@ -69,21 +69,21 @@ const getTramDungByDiaChi = async (req, res) => {
   const { diaChi } = req.query;
 
   if (!diaChi) {
-    return res.status(400).json({ message: "DiaChi is required" });
+    return res.status(400).json({ message: 'DiaChi is required' });
   }
 
   try {
     const tramDungs = await TramDung.find({
-      DiaChi: { $regex: diaChi, $options: "i" },
+      DiaChi: { $regex: diaChi, $options: 'i' },
     });
     if (!tramDungs.length) {
       return res
         .status(404)
-        .json({ message: "No TramDung found with the given DiaChi" });
+        .json({ message: 'No TramDung found with the given DiaChi' });
     }
     res.status(200).json({ tramDungs });
   } catch (error) {
-    res.status(500).json({ message: "Error finding TramDung", error });
+    res.status(500).json({ message: 'Error finding TramDung', error });
   }
 };
 
