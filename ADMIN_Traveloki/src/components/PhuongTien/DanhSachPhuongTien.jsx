@@ -1,3 +1,4 @@
+import slugify from 'slugify';
 import {
   Table,
   TableBody,
@@ -14,6 +15,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import {
   fetchAllPhuongTien,
+  fetchAllPhuongTienPartern,
   deletePhuongTien,
 } from '../../services/api/PhuongTien/apiDanhSachPhuongTien'; // API của phương tiện
 import { Modal as AntdModal, notification } from 'antd';
@@ -30,16 +32,44 @@ const DanhSachPhuongTien = () => {
   const [phuongTienToDelete, setPhuongTienToDelete] = useState(null); // Trạng thái lưu phương tiện cần xóa
 
   useEffect(() => {
-    const danhSachPhuongTien = async () => {
-      try {
-        const res = await fetchAllPhuongTien();
-        setPhuongTien(res.data || []);
-      } catch (error) {
-        console.error('Không thể lấy dữ liệu phương tiện:', error);
-      }
-    };
-    danhSachPhuongTien();
+    const userid = JSON.parse(localStorage.getItem('userid'));
+    console.log(userid);
+    if (userid) {
+      const danhSachPhuongTien = async () => {
+        try {
+          const res = await fetchAllPhuongTienPartern(userid);
+          setPhuongTien(res.data || []);
+          console.log(res.data);
+        } catch (error) {
+          console.error('Không thể lấy dữ liệu phương tiện:', error);
+        }
+      };
+      danhSachPhuongTien();
+    }
   }, []);
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem('user'));
+    const roles = users?.roles?.[0];
+    console.log(roles);
+    if (roles === 'ADMIN') {
+      setIsAdmin(true);
+    }
+  }, []);
+  useEffect(() => {
+    if (isAdmin) {
+      const danhSachPhuongTien = async () => {
+        try {
+          const res = await fetchAllPhuongTien();
+          setPhuongTien(res.data);
+          console.log(res.data);
+        } catch (error) {
+          console.error('Không thể lấy dữ liệu phương tiện:', error);
+        }
+      };
+      danhSachPhuongTien();
+    }
+  }, [isAdmin]);
 
   // Hàm hiển thị Modal xác nhận xóa
   const showModal = (phuongTien) => {
@@ -52,7 +82,7 @@ const DanhSachPhuongTien = () => {
     if (phuongTienToDelete) {
       try {
         const res = await deletePhuongTien(phuongTienToDelete._id); // Xóa phương tiện dựa trên ID
-        console.log("res",res)
+        console.log('res', res);
         if (res) {
           notification.success({
             message: 'Xóa phương tiện',
@@ -60,8 +90,8 @@ const DanhSachPhuongTien = () => {
           });
           setPhuongTien((prev) =>
             prev.filter(
-              (phuongTien) => phuongTien._id !== phuongTienToDelete._id
-            )
+              (phuongTien) => phuongTien._id !== phuongTienToDelete._id,
+            ),
           ); // Cập nhật danh sách sau khi xóa
         } else {
           alert(res.EM);
@@ -81,29 +111,19 @@ const DanhSachPhuongTien = () => {
     setPhuongTienToDelete(null); // Reset phương tiện cần xóa
   };
 
-  const [isAdmin, setIsAdmin] = useState(false);
-  useEffect(() => {
-    const users = JSON.parse(localStorage.getItem('user'));
-    const roles = users?.roles?.[0];
-    if (roles === 'ADMIN') {
-      setIsAdmin(true);
-    }
-  }, []);
-
   // const slug = slugify(title, { lower: true, strict: true })
   // const productPath = `${slug}`;
   // <Link to={`${slugify(phuongTien.TenPhuongTien, { lower: true, strict: true })}`} >
-
 
   const handleRowClick = (row) => {
     // row.preventDefault()
     dispatch(setSelectedRow(row));
   };
 
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(10);
+  // const [posts, setPosts] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [postsPerPage, setPostsPerPage] = useState(10);
   return (
     <div className="w-auto h-full bg-white p-4">
       <div className="flex justify-between items-center mb-4">
@@ -126,6 +146,7 @@ const DanhSachPhuongTien = () => {
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                 Tên Phương Tiện
               </TableCell>
+
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                 Loại PT
               </TableCell>
@@ -140,6 +161,9 @@ const DanhSachPhuongTien = () => {
               </TableCell>
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                 Hình ảnh
+              </TableCell>
+              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                Đối Tác
               </TableCell>
               {!isAdmin && (
                 <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
@@ -187,6 +211,7 @@ const DanhSachPhuongTien = () => {
                     </IconButton>
                   </TableCell>
                 )}
+                <TableCell>{phuongTien.MaSoXe}</TableCell>
               </TableRow>
             ))}
           </TableBody>

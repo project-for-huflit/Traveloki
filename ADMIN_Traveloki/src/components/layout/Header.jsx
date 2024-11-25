@@ -20,7 +20,7 @@
 // };
 //
 // export default Header;
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -37,8 +37,10 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppStore } from '../../appStore.jsx';
+// import { useDispatch } from 'react-redux';
+// import { logout } from '../../redux/slice/authSlice.js';
 import logo from '../../assets/logoTravelokiWhite.png';
 
 const AppBar = styled(
@@ -89,7 +91,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const updateOpen = useAppStore((state) => state.updateOpen);
@@ -97,6 +99,25 @@ const Header = () => {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const users = JSON.parse(localStorage.getItem('user'));
+  const roles = users?.roles?.[0];
+  console.log(roles);
+
+  useEffect(() => {
+    if (roles === undefined) {
+      navigate('/auth/login');
+    }
+  }, [roles]);
+
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem('user'));
+    const roles = users?.roles?.[0];
+    if (roles === 'admin') {
+      setIsAdmin(true);
+    }
+  }, []);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -112,8 +133,8 @@ const Header = () => {
   };
 
   const handleMenuLogin = () => {
-    navigate('/auth/login')
-    window.location.reload()
+    navigate('/auth/login');
+    window.location.reload();
     // setAnchorEl(null);
     // handleMobileMenuClose();
   };
@@ -126,6 +147,7 @@ const Header = () => {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    navigate('/auth/login');
     window.location.reload();
   };
 
@@ -146,7 +168,11 @@ const Header = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuLogin}>Đăng nhập với tư cách admin</MenuItem>
+      {isAdmin && (
+        <MenuItem onClick={handleMenuLogin}>
+          Đăng nhập với tư cách admin
+        </MenuItem>
+      )}
       <MenuItem onClick={handleMenuClose}>Hồ sơ</MenuItem>
       <MenuItem onClick={handleMenuClose}>Tài khoản của tôi</MenuItem>
       <MenuItem onClick={handleLogOut}>Đăng xuất</MenuItem>

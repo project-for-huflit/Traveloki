@@ -37,7 +37,7 @@ function callbackPage() {
             localStorage.setItem('partner', data.metadata);
 
             const userId = data.metadata.partnerId;
-            // console.log("userId: ", userId);
+            console.log("userId::", userId);
 
             navigate('/', { state: { userId } });
           } else {
