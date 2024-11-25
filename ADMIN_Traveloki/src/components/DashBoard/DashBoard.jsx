@@ -5,7 +5,6 @@ import { ChartBookingCar } from "./ChartBookingCar";
 import {fetchHistoryCar, fetchHistoryBus, fetchHistoryTrain} from "../../services/api/Dashboard/apiDashboard.js";
 
 export const Dashboard = () => {
-    // const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
     const [isLoading, setIsLoading] = useState(true);
     const [slCar,setSlCar] = useState([]);
     const [slTrain,setSlTrain] = useState([]);
@@ -15,13 +14,11 @@ export const Dashboard = () => {
     window.addEventListener('message', (event) => {
       if (event.origin === 'http://localhost:5173') {
         const { token, refreshToken, user } = event.data;
-        
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refreshToken);
         localStorage.setItem('user', user);
       }
     });
-    
 
     //get History
     useEffect(() => {
@@ -29,12 +26,11 @@ export const Dashboard = () => {
         const historyCar = async() => {
             try {
               const res = await fetchHistoryCar();
-              if (!res.ok) {
-                throw new Error('Network response was not ok');
-              }
+
               setSlCar(res.lichSuDatXeOto || []);
             } catch (error) {
               setError("Không thể lấy dữ liệu từ máy chủ");
+              console.log("error", error);
             }finally {
                 setIsLoading(false);
             }
@@ -44,9 +40,6 @@ export const Dashboard = () => {
         const historyTrain = async () => {
             try {
               const res = await fetchHistoryTrain();
-              if (!res.ok) {
-                throw new Error('Network response was not ok');
-              }
               setSlTrain(res.lichSuDatTau || []);
             } catch (error) {
               setError("Không thể lấy dữ liệu từ máy chủ");
@@ -59,9 +52,6 @@ export const Dashboard = () => {
         const historyBus = async () => {
             try {
               const res = await fetchHistoryBus();
-              if (!res.ok) {
-                throw new Error('Network response was not ok');
-              }
               setSlBus(res.lichSuDatXeBus || []);
             } catch (error) {
               setError("Không thể lấy dữ liệu từ máy chủ");
@@ -286,7 +276,7 @@ export const Dashboard = () => {
             <div className="flex justify-between mb-6">
               <div>
               {/* Tổng số lượng xe đã đặt */}
-                <div className="text-2xl font-semibold mb-1">{totalBookingsBus}</div>
+                  <div className="text-2xl font-semibold mb-1">{totalBookingsBus}</div>
                 <div className="text-sm font-medium text-gray-400">
                   Số lượng đặt Bus
                 </div>
