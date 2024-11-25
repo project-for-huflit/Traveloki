@@ -1,18 +1,26 @@
-import { useState, useEffect } from "react";
-import {getUser} from "../../services/api/Account/apiGetUser";
+import { useState, useEffect } from 'react';
+import { getUser } from '../../services/api/Account/apiGetUser';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import DatXeCar from './DatXeCar';
+import DatXeBus from './DatXeBus';
+import DatXeTrain from './DatXeTau';
+import { faBus, faCar, faTrain } from '@fortawesome/free-solid-svg-icons';
 
 const DanhSachGiaoDich = () => {
   const [detailCar, setDetailCar] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [selected, setSelected] = useState('Car');
+  const handleClick = (option) => {
+    setSelected(option);
+  };
   const fetchDetailCar = async () => {
     try {
-      const res = await getUser()
-      console.log("API Response:", res); 
-      setDetailCar(res.data.users); 
+      const res = await getUser();
+      console.log('API Response:', res);
+      setDetailCar(res.data.users);
     } catch (error) {
-      setError("Không thể lấy dữ liệu từ máy chủ");
+      setError('Không thể lấy dữ liệu từ máy chủ');
     } finally {
       setIsLoading(false);
     }
@@ -36,47 +44,44 @@ const DanhSachGiaoDich = () => {
     );
 
   return (
-    <div className="w-auto mt-[24px] h-full bg-white">
-      <div className="flex w-auto">
-        <h1 className="text-black w-1/2 p-4 text-4xl">Danh sách khách hàng</h1>
-        <div className="flex w-1/2 mr-2 justify-end">
-        </div>
+    <div className="w-[100%] mt-10 h-[600px]">
+      <div className="flex w-full h-fit border mt-6 font-bold justify-center p-4 rounded-lg bg-white">
+        <span
+          onClick={() => handleClick('Car')}
+          className={`cursor-pointer text-2xl px-2 ${
+            selected === 'Car'
+              ? 'border-b-2 border-[#0094F3] text-[#0094F3]'
+              : 'text-gray-500'
+          }`}
+        >
+          <FontAwesomeIcon icon={faCar} /> Car
+        </span>
+        <span
+          onClick={() => handleClick('Bus')}
+          className={`mx-9 px-2 text-2xl cursor-pointer ${
+            selected === 'Bus'
+              ? 'border-b-2 border-[#0094F3] text-[#0094F3]'
+              : 'text-gray-500'
+          }`}
+        >
+          <FontAwesomeIcon icon={faBus} /> Shuttle Bus
+        </span>
+        <span
+          onClick={() => handleClick('Train')}
+          className={`cursor-pointer text-2xl px-2 ${
+            selected === 'Train'
+              ? 'border-b-2 border-[#0094F3] text-[#0094F3]'
+              : 'text-gray-500'
+          }`}
+        >
+          <FontAwesomeIcon icon={faTrain} /> Airport Train
+        </span>
       </div>
-      <div className="p-2">
-        <table className="w-full">
-          <thead>
-            <tr className="bg-green-400">
-              <th className="border px-4 py-2">Email</th>
-              <th className="border px-4 py-2">Tên Khách hàng</th>
-              <th className="border px-4 py-2">Roles</th>
-              <th className="border px-4 py-2">Trang thái</th>
-            </tr>
-          </thead>
-          <tbody>
-            {detailCar.length > 0
-              ? detailCar.map((detail) => (
-                  <tr key={detail._id} className="text-black">
-                    <td className="border px-4 py-2">{detail.email}</td>
-                    <td className="border px-4 py-2">
-                      {detail.name}
-                    </td>
-                    <td className="border px-4 py-2">{detail.roles}</td>
-                    <td className="border px-4 py-2">{detail.status}</td>
-                  </tr>
-                ))
-              : !isLoading && (
-                  <tr>
-                    <td colSpan="6" className="text-center p-4">
-                      Không có dữ liệu
-                    </td>
-                  </tr>
-                )}
-          </tbody>
-        </table>
-      </div>
+      {selected === 'Car' && <DatXeCar />}
+      {selected === 'Bus' && <DatXeBus />}
+      {selected === 'Train' && <DatXeTrain />}
     </div>
   );
 };
 
 export default DanhSachGiaoDich;
-
