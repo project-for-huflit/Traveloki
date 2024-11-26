@@ -25,3 +25,6 @@ dist-ssr
 
 .env
 .env.production
+
+.FE_Traveloki/env
+.FE_Traveloki/env.production

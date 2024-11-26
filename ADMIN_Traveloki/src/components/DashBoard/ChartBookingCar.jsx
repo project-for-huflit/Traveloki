@@ -41,6 +41,32 @@ export const ChartBookingCar = () => {};
 //         ],
 //     };
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  Line,
+} from "react-chartjs-2"
+import {
+  Chart as ChartJS,
+  PointElement,
+  LineElement,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend
+} from 'chart.js';
+
+ChartJS.register(
+  PointElement,
+  LineElement,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend
+);
+
 //     const options = {
 //         options: {
 //         scales: {

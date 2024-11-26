@@ -10,7 +10,7 @@ const {
   CancelBooking,
   FindBookingCarID,
   FindBookingCarMaDX,
-} = require("../../controllers/bookingCar_controller");
+} = require("../../../controllers/bookingCar_controller");
 
 route.get("/GetDatXeOto", GetDatXeOto);
 route.post("/BookingCar", BookingCar);
