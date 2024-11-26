@@ -195,7 +195,7 @@ const BookingCar = () => {
             currency: bookingCar.currency,
             message: bookingCar.Description,
             return_url: `${import.meta.env.VITE_FE_URL}/list/cars/result`,
-            orderID: datXeOto._id,
+            orderID: datXeOto.MaDX,
             userID: bookingCar.userId,
           })
 
@@ -215,7 +215,7 @@ const BookingCar = () => {
                 currency: bookingCar.currency,
                 message: bookingCar.Description,
                 userID: bookingCar.userId,
-                orderID: datXeOto._id,
+                orderID: datXeOto.MaDX,
                 returnUrl: bookingCar.return_url,
                 name: bookingCar.name,
                 image: bookingCar.image,

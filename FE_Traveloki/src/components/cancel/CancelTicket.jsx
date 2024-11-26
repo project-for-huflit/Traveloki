@@ -185,7 +185,7 @@ const CancelTicket = () => {
               Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
             },
             body: JSON.stringify({
-                orderId: detailBookingCar[0]?._id,
+                orderId: detailBookingCar[0]?.MaDX,
               }),
           }
         );
@@ -203,7 +203,7 @@ const CancelTicket = () => {
                 Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
               },
               body: JSON.stringify({
-                orderId: detailBookingCar[0]?._id,
+                orderId: detailBookingCar[0]?.MaDX,
               }),
             }
           );
