@@ -65,27 +65,27 @@ class BookingCarService {
    * @param transactionID: _id
    * @returns { "url":"https://pointer.io.vn/payment-gateway?token={token}", "status":200 }
    */
-  static async CancelPaymentPointerWallet({ _id }) {
-    console.log('_id::', _id);
+  static async CancelPaymentPointerWallet({ orderID }) {
+    console.log('orderID::', orderID);
     try {
-      console.log('_id::', { _id });
-      const data = await pointer.cancelOrder(_id);
+      console.log('orderID::', orderID);
+      const data = await pointer.cancelOrder(orderID);
       console.log(data);
       return data;
     } catch (error) {
-      console.error('error::', error);
+      console.error('error:: CancelPaymentPointerWallet', error);
     }
   }
 
-  static async RefundPaymentPointerWallet({ _id }) {
-    console.log('_id::', _id);
+  static async RefundPaymentPointerWallet({ orderID }) {
+    console.log('_id::', orderID);
     try {
-      console.log('_id::', { _id });
-      const data = await pointer.refundMoney(_id);
+      console.log('_id::', { orderID });
+      const data = await pointer.refundMoney(orderID);
       console.log(data);
       return data;
     } catch (error) {
-      console.error('error::', error);
+      console.error('error:: RefundPaymentPointerWallet', error);
     }
   }
 

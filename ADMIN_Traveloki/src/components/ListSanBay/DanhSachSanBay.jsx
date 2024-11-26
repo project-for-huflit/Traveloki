@@ -12,6 +12,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from 'react';
 import {
+  fetchSanBayPartner,
   deleteSanBay,
   fetchAllSanBay,
 } from '../../services/api/ListSanBay/apiDanhSachSanBay.js';
@@ -19,22 +20,51 @@ import { Link } from 'react-router-dom';
 import { Modal as AntdModal, notification } from 'antd';
 
 const DanhSachSanBay = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem('user'));
+    const roles = users?.roles?.[0];
+    if (roles === 'ADMIN') {
+      setIsAdmin(true);
+    }
+  }, []);
   const [sanbay, setSanBay] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [sanBayToDelete, setSanBayToDelete] = useState(null);
 
+  const userId = localStorage.getItem('userId');
+
   useEffect(() => {
-    const danhSachSanBay = async () => {
-      try {
-        const res = await fetchAllSanBay();
-        console.log(res);
-        setSanBay(res.data || []);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    danhSachSanBay();
+    if (userId) {
+      const danhSachSanBay = async () => {
+        try {
+          const res = await fetchSanBayPartner(userId);
+          setSanBay(res.data.sanBay);
+          console.log(res.data);
+        } catch (error) {
+          console.error('Không thể lấy dữ liệu trạm dừng:', error);
+        }
+      };
+      danhSachSanBay();
+    }
   }, []);
+
+  console.log(isAdmin);
+
+  useEffect(() => {
+    if (isAdmin) {
+      const danhSachSanBay = async () => {
+        try {
+          const res = await fetchAllSanBay();
+          setSanBay(res.data);
+          console.log(res.data);
+        } catch (error) {
+          console.error('Không thể lấy dữ liệu lịch chạy:', error);
+        }
+      };
+      danhSachSanBay();
+    }
+  }, [isAdmin]);
 
   const showModal = (sanBay) => {
     setSanBayToDelete(sanBay);
@@ -69,15 +99,6 @@ const DanhSachSanBay = () => {
     setIsModalVisible(false);
     setSanBayToDelete(null);
   };
-
-  const [isAdmin, setIsAdmin] = useState(false);
-  useEffect(() => {
-    const users = JSON.parse(localStorage.getItem('user'));
-    const roles = users?.roles?.[0];
-    if (roles === 'admin') {
-      setIsAdmin(true);
-    }
-  }, []);
 
   return (
     <div className="w-auto h-full bg-white p-4">

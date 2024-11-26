@@ -3,7 +3,10 @@ const { LichChay } = require('../models/lichChay.model');
 
 const getAllPhuongTienService = async () => {
   try {
-    const result = await PhuongTien.find().populate('MaSB');
+    const result = await PhuongTien.find()
+      .populate('MaSB')
+      .populate('parternId')
+      .exec();
     return {
       EC: 0,
       EM: 'Lấy phương tiện thành công',

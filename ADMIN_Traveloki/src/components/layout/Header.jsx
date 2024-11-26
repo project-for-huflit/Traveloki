@@ -117,7 +117,7 @@ const Header = () => {
   useEffect(() => {
     const users = JSON.parse(localStorage.getItem('user'));
     const roles = users?.roles?.[0];
-    if (roles === 'admin') {
+    if (roles === 'ADMIN') {
       setIsAdmin(true);
     }
   }, []);
@@ -174,7 +174,7 @@ const Header = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {isAdmin && (
+      {!isAdmin && (
         <MenuItem onClick={handleMenuLogin}>
           Đăng nhập với tư cách admin
         </MenuItem>
