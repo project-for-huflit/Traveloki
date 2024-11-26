@@ -10,112 +10,57 @@ import {
 } from '../../services/api/Dashboard/apiDashboard.js';
 
 export const Dashboard = () => {
-//   // const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [slCar, setSlCar] = useState([]);
-//   const [slTrain, setSlTrain] = useState([]);
-//   const [slBus, setSlBus] = useState([]);
-//   const [error, setError] = useState(null);
+  // const url = "https://cnpm-api-thanh-3cf82c42b226.herokuapp.com/api";
+  const [isLoading, setIsLoading] = useState(true);
+  const [slCar, setSlCar] = useState([]);
+  const [slTrain, setSlTrain] = useState([]);
+  const [slBus, setSlBus] = useState([]);
+  const [error, setError] = useState(null);
 
-//   const [user, setUser] = useState([]);
-//   const fetchUser = async () => {
-//     try {
-//       const res = await getUser();
-//       console.log('API Response:', res);
-//       setUser(res.data.users);
-//     } catch (error) {
-//       setError('Không thể lấy dữ liệu từ máy chủ');
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
+  const [user, setUser] = useState([]);
+  const fetchUser = async () => {
+    try {
+      const res = await getUser();
+      console.log('API Response:', res);
+      setUser(res.data.users);
+    } catch (error) {
+      setError('Không thể lấy dữ liệu từ máy chủ');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-//   window.addEventListener('message', (event) => {
-//     if (event.origin === 'http://localhost:5173') {
-//       const { token, refreshToken, user } = event.data;
+  window.addEventListener('message', (event) => {
+    if (event.origin === 'http://localhost:5173') {
+      const { token, refreshToken, user } = event.data;
 
-//       localStorage.setItem('token', token);
-//       localStorage.setItem('refreshToken', refreshToken);
-//       localStorage.setItem('user', user);
-//     }
-//   });
+      localStorage.setItem('token', token);
+      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('user', user);
+    }
+  });
 
-//   //get History
-//   useEffect(() => {
-//     //get HistoryCar
-//     const historyCar = async () => {
-//       try {
-//         const res = await fetchHistoryCar();
-//         console.log(res.lichSuDatXeOto);
-//         setSlCar(res.lichSuDatXeOto || []);
-//       } catch (error) {
-//         setError('Không thể lấy dữ liệu từ máy chủ oto');
-//       } finally {
-//         setIsLoading(false);
-//       }
-//     };
-
-    const [isLoading, setIsLoading] = useState(true);
-    const [slCar,setSlCar] = useState([]);
-    const [slTrain,setSlTrain] = useState([]);
-    const [slBus,setSlBus] = useState([]);
-    const [error, setError] = useState(null);
-
-    window.addEventListener('message', (event) => {
-      if (event.origin === 'http://localhost:5173') {
-        const { token, refreshToken, user } = event.data;
-        localStorage.setItem('token', token);
-        localStorage.setItem('refreshToken', refreshToken);
-        localStorage.setItem('user', user);
+  //get History
+  useEffect(() => {
+    //get HistoryCar
+    const historyCar = async () => {
+      try {
+        const res = await fetchHistoryCar();
+        console.log(res.lichSuDatXeOto);
+        setSlCar(res.lichSuDatXeOto);
+      } catch (error) {
+        setError('Không thể lấy dữ liệu từ máy chủ oto');
+      } finally {
+        setIsLoading(false);
       }
-    });
-
-    //get History
-    useEffect(() => {
-        //get HistoryCar
-        const historyCar = async() => {
-            try {
-              const res = await fetchHistoryCar();
-
-              setSlCar(res.lichSuDatXeOto || []);
-            } catch (error) {
-              setError("Không thể lấy dữ liệu từ máy chủ");
-              console.log("error", error);
-            }finally {
-                setIsLoading(false);
-            }
-        };
-
-        // //get HistoryTrain
-        // const historyTrain = async () => {
-        //     try {
-        //       const res = await fetchHistoryTrain();
-        //       setSlTrain(res.lichSuDatTau || []);
-        //     } catch (error) {
-        //       setError("Không thể lấy dữ liệu từ máy chủ");
-        //     }finally {
-        //         setIsLoading(false);
-        //     }
-        // };
-
-        // //get HistoryBus
-        // const historyBus = async () => {
-        //     try {
-        //       const res = await fetchHistoryBus();
-        //       setSlBus(res.lichSuDatXeBus || []);
-        //     } catch (error) {
-        //       setError("Không thể lấy dữ liệu từ máy chủ");
-        //     }finally {
-        //         setIsLoading(false);
-        //     }
-        // };
+    };
 
     //get HistoryTrain
     const historyTrain = async () => {
       try {
         const res = await fetchHistoryTrain();
         console.log(res.lichSuDatTau);
-        // setSlTrain(res.lichSuDatTau || []);
+        setSlTrain(res.lichSuDatTau);
       } catch (error) {
         setError('Không thể lấy dữ liệu từ máy chủ tau');
       } finally {
@@ -127,7 +72,7 @@ export const Dashboard = () => {
     const historyBus = async () => {
       try {
         const res = await fetchHistoryBus();
-        setSlBus(res.lichSuDatXeBus || []);
+        setSlBus(res.lichSuDatXeBus);
       } catch (error) {
         setError('Không thể lấy dữ liệu từ máy chủ bus');
       } finally {
@@ -295,7 +240,7 @@ export const Dashboard = () => {
           <div className="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
             <div className="flex justify-between mb-6">
               <div>
- {/* Tổng số lượng xe đã đặt */}
+                {/* Tổng số lượng xe đã đặt */}
                 <div className="text-2xl font-semibold mb-1">
                   {totalBookingsBus}
                 </div>

@@ -20,7 +20,7 @@ const getAllPhuongTienService = async () => {
 };
 
 const createPhuongTienService = async (
-  partern,
+  parternId,
   LoaiPT,
   TenPhuongTien,
   MaSoXe,
@@ -55,7 +55,7 @@ const createPhuongTienService = async (
     }
 
     const result = await PhuongTien.create({
-      partern,
+      parternId,
       MaPT: newMaPT,
       LoaiPT: LoaiPT,
       TenPhuongTien: TenPhuongTien,
@@ -86,10 +86,10 @@ const deletePhuongTienService = async (id) => {
     if (checkPhuongTienInLichChay) {
       return {
         EC: 1,
-        EM: "Không thể xóa phương tiện vì phương tiện đang được sử dụng trong lịch chạy",
+        EM: 'Không thể xóa phương tiện vì phương tiện đang được sử dụng trong lịch chạy',
       };
     }
-    
+
     const result = await PhuongTien.deleteOne({ _id: id });
     if (result.deletedCount === 0) {
       return {
