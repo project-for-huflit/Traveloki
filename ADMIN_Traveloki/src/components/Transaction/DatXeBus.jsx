@@ -20,15 +20,12 @@ const formatDate = (dateString) => {
 function RightContent() {
   const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const [lichSuBus, setLichSuBus] = useState([]);
-  const currentMaKH = 'KHthanh';
 
   //get ls xe
   useEffect(() => {
     const getLichSuDatXe = async () => {
       try {
-        const res = await axios.get(`${url}/GetHistoryBus`, {
-          params: { MaKH: currentMaKH },
-        });
+        const res = await axios.get(`${url}/GetHistoryBus`);
         console.log(res.data);
         setLichSuBus(res.data.lichSuDatXeBus);
       } catch (error) {

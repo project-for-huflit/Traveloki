@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 // Hàm định dạng ngày giờ
 const formatDate = (dateString) => {
@@ -21,19 +20,12 @@ const formatDate = (dateString) => {
 function RightContent() {
   const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const [lichSuTrain, setLichSuTrain] = useState([]);
-  const currentMaKH = 'KHthanh';
-  const filteredLichSuTrain = lichSuTrain.filter(
-    (item) => item.MaKH === currentMaKH,
-  ); // Lọc lịch sử đặt xe theo mã khách hàng hiện tại
-  const navigate = useNavigate();
 
   //get ls xe
   useEffect(() => {
     const getLichSuDatXe = async () => {
       try {
-        const res = await axios.get(`${url}/GetLichSuDatTau`, {
-          params: { MaKH: currentMaKH },
-        });
+        const res = await axios.get(`${url}/GetLichSuDatTau`);
         console.log(res.data);
         setLichSuTrain(res.data.lichSuDatTau);
       } catch (error) {
@@ -44,15 +36,7 @@ function RightContent() {
       }
     };
     getLichSuDatXe();
-  }, [currentMaKH]);
-
-  const handleSubmitCar = (maDX, id) => {
-    navigate(
-      `/user/my-booking/cancel/ticket-train?MaDX=${encodeURIComponent(
-        maDX,
-      )}&id=${encodeURIComponent(id)}`,
-    );
-  };
+  }, []);
 
   return (
     <div className="w-full mt-10 h-[600px] overflow-y-auto">
@@ -60,7 +44,7 @@ function RightContent() {
         Vé điện tử & Phiếu thanh toán hiện hành
       </h2>
       <div></div>
-      {filteredLichSuTrain.map((item) => (
+      {lichSuTrain.map((item) => (
         <div key={item._id} className="w-full shadow bg-[#EDEDED] rounded-lg">
           <div className="items-center p-4 mt-4">
             <div className="flex my-1">
@@ -75,12 +59,6 @@ function RightContent() {
             <div className="flex">
               <div className="bg-blue-900 text-white rounded-full my-1 py-1 px-4">
                 Trạng thái thanh toán
-              </div>
-              <div
-                className="ml-auto font-semibold text-blue-800 cursor-pointer hover:text-blue-800"
-                onClick={() => handleSubmitCar(item.MaDX, item._id)}
-              >
-                Xem chi tiết
               </div>
             </div>
           </div>
