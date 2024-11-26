@@ -54,7 +54,7 @@ export const Dashboard = () => {
 //         setIsLoading(false);
 //       }
 //     };
-    
+
     const [isLoading, setIsLoading] = useState(true);
     const [slCar,setSlCar] = useState([]);
     const [slTrain,setSlTrain] = useState([]);
@@ -86,29 +86,29 @@ export const Dashboard = () => {
             }
         };
 
-        //get HistoryTrain
-        const historyTrain = async () => {
-            try {
-              const res = await fetchHistoryTrain();
-              setSlTrain(res.lichSuDatTau || []);
-            } catch (error) {
-              setError("Không thể lấy dữ liệu từ máy chủ");
-            }finally {
-                setIsLoading(false);
-            }
-        };
+        // //get HistoryTrain
+        // const historyTrain = async () => {
+        //     try {
+        //       const res = await fetchHistoryTrain();
+        //       setSlTrain(res.lichSuDatTau || []);
+        //     } catch (error) {
+        //       setError("Không thể lấy dữ liệu từ máy chủ");
+        //     }finally {
+        //         setIsLoading(false);
+        //     }
+        // };
 
-        //get HistoryBus
-        const historyBus = async () => {
-            try {
-              const res = await fetchHistoryBus();
-              setSlBus(res.lichSuDatXeBus || []);
-            } catch (error) {
-              setError("Không thể lấy dữ liệu từ máy chủ");
-            }finally {
-                setIsLoading(false);
-            }
-        };
+        // //get HistoryBus
+        // const historyBus = async () => {
+        //     try {
+        //       const res = await fetchHistoryBus();
+        //       setSlBus(res.lichSuDatXeBus || []);
+        //     } catch (error) {
+        //       setError("Không thể lấy dữ liệu từ máy chủ");
+        //     }finally {
+        //         setIsLoading(false);
+        //     }
+        // };
 
     //get HistoryTrain
     const historyTrain = async () => {
@@ -134,7 +134,7 @@ export const Dashboard = () => {
         setIsLoading(false);
       }
     };
-    fetchUser();
+    // fetchUser();
     historyCar();
     historyBus();
     historyTrain();
