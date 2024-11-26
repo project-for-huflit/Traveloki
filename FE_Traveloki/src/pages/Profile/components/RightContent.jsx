@@ -6,13 +6,21 @@ import { faCar, faBus } from '@fortawesome/free-solid-svg-icons';
 // import DatXeTrain from "./DatXeTau";
 import Profile from './profile';
 import MethodPayment from './methodPayment';
+
+
 const RightContent = () => {
   const [selected, setSelected] = useState('profile');
   const handleClick = (option) => {
     setSelected(option);
   };
 
-  console.log('selected::', selected)
+  const partnerId = import.meta.env.VITE_PARTNERID_POINTER
+  const returnUrl = import.meta.env.VITE_RETURNURL_POINTER
+  const userId = JSON.parse(localStorage.getItem("user"))
+
+
+
+  // console.log('selected::', selected)
   const result = (selected === 'profile') ? (<Profile />) : (<MethodPayment />)
   return (
     <div className="w-[70%] h-[600px] overflow-y-auto">
