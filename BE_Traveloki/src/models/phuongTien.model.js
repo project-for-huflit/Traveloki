@@ -3,9 +3,10 @@ const COLLECTION_NAME = 'PhuongTiens';
 
 const PhuongTienSchema = new Schema(
   {
-    partern: {
+    parternId: {
       type: Schema.Types.ObjectId,
-      ref: 'partern',
+      ref: 'partner',
+      required: true,
     },
     MaPT: { type: String, required: true, maxlength: 5 },
     LoaiPT: {

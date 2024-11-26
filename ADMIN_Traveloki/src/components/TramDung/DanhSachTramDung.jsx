@@ -13,33 +13,59 @@ import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import {
+  fetchTramDungPartern,
   fetchAllTramDung,
   deleteTramDung,
 } from '../../services/api/TramDung/apiDanhSachTramDung';
 import { Modal as AntdModal, notification } from 'antd';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import slugify from 'slugify';
 import { setSelectedRow } from '../../redux/slice/vehicleSlice';
 
 const DanhSachTramDung = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem('user'));
+    const roles = users?.roles?.[0];
+    if (roles === 'ADMIN') {
+      setIsAdmin(true);
+    }
+  }, []);
   const dispatch = useDispatch();
 
   const [tramDung, setTramDung] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [tramToDelete, setTramToDelete] = useState(null);
+  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
-    const danhSachTramDung = async () => {
-      try {
-        const res = await fetchAllTramDung();
-        setTramDung(res.data || []);
-      } catch (error) {
-        console.error('Không thể lấy dữ liệu trạm dừng:', error);
-      }
-    };
-    danhSachTramDung();
+    if (userId) {
+      const danhSachTramDung = async () => {
+        try {
+          const res = await fetchTramDungPartern(userId);
+          setTramDung(res.data.tramDung);
+        } catch (error) {
+          console.error('Không thể lấy dữ liệu trạm dừng:', error);
+        }
+      };
+      danhSachTramDung();
+    }
   }, []);
+
+  useEffect(() => {
+    if (isAdmin) {
+      const danhSachTramDung = async () => {
+        try {
+          const res = await fetchAllTramDung();
+          setTramDung(res.data);
+        } catch (error) {
+          console.error('Không thể lấy dữ liệu trạm dừng:', error);
+        }
+      };
+      danhSachTramDung();
+    }
+  }, [isAdmin]);
 
   const showModal = (tram) => {
     setTramToDelete(tram);
@@ -74,15 +100,6 @@ const DanhSachTramDung = () => {
     setIsModalVisible(false);
     setTramToDelete(null);
   };
-
-  const [isAdmin, setIsAdmin] = useState(false);
-  useEffect(() => {
-    const users = JSON.parse(localStorage.getItem('user'));
-    const roles = users?.roles?.[0];
-    if (roles === 'ADMIN') {
-      setIsAdmin(true);
-    }
-  }, []);
 
   const handleRowClick = (row) => {
     dispatch(setSelectedRow(row));
