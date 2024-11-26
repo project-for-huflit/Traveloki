@@ -14,26 +14,54 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import { Modal as AntdModal, notification } from 'antd';
 import {
+  fetchLichChayPartner,
   deleteLichChay,
   fetchAllLichChay,
 } from '../../services/api/LichChay/apiDanhSachLichChay.js';
 
 const DanhSachLichChay = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem('user'));
+    const roles = users?.roles?.[0];
+    if (roles === 'ADMIN') {
+      setIsAdmin(true);
+    }
+  }, []);
   const [lichChay, setLichChay] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [lichChayToDelete, setLichChayToDelete] = useState(null);
 
+  const userId = localStorage.getItem('userId');
+
   useEffect(() => {
-    const DanhSachLichChay = async () => {
-      try {
-        const res = await fetchAllLichChay();
-        setLichChay(res.data || []);
-      } catch (error) {
-        console.error('Không thể lấy dữ liệu lịch chạy:', error);
-      }
-    };
-    DanhSachLichChay();
+    if (userId) {
+      const DanhSachLichChay = async () => {
+        try {
+          const res = await fetchLichChayPartner(userId);
+          setLichChay(res.data.lichChay);
+          console.log(res.data);
+        } catch (error) {
+          console.error('Không thể lấy dữ liệu trạm dừng:', error);
+        }
+      };
+      DanhSachLichChay();
+    }
   }, []);
+
+  useEffect(() => {
+    if (isAdmin) {
+      const DanhSachLichChay = async () => {
+        try {
+          const res = await fetchAllLichChay();
+          setLichChay(res.data);
+        } catch (error) {
+          console.error('Không thể lấy dữ liệu lịch chạy:', error);
+        }
+      };
+      DanhSachLichChay();
+    }
+  }, [isAdmin]);
 
   const showModal = (lichChay) => {
     setLichChayToDelete(lichChay);
@@ -68,15 +96,6 @@ const DanhSachLichChay = () => {
     setIsModalVisible(false);
     setLichChayToDelete(null);
   };
-
-  const [isAdmin, setIsAdmin] = useState(false);
-  useEffect(() => {
-    const users = JSON.parse(localStorage.getItem('user'));
-    const roles = users?.roles?.[0];
-    if (roles === 'ADMIN') {
-      setIsAdmin(true);
-    }
-  }, []);
 
   return (
     <div className="w-auto h-full bg-white p-4">

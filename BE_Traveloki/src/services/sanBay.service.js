@@ -1,31 +1,31 @@
-const {SanBay} = require('../models/sanBay.model');
-const {PhuongTien} = require("../models/phuongTien.model");
+const { SanBay } = require('../models/sanBay.model');
+const { PhuongTien } = require('../models/phuongTien.model');
 
 const getAllSanBayService = async () => {
   try {
-    const result = await SanBay.find({})
+    const result = await SanBay.find({});
     return {
       EC: 0,
-      EM: "Lấy sân bay thành công",
-      data: result
-    }
-  }catch (error){
+      EM: 'Lấy sân bay thành công',
+      data: result,
+    };
+  } catch (error) {
     return {
       EC: 1,
-      EM: "Không thể lấy sân bay",
-      data: []
-    }
+      EM: 'Không thể lấy sân bay',
+      data: [],
+    };
   }
-}
+};
 
-const createSanBayService = async (TenSanBay, ThanhPho) => {
+const createSanBayService = async (parternId, TenSanBay, ThanhPho) => {
   try {
     const existTenSanBay = await SanBay.exists({ TenSanBay });
     if (existTenSanBay) {
       console.log(`SanBay exists: ${TenSanBay}`);
       return {
         EC: 1,
-        EM: "Tên sân bay đã tồn tại",
+        EM: 'Tên sân bay đã tồn tại',
       };
     }
 
@@ -33,7 +33,7 @@ const createSanBayService = async (TenSanBay, ThanhPho) => {
     const lastSanBay = await SanBay.aggregate([
       {
         $addFields: {
-          numericMaSB: { $toInt: { $substr: ["$MaSB", 2, -1] } }, // Tách phần số trong MaSB
+          numericMaSB: { $toInt: { $substr: ['$MaSB', 2, -1] } }, // Tách phần số trong MaSB
         },
       },
       { $sort: { numericMaSB: -1 } }, // Sắp xếp giảm dần theo số
@@ -41,7 +41,7 @@ const createSanBayService = async (TenSanBay, ThanhPho) => {
     ]);
 
     // Khởi tạo mã sân bay mới
-    let newMaSB = "SB1";
+    let newMaSB = 'SB1';
     if (lastSanBay.length > 0 && lastSanBay[0].numericMaSB) {
       const lastNumber = lastSanBay[0].numericMaSB;
       newMaSB = `SB${lastNumber + 1}`; // Tăng số lên 1
@@ -49,6 +49,7 @@ const createSanBayService = async (TenSanBay, ThanhPho) => {
 
     // Tạo sân bay mới
     const result = await SanBay.create({
+      parternId,
       MaSB: newMaSB,
       TenSanBay: TenSanBay,
       ThanhPho: ThanhPho,
@@ -56,19 +57,18 @@ const createSanBayService = async (TenSanBay, ThanhPho) => {
 
     return {
       EC: 0,
-      EM: "Tạo sân bay thành công",
+      EM: 'Tạo sân bay thành công',
       data: result,
     };
   } catch (error) {
     console.log(error);
     return {
       EC: 1,
-      EM: "Không thể tạo sân bay",
+      EM: 'Không thể tạo sân bay',
       data: [],
     };
   }
 };
-
 
 const deleteSanBayService = async (id) => {
   try {
@@ -76,7 +76,7 @@ const deleteSanBayService = async (id) => {
     if (phuongTien.length > 0) {
       return {
         EC: 1,
-        EM: "Không thể xóa sân bay khi vẫn còn trong phương tiện",
+        EM: 'Không thể xóa sân bay khi vẫn còn trong phương tiện',
       };
     }
 
@@ -84,25 +84,27 @@ const deleteSanBayService = async (id) => {
     if (result.deletedCount === 0) {
       return {
         EC: 1,
-        EM: "Trạm dừng không tồn tại hoặc đã bị xóa",
+        EM: 'Trạm dừng không tồn tại hoặc đã bị xóa',
       };
     }
 
     return {
       EC: 0,
-      EM: "Xóa sân bay thành công",
+      EM: 'Xóa sân bay thành công',
       data: result,
     };
   } catch (error) {
     console.error(error);
     return {
       EC: 1,
-      EM: "Không thể xóa sân bay",
+      EM: 'Không thể xóa sân bay',
       data: [],
     };
   }
 };
 
 module.exports = {
-  getAllSanBayService, createSanBayService, deleteSanBayService
-}
+  getAllSanBayService,
+  createSanBayService,
+  deleteSanBayService,
+};

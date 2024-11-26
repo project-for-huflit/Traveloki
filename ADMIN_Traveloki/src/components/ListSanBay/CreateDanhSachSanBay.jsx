@@ -13,6 +13,7 @@ const CreateDanhSachSanBay = () => {
   const [selectedThanhPho, setSelectedThanhPho] = useState(null);
   const [danhSachSanBay, setDanhSachSanBay] = useState({});
   const navigate = useNavigate();
+  const parternId = localStorage.getItem('userId');
 
   useEffect(() => {
     const fetchThanhPho = async () => {
@@ -33,6 +34,7 @@ const CreateDanhSachSanBay = () => {
   const handleThanhPhoChange = (selectedOption) => {
     setSelectedThanhPho(selectedOption);
     setDanhSachSanBay({
+      parternId,
       ...danhSachSanBay,
       ThanhPho: selectedOption ? selectedOption.label : null, // Lưu giá trị thành phố vào danhSachSanBay
     });

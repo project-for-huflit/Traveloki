@@ -1,49 +1,61 @@
-const { Schema, model} = require('mongoose');
-const COLLECTION_NAME = 'LichChays'
+const { Schema, model } = require('mongoose');
+const COLLECTION_NAME = 'LichChays';
 
-const LichChaySchema = new Schema({
-    MaPT:{
+const LichChaySchema = new Schema(
+  {
+    parternId: {
       type: Schema.Types.ObjectId,
+      ref: 'partner',
       required: true,
-      ref: 'PhuongTien'
     },
-    MaTuyen:{
+    MaPT: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: 'Tuyen'
+      ref: 'PhuongTien',
+    },
+    MaTuyen: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'Tuyen',
     },
     ngayKhoiHanh: {
       type: String,
-      required: true
+      required: true,
     },
     gioKhoiHanh: {
       type: String,
-      required: true
+      required: true,
     },
     gioKetThuc: {
       type: String,
-      required: true
+      required: true,
     },
     SLVe: {
       type: Number,
-      required: true
+      required: true,
     },
     SLVeConLai: {
       type: Number,
-      required: true
+      required: true,
     },
     trangThai: {
       type: String,
-      enum: ["Đã lên lịch", "Đang hoạt động", "Bị trì hoãn", "Đã hoàn thành", "Đã hủy", "Bảo trì"],
-    }
-  },{
+      enum: [
+        'Đã lên lịch',
+        'Đang hoạt động',
+        'Bị trì hoãn',
+        'Đã hoàn thành',
+        'Đã hủy',
+        'Bảo trì',
+      ],
+    },
+  },
+  {
     timestamps: true,
-    collection: COLLECTION_NAME
-  }
-)
+    collection: COLLECTION_NAME,
+  },
+);
 
 module.exports = {
-  LichChay: model('LichChay', LichChaySchema)
+  LichChay: model('LichChay', LichChaySchema),
 };
-
-
