@@ -60,7 +60,7 @@ export const Dashboard = () => {
       try {
         const res = await fetchHistoryTrain();
         console.log(res.lichSuDatTau);
-        // setSlTrain(res.lichSuDatTau || []);
+        setSlTrain(res.lichSuDatTau);
       } catch (error) {
         setError('Không thể lấy dữ liệu từ máy chủ tau');
       } finally {
