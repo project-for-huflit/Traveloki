@@ -43,6 +43,7 @@ class BookingCarService {
         userID: userID,
         orderID: orderID,
         returnUrl: returnUrl,
+        providerID: "provider_id", // Tùy chọn thêm id nhà cung cấp
         orders: [
           {
             name: name,
@@ -73,6 +74,55 @@ class BookingCarService {
       return data;
     } catch (error) {
       console.error('error::', error);
+    }
+  }
+
+  static async RefundPaymentPointerWallet({ _id }) {
+    console.log('_id::', _id);
+    try {
+      console.log('_id::', { _id });
+      const data = await pointer.refundMoney(_id);
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error('error::', error);
+    }
+  }
+
+  static async OneClickPaymentPointerWallet({
+    signature,
+    amount,
+    currency,
+    message,
+    userID,
+    orderID,
+    returnUrl
+  }) {
+
+    console.log('Nhan thong tin payment::', {
+      signature,
+      amount,
+      currency,
+      message,
+      userID,
+      orderID,
+      returnUrl
+    });
+    try {
+      const response = await pointer.connectedPayment({
+        signature: signature,
+        amount: amount,
+        currency: currency,
+        message: message,
+        userID: userID,
+        orderID: orderID,
+        providerID: "provider_id",
+        returnUrl: returnUrl
+      });
+      console.log("response::", response);
+      return response;
+    } catch (error) {
+      console.error('error return url::', error);
     }
   }
 }
