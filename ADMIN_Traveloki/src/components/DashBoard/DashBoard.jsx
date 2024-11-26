@@ -47,7 +47,7 @@ export const Dashboard = () => {
       try {
         const res = await fetchHistoryCar();
         console.log(res.lichSuDatXeOto);
-        setSlCar(res.lichSuDatXeOto || []);
+        setSlCar(res.lichSuDatXeOto);
       } catch (error) {
         setError('Không thể lấy dữ liệu từ máy chủ oto');
       } finally {
@@ -72,7 +72,7 @@ export const Dashboard = () => {
     const historyBus = async () => {
       try {
         const res = await fetchHistoryBus();
-        setSlBus(res.lichSuDatXeBus || []);
+        setSlBus(res.lichSuDatXeBus);
       } catch (error) {
         setError('Không thể lấy dữ liệu từ máy chủ bus');
       } finally {

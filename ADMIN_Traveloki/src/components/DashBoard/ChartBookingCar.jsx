@@ -41,11 +41,9 @@ export const ChartBookingCar = () => {};
 //         ],
 //     };
 
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
-// import {
-//   Line,
-// } from "react-chartjs-2"
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+// import { Line } from 'react-chartjs-2';
 // import {
 //   Chart as ChartJS,
 //   PointElement,
@@ -54,7 +52,7 @@ export const ChartBookingCar = () => {};
 //   CategoryScale,
 //   LinearScale,
 //   Tooltip,
-//   Legend
+//   Legend,
 // } from 'chart.js';
 
 // ChartJS.register(
@@ -64,7 +62,7 @@ export const ChartBookingCar = () => {};
 //   CategoryScale,
 //   LinearScale,
 //   Tooltip,
-//   Legend
+//   Legend,
 // );
 
 //     const options = {
