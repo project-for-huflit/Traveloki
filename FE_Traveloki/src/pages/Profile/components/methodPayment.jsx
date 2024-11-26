@@ -1,7 +1,7 @@
 
 const partnerId = import.meta.env.VITE_PARTNERID_POINTER
-  const returnUrl = import.meta.env.VITE_RETURNURL_POINTER
-  const userId = JSON.parse(localStorage.getItem("user"))
+const returnUrl = encodeURIComponent(import.meta.env.VITE_RETURNURL_POINTER)
+const userId = JSON.parse(localStorage.getItem("user"))
 
 function methodPayment(handleConnectWalletPoiter) {
 

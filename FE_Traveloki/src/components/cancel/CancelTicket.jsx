@@ -176,7 +176,7 @@ const CancelTicket = () => {
         //   }
         // );
 
-        const refundResponse = await fetch(
+        const cancelPaymentResponse = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/payment/pointer-wallet/car/cancel`,
           {
             method: "POST",
@@ -190,24 +190,44 @@ const CancelTicket = () => {
           }
         );
 
-        console.log("refundResponse::", refundResponse)
-        if (refundResponse.status === 200) {
-          alert("Hoàn tiền thành công.");
+        console.log("cancelPaymentResponse::", cancelPaymentResponse)
+        if (cancelPaymentResponse.status === 200) {
+          alert("Hủy order thành công.");
 
-          try {
-            const cancelResponse = await axios.delete(
-              `${url}/CancelBooking/${MaDX}`
-            );
-            if (cancelResponse.status === 200) {
-              alert("Hủy vé thành công.");
-              navigate("/user/my-booking");
-            } else {
-              alert("Có lỗi xảy ra khi hủy vé đặt xe.");
+          const refundPaymentResponse = await fetch(
+            `${import.meta.env.VITE_BACKEND_URL}/api/payment/pointer-wallet/car/refund`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
+              },
+              body: JSON.stringify({
+                orderId: detailBookingCar[0]?._id,
+              }),
             }
-          } catch (cancelError) {
-            console.error("Error cancelling ticket: ", cancelError);
-            alert("Có lỗi xảy ra khi hủy vé.");
+          );
+          console.log("refundPaymentResponse::", refundPaymentResponse)
+
+          if(refundPaymentResponse.status === 200) {
+            alert('Hoàn tiền thành công')
+
+            try {
+              const cancelResponse = await axios.delete(
+                `${url}/CancelBooking/${MaDX}`
+              );
+              if (cancelResponse.status === 200) {
+                alert("Hủy vé thành công.");
+                navigate("/user/my-booking");
+              } else {
+                alert("Có lỗi xảy ra khi hủy vé đặt xe.");
+              }
+            } catch (cancelError) {
+              console.error("Error cancelling ticket: ", cancelError);
+              alert("Có lỗi xảy ra khi hủy vé.");
+            }
           }
+
         } else {
           alert("Có lỗi xảy ra khi xử lý hoàn tiền.");
         }

@@ -22,7 +22,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/payment': {
-        target: 'https://traveloki.netlify.app',
+        target: 'https://traveloki.vercel.app',
         changeOrigin: true,
         secure: false,
       },

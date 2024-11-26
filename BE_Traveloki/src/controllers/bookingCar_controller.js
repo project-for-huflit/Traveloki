@@ -101,10 +101,18 @@ const RefundPaymentPointerWallet = async (req, res, next) => {
 };
 
 const CancelPaymentPointerWallet = async (req, res, next) => {
-  // console.log("req.params.id::", req.params.id)
+  console.log("req.body::", req.body)
   new SuccessResponse({
     message: 'success!',
     metadata: await BookingCarService.CancelPaymentPointerWallet(req.body),
+  }).send(res);
+};
+
+const OneClickPaymentPointerWallet = async (req, res, next) => {
+  // console.log("req.params.id::", req.params.id)
+  new SuccessResponse({
+    message: 'success!',
+    metadata: await BookingCarService.OneClickPaymentPointerWallet(req.body),
   }).send(res);
 };
 
@@ -197,5 +205,6 @@ module.exports = {
   FindBookingCarMaDX,
   PaymentPointerWallet,
   CancelPaymentPointerWallet,
-  RefundPaymentPointerWallet
+  RefundPaymentPointerWallet,
+  OneClickPaymentPointerWallet
 };
