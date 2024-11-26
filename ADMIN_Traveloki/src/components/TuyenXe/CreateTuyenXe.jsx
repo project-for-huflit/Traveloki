@@ -1,26 +1,29 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { fetchAllSanBay } from "../../services/api/ListSanBay/apiDanhSachSanBay.js";
-import { createTuyenXe } from "../../services/api/TuyenXe/apiCreateTuyenXe.js";
-import {fetchAllTramDung} from "../../services/api/TramDung/apiDanhSachTramDung.js";
-import {notification} from "antd";
-import Select from "react-select";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { fetchAllSanBay } from '../../services/api/ListSanBay/apiDanhSachSanBay.js';
+import { createTuyenXe } from '../../services/api/TuyenXe/apiCreateTuyenXe.js';
+import { fetchAllTramDung } from '../../services/api/TramDung/apiDanhSachTramDung.js';
+import { notification } from 'antd';
+import Select from 'react-select';
 
 const CreateTuyenXe = () => {
+  const parternId = localStorage.getItem('userId');
   const [tuyenxe, setTuyenXe] = useState({
-    DiemKhoiHanh: "",
-    DiemKetThuc: "",
-    ThoiGianKhoiHanh: "",
-    ThoiGianKetThuc: "",
+    DiemKhoiHanh: '',
+    DiemKetThuc: '',
+    ThoiGianKhoiHanh: '',
+    ThoiGianKetThuc: '',
   });
-  const [cityKhoiHanh, setCityKhoiHanh] = useState("");
-  const [cityKetThuc, setCityKetThuc] = useState("");
+  const [cityKhoiHanh, setCityKhoiHanh] = useState('');
+  const [cityKetThuc, setCityKetThuc] = useState('');
   const [sanBays, setSanBays] = useState([]);
   const [tramDung, setTramDung] = useState([]);
-  const [tramList, setTramList] = useState([{ MaTramDung: "", SoKM: "", GiaVe: "" }]);
+  const [tramList, setTramList] = useState([
+    { MaTramDung: '', SoKM: '', GiaVe: '' },
+  ]);
 
   const navigate = useNavigate();
 
@@ -31,10 +34,10 @@ const CreateTuyenXe = () => {
         if (res && res.data) {
           setSanBays(res.data);
         } else {
-          throw new Error("Không thể lấy dữ liệu từ máy chủ");
+          throw new Error('Không thể lấy dữ liệu từ máy chủ');
         }
       } catch (error) {
-        console.log("Lỗi:", error);
+        console.log('Lỗi:', error);
       }
     };
     danhSachSanBay();
@@ -45,38 +48,38 @@ const CreateTuyenXe = () => {
         if (res && res.data) {
           setTramDung(res.data);
         } else {
-          throw new Error("Không thể lấy dữ liệu từ máy chủ");
+          throw new Error('Không thể lấy dữ liệu từ máy chủ');
         }
       } catch (error) {
-        console.log("Lỗi:", error);
+        console.log('Lỗi:', error);
       }
-    }
+    };
     danhSachTramDung();
   }, []);
 
   const handleSelectChangeDiemKetThuc = (selectedOption) => {
     if (selectedOption) {
-      const city = selectedOption.label.split(" - ")[1];
+      const city = selectedOption.label.split(' - ')[1];
       setCityKetThuc(city);
       setTuyenXe((prevTuyenXe) => ({
         ...prevTuyenXe,
         DiemKetThuc: selectedOption.value,
       }));
     } else {
-      setCityKetThuc("");
+      setCityKetThuc('');
     }
   };
 
   const handleSelectChangeDiemKhoiHanh = (selectedOption) => {
     if (selectedOption) {
-      const city = selectedOption.label.split(" - ")[1];
+      const city = selectedOption.label.split(' - ')[1];
       setCityKhoiHanh(city);
       setTuyenXe((prevTuyenXe) => ({
         ...prevTuyenXe,
         DiemKhoiHanh: selectedOption.value,
       }));
     } else {
-      setCityKhoiHanh("");
+      setCityKhoiHanh('');
     }
   };
 
@@ -89,13 +92,15 @@ const CreateTuyenXe = () => {
     : tramDung;
 
   const getFilteredTramDungOptions = (index) => {
-    const DiemKetThucId = filteredTramDung.find((tram) => tram.TenTramDung === tuyenxe.DiemKetThuc)?._id;
+    const DiemKetThucId = filteredTramDung.find(
+      (tram) => tram.TenTramDung === tuyenxe.DiemKetThuc,
+    )?._id;
     const selectedMaTramDung = tramList.map((tram) => tram.MaTramDung);
     const excludedTrams = [...selectedMaTramDung, DiemKetThucId];
     return filteredTramDung.filter(
       (tram) =>
         !excludedTrams.includes(tram._id) ||
-        tram._id === tramList[index]?.MaTramDung
+        tram._id === tramList[index]?.MaTramDung,
     );
   };
 
@@ -107,8 +112,8 @@ const CreateTuyenXe = () => {
     }));
   };
 
-  console.log("tuyenxe", tuyenxe);
-  console.log("tramList", tramList);
+  console.log('tuyenxe', tuyenxe);
+  console.log('tramList', tramList);
 
   const handleTramChange = (e, index) => {
     const { name, value } = e.target;
@@ -119,12 +124,14 @@ const CreateTuyenXe = () => {
 
   const handleTramMaTramChange = (selectedOption, index) => {
     const updatedTramList = [...tramList];
-    updatedTramList[index].MaTramDung = selectedOption ? selectedOption.value : ""; // Gán giá trị hoặc chuỗi rỗng nếu không chọn
+    updatedTramList[index].MaTramDung = selectedOption
+      ? selectedOption.value
+      : ''; // Gán giá trị hoặc chuỗi rỗng nếu không chọn
     setTramList(updatedTramList);
   };
 
   const addTram = () => {
-    setTramList([...tramList, { MaTramDung: "", SoKM: "", GiaVe: "" }]);
+    setTramList([...tramList, { MaTramDung: '', SoKM: '', GiaVe: '' }]);
   };
 
   const removeTramAtIndex = (index) => {
@@ -133,14 +140,19 @@ const CreateTuyenXe = () => {
       updatedTramList.splice(index, 1);
       setTramList(updatedTramList);
     } else {
-      alert("Cần ít nhất một trạm dừng.");
+      alert('Cần ít nhất một trạm dừng.');
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!tuyenxe.DiemKhoiHanh || !tuyenxe.DiemKetThuc || !tuyenxe.ThoiGianKhoiHanh || !tuyenxe.ThoiGianKetThuc) {
-      alert("Vui lòng nhập đầy đủ thông tin");
+    if (
+      !tuyenxe.DiemKhoiHanh ||
+      !tuyenxe.DiemKetThuc ||
+      !tuyenxe.ThoiGianKhoiHanh ||
+      !tuyenxe.ThoiGianKetThuc
+    ) {
+      alert('Vui lòng nhập đầy đủ thông tin');
       return;
     }
 
@@ -148,34 +160,34 @@ const CreateTuyenXe = () => {
     // const thoiGianKetThuc = new Date(`1970-01-01T${tuyenxe.ThoiGianKetThuc}:00Z`);
 
     if (tuyenxe.ThoiGianKetThuc <= tuyenxe.ThoiGianKhoiHanh) {
-      alert("Thời gian kết thúc phải sau thời gian khởi hành");
+      alert('Thời gian kết thúc phải sau thời gian khởi hành');
       return;
     }
 
-
     try {
       const res = await createTuyenXe(
+        parternId,
         tuyenxe.DiemKhoiHanh,
         tuyenxe.DiemKetThuc,
         tuyenxe.ThoiGianKhoiHanh,
         tuyenxe.ThoiGianKetThuc,
-        tramList
+        tramList,
       );
       if (res && res.EC === 0) {
         notification.success({
-          message: "Thêm tuyến xe",
-          description: "Thêm tuyến xe thành công",
+          message: 'Thêm tuyến xe',
+          description: 'Thêm tuyến xe thành công',
         });
-        navigate("/road/list");
+        navigate('/road/list');
       } else {
-       notification.error({
-          message: "Thêm tuyến xe",
+        notification.error({
+          message: 'Thêm tuyến xe',
           description: `Thêm thất bại: ${res.EM}`,
-       })
+        });
       }
     } catch (error) {
       console.error(error);
-      alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
+      alert('Đã xảy ra lỗi khi kết nối tới máy chủ');
     }
   };
 
@@ -235,14 +247,18 @@ const CreateTuyenXe = () => {
                 <Select
                   name="MaTramDung"
                   placeholder="Chọn Trạm dừng"
-                  options={getFilteredTramDungOptions(index).map((tramOption) => ({
-                    value: tramOption._id,
-                    label: `${tramOption.MaTramDung} - ${tramOption.ThanhPho} - ${tramOption.TenTramDung}`,
-                  }))}
+                  options={getFilteredTramDungOptions(index).map(
+                    (tramOption) => ({
+                      value: tramOption._id,
+                      label: `${tramOption.MaTramDung} - ${tramOption.ThanhPho} - ${tramOption.TenTramDung}`,
+                    }),
+                  )}
                   className="basic-single"
                   classNamePrefix="select"
                   isClearable={true}
-                  onChange={(selectedOption) => handleTramMaTramChange(selectedOption, index)}
+                  onChange={(selectedOption) =>
+                    handleTramMaTramChange(selectedOption, index)
+                  }
                 ></Select>
               </div>
               <div className="flex space-x-4 items-center">
@@ -298,7 +314,7 @@ const CreateTuyenXe = () => {
             </button>
             <Link className="p-4" to="/road/list">
               <button className="bg-red-500 px-4 py-2 hover:bg-red-700 text-white font-bold rounded">
-               Cancel
+                Cancel
               </button>
             </Link>
           </div>

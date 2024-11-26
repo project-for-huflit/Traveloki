@@ -174,7 +174,7 @@ const Header = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {isAdmin && (
+      {!isAdmin && (
         <MenuItem onClick={handleMenuLogin}>
           Đăng nhập với tư cách admin
         </MenuItem>

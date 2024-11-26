@@ -16,6 +16,7 @@ import { Modal as AntdModal, notification } from 'antd';
 import {
   deleteTuyenXe,
   fetchAllTuyenXe,
+  fetchAllTuyenXePartern,
 } from '../../services/api/TuyenXe/apiDanhSachTuyenXe';
 import slugify from 'slugify';
 import { useDispatch } from 'react-redux';
@@ -29,24 +30,43 @@ const DanhSachTuyenXe = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetchAllTuyenXe();
-        setTuyenXe(res.data || []);
-      } catch (error) {
-        console.error('Không thể lấy dữ liệu tuyến xe:', error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     const users = JSON.parse(localStorage.getItem('user'));
     const roles = users?.roles?.[0];
     if (roles === 'ADMIN') {
       setIsAdmin(true);
     }
   }, []);
+  const userId = localStorage.getItem('userId');
+
+  useEffect(() => {
+    if (userId) {
+      const danhSachTramDung = async () => {
+        try {
+          const res = await fetchAllTuyenXePartern(userId);
+          setTuyenXe(res.data.tuyen);
+          console.log(res.data.tuyen);
+        } catch (error) {
+          console.error('Không thể lấy dữ liệu trạm dừng:', error);
+        }
+      };
+      danhSachTramDung();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAdmin) {
+      const danhSachTuyenXe = async () => {
+        try {
+          const res = await fetchAllTuyenXe();
+          setTuyenXe(res.data);
+          console.log(res.data);
+        } catch (error) {
+          console.error('Không thể lấy dữ liệu tuyến xe:', error);
+        }
+      };
+      danhSachTuyenXe();
+    }
+  }, [isAdmin]);
 
   const showModal = (route) => {
     setRouteToDelete(route);
@@ -134,10 +154,10 @@ const DanhSachTuyenXe = () => {
             {tuyenXe.map((route) => (
               <TableRow
                 component={Link}
-                to={`${slugify(
-                  `${route.DiemKhoiHanh}-${route.DiemKetThuc}`,
-                  { lower: true, strict: true },
-                )}`}
+                to={`${slugify(`${route.DiemKhoiHanh}-${route.DiemKetThuc}`, {
+                  lower: true,
+                  strict: true,
+                })}`}
                 key={route._id}
                 sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}
                 onClick={() => handleRowClick(route)}
@@ -148,7 +168,7 @@ const DanhSachTuyenXe = () => {
                 <TableCell>
                   {route.ThoiGianKhoiHanh} - {route.ThoiGianKetThuc}
                 </TableCell>
-                <TableCell>{route.tramDungs.length}</TableCell>
+                {/* <TableCell>{route.tramDungs.length}</TableCell> */}
                 {!isAdmin && (
                   <TableCell>
                     <IconButton

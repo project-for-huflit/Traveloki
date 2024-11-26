@@ -1,20 +1,20 @@
-const {Tuyen} = require("../models/tuyen.model");
-const {TuyenTramDung} = require("../models/tuyenTramDung.model");
-const {startSession} = require("mongoose");
-const {LichChay} = require("../models/lichChay.model");
+const { Tuyen } = require('../models/tuyen.model');
+const { TuyenTramDung } = require('../models/tuyenTramDung.model');
+const { startSession } = require('mongoose');
+const { LichChay } = require('../models/lichChay.model');
 
 const getAllTuyenService = async () => {
   try {
     const result = await TuyenTramDung.find()
-      .populate( "MaTuyen")
-      .populate( "MaTramDung");
+      .populate('MaTuyen')
+      .populate('MaTramDung');
 
     // thay đổi cấu trúc thể hiện dữ liệu
     const tuyenMap = {};
 
-    result.forEach(item => {
+    result.forEach((item) => {
       const tuyenId = item.MaTuyen._id;
-      const tuyenName  = item.MaTuyen.MaTuyen
+      const tuyenName = item.MaTuyen.MaTuyen;
       if (!tuyenMap[tuyenId]) {
         tuyenMap[tuyenId] = {
           tuyen: {
@@ -39,30 +39,36 @@ const getAllTuyenService = async () => {
       });
     });
 
-
     // Chuyển đổi map thành array
-    const resultArray = Object.values(tuyenMap).map(item => item.tuyen);
+    const resultArray = Object.values(tuyenMap).map((item) => item.tuyen);
 
     return {
       EC: 0,
-      EM: "Lấy tuyến thành công",
+      EM: 'Lấy tuyến thành công',
       data: resultArray,
     };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return {
       EC: 1,
-      EM: "Không thể lấy tuyến",
+      EM: 'Không thể lấy tuyến',
       data: [],
     };
   }
-}
+};
 
-const createTuyenService = async (TramList, DiemKhoiHanh, DiemKetThuc, ThoiGianKhoiHanh, ThoiGianKetThuc) => {
+const createTuyenService = async (
+  parternId,
+  TramList,
+  DiemKhoiHanh,
+  DiemKetThuc,
+  ThoiGianKhoiHanh,
+  ThoiGianKetThuc,
+) => {
   if (!TramList || TramList.length === 0) {
     return {
       EC: 1,
-      EM: "Không thể tạo tuyến vì không có trạm dừng",
+      EM: 'Không thể tạo tuyến vì không có trạm dừng',
     };
   }
 
@@ -72,13 +78,13 @@ const createTuyenService = async (TramList, DiemKhoiHanh, DiemKetThuc, ThoiGianK
   try {
     const existTuyen = await Tuyen.exists({
       DiemKhoiHanh: DiemKhoiHanh,
-      DiemKetThuc: DiemKetThuc
+      DiemKetThuc: DiemKetThuc,
     });
 
     if (existTuyen) {
       return {
         EC: 1,
-        EM: "Tuyến với điểm khởi hành và kết thúc đã tồn tại",
+        EM: 'Tuyến với điểm khởi hành và kết thúc đã tồn tại',
       };
     }
 
@@ -86,25 +92,26 @@ const createTuyenService = async (TramList, DiemKhoiHanh, DiemKetThuc, ThoiGianK
     const lastTuyen = await Tuyen.aggregate([
       {
         $addFields: {
-          numericMaTuyen: { $toInt: { $substr: ["$MaTuyen", 1, -1] } }, // Lấy phần số sau ký tự 'T'
+          numericMaTuyen: { $toInt: { $substr: ['$MaTuyen', 1, -1] } }, // Lấy phần số sau ký tự 'T'
         },
       },
       { $sort: { numericMaTuyen: -1 } }, // Sắp xếp giảm dần theo số
-      { $limit: 1 } // Chỉ lấy tuyến có số lớn nhất
+      { $limit: 1 }, // Chỉ lấy tuyến có số lớn nhất
     ]);
-    console.log("lastTuyen", lastTuyen);
+    console.log('lastTuyen', lastTuyen);
     // Tạo mã tuyến mới
-    let newMaTuyen = "T1";
+    let newMaTuyen = 'T1';
     if (lastTuyen.length > 0 && lastTuyen[0].numericMaTuyen) {
       const lastNumber = parseInt(lastTuyen[0].numericMaTuyen, 10);
       newMaTuyen = `T${lastNumber + 1}`;
-      console.log("newMaTuyen", newMaTuyen);
+      console.log('newMaTuyen', newMaTuyen);
     }
 
     // Tạo tuyến mới
     const newTuyen = await Tuyen.create(
       [
         {
+          parternId,
           MaTuyen: newMaTuyen,
           DiemKhoiHanh: DiemKhoiHanh,
           DiemKetThuc: DiemKetThuc,
@@ -112,7 +119,7 @@ const createTuyenService = async (TramList, DiemKhoiHanh, DiemKetThuc, ThoiGianK
           ThoiGianKetThuc: ThoiGianKetThuc,
         },
       ],
-      { session }
+      { session },
     );
 
     // Xử lý bảng TuyenTramDung
@@ -120,7 +127,7 @@ const createTuyenService = async (TramList, DiemKhoiHanh, DiemKetThuc, ThoiGianK
       {
         $addFields: {
           numericMaTuyenTramDung: {
-            $toInt: { $substr: ["$MaTuyenTramDung", 3, -1] },
+            $toInt: { $substr: ['$MaTuyenTramDung', 3, -1] },
           },
         },
       },
@@ -143,7 +150,7 @@ const createTuyenService = async (TramList, DiemKhoiHanh, DiemKetThuc, ThoiGianK
           GiaVe: item.GiaVe,
         };
       }),
-      { session }
+      { session },
     );
 
     await session.commitTransaction();
@@ -151,7 +158,7 @@ const createTuyenService = async (TramList, DiemKhoiHanh, DiemKetThuc, ThoiGianK
 
     return {
       EC: 0,
-      EM: "Tạo tuyến thành công",
+      EM: 'Tạo tuyến thành công',
       data: { tuyen: newTuyen[0], tuyenTramDung },
     };
   } catch (error) {
@@ -160,47 +167,56 @@ const createTuyenService = async (TramList, DiemKhoiHanh, DiemKetThuc, ThoiGianK
     console.log(`Error in creating route: ${error.message}`);
     return {
       EC: 1,
-      EM: "Không thể tạo tuyến",
+      EM: 'Không thể tạo tuyến',
     };
   }
 };
 
-const updateTuyenService = async (id, DiemKhoiHanh, DiemKetThuc, ThoiGianKhoiHanh, ThoiGianKetThuc) => {
-
-}
+const updateTuyenService = async (
+  id,
+  DiemKhoiHanh,
+  DiemKetThuc,
+  ThoiGianKhoiHanh,
+  ThoiGianKetThuc,
+) => {};
 
 const deleteTuyenService = async (id) => {
   try {
-    const checkTuyenInLichChay = await LichChay.find({MaTuyen: id});
+    const checkTuyenInLichChay = await LichChay.find({ MaTuyen: id });
     if (checkTuyenInLichChay.length > 0) {
       return {
         EC: 1,
-        EM: "Không thể xóa tuyến khi vẫn còn trong lịch chạy",
+        EM: 'Không thể xóa tuyến khi vẫn còn trong lịch chạy',
       };
     }
 
-    const deletedTuyenTramDung = await TuyenTramDung.deleteMany({MaTuyen: id});
+    const deletedTuyenTramDung = await TuyenTramDung.deleteMany({
+      MaTuyen: id,
+    });
 
-    const result = await Tuyen.deleteOne({_id: id});
+    const result = await Tuyen.deleteOne({ _id: id });
     if (result.deletedCount === 0) {
       return {
         EC: 1,
-        EM: "Tuyến không tồn tại hoặc đã bị xóa",
+        EM: 'Tuyến không tồn tại hoặc đã bị xóa',
       };
     }
     return {
       EC: 0,
-      EM: "Xóa tuyến thành công",
+      EM: 'Xóa tuyến thành công',
       data: result,
     };
   } catch (error) {
     return {
       EC: 1,
-      EM: "Không thể xóa tuyến",
+      EM: 'Không thể xóa tuyến',
     };
   }
-}
+};
 
 module.exports = {
-  getAllTuyenService, createTuyenService, deleteTuyenService, updateTuyenService
-}
+  getAllTuyenService,
+  createTuyenService,
+  deleteTuyenService,
+  updateTuyenService,
+};
