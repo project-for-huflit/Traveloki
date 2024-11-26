@@ -24,7 +24,7 @@ const DanhSachSanBay = () => {
   useEffect(() => {
     const users = JSON.parse(localStorage.getItem('user'));
     const roles = users?.roles?.[0];
-    if (roles === 'admin') {
+    if (roles === 'ADMIN') {
       setIsAdmin(true);
     }
   }, []);
@@ -49,12 +49,15 @@ const DanhSachSanBay = () => {
     }
   }, []);
 
+  console.log(isAdmin);
+
   useEffect(() => {
     if (isAdmin) {
       const danhSachSanBay = async () => {
         try {
           const res = await fetchAllSanBay();
           setSanBay(res.data);
+          console.log(res.data);
         } catch (error) {
           console.error('Không thể lấy dữ liệu lịch chạy:', error);
         }
