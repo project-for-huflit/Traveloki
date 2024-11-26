@@ -39,27 +39,33 @@ function RightContent() {
   }, []);
 
   return (
-    <div className="w-full mt-10 h-[600px] overflow-y-auto">
-      {lichSuBus.map((item) => (
-        <div key={item._id} className="w-full shadow bg-[#EDEDED] rounded-lg">
-          <div className="items-center p-4 mt-4">
-            <div className="flex my-1">
-              <p>Mã đặt chỗ Xe của traveloki</p>
-              <p className="ml-1 font-bold ">{item.MaDX}</p>
-            </div>
-            <hr className="my-4 border-t-2 border-slate-300 w-full" />
-            <div className="flex my-1">
-              <p>Ngày đặt:</p>
-              <p className="ml-1 font-bold ">{formatDate(item.Date)}</p>
-            </div>
-            <div className="flex">
-              <div className="bg-blue-900 text-white rounded-full my-1 py-1 px-4">
-                Trạng thái thanh toán
+    <div className="w-full mt-10 h-[600px] ">
+      {lichSuBus && lichSuBus.length > 0 ? (
+        lichSuBus.map((item) => (
+          <div key={item._id} className="w-full shadow bg-[#EDEDED] rounded-lg">
+            <div className="items-center p-4 mt-4">
+              <div className="flex my-1">
+                <p>Mã đặt chỗ Xe của traveloki</p>
+                <p className="ml-1 font-bold ">{item.MaDX}</p>
+              </div>
+              <hr className="my-4 border-t-2 border-slate-300 w-full" />
+              <div className="flex my-1">
+                <p>Ngày đặt:</p>
+                <p className="ml-1 font-bold ">{formatDate(item.Date)}</p>
+              </div>
+              <div className="flex">
+                <div className="bg-blue-900 text-white rounded-full my-1 py-1 px-4">
+                  Trạng thái thanh toán
+                </div>
               </div>
             </div>
           </div>
+        ))
+      ) : (
+        <div className="mt-20 font-semibold text-2xl">
+          Không tìm thấy dữ liệu phương tiện.
         </div>
-      ))}
+      )}
     </div>
   );
 }
