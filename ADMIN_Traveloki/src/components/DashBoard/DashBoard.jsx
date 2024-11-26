@@ -79,7 +79,7 @@ export const Dashboard = () => {
         setIsLoading(false);
       }
     };
-    // fetchUser();
+    fetchUser();
     historyCar();
     historyBus();
     historyTrain();
