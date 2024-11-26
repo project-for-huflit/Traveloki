@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import {getUser} from "../../services/api/Account/apiGetUser";
 
 const DanhSachTaiKhoan = () => {
-  const [detailCar, setDetailCar] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  
+  const [detailCar, setDetailCar] = useState([]);
   const fetchDetailCar = async () => {
     try {
       const res = await getUser()
