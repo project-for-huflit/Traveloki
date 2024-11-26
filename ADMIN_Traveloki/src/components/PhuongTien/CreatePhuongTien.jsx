@@ -12,7 +12,10 @@ import Select from 'react-select';
 import { notification } from 'antd'; // Import react-select
 
 const CreatePhuongTien = () => {
+  const userId = localStorage.getItem('userId');
+  console.log(userId);
   const [phuongtien, setPhuongTien] = useState({
+    parternId: userId,
     MaSB: '',
     LoaiPT: 'bus',
     TenPhuongTien: '',
@@ -87,7 +90,7 @@ const CreatePhuongTien = () => {
       return;
     }
     try {
-      const res = await createPhuongTien(phuongtien, parternId);
+      const res = await createPhuongTien(phuongtien);
       if (res && res.EC === 0) {
         notification.success({
           message: 'Thêm phương tiện',

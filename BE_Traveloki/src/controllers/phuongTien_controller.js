@@ -8,8 +8,14 @@ const {
   SuccessResponse,
 } = require('../middlewares/success.response');
 
-const asyncHandler = require('../middlewares/asyncHandler.middeware')
-const {deletePhuongTienService, updatePhuongTienService, getAllPhuongTienService, createPhuongTienService, getPhuongTienByLichChayService} = require("../services/phuongTien.service");
+const asyncHandler = require('../middlewares/asyncHandler.middeware');
+const {
+  deletePhuongTienService,
+  updatePhuongTienService,
+  getAllPhuongTienService,
+  createPhuongTienService,
+  getPhuongTienByLichChayService,
+} = require('../services/phuongTien.service');
 
 class VehicleController {}
 // module.exports = new VehicleController()
@@ -33,13 +39,15 @@ const GetPhuongTien = async (req, res) => {
     if (!parternId) {
       return res.status(401).json({
         status: 'fail',
-        message: 'Bạn phải đăng nhập để xem thông tin booking',
+        message: 'Bạn phải đăng nhập để xem thông tin',
       });
     }
-
-    const queryObj = { ...req.query, partern: parternId };
-    const phuongTien = await PhuongTien.find(queryObj).populate('partern');
-
+    const queryObj = { ...req.query, parternId };
+    console.log(queryObj);
+    const phuongTien = await PhuongTien.find(queryObj)
+      .populate('parternId')
+      .populate('MaSB')
+      .exec();
     res.status(200).json({
       status: 'success',
       results: phuongTien.length,
@@ -74,10 +82,10 @@ const GetPhuongTienID = async (req, res) => {
 };
 
 const CreatePhuongTien = async (req, res) => {
-  const { partern, TenPhuongTien, LoaiPT, MaSoXe, SoGheToiDa, Image, MaSB } =
+  const { parternId, TenPhuongTien, LoaiPT, MaSoXe, SoGheToiDa, Image, MaSB } =
     req.body;
   const data = await createPhuongTienService(
-    partern,
+    parternId,
     TenPhuongTien,
     LoaiPT,
     MaSoXe,

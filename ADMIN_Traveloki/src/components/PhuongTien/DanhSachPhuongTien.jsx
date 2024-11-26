@@ -31,14 +31,14 @@ const DanhSachPhuongTien = () => {
   const [isModalVisible, setIsModalVisible] = useState(false); // Trạng thái hiển thị Modal
   const [phuongTienToDelete, setPhuongTienToDelete] = useState(null); // Trạng thái lưu phương tiện cần xóa
 
+  const userId = localStorage.getItem('userId');
+  console.log(userId);
   useEffect(() => {
-    const userid = JSON.parse(localStorage.getItem('userid'));
-    console.log(userid);
-    if (userid) {
+    if (userId) {
       const danhSachPhuongTien = async () => {
         try {
-          const res = await fetchAllPhuongTienPartern(userid);
-          setPhuongTien(res.data || []);
+          const res = await fetchAllPhuongTienPartern(userId);
+          setPhuongTien(res.data.phuongTien);
           console.log(res.data);
         } catch (error) {
           console.error('Không thể lấy dữ liệu phương tiện:', error);
@@ -198,6 +198,8 @@ const DanhSachPhuongTien = () => {
                     style={{ width: '100px', height: 'auto' }}
                   />
                 </TableCell>
+
+                <TableCell>{phuongTien.parternId.email}</TableCell>
                 {!isAdmin && (
                   <TableCell>
                     <IconButton
@@ -211,7 +213,6 @@ const DanhSachPhuongTien = () => {
                     </IconButton>
                   </TableCell>
                 )}
-                <TableCell>{phuongTien.MaSoXe}</TableCell>
               </TableRow>
             ))}
           </TableBody>
