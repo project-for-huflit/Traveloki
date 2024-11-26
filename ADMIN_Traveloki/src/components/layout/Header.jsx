@@ -104,11 +104,14 @@ const Header = () => {
   const roles = users?.roles?.[0];
   console.log(roles);
 
-  useEffect(() => {
-    if (roles === undefined) {
-      navigate('/auth/login');
-    }
-  }, [roles]);
+  // useEffect(() => {
+  //   if (roles === undefined) {
+  //     navigate('/auth/login');
+  //   } else {
+  //     navigate('/vehicle/list');
+  //     // localStorage.setItem('partern', roles);
+  //   }
+  // }, [roles]);
 
   const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {

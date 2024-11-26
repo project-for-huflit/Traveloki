@@ -1,21 +1,28 @@
-import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark, faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { createPhuongTien } from "../../services/api/PhuongTien/createPhuongTien.js";
-import { fetchAllSanBay } from "../../services/api/ListSanBay/apiDanhSachSanBay.js";
-import Select from "react-select";
-import {notification} from "antd"; // Import react-select
+import { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faXmark,
+  faArrowLeft,
+  faArrowRight,
+} from '@fortawesome/free-solid-svg-icons';
+import { createPhuongTien } from '../../services/api/PhuongTien/createPhuongTien.js';
+import { fetchAllSanBay } from '../../services/api/ListSanBay/apiDanhSachSanBay.js';
+import Select from 'react-select';
+import { notification } from 'antd'; // Import react-select
 
 const CreatePhuongTien = () => {
   const [phuongtien, setPhuongTien] = useState({
-    MaSB: "",
-    LoaiPT: "bus",
-    TenPhuongTien: "",
-    MaSoXe: "",
-    SoGheToiDa: "",
-    Image: "",
+    MaSB: '',
+    LoaiPT: 'bus',
+    TenPhuongTien: '',
+    MaSoXe: '',
+    SoGheToiDa: '',
+    Image: '',
   });
+
+  const parternId = localStorage.getItem('userId');
+  console.log(parternId);
 
   const [sanbays, setSanBays] = useState([]);
   const navigate = useNavigate();
@@ -27,10 +34,10 @@ const CreatePhuongTien = () => {
         if (res && res.data) {
           setSanBays(res.data);
         } else {
-          throw new Error("Không thể lấy dữ liệu từ máy chủ");
+          throw new Error('Không thể lấy dữ liệu từ máy chủ');
         }
       } catch (error) {
-        console.log("Lỗi:", error);
+        console.log('Lỗi:', error);
       }
     };
     fetchSanBay();
@@ -48,7 +55,7 @@ const CreatePhuongTien = () => {
     // Lưu MaSB từ selectedOption (giả sử value chứa ObjectId)
     setPhuongTien((prevPhuongTien) => ({
       ...prevPhuongTien,
-      MaSB: selectedOption ? selectedOption.value : "", // Lưu MaSB
+      MaSB: selectedOption ? selectedOption.value : '', // Lưu MaSB
     }));
   };
 
@@ -56,13 +63,13 @@ const CreatePhuongTien = () => {
     setPhuongTien((prevPhuongTien) => ({
       ...prevPhuongTien,
       LoaiPT:
-        prevPhuongTien.LoaiPT === "bus"
-          ? direction === "next"
-            ? "train"
-            : "bus"
-          : direction === "next"
-            ? "bus"
-            : "train",
+        prevPhuongTien.LoaiPT === 'bus'
+          ? direction === 'next'
+            ? 'train'
+            : 'bus'
+          : direction === 'next'
+            ? 'bus'
+            : 'train',
     }));
   };
 
@@ -76,26 +83,26 @@ const CreatePhuongTien = () => {
       !phuongtien.SoGheToiDa ||
       !phuongtien.Image
     ) {
-      alert("Vui lòng nhập đầy đủ thông tin");
+      alert('Vui lòng nhập đầy đủ thông tin');
       return;
     }
     try {
-      const res = await createPhuongTien(phuongtien);
+      const res = await createPhuongTien(phuongtien, parternId);
       if (res && res.EC === 0) {
         notification.success({
-          message: "Thêm phương tiện",
-          description: "Thêm phương tiện thành công",
+          message: 'Thêm phương tiện',
+          description: 'Thêm phương tiện thành công',
         });
-        navigate("/vehicle/list");
+        navigate('/vehicle/list');
       } else {
         notification.error({
-          message: "Thêm phương tiện",
+          message: 'Thêm phương tiện',
           description: `Thêm thất bại: ${res.EM}`,
         });
       }
     } catch (error) {
-      console.error("Error caught:", error);
-      alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
+      console.error('Error caught:', error);
+      alert('Đã xảy ra lỗi khi kết nối tới máy chủ');
     }
   };
 
@@ -126,15 +133,15 @@ const CreatePhuongTien = () => {
             <FontAwesomeIcon
               icon={faArrowLeft}
               className="cursor-pointer text-xl"
-              onClick={() => handleToggle("prev")}
+              onClick={() => handleToggle('prev')}
             />
             <span className="text-black font-bold">
-              {phuongtien.LoaiPT === "bus" ? "Bus" : "Train"}
+              {phuongtien.LoaiPT === 'bus' ? 'Bus' : 'Train'}
             </span>
             <FontAwesomeIcon
               icon={faArrowRight}
               className="cursor-pointer text-xl"
-              onClick={() => handleToggle("next")}
+              onClick={() => handleToggle('next')}
             />
           </div>
 

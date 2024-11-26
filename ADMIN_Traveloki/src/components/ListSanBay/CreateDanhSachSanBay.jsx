@@ -1,12 +1,12 @@
-import {useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import {createDanhSachSanBay} from "../../services/api/ListSanBay/apiCreateDanhSachSanBay.js";
-import { notification } from "antd";
-import {getThanhPho} from "../../services/api/ThanhPho/apiThanhPho.js";
-import Select from "react-select";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { createDanhSachSanBay } from '../../services/api/ListSanBay/apiCreateDanhSachSanBay.js';
+import { notification } from 'antd';
+import { getThanhPho } from '../../services/api/ThanhPho/apiThanhPho.js';
+import Select from 'react-select';
 
 const CreateDanhSachSanBay = () => {
   const [thanhPhoOptions, setThanhPhoOptions] = useState([]);
@@ -24,7 +24,7 @@ const CreateDanhSachSanBay = () => {
         }));
         setThanhPhoOptions(options);
       } catch (error) {
-        console.error("Error fetching city data:", error);
+        console.error('Error fetching city data:', error);
       }
     };
     fetchThanhPho();
@@ -36,32 +36,32 @@ const CreateDanhSachSanBay = () => {
       ...danhSachSanBay,
       ThanhPho: selectedOption ? selectedOption.label : null, // Lưu giá trị thành phố vào danhSachSanBay
     });
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!danhSachSanBay.TenSanBay || !danhSachSanBay.ThanhPho) {
-      alert("Vui lòng nhập đầy đủ thông tin");
+      alert('Vui lòng nhập đầy đủ thông tin');
       return;
     }
 
     try {
-      const res = await createDanhSachSanBay(danhSachSanBay)
+      const res = await createDanhSachSanBay(danhSachSanBay);
       if (res && res.EC === 0) {
         notification.success({
-          message: "Thêm sân bay",
-          description: "Thêm sân bay thành công"
+          message: 'Thêm sân bay',
+          description: 'Thêm sân bay thành công',
         });
-        navigate("/airport/list");
-      }else {
+        navigate('/airport/list');
+      } else {
         notification.error({
-          message: "Thêm sân bay",
-          description: `Thêm thất bại: ${res.EM}`
+          message: 'Thêm sân bay',
+          description: `Thêm thất bại: ${res.EM}`,
         });
       }
     } catch (error) {
       console.log(error);
-      alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
+      alert('Đã xảy ra lỗi khi kết nối tới máy chủ');
     }
   };
 
@@ -75,7 +75,7 @@ const CreateDanhSachSanBay = () => {
           <label className="text-black pb-4">Tên Sân Bay</label>
           <input
             type="text"
-            value={danhSachSanBay.TenSanBay || ""}
+            value={danhSachSanBay.TenSanBay || ''}
             onChange={(e) =>
               setDanhSachSanBay({
                 ...danhSachSanBay,
