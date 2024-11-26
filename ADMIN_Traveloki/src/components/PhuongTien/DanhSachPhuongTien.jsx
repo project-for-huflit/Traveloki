@@ -162,9 +162,11 @@ const DanhSachPhuongTien = () => {
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                 Hình ảnh
               </TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
-                Đối Tác
-              </TableCell>
+              {isAdmin && (
+                <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                  Đối Tác
+                </TableCell>
+              )}
               {!isAdmin && (
                 <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                   Hành động
@@ -198,8 +200,7 @@ const DanhSachPhuongTien = () => {
                     style={{ width: '100px', height: 'auto' }}
                   />
                 </TableCell>
-
-                <TableCell>{phuongTien.parternId.email}</TableCell>
+                {/* {isAdmin && <TableCell>{phuongTien.parternId?.email}</TableCell>} */}
                 {!isAdmin && (
                   <TableCell>
                     <IconButton

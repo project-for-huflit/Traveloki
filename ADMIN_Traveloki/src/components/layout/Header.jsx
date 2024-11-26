@@ -150,6 +150,9 @@ const Header = () => {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('email');
+    localStorage.removeItem('partner');
     navigate('/auth/login');
     window.location.reload();
   };

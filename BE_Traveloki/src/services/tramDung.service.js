@@ -1,24 +1,29 @@
-const {TramDung} = require("../models/tramDung.model");
-const {TuyenTramDung} = require("../models/tuyenTramDung.model");
+const { TramDung } = require('../models/tramDung.model');
+const { TuyenTramDung } = require('../models/tuyenTramDung.model');
 
 const getAllTramDungService = async () => {
   try {
     const result = await TramDung.find({});
     return {
       EC: 0,
-      EM: "Lấy trạm dừng thành công",
+      EM: 'Lấy trạm dừng thành công',
       data: result,
     };
   } catch (error) {
     return {
       EC: 1,
-        EM: "Không thể lấy trạm dừng",
-        data: [],
+      EM: 'Không thể lấy trạm dừng',
+      data: [],
     };
   }
-}
+};
 
-const createTramDungService = async (ThanhPho, DiaChi, TenTramDung) => {
+const createTramDungService = async (
+  parternId,
+  ThanhPho,
+  DiaChi,
+  TenTramDung,
+) => {
   try {
     // Kiểm tra trùng tên trạm dừng
     const existTenTramDung = await TramDung.exists({ TenTramDung });
@@ -26,7 +31,7 @@ const createTramDungService = async (ThanhPho, DiaChi, TenTramDung) => {
       console.log(`TramDung exists ${TenTramDung}`);
       return {
         EC: 1,
-        EM: "Tên trạm dừng đã tồn tại",
+        EM: 'Tên trạm dừng đã tồn tại',
       };
     }
 
@@ -36,7 +41,7 @@ const createTramDungService = async (ThanhPho, DiaChi, TenTramDung) => {
       console.log(`DiaChi exists ${DiaChi}`);
       return {
         EC: 1,
-        EM: "Địa chỉ đã tồn tại",
+        EM: 'Địa chỉ đã tồn tại',
       };
     }
 
@@ -44,15 +49,15 @@ const createTramDungService = async (ThanhPho, DiaChi, TenTramDung) => {
     const lastTramDung = await TramDung.aggregate([
       {
         $addFields: {
-          numericMaTramDung: { $toInt: { $substr: ["$MaTramDung", 2, -1] } }
-        }
+          numericMaTramDung: { $toInt: { $substr: ['$MaTramDung', 2, -1] } },
+        },
       },
       { $sort: { numericMaTramDung: -1 } },
-      { $limit: 1 }
+      { $limit: 1 },
     ]);
 
     // Khởi tạo mã trạm dừng mới
-    let newMaTramDung = "TD1";
+    let newMaTramDung = 'TD1';
     if (lastTramDung.length > 0 && lastTramDung[0].numericMaTramDung) {
       const lastNumber = lastTramDung[0].numericMaTramDung;
       newMaTramDung = `TD${lastNumber + 1}`;
@@ -60,27 +65,27 @@ const createTramDungService = async (ThanhPho, DiaChi, TenTramDung) => {
 
     // Tạo trạm dừng mới
     const result = await TramDung.create({
+      parternId,
       MaTramDung: newMaTramDung,
       ThanhPho: ThanhPho,
       DiaChi: DiaChi,
-      TenTramDung: TenTramDung
+      TenTramDung: TenTramDung,
     });
 
     return {
       EC: 0,
-      EM: "Tạo trạm dừng thành công",
+      EM: 'Tạo trạm dừng thành công',
       data: result,
     };
   } catch (error) {
     console.log(error);
     return {
       EC: 1,
-      EM: "Không thể tạo trạm dừng",
+      EM: 'Không thể tạo trạm dừng',
       data: [],
     };
   }
 };
-
 
 const deleteTramDungService = async (id) => {
   try {
@@ -88,7 +93,7 @@ const deleteTramDungService = async (id) => {
     if (tuyenTramDung.length > 0) {
       return {
         EC: 1,
-        EM: "Không thể xóa trạm dừng khi vẫn còn trong tuyến trạm dừng",
+        EM: 'Không thể xóa trạm dừng khi vẫn còn trong tuyến trạm dừng',
       };
     }
 
@@ -96,47 +101,50 @@ const deleteTramDungService = async (id) => {
     if (result.deletedCount === 0) {
       return {
         EC: 1,
-        EM: "Trạm dừng không tồn tại hoặc đã bị xóa",
+        EM: 'Trạm dừng không tồn tại hoặc đã bị xóa',
       };
     }
 
     return {
       EC: 0,
-      EM: "Xóa trạm dừng thành công",
+      EM: 'Xóa trạm dừng thành công',
       data: result,
     };
   } catch (error) {
     console.error(error);
     return {
       EC: 1,
-      EM: "Không thể xóa trạm dừng",
+      EM: 'Không thể xóa trạm dừng',
       data: [],
     };
   }
 };
 
 const updateTramDungService = async (_id, ThanhPho, DiaChi, TenTramDung) => {
-  try{
+  try {
     const result = await TramDung.findOneAndUpdate(
       { _id: _id },
       { ThanhPho, DiaChi, TenTramDung },
-      { new: true }
-    )
-    return  {
+      { new: true },
+    );
+    return {
       EC: 0,
-      EM: "Cập nhật trạm dừng thành công",
+      EM: 'Cập nhật trạm dừng thành công',
       data: result,
-    }
-  }catch (error) {
+    };
+  } catch (error) {
     console.log(error);
     return {
       EC: 1,
-      EM: "Không thể cập nhật trạm dừng",
+      EM: 'Không thể cập nhật trạm dừng',
       data: [],
-    }
+    };
   }
-}
+};
 
 module.exports = {
-  getAllTramDungService, createTramDungService, deleteTramDungService, updateTramDungService
-}
+  getAllTramDungService,
+  createTramDungService,
+  deleteTramDungService,
+  updateTramDungService,
+};

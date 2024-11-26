@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { createTramDung } from "../../services/api/TramDung/apiCreateTramDung.js";
-import { notification } from "antd";
-import { getThanhPho } from "../../services/api/ThanhPho/apiThanhPho.js";
-import Select from "react-select";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { createTramDung } from '../../services/api/TramDung/apiCreateTramDung.js';
+import { notification } from 'antd';
+import { getThanhPho } from '../../services/api/ThanhPho/apiThanhPho.js';
+import Select from 'react-select';
 
 const CreateTramDung = () => {
   const [thanhPhoOptions, setThanhPhoOptions] = useState([]);
   const [selectedThanhPho, setSelectedThanhPho] = useState(null);
-  const [TenTramDung, setTenTramDung] = useState("");
-  const [DiaChi, setDiaChi] = useState("");
+  const [TenTramDung, setTenTramDung] = useState('');
+  const [DiaChi, setDiaChi] = useState('');
   const navigate = useNavigate();
-
+  const parternId = localStorage.getItem('userId');
+  console.log(parternId);
   const fetchThanhPho = async () => {
     try {
       const res = await getThanhPho();
@@ -24,7 +25,7 @@ const CreateTramDung = () => {
       }));
       setThanhPhoOptions(options);
     } catch (error) {
-      console.error("Error fetching city data:", error);
+      console.error('Error fetching city data:', error);
     }
   };
 
@@ -36,30 +37,35 @@ const CreateTramDung = () => {
     e.preventDefault();
 
     if (!TenTramDung || !DiaChi || !selectedThanhPho) {
-      alert("Vui lòng nhập đầy đủ thông tin.");
+      alert('Vui lòng nhập đầy đủ thông tin.');
       return;
     }
 
     try {
-      const res = await createTramDung(selectedThanhPho.label, TenTramDung, DiaChi);
+      const res = await createTramDung(
+        parternId,
+        selectedThanhPho.label,
+        TenTramDung,
+        DiaChi,
+      );
       if (res && res.EC === 0) {
         notification.success({
-          message: "Thêm trạm dừng",
-          description: "Thêm trạm dừng thành công",
+          message: 'Thêm trạm dừng',
+          description: 'Thêm trạm dừng thành công',
         });
-        setTenTramDung("");
-        setDiaChi("");
+        setTenTramDung('');
+        setDiaChi('');
         setSelectedThanhPho(null);
-        navigate("/waypoint/list");
+        navigate('/waypoint/list');
       } else {
         notification.error({
-          message: "Thêm trạm dừng",
+          message: 'Thêm trạm dừng',
           description: `Thêm thất bại: ${res.EM}`,
         });
       }
     } catch (error) {
-      console.error("Error adding tram dung:", error);
-      alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
+      console.error('Error adding tram dung:', error);
+      alert('Đã xảy ra lỗi khi kết nối tới máy chủ');
     }
   };
 
