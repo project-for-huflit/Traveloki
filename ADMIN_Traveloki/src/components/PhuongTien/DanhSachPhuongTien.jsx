@@ -1,4 +1,4 @@
-import slugify from 'slugify';
+// import slugify from 'slugify';
 import {
   Table,
   TableBody,
@@ -32,7 +32,6 @@ const DanhSachPhuongTien = () => {
   const [phuongTienToDelete, setPhuongTienToDelete] = useState(null); // Trạng thái lưu phương tiện cần xóa
 
   const userId = localStorage.getItem('userId');
-  console.log(userId);
   useEffect(() => {
     if (userId) {
       const danhSachPhuongTien = async () => {
@@ -178,7 +177,7 @@ const DanhSachPhuongTien = () => {
             {phuongTien.map((phuongTien) => (
               <TableRow
                 component={Link}
-                to={`${slugify(phuongTien.TenPhuongTien, { lower: true, strict: true })}`} // URL đến chi tiết phương tiện
+                // to={`${slugify(phuongTien.TenPhuongTien, { lower: true, strict: true })}`} // URL đến chi tiết phương tiện
                 key={phuongTien._id}
                 sx={{
                   '&:hover': { backgroundColor: '#e3f2fd' },
@@ -200,7 +199,9 @@ const DanhSachPhuongTien = () => {
                     style={{ width: '100px', height: 'auto' }}
                   />
                 </TableCell>
-                {/* {isAdmin && <TableCell>{phuongTien.parternId?.email}</TableCell>} */}
+                {isAdmin && (
+                  <TableCell>{phuongTien.parternId?.email}</TableCell>
+                )}
                 {!isAdmin && (
                   <TableCell>
                     <IconButton

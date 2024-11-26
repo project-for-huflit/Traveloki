@@ -1,22 +1,23 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { notification } from "antd";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { fetchAllTuyenXe } from "../../services/api/TuyenXe/apiDanhSachTuyenXe.js";
-import { fetchAllPhuongTien } from "../../services/api/PhuongTien/apiDanhSachPhuongTien.js";
-import { createLichChay } from "../../services/api/LichChay/apiCreateLichChay.js";
-import { format } from "date-fns";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { notification } from 'antd';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { fetchAllTuyenXe } from '../../services/api/TuyenXe/apiDanhSachTuyenXe.js';
+import { fetchAllPhuongTien } from '../../services/api/PhuongTien/apiDanhSachPhuongTien.js';
+import { createLichChay } from '../../services/api/LichChay/apiCreateLichChay.js';
+import { format } from 'date-fns';
 
 const CreateLichChay = () => {
+  const parternId = localStorage.getItem('userId');
   const [lichChay, setLichChay] = useState({
-    MaPT: "",
-    MaTuyen: "",
+    MaPT: '',
+    MaTuyen: '',
     ngayKhoiHanh: new Date(),
-    gioKhoiHanh: "",
-    gioKetThuc: "",
-    SLVe: "",
+    gioKhoiHanh: '',
+    gioKetThuc: '',
+    SLVe: '',
   });
   const [tuyen, setTuyen] = useState([]);
   const [phuongTien, setPhuongTien] = useState([]);
@@ -30,10 +31,10 @@ const CreateLichChay = () => {
         if (res && res.data) {
           setTuyen(res.data);
         } else {
-          throw new Error("Không thể lấy dữ liệu từ máy chủ");
+          throw new Error('Không thể lấy dữ liệu từ máy chủ');
         }
       } catch (error) {
-        console.log("Lỗi:", error);
+        console.log('Lỗi:', error);
       }
     };
     danhSachTuyen();
@@ -44,10 +45,10 @@ const CreateLichChay = () => {
         if (res && res.data) {
           setPhuongTien(res.data);
         } else {
-          throw new Error("Không thể lấy dữ liệu từ máy chủ");
+          throw new Error('Không thể lấy dữ liệu từ máy chủ');
         }
       } catch (error) {
-        console.log("Lỗi:", error);
+        console.log('Lỗi:', error);
       }
     };
     danhSachPhuongTien();
@@ -69,23 +70,28 @@ const CreateLichChay = () => {
     }));
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!lichChay.MaPT || !lichChay.MaTuyen || !lichChay.ngayKhoiHanh || !lichChay.gioKhoiHanh ||
-      !lichChay.gioKetThuc || !lichChay.SLVe) {
-      alert("Vui lòng nhập đầy đủ thông tin");
+    if (
+      !lichChay.MaPT ||
+      !lichChay.MaTuyen ||
+      !lichChay.ngayKhoiHanh ||
+      !lichChay.gioKhoiHanh ||
+      !lichChay.gioKetThuc ||
+      !lichChay.SLVe
+    ) {
+      alert('Vui lòng nhập đầy đủ thông tin');
       return;
     }
 
-    if (lichChay.SLVe < 0 ){
-      alert("SlVe phải lớn hon 0")
-      return
+    if (lichChay.SLVe < 0) {
+      alert('SlVe phải lớn hon 0');
+      return;
     }
 
     if (lichChay.gioKhoiHanh >= lichChay.gioKetThuc) {
-      alert("Thời gian kết thúc phải sau thời gian khởi hành");
+      alert('Thời gian kết thúc phải sau thời gian khởi hành');
       return;
     }
 
@@ -93,28 +99,29 @@ const CreateLichChay = () => {
 
     try {
       const res = await createLichChay(
+        parternId,
         lichChay.MaPT,
         lichChay.MaTuyen,
         formattedDate,
         lichChay.gioKhoiHanh,
         lichChay.gioKetThuc,
-        lichChay.SLVe
+        lichChay.SLVe,
       );
       if (res && res.EC === 0) {
         notification.success({
-          message: "Thêm lịch chạy",
-          description: "Thêm lịch chạy thành công",
+          message: 'Thêm lịch chạy',
+          description: 'Thêm lịch chạy thành công',
         });
-        navigate("/schedule/list");
+        navigate('/schedule/list');
       } else {
         notification.error({
-          message: "Thêm lịch chạy",
+          message: 'Thêm lịch chạy',
           description: `Thêm thất bại: ${res.EM}`,
         });
       }
     } catch (error) {
       console.error(error);
-      alert("Đã xảy ra lỗi khi kết nối tới máy chủ");
+      alert('Đã xảy ra lỗi khi kết nối tới máy chủ');
     }
   };
 
@@ -150,7 +157,9 @@ const CreateLichChay = () => {
               onChange={handleChange}
               className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
             >
-              <option value="">Chọn phương tiện (Loại PT - MaPT - Mã số xe)</option>
+              <option value="">
+                Chọn phương tiện (Loại PT - MaPT - Mã số xe)
+              </option>
               {phuongTien.map((phuongTien) => (
                 <option key={phuongTien._id} value={phuongTien._id}>
                   {phuongTien.LoaiPT} - {phuongTien.MaPT} - {phuongTien.MaSoXe}
@@ -166,7 +175,8 @@ const CreateLichChay = () => {
               onChange={handleDateChange}
               className="w-full mt-2 bg-slate-100 border-black rounded-lg p-2"
               dateFormat="dd/MM/yyyy"
-              minDate={new Date()}/>
+              minDate={new Date()}
+            />
           </div>
 
           <div className="mb-4">
@@ -205,8 +215,12 @@ const CreateLichChay = () => {
           <div className="flex justify-center mt-4">
             <button
               disabled={
-                !lichChay.MaPT || !lichChay.MaTuyen || !lichChay.ngayKhoiHanh || !lichChay.gioKhoiHanh ||
-                !lichChay.gioKetThuc || !lichChay.SLVe
+                !lichChay.MaPT ||
+                !lichChay.MaTuyen ||
+                !lichChay.ngayKhoiHanh ||
+                !lichChay.gioKhoiHanh ||
+                !lichChay.gioKetThuc ||
+                !lichChay.SLVe
               }
               onClick={handleSubmit}
               className="bg-blue-500 px-4 py-2 hover:bg-blue-700 text-white font-bold rounded"
