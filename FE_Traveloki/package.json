@@ -54,7 +54,8 @@
     "sso-pointer": "^1.0.5",
     "styled-components": "^6.1.13",
     "swagger-ui-react": "^5.17.14",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "vite-plugin-svgr": "^4.3.0"
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",

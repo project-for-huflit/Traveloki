@@ -11,8 +11,8 @@ const fetchHistoryTrain = async () => {
 };
 
 const fetchHistoryBus = async () => {
-  const URL_BACKEND = '/api/GetHistoryBus';
-  return axios.get(URL_BACKEND);
+  const URL_BACKEND = '/api/GetBuyTicketBus';
+  return axios.post(URL_BACKEND);
 };
 
 export { fetchHistoryCar, fetchHistoryTrain, fetchHistoryBus };
