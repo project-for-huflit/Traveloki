@@ -1,28 +1,29 @@
-const express = require("express");
-const session = require("express-session");
-const { SanBay } = require("../models/sanBay.model");
-const { TramDung } = require("../models/tramDung.model");
-const { Tuyen } = require("../models/tuyen.model");
-const { TuyenTramDung } = require("../models/tuyenTramDung.model");
+const express = require('express');
+const session = require('express-session');
+const { SanBay } = require('../models/sanBay.model');
+const { TramDung } = require('../models/tramDung.model');
+const { Tuyen } = require('../models/tuyen.model');
+const { TuyenTramDung } = require('../models/tuyenTramDung.model');
 
-const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
+const {
+  OK,
+  CREATED,
+  SuccessResponse,
+} = require('../middlewares/success.response');
 
-const asyncHandler = require('../middlewares/asyncHandler.middeware')
+const asyncHandler = require('../middlewares/asyncHandler.middeware');
 
 const app = express();
 
-class SearchController {
-
-}
+class SearchController {}
 
 // module.exports = new SearchController()
-
 
 const SuggestsAirpost = async (req, res) => {
   try {
     const { query } = req.query;
     const suggestions = await SanBay.find({
-      TenSanBay: { $regex: query, $options: "i" },
+      TenSanBay: { $regex: query, $options: 'i' },
     }).limit(10);
 
     // const tramdungtuongung = await TramDung.find({
@@ -35,7 +36,7 @@ const SuggestsAirpost = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      message: "Có lỗi xảy ra khi lấy gợi ý sân bay.",
+      message: 'Có lỗi xảy ra khi lấy gợi ý sân bay.',
       error: err.message,
     });
   }
@@ -45,7 +46,7 @@ const SuggestsTramDung = async (req, res) => {
   try {
     const { query } = req.query;
     const tramDungSuggestions = await TramDung.find({
-      DiaChi: { $regex: query, $options: "i" },
+      DiaChi: { $regex: query, $options: 'i' },
     }).limit(10);
 
     // const maTuyens = tramDungSuggestions.map((tramDung) => tramDung.MaTuyen);
@@ -60,7 +61,7 @@ const SuggestsTramDung = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      message: "Có lỗi xảy ra khi lấy gợi ý trạm dừng.",
+      message: 'Có lỗi xảy ra khi lấy gợi ý trạm dừng.',
       error: err.message,
     });
   }
@@ -68,42 +69,47 @@ const SuggestsTramDung = async (req, res) => {
 
 const checkTuyenTramDung = async (req, res) => {
   try {
+    console.log(req.body);
     const { diemKhoiHanh, diemKetThuc } = req.body;
     const maTuyenTuongUng = await Tuyen.find({
       DiemKhoiHanh: { $in: diemKhoiHanh },
-    })
-
+    });
+    console.log(maTuyenTuongUng);
     const tramDungTuongUng = await TramDung.find({
       DiaChi: { $in: diemKetThuc },
-    })
+    });
+    // console.log(tramDungTuongUng);
 
     const result = await TuyenTramDung.find({
-      MaTuyen: { $in: maTuyenTuongUng.map((tuyen) => tuyen._id) },
       MaTramDung: { $in: tramDungTuongUng.map((tram) => tram._id) },
-    })
+      MaTuyen: { $in: maTuyenTuongUng.map((tuyen) => tuyen._id) },
+    });
+    // console.log(MaTramDung);
 
     // const result = await TuyenTramDung.findOne({
     //   MaTuyen: maTuyenTuongUng._id
     // })
 
-    console.log("result TuyenTramDung::", result)
+    console.log('result TuyenTramDung::', result);
     if (!result.length) {
       return res.status(200).json({
         success: false,
-        message: "Không tìm thấy tuyến nào phù hợp giữa điểm khởi hành và điểm kết thúc",
+        message:
+          'Không tìm thấy tuyến nào phù hợp giữa điểm khởi hành và điểm kết thúc',
       });
     }
 
     res.status(200).json({ success: true, data: result });
-  }catch(error){
+  } catch (error) {
     res.status(500).json({
-      message: "Có lỗi xảy ra khi lấy gợi ý sân bay.",
+      message: 'Có lỗi xảy ra khi lấy gợi ý sân bay.',
       error: error.message,
     });
   }
-}
+};
 
 module.exports = {
   SuggestsAirpost,
-  SuggestsTramDung, checkTuyenTramDung
+  SuggestsTramDung,
+  checkTuyenTramDung,
 };
