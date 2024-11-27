@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { format } from 'date-fns';
+
 function RightContent() {
+  const formatDate = (isoString) => {
+    return format(new Date(isoString), 'dd/MM/yyyy');
+  };
+  const formatTime = (isoString) => {
+    return format(new Date(isoString), 'HH:mm');
+  };
   const url = `${import.meta.env.VITE_BACKEND_URL}/api`;
   const [lichSuCar, setLichSuCar] = useState([]);
   useEffect(() => {
@@ -32,7 +40,8 @@ function RightContent() {
               <hr className="my-4 border-t-2 border-slate-300 w-full" />
               <div className="flex my-1">
                 <p>Ngày đặt:</p>
-                <p className="ml-1 font-bold ">{item.createdAt}</p>
+                <p className="ml-1 font-bold">{formatDate(item.createdAt)}</p>
+                <p className="ml-1 font-bold">{formatTime(item.createdAt)}</p>
               </div>
               <div className="flex">
                 <div className="bg-blue-900 text-white rounded-full my-1 py-1 px-4">

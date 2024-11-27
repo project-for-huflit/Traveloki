@@ -136,6 +136,10 @@ const Header = () => {
   };
 
   const handleMenuLogin = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
+    localStorage.removeItem('partner');
+    localStorage.removeItem('email');
     navigate('/auth/login');
     window.location.reload();
     // setAnchorEl(null);
