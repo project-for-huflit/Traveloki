@@ -18,7 +18,7 @@ import {
   fetchAllTuyenXe,
   fetchAllTuyenXePartern,
 } from '../../services/api/TuyenXe/apiDanhSachTuyenXe';
-import slugify from 'slugify';
+// import slugify from 'slugify';
 import { useDispatch } from 'react-redux';
 import { setSelectedRow } from '../../redux/slice/routeSlice';
 
@@ -156,10 +156,10 @@ const DanhSachTuyenXe = () => {
             {tuyenXe.map((route) => (
               <TableRow
                 component={Link}
-                to={`${slugify(`${route.DiemKhoiHanh}-${route.DiemKetThuc}`, {
-                  lower: true,
-                  strict: true,
-                })}`}
+                // to={`${slugify(`${route.DiemKhoiHanh}-${route.DiemKetThuc}`, {
+                //   lower: true,
+                //   strict: true,
+                // })}`}
                 key={route._id}
                 sx={{ '&:hover': { backgroundColor: '#e3f2fd' } }}
                 onClick={() => handleRowClick(route)}

@@ -178,12 +178,6 @@ const Header = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {!isAdmin && (
-        <MenuItem onClick={handleMenuLogin}>
-          Đăng nhập với tư cách admin
-        </MenuItem>
-      )}
-      <MenuItem onClick={handleMenuClose}>Hồ sơ</MenuItem>
       <MenuItem onClick={handleMenuClose}>Tài khoản của tôi</MenuItem>
       <MenuItem onClick={handleLogOut}>Đăng xuất</MenuItem>
     </Menu>
