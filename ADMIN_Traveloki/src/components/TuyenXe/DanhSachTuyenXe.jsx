@@ -140,9 +140,11 @@ const DanhSachTuyenXe = () => {
               <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                 Thời gian hoạt động
               </TableCell>
-              <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
-                Số trạm dừng
-              </TableCell>
+              {isAdmin && (
+                <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
+                  Số trạm dừng
+                </TableCell>
+              )}
               {!isAdmin && (
                 <TableCell sx={{ color: '#1a73e8', fontWeight: 'bold' }}>
                   Hành động
@@ -168,7 +170,7 @@ const DanhSachTuyenXe = () => {
                 <TableCell>
                   {route.ThoiGianKhoiHanh} - {route.ThoiGianKetThuc}
                 </TableCell>
-                {/* <TableCell>{route.tramDungs.length}</TableCell> */}
+                {isAdmin && <TableCell>{route.tramDungs.length}</TableCell>}
                 {!isAdmin && (
                   <TableCell>
                     <IconButton

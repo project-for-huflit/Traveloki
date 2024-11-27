@@ -1,21 +1,25 @@
 // import axios from "axios";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPlaneDeparture,
   faLocationDot,
-} from "@fortawesome/free-solid-svg-icons";
-import debounce from "lodash/debounce";
-import "react-datepicker/dist/react-datepicker.css";
-import backgroundImage from "../../assets/introPic.png";
-import {checkRoute, suggestsAirportAPI, suggestsTramDungAPI} from "../../services/api/search/api.search";
+} from '@fortawesome/free-solid-svg-icons';
+import debounce from 'lodash/debounce';
+import 'react-datepicker/dist/react-datepicker.css';
+import backgroundImage from '../../assets/introPic.png';
+import {
+  checkRoute,
+  suggestsAirportAPI,
+  suggestsTramDungAPI,
+} from '../../services/api/search/api.search';
 
 const SearchBar = () => {
-  const [diemSanBay, setDiemSanBay] = useState("");
-  const [diemKetThuc, setDiemKetThuc] = useState("");
-  const [selectedHour, setSelectedHour] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
+  const [diemSanBay, setDiemSanBay] = useState('');
+  const [diemKetThuc, setDiemKetThuc] = useState('');
+  const [selectedHour, setSelectedHour] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
   const [suggestions, setSuggestions] = useState({
     sanBays: [],
     tramDungs: [],
@@ -34,7 +38,7 @@ const SearchBar = () => {
         sanBays: response.data.sanBays,
       }));
     } catch (err) {
-      setError("Lỗi khi lấy gợi ý sân bay: " + err.message);
+      setError('Lỗi khi lấy gợi ý sân bay: ' + err.message);
     }
   };
   //click vào hiển thị dropdown
@@ -51,17 +55,17 @@ const SearchBar = () => {
         tramDungs: response.data.tramDungs,
       }));
     } catch (err) {
-      setError("Lỗi khi lấy gợi ý trạm dừng: " + err.message);
+      setError('Lỗi khi lấy gợi ý trạm dừng: ' + err.message);
     }
   };
 
   const debouncedFetchAirportSuggestions = debounce(
     fetchAirportSuggestions,
-    300
+    300,
   );
   const debouncedFetchTramDungSuggestions = debounce(
     fetchTramDungSuggestions,
-    300
+    300,
   );
 
   const handleAirportSuggestionClick = (suggestion) => {
@@ -77,17 +81,17 @@ const SearchBar = () => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
-        !event.target.closest(".suggestion-container-airport") &&
-        !event.target.closest(".suggestion-container-tram")
+        !event.target.closest('.suggestion-container-airport') &&
+        !event.target.closest('.suggestion-container-tram')
       ) {
         setShowAirportSuggestions(false);
         setShowTramDungSuggestions(false);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -101,31 +105,41 @@ const SearchBar = () => {
 
   const handleSubmit = async () => {
     if (!diemSanBay || !diemKetThuc || !selectedDate || !selectedHour) {
-      alert("Vui lòng nhập đầy đủ thông tin");
+      alert('Vui lòng nhập đầy đủ thông tin');
       return;
     }
 
-    const currentDate = new Date().toISOString().split("T")[0];
-    const currentTime = new Date().toISOString().split("T")[1].split(".")[0];
+    const currentDate = new Date().toISOString().split('T')[0];
+    const currentTime = new Date().toISOString().split('T')[1].split('.')[0];
 
-    if (selectedDate < currentDate || (selectedDate === currentDate && selectedHour <= currentTime)) {
-      alert("Vui lòng chọn ngày và giờ lớn hơn hiện tại");
+    if (
+      selectedDate < currentDate ||
+      (selectedDate === currentDate && selectedHour <= currentTime)
+    ) {
+      alert('Vui lòng chọn ngày và giờ lớn hơn hiện tại');
       return;
     }
 
     try {
-      console.log("Du lieu dau vao cua responseCheckRoute::", {diemSanBay, diemKetThuc});
+      console.log('Du lieu dau vao cua responseCheckRoute::', {
+        diemSanBay,
+        diemKetThuc,
+      });
 
       const responseCheckRoute = await checkRoute(diemSanBay, diemKetThuc);
 
-      console.log("checkRoute::", responseCheckRoute.data);
-      let maTuyens = "";
-      let maTramDung = "";
+      console.log('checkRoute::', responseCheckRoute.data);
+      let maTuyens = '';
+      let maTramDung = '';
       if (responseCheckRoute.data.success) {
-        maTuyens = responseCheckRoute.data.data.map((route) => route.MaTuyen.trim()).join(",");
-        maTramDung = responseCheckRoute.data.data.map((route) => route.MaTramDung.trim()).join(",");
+        maTuyens = responseCheckRoute.data.data
+          .map((route) => route.MaTuyen.trim())
+          .join(',');
+        maTramDung = responseCheckRoute.data.data
+          .map((route) => route.MaTramDung.trim())
+          .join(',');
 
-        console.log("maTramDung::", maTramDung)
+        console.log('maTramDung::', maTramDung);
         // const sanBayResponse = await axios.get(
         //   `${import.meta.env.VITE_BACKEND_URL}/api/getSanBaybyTenSanBay?TenSanBay=${encodeURIComponent(diemSanBay)}`
         // );
@@ -144,8 +158,8 @@ const SearchBar = () => {
         // const tramDung = tramDungs.find((tram) => tram.MaTuyen === maTuyen);
         // const IDTram = tramDung._id;
         // ===============================================
-        console.log("maTuyens:: ", maTuyens);
-        console.log("maTramDung:: ", maTramDung);
+        console.log('maTuyens:: ', maTuyens);
+        console.log('maTramDung:: ', maTramDung);
         // const IDTram = tramDung._id;
         navigate(
           `/airport-transfer/search/list?
@@ -155,7 +169,7 @@ const SearchBar = () => {
           &Time=${encodeURIComponent(selectedHour)}
           &MaTuyen=${encodeURIComponent(maTuyens)}
           &MaTram=${encodeURIComponent(maTramDung)}
-          &GiaVe=${encodeURIComponent(responseCheckRoute.data.data[0].GiaVe)}`
+          &GiaVe=${encodeURIComponent(responseCheckRoute.data.data[0].GiaVe)}`,
         );
       } else {
         navigate(
@@ -163,15 +177,14 @@ const SearchBar = () => {
           &SanBay=${encodeURIComponent(diemSanBay)}
           &DiemKetThuc=${encodeURIComponent(diemKetThuc)}
           &Date=${encodeURIComponent(selectedDate)}
-          &Time=${encodeURIComponent(selectedHour)}`
+          &Time=${encodeURIComponent(selectedHour)}`,
         );
       }
     } catch (error) {
-      console.error("Error fetching route:", error);
-      setError("Đã xảy ra lỗi khi tìm tuyến.");
+      console.error('Error fetching route:', error);
+      setError('Đã xảy ra lỗi khi tìm tuyến.');
     }
   };
-
 
   return (
     <div
@@ -187,9 +200,9 @@ const SearchBar = () => {
                   Từ sân bay
                 </label>
                 <div className="flex relative">
-                <span className="pl-1 absolute top-2">
-                  <FontAwesomeIcon icon={faPlaneDeparture} />
-                </span>
+                  <span className="pl-1 absolute top-2">
+                    <FontAwesomeIcon icon={faPlaneDeparture} />
+                  </span>
                   <input
                     className="w-full bg-slate-100 outline-none pl-8 border-black rounded-lg p-2"
                     type="text"
@@ -220,17 +233,17 @@ const SearchBar = () => {
               </div>
             </div>
             <span className="w-full col-span-1 text-center pb-6 mt-11 text-3xl pr-9 translate-y-2">
-            ⇌
-          </span>
+              ⇌
+            </span>
             <div className="h-fit pt-5 col-span-1 sm:col-span-3 pr-5 w-full">
               <div className="suggestion-container-tram relative">
                 <label className="text-black font-bold flex mb-2 items-center space-x-2">
-                  Đến khu vực địa chỉ{" "}
+                  Đến khu vực địa chỉ{' '}
                 </label>
                 <div className="flex relative">
-                <span className="pl-1 absolute z-50 top-2">
-                  <FontAwesomeIcon icon={faLocationDot} />
-                </span>
+                  <span className="pl-1 absolute z-50 top-2">
+                    <FontAwesomeIcon icon={faLocationDot} />
+                  </span>
                   <input
                     className="w-full bg-slate-100 outline-none pl-8 z-30 border-black rounded-lg p-2"
                     type="text"
@@ -250,7 +263,9 @@ const SearchBar = () => {
                       <li
                         className=" hover:bg-blue-100 p-2 rounded-md border-b-gray-400 border-0 border-b-2 "
                         key={index}
-                        onClick={() => handleTramDungSuggestionClick(suggestion)}
+                        onClick={() =>
+                          handleTramDungSuggestionClick(suggestion)
+                        }
                       >
                         {suggestion}
                       </li>
@@ -298,7 +313,6 @@ const SearchBar = () => {
           </div>
           {error && <div className="text-red-500 mt-4">{error}</div>}
         </div>
-
       </div>
     </div>
   );
