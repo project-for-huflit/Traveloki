@@ -7,6 +7,8 @@ import { faUser, faSuitcase } from "@fortawesome/free-solid-svg-icons";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import {getAllCar} from "../../services/api/phuongTien/api.phuongTien.js";
 
+import CheckIcon from '../../assets/check.svg?react'
+import CheckOKIcon from '../../assets/Nice-service.svg?react'
 const ListBookingCar = () => {
   const navigate = useNavigate();
   const [detailCar, setDetailCar] = useState([]);
@@ -73,15 +75,15 @@ const ListBookingCar = () => {
 
   const loiIchList = [
     {
-      icon: 'ICON',
+      icon: <CheckIcon />,
       desc: 'Available 24 hours'
     },
     {
-      icon: 'ICON',
+      icon:  <CheckIcon />,
       desc: 'Convenient pick-up point'
     },
     {
-      icon: 'ICON',
+      icon:  <CheckIcon />,
       desc: 'All-inclusive price'
     },
   ]
@@ -91,7 +93,7 @@ const ListBookingCar = () => {
       className="flex justify-center items-center p-4 text-white"
     >
       <div className="">{index.icon}</div>
-      <div className="mr-2">{index.desc}</div>
+      <div className="mr-2 ml-2">{index.desc}</div>
     </div>
   ));
 // &ImageCar=${encodeURIComponent(detailCar.Image)}
@@ -99,8 +101,8 @@ const ListBookingCar = () => {
     <div className="w-full h-full mx-auto container">
       {/* <img src={imagelist} alt="List Booking" /> */}
 
-      <div className="w-full bg-[#1D4886] flex items-center my-12">
-        <div className=""></div>
+      <div className="w-full bg-[#1D4886] flex items-center my-12 relative rounded-lg">
+        <div className="absolute "><CheckOKIcon /></div>
         <div className="ml-16 px-8 flex flex-row">{listOK}</div>
       </div>
 

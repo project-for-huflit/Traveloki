@@ -4,6 +4,7 @@ const { Pointer } = require('pointer-wallet');
 
 const pointer = new Pointer(process.env.POINTER_SECRET_KEY);
 
+const { ForbidenError } = require('../middlewares/error.response')
 class BookingCarService {
   static async PaymentPointerWallet({
     amount,
@@ -73,7 +74,8 @@ class BookingCarService {
       console.log(data);
       return data;
     } catch (error) {
-      console.error('error:: CancelPaymentPointerWallet', error);
+      console.error('error the Transaction has expired::', error);
+      throw new ForbidenError('The Transaction has expired')
     }
   }
 
@@ -86,6 +88,7 @@ class BookingCarService {
       return data;
     } catch (error) {
       console.error('error:: RefundPaymentPointerWallet', error);
+      throw new ForbidenError('The Transaction has expired')
     }
   }
 

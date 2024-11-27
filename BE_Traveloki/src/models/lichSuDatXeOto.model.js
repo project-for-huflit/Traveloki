@@ -9,6 +9,8 @@ const LichSuDatXeOtoSchema = new Schema({
   MaKH: { type: String, required: true },
   MaDX: { type: String, ref: "DatXeOto" },
   orderID: { type: Types.ObjectId, ref: "DatXeOto" },
+  DiemDon: { type: String, default: "" },
+  DiemTra: { type: String, default: "" },
   Date: { type: String },
 },{
   timestamps: true,

@@ -64,7 +64,8 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: <HomePage />
-      }
+      },
+      { path: "list/cars/result", element: <ProtectedRoute><Paymentsuccess /></ProtectedRoute> },
     ],
   },
   {
@@ -117,7 +118,7 @@ const router = createBrowserRouter([
       { path: "list/cars", element: <ProtectedRoute><BookingCar /></ProtectedRoute>, },
       { path: "list/bus", element: <ProtectedRoute><BookingBus /></ProtectedRoute>, },
       { path: "list/trains", element: <ProtectedRoute><BookingTrain /></ProtectedRoute>, },
-      { path: "list/cars/result", element: <ProtectedRoute><Paymentsuccess /></ProtectedRoute> },
+      // { path: "list/cars/result", element: <ProtectedRoute><Paymentsuccess /></ProtectedRoute> },
     ],
   },
   { path: 'swagger', element: <SwaggerUI url="https://petstore.swagger.io/v2/swagger.json" /> }

@@ -148,14 +148,14 @@ const BookingBus = () => {
         console.log("Đã nhận được ID đơn hàng:", datXeBusId._id);
 
         try {
-          console.log({
-            amount: ThanhTien,
-            currency: bookingCar.currency,
-            message: bookingCar.Description,
-            return_url: `${import.meta.env.VITE_FE_URL}/list/cars/result`,
-            orderID: datXeBus._id,
-            userID: "userO1",
-          })
+          // console.log({
+          //   amount: ThanhTien,
+          //   currency: bookingCar.currency,
+          //   message: bookingCar.Description,
+          //   return_url: `${import.meta.env.VITE_FE_URL}/list/cars/result`,
+          //   orderID: datXeBus._id,
+          //   userID: "userO1",
+          // })
 
           const response = await fetch(
             `${import.meta.env.VITE_BACKEND_URL}/api/payment/pointer-wallet/bus`,

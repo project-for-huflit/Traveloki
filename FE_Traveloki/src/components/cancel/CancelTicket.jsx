@@ -228,8 +228,9 @@ const CancelTicket = () => {
             }
           }
 
-        } else {
-          alert("Có lỗi xảy ra khi xử lý hoàn tiền.");
+        } else if (cancelPaymentResponse.code === 403) {
+          console.log("Có lỗi xảy ra khi xử lý hoàn tiền.");
+          alert('Giao dịch đã hết hạn, không thể hủy!')
         }
       } catch (refundError) {
         console.error("Error processing refund: ", refundError);

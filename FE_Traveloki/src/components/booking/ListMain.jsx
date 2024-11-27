@@ -23,7 +23,7 @@ const ListMain = () => {
   return (
     <div className="w-[85%] h-full mx-auto container">
       <div className="relative mt-6">
-        <div className="absolute px-16 py-8 h-full">
+        <div className="absolute px-16 py-8 h-full ">
           <p className="text-white font-extrabold text-xl">
             Đến sân bay không còn mệt mỏi
           </p>
@@ -34,7 +34,7 @@ const ListMain = () => {
           </p>
         </div>
         <img
-          className=""
+          className="rounded-lg"
           src="https://ik.imagekit.io/tvlk/image/imageResource/2018/10/08/1538999958318-bb50c036ab44378f08d0d3b8020366c1.png?tr=dpr-2,q-75,w-960"
           alt="Background"
         />

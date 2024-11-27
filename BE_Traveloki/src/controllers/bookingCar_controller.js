@@ -73,7 +73,7 @@ const BookingCar = async (req, res) => {
 
     const result = await CreateDatXeOto.save();
 
-    const newHistory = new LichSuDatXeOto({ MaKH: userId, MaDX });
+    const newHistory = new LichSuDatXeOto({ MaKH: userId, MaDX, DiemDon: DiemSanBay, DiemTra: DiemDon_Tra });
     const resultHistoryCar = await newHistory.save();
     console.log("resultHistoryCar::", resultHistoryCar)
 
