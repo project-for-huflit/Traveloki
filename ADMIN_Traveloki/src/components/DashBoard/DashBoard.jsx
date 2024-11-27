@@ -72,7 +72,7 @@ export const Dashboard = () => {
     const historyBus = async () => {
       try {
         const res = await fetchHistoryBus();
-        setSlBus(res.lichSuDatXeBus);
+        setSlBus(res.buyTicketBus);
       } catch (error) {
         setError('Không thể lấy dữ liệu từ máy chủ bus');
       } finally {
@@ -89,6 +89,7 @@ export const Dashboard = () => {
   const totalBookingsCar = slCar.length;
   const totalBookingsTrain = slTrain.length;
   const totalBookingsBus = slBus.length;
+  console.log('dasjdsaj', totalBookingsBus);
   const total = totalBookingsCar + totalBookingsTrain + totalBookingsBus;
 
   if (isLoading)
@@ -195,7 +196,7 @@ export const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <div className="w-full bg-gray-100 rounded-full h-4">
                 <div
                   className="h-full bg-blue-500 rounded-full p-1"
@@ -207,7 +208,7 @@ export const Dashboard = () => {
               <span className="text-sm font-medium text-gray-600 ml-4">
                 {(totalBookingsCar / total) * 100}%
               </span>
-            </div>
+            </div> */}
           </div>
           {/* Bảng 5 */}
           <div className="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
@@ -222,7 +223,7 @@ export const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <div className="w-full bg-gray-100 rounded-full h-4">
                 <div
                   className="h-full bg-blue-500 rounded-full p-1"
@@ -234,7 +235,7 @@ export const Dashboard = () => {
               <span className="text-sm font-medium text-gray-600 ml-4">
                 {(totalBookingsTrain / total) * 100}%
               </span>
-            </div>
+            </div> */}
           </div>
           {/* Bảng 6 */}
           <div className="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
@@ -249,7 +250,7 @@ export const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <div className="w-full bg-gray-100 rounded-full h-4">
                 <div
                   className="h-full bg-blue-500 rounded-full p-1"
@@ -261,7 +262,7 @@ export const Dashboard = () => {
               <span className="text-sm font-medium text-gray-600 ml-4">
                 {(totalBookingsBus / total) * 100}%
               </span>
-            </div>
+            </div> */}
           </div>
         </div>
         {/*Responsive dòng 3*/}
