@@ -1,36 +1,37 @@
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import imagelist from "../../assets/busimage.png";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import {getPhuongTienByLichChay} from "../../services/api/phuongTien/api.phuongTien.js";
+import { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import imagelist from '../../assets/busimage.png';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { getPhuongTienByLichChay } from '../../services/api/phuongTien/api.phuongTien.js';
 
 const ListBookingBus = (props) => {
-  const {MaTuyen} = props;
+  const { MaTuyen } = props;
+  console.log(MaTuyen);
   const navigate = useNavigate();
   const [fetchError, setFetchError] = useState(null);
   const [searchParams] = useSearchParams();
   const [bus, setBus] = useState([]);
-  const SanBay = searchParams.get("SanBay");
-  const Date = searchParams.get("Date");
-  const Time = searchParams.get("Time");
-  const IDTram = searchParams.get("MaTram") || "Default MaTram";
-  const GiaVe = searchParams.get("GiaVe");
-  const DiemKetThuc = searchParams.get("DiemKetThuc");
+  const SanBay = searchParams.get('SanBay');
+  const Date = searchParams.get('Date');
+  const Time = searchParams.get('Time');
+  const IDTram = searchParams.get('MaTram') || 'Default MaTram';
+  const GiaVe = searchParams.get('GiaVe');
+  const DiemKetThuc = searchParams.get('DiemKetThuc');
 
   useEffect(() => {
-    const fetchBusByLichChay = async() => {
-      try{
-        const res = await getPhuongTienByLichChay(MaTuyen)
-        console.log("Fetched buses:", res);
-        if (res && res.data.EC === 0){
+    const fetchBusByLichChay = async () => {
+      try {
+        const res = await getPhuongTienByLichChay(MaTuyen);
+        console.log('Fetched buses:', res);
+        if (res && res.data.EC === 0) {
           const busData = res.data.data
-            .filter((item) => item.MaPT.LoaiPT === "bus")
+            .filter((item) => item.MaPT.LoaiPT === 'bus')
             .map((item) => item.MaPT);
           setBus(busData);
         }
-      }catch (error){
-        console.error("Error fetching bus:", error);
+      } catch (error) {
+        console.error('Error fetching bus:', error);
         setFetchError(
           <div className="w-full">
             <div className="flex justify-center mt-8 mx-auto">
@@ -47,12 +48,12 @@ const ListBookingBus = (props) => {
               There are no buses operating between your locations. Please check
               again at another time.
             </p>
-          </div>
+          </div>,
         );
       }
-    }
-    fetchBusByLichChay()
-  }, [MaTuyen])
+    };
+    fetchBusByLichChay();
+  }, [MaTuyen]);
 
   // const fetchBus = async () => {
   //   setFetchError(null);
@@ -146,7 +147,7 @@ const ListBookingBus = (props) => {
       &DiemKetThuc=${encodeURIComponent(DiemKetThuc)}
       &GiaVe=${encodeURIComponent(GiaVe)}
       &MaTram=${encodeURIComponent(IDTram)}
-      &PhuongTienID=${busID}`
+      &PhuongTienID=${busID}`,
     );
   };
 
@@ -154,7 +155,7 @@ const ListBookingBus = (props) => {
   //   tuyenSB.some((tuyen) => tuyen.MaTuyen === item.MaTuyen)
   // );
 
-  console.log("Bus:", bus);
+  console.log('Bus:', bus);
 
   return (
     <div className="w-full h-full mx-auto container">
