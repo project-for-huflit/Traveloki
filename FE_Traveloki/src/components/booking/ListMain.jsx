@@ -1,20 +1,25 @@
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCar, faBus, faTrain } from "@fortawesome/free-solid-svg-icons";
-import ListBookingCar from "./ListBookingCar";
-import ListBookingBus from "./ListBookingBus";
-import ListBookingTrain from "./ListBookingTrain";
-import { useSearchParams } from "react-router-dom";
-import { FormatToVI } from "../../utils/dateFormat";
+import { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCar, faBus, faTrain } from '@fortawesome/free-solid-svg-icons';
+import ListBookingCar from './ListBookingCar';
+import ListBookingBus from './ListBookingBus';
+import ListBookingTrain from './ListBookingTrain';
+import { useSearchParams } from 'react-router-dom';
+import { FormatToVI } from '../../utils/dateFormat';
 
 const ListMain = () => {
-  const [selected, setSelected] = useState("Car");
+  const [selected, setSelected] = useState('Car');
   const [searchParams] = useSearchParams();
-  const SanBay = searchParams.get("SanBay") || "Default San Bay";
-  const DiemKetThuc = searchParams.get("DiemKetThuc") || "Default Diem Ket Thuc";
-  const Date = searchParams.get("Date") || "Default Date";
-  const Time = searchParams.get("Time") || "Default Time";
-  const MaTuyen = searchParams.get("MaTuyen")?.split(",").map((item) => item.trim()) || "";
+  const SanBay = searchParams.get('SanBay') || 'Default San Bay';
+  const DiemKetThuc =
+    searchParams.get('DiemKetThuc') || 'Default Diem Ket Thuc';
+  const Date = searchParams.get('Date') || 'Default Date';
+  const Time = searchParams.get('Time') || 'Default Time';
+  const MaTuyen =
+    searchParams
+      .get('MaTuyen')
+      ?.split(',')
+      .map((item) => item.trim()) || '';
 
   const handleClick = (option) => {
     setSelected(option);
@@ -42,7 +47,9 @@ const ListMain = () => {
 
       <div className="w-full mx-auto flex border-b-[1px] pb-4">
         <div className="pt-9 w-3/4">
-          <p className="text-3xl text-black font-bold font-['Inter']">From {SanBay} (CGK)</p>
+          <p className="text-3xl text-black font-bold font-['Inter']">
+            From {SanBay} (CGK)
+          </p>
           <span className="text-xl">
             {Date} | {Time}
           </span>
@@ -56,39 +63,39 @@ const ListMain = () => {
 
       <div className="flex w-full h-fit border mt-12 font-bold p-4 rounded-lg bg-white">
         <span
-          onClick={() => handleClick("Car")}
+          onClick={() => handleClick('Car')}
           className={`cursor-pointer text-2xl px-2 ${
-            selected === "Car"
-              ? "border-b-2 border-[#1D4886] text-[#1D4886]"
-              : "text-gray-500"
+            selected === 'Car'
+              ? 'border-b-2 border-[#1D4886] text-[#1D4886]'
+              : 'text-gray-500'
           }`}
         >
           <FontAwesomeIcon icon={faCar} /> Car
         </span>
         <span
-          onClick={() => handleClick("Bus")}
+          onClick={() => handleClick('Bus')}
           className={`mx-9 px-2 text-2xl cursor-pointer ${
-            selected === "Bus"
-              ? "border-b-2 border-[#1D4886] text-[#1D4886]"
-              : "text-gray-500"
+            selected === 'Bus'
+              ? 'border-b-2 border-[#1D4886] text-[#1D4886]'
+              : 'text-gray-500'
           }`}
         >
           <FontAwesomeIcon icon={faBus} /> Shuttle Bus
         </span>
         <span
-          onClick={() => handleClick("Train")}
+          onClick={() => handleClick('Train')}
           className={`cursor-pointer text-2xl px-2 ${
-            selected === "Train"
-              ? "border-b-2 border-[#1D4886] text-[#1D4886]"
-              : "text-gray-500"
+            selected === 'Train'
+              ? 'border-b-2 border-[#1D4886] text-[#1D4886]'
+              : 'text-gray-500'
           }`}
         >
           <FontAwesomeIcon icon={faTrain} /> Airport Train
         </span>
       </div>
-      {selected === "Car" && <ListBookingCar/>}
-      {selected === "Bus" && <ListBookingBus MaTuyen={MaTuyen}/>}
-      {selected === "Train" && <ListBookingTrain MaTuyen={MaTuyen}/>}
+      {selected === 'Car' && <ListBookingCar />}
+      {selected === 'Bus' && <ListBookingBus MaTuyen={MaTuyen} />}
+      {selected === 'Train' && <ListBookingTrain MaTuyen={MaTuyen} />}
     </div>
   );
 };
