@@ -148,46 +148,46 @@ const BookingBus = () => {
         console.log("Đã nhận được ID đơn hàng:", datXeBusId._id);
 
         try {
-          // console.log({
-          //   amount: ThanhTien,
-          //   currency: bookingCar.currency,
-          //   message: bookingCar.Description,
-          //   return_url: `${import.meta.env.VITE_FE_URL}/list/cars/result`,
-          //   orderID: datXeBus._id,
-          //   userID: "userO1",
-          // })
+          console.log({
+            amount: ThanhTien,
+            currency: bookingCar.currency,
+            message: bookingCar.Description,
+            return_url: `${import.meta.env.VITE_FE_URL}/list/cars/result`,
+            orderID: datXeBus._id,
+            userID: "userO1",
+          })
 
-          // const response = await fetch(
-          //   `${import.meta.env.VITE_BACKEND_URL}/api/payment/pointer-wallet/bus`,
-          //   {
-          //     method: "POST",
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //       Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
-          //     },
-          //     body: JSON.stringify({
-          //       amount: ThanhTien,
-          //       currency: bookingBus.currency,
-          //       message: bookingBus.Description,
-          //       userID: "userO1",
-          //       orderID: datXeBusId._id,
-          //       returnUrl: bookingBus.return_url,
-          //       name: bookingBus.name,
-          //       image: bookingBus.image,
-          //       description: bookingBus.Description,
-          //       quantity: bookingBus.SLVe,
-          //       price: bookingBus.ThanhTien,
-          //     }),
-          //   }
-          // );
+          const response = await fetch(
+            `${import.meta.env.VITE_BACKEND_URL}/api/payment/pointer-wallet/bus`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
+              },
+              body: JSON.stringify({
+                amount: ThanhTien,
+                currency: bookingBus.currency,
+                message: bookingBus.Description,
+                userID: "userO1",
+                orderID: datXeBusId._id,
+                returnUrl: bookingBus.return_url,
+                name: bookingBus.name,
+                image: bookingBus.image,
+                description: bookingBus.Description,
+                quantity: bookingBus.SLVe,
+                price: bookingBus.ThanhTien,
+              }),
+            }
+          );
 
-          // if(response.ok){
-          //     const data = await response.json();
-          //     console.log("Phản hồi từ server tạo yêu cầu từ pointer:", data);
-          //     window.location.replace(data.metadata)
-          // } else {
-          //   alert(response.error || "Đã xảy ra lỗi khi truyền dữ liệu - 200");
-          // }
+          if(response.ok){
+              const data = await response.json();
+              console.log("Phản hồi từ server tạo yêu cầu từ pointer:", data);
+              window.location.replace(data.metadata)
+          } else {
+            alert(response.error || "Đã xảy ra lỗi khi truyền dữ liệu - 200");
+          }
         } catch (error) {
           console.error("Lỗi khi truyền dữ liệu:", error);
           alert("Không thể truyền dữ liệu");
