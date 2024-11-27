@@ -59,6 +59,11 @@ export const ChartBookingCar = () => {
       },
     ],
   };
+
+  /**
+   * Paste one or more documents here
+   */
+
   const options = {
     options: {
       scales: {
