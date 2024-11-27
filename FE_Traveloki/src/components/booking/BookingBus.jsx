@@ -48,7 +48,13 @@ const BookingBus = () => {
     return_url: "http://localhost:5173/list/cars/result"
   });
 
-  console.log("busId", bookingBus)
+  useEffect(() => {
+    setBookingBus((prev) => ({
+      ...prev,
+      SLVe: count,
+      ThanhTien: GiaVe * count,
+    }));
+  }, [count]);
 
   const increaseCount = () => {
     setCount((prevCount) => {
@@ -56,10 +62,7 @@ const BookingBus = () => {
       setTotalPrice(GiaVe * newCount);
       return newCount;
     });
-    // setTotalPrice(GiaVe * count);
-    // console.log("Gia ve::", GiaVe)
-    // console.log("Tong ve::", count)
-    // console.log("Tong::", totalPrice)
+
   };
 
   const decreaseCount = () => {
@@ -68,10 +71,6 @@ const BookingBus = () => {
       setTotalPrice(GiaVe * newCount);
       return newCount;
     });
-    // setTotalPrice(GiaVe * count);
-    // console.log("Gia ve::", GiaVe)
-    // console.log("Tong ve::", count)
-    // console.log("Tong::", totalPrice)
   };
 
   useEffect(() => {
@@ -158,43 +157,43 @@ const BookingBus = () => {
           //   userID: "userO1",
           // })
 
-          const response = await fetch(
-            `${import.meta.env.VITE_BACKEND_URL}/api/payment/pointer-wallet/bus`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
-              },
-              body: JSON.stringify({
-                amount: ThanhTien,
-                currency: bookingBus.currency,
-                message: bookingBus.Description,
-                userID: "userO1",
-                orderID: datXeBusId._id,
-                returnUrl: bookingBus.return_url,
-                name: bookingBus.name,
-                image: bookingBus.image,
-                description: bookingBus.Description,
-                quantity: bookingBus.SLVe,
-                price: bookingBus.ThanhTien,
-              }),
-            }
-          );
+          // const response = await fetch(
+          //   `${import.meta.env.VITE_BACKEND_URL}/api/payment/pointer-wallet/bus`,
+          //   {
+          //     method: "POST",
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //       Authorization: 'Bearer ' + import.meta.env.VITE_SECRET_API_KEY_POINTER
+          //     },
+          //     body: JSON.stringify({
+          //       amount: ThanhTien,
+          //       currency: bookingBus.currency,
+          //       message: bookingBus.Description,
+          //       userID: "userO1",
+          //       orderID: datXeBusId._id,
+          //       returnUrl: bookingBus.return_url,
+          //       name: bookingBus.name,
+          //       image: bookingBus.image,
+          //       description: bookingBus.Description,
+          //       quantity: bookingBus.SLVe,
+          //       price: bookingBus.ThanhTien,
+          //     }),
+          //   }
+          // );
 
-          if(response.ok){
-              const data = await response.json();
-              console.log("Phản hồi từ server tạo yêu cầu từ pointer:", data);
-              window.location.replace(data.metadata)
-          } else {
-            alert(response.error || "Đã xảy ra lỗi khi truyền dữ liệu - 200");
-          }
+          // if(response.ok){
+          //     const data = await response.json();
+          //     console.log("Phản hồi từ server tạo yêu cầu từ pointer:", data);
+          //     window.location.replace(data.metadata)
+          // } else {
+          //   alert(response.error || "Đã xảy ra lỗi khi truyền dữ liệu - 200");
+          // }
         } catch (error) {
           console.error("Lỗi khi truyền dữ liệu:", error);
           alert("Không thể truyền dữ liệu");
         }
       } else {
-        alert(data.error || "Đã xảy ra lỗi khi đặt xe");
+        alert(data.message || "Đã xảy ra lỗi khi đặt xe");
       }
     } catch (error) {
       console.error("Lỗi khi kết nối tới máy chủ:", error);
@@ -259,7 +258,7 @@ const BookingBus = () => {
                   -
                 </button>
                 <span className="text-center h-full translate-y-1/4">
-                  {count} vé
+                  {bookingBus.SLVe} vé
                 </span>{" "}
                 <button
                   className="bg-slate-300 rounded-e-md"
@@ -287,7 +286,7 @@ const BookingBus = () => {
             <p className="text-gray-500 text-sm text-right">Tổng tiền xe</p>
             <span className="text-lg text-orange-400">
               {/*{formatPrice(bookingBus.ThanhTien)} VND*/}
-              {totalPrice} VND
+              {bookingBus.ThanhTien} VND
             </span>
           </div>
           <button

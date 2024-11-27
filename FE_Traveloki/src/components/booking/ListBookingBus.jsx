@@ -22,6 +22,7 @@ const ListBookingBus = (props) => {
     const fetchBusByLichChay = async() => {
       try{
         const res = await getPhuongTienByLichChay(MaTuyen)
+        console.log("Fetched buses:", res);
         if (res && res.data.EC === 0){
           const busData = res.data.data
             .filter((item) => item.MaPT.LoaiPT === "bus")
@@ -185,7 +186,7 @@ const ListBookingBus = (props) => {
             <div className="flex">
               <div className="border-2">
                 <img
-                  src={item.image}
+                  src={item.Image}
                   className="w-auto h-44 rounded-s-lg"
                   alt="Bus"
                 />
