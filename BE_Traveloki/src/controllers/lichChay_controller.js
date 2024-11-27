@@ -22,7 +22,11 @@ const GetLichChayPartern = async (req, res) => {
     }
     const queryObj = { ...req.query, parternId };
     console.log(queryObj);
-    const lichChay = await LichChay.find(queryObj).populate('parternId').exec();
+    const lichChay = await LichChay.find(queryObj)
+      .populate('parternId')
+      .populate('MaTuyen')
+      .populate('MaPT')
+      .exec();
     res.status(200).json({
       status: 'success',
       results: lichChay.length,

@@ -132,6 +132,7 @@ const SearchBar = () => {
       let maTuyens = '';
       let maTramDung = '';
       if (responseCheckRoute.data.success) {
+        console.log(responseCheckRoute.data.data);
         maTuyens = responseCheckRoute.data.data
           .map((route) => route.MaTuyen.trim())
           .join(',');
