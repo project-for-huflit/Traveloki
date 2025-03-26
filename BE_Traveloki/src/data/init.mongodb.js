@@ -5,17 +5,18 @@ const mongoose = require('mongoose');
 const { countConnect } = require('../helpers/check.connect');
 // const connectString = process.env.MONGODB_URI
 
-mongoose
-  .connect(process.env.MONGODB_URI_2)
-  .then(() => {
-    console.log('Connected to MongoDB!');
-  })
-  .catch((e) => {
-    console.error('Did not connect to MongoDB', e);
-  });
+// mongoose
+//   .connect(process.env.MONGODB_URI_2)
+//   .then(() => {
+//     console.log('Connected to MongoDB!');
+//   })
+//   .catch((e) => {
+//     console.error('Did not connect to MongoDB', e);
+//   });
 
-module.exports = mongoose;
+// module.exports = mongoose;
 
+// #region Singleton - Quan
 class Database {
   constructor() {
       this.connect();
@@ -66,3 +67,4 @@ class Database {
 const instanceMongoDB = Database.getInstance();
 const cloudMongoDB = Database.getConnect()
 module.exports = instanceMongoDB;
+// #endregion Singleton - Quan
