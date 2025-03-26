@@ -1,12 +1,7 @@
 /.vscode
 /.vscode/settings.json
 /node_modules
-/FE_Traveloki/.env
 /.idea
-/ADMIN_Traveloki/.env
-/BE_Traveloki/.env
-/ADMIN_Traveloki/.env.example
-FE_Traveloki/.env
-ADMIN_Traveloki/.env
+
 FE_Traveloki/.env
 ADMIN_Traveloki/.env
