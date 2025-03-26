@@ -1,6 +1,7 @@
 'use strict';
 require('dotenv').config()
 const { Pointer } = require('pointer-wallet');
+const paymentObserver = require('./observers/paymentObserver.service');
 
 const pointer = new Pointer(process.env.POINTER_SECRET_KEY);
 
@@ -56,9 +57,35 @@ class BookingCarService {
         ],
       });
       console.log(url);
+
+      // Thông báo thanh toán thành công
+      paymentObserver.notify({
+        type: 'PAYMENT_SUCCESS',
+        data: {
+          userID,
+          orderID,
+          amount,
+          currency,
+          paymentUrl: url,
+          timestamp: new Date()
+        }
+      });
+
       return url;
     } catch (error) {
-      console.error('error return url::', error);
+      // Thông báo thanh toán thất bại
+      paymentObserver.notify({
+        type: 'PAYMENT_FAILED',
+        data: {
+          userID,
+          orderID,
+          amount,
+          currency,
+          error: error.message,
+          timestamp: new Date()
+        }
+      });
+      throw error;
     }
   }
 
@@ -66,44 +93,112 @@ class BookingCarService {
    * @param transactionID: _id
    * @returns { "url":"https://pointer.io.vn/payment-gateway?token={token}", "status":200 }
    */
-  static async CancelPaymentPointerWallet({ orderID }) {
+  static async CancelPaymentPointerWallet({
+    orderID,
+    userID,
+    amount,
+    currency
+  }) {
     console.log('orderID::', orderID);
     try {
       console.log('orderID::', orderID);
-      const data = await pointer.cancelOrder(orderID);
-      console.log(data);
-      return data;
+      const result = await pointer.cancelPayment(orderID);
+      console.log(result);
+
+      // Thông báo hủy thanh toán thành công
+      paymentObserver.notify({
+        type: 'PAYMENT_CANCELLED',
+        data: {
+          userID,
+          orderID,
+          amount,
+          currency,
+          timestamp: new Date()
+        }
+      });
+
+      return result;
     } catch (error) {
-      console.error('error the Transaction has expired::', error);
-      throw new ForbidenError('The Transaction has expired')
+      // Thông báo hủy thanh toán thất bại
+      paymentObserver.notify({
+        type: 'PAYMENT_CANCEL_FAILED',
+        data: {
+          userID,
+          orderID,
+          amount,
+          currency,
+          error: error.message,
+          timestamp: new Date()
+        }
+      });
+      throw error;
     }
   }
 
-  static async RefundPaymentPointerWallet({ orderID }) {
+  static async RefundPaymentPointerWallet({
+    orderID,
+    userID,
+    amount,
+    currency,
+    reason
+  }) {
     console.log('_id::', orderID);
     try {
       console.log('_id::', { orderID });
-      const data = await pointer.refundMoney(orderID);
-      console.log(data);
-      return data;
+      const result = await pointer.refundPayment(orderID, {
+        amount: amount,
+        currency: currency,
+        reason: reason
+      });
+      console.log(result);
+
+      // Thông báo hoàn tiền thành công
+      paymentObserver.notify({
+        type: 'PAYMENT_REFUNDED',
+        data: {
+          userID,
+          orderID,
+          amount,
+          currency,
+          reason,
+          timestamp: new Date()
+        }
+      });
+
+      return result;
     } catch (error) {
-      console.error('error:: RefundPaymentPointerWallet', error);
-      throw new ForbidenError('The Transaction has expired')
+      // Thông báo hoàn tiền thất bại
+      paymentObserver.notify({
+        type: 'PAYMENT_REFUND_FAILED',
+        data: {
+          userID,
+          orderID,
+          amount,
+          currency,
+          reason,
+          error: error.message,
+          timestamp: new Date()
+        }
+      });
+      throw error;
     }
   }
 
   static async OneClickPaymentPointerWallet({
-    signature,
     amount,
     currency,
     message,
     userID,
     orderID,
-    returnUrl
+    returnUrl,
+    name,
+    image,
+    description,
+    quantity,
+    price,
   }) {
 
     console.log('Nhan thong tin payment::', {
-      signature,
       amount,
       currency,
       message,
@@ -112,20 +207,54 @@ class BookingCarService {
       returnUrl
     });
     try {
-      const response = await pointer.connectedPayment({
-        signature: signature,
+      const { url } = await pointer.createPayment({
         amount: amount,
         currency: currency,
         message: message,
         userID: userID,
         orderID: orderID,
+        returnUrl: returnUrl,
         providerID: "provider_id",
-        returnUrl: returnUrl
+        orders: [
+          {
+            name: name,
+            image: image,
+            description: description,
+            quantity: quantity,
+            price: price,
+          },
+        ],
       });
-      console.log("response::", response);
-      return response;
+      console.log("response::", url);
+
+      // Thông báo thanh toán nhanh thành công
+      paymentObserver.notify({
+        type: 'ONE_CLICK_PAYMENT_SUCCESS',
+        data: {
+          userID,
+          orderID,
+          amount,
+          currency,
+          paymentUrl: url,
+          timestamp: new Date()
+        }
+      });
+
+      return url;
     } catch (error) {
-      console.error('error return url::', error);
+      // Thông báo thanh toán nhanh thất bại
+      paymentObserver.notify({
+        type: 'ONE_CLICK_PAYMENT_FAILED',
+        data: {
+          userID,
+          orderID,
+          amount,
+          currency,
+          error: error.message,
+          timestamp: new Date()
+        }
+      });
+      throw error;
     }
   }
 }
