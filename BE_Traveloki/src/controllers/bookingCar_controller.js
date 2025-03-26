@@ -11,25 +11,26 @@ const {
 } = require('../middlewares/success.response');
 
 const { BookingCarService } = require('../services/booking.service')
+const { PaymentService } = require('../services/payment.service')
 
 // const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
 class BookingCarController {
-  getDatXeOto = async (req, res, next) => {};
+  getDatXeOto = async (_req, _res, _next) => {};
 
-  BookingCar = async (req, res, next) => {};
+  BookingCar = async (_req, _res, _next) => {};
 
-  schedularChange = async (req, res, next) => {};
+  schedularChange = async (_req, _res, _next) => {};
 
-  cancelBooking = async (req, res, next) => {};
+  cancelBooking = async (_req, _res, _next) => {};
 
-  findBookingCarID = async (req, res, next) => {};
+  findBookingCarID = async (_req, _res, _next) => {};
 
-  findBookingCarMaDX = async (req, res, next) => {};
+  findBookingCarMaDX = async (_req, _res, _next) => {};
 }
 // module.exports = new BookingCarController()
 
-const GetDatXeOto = async (req, res) => {
+const GetDatXeOto = async (_req, res) => {
   try {
     const datXeOto = await DatXeOto.find({});
     res.status(200).json({ datXeOto });
@@ -85,14 +86,21 @@ const BookingCar = async (req, res) => {
   }
 };
 
-const PaymentPointerWallet = async (req, res, next) => {
+const PaymentPointerWallet = async (req, res, _next) => {
   new SuccessResponse({
     message: 'success!',
     metadata: await BookingCarService.PaymentPointerWallet(req.body),
   }).send(res);
 };
 
-const RefundPaymentPointerWallet = async (req, res, next) => {
+const PaymentPointerWalletBridge = async (req, res, _next) => {
+  new SuccessResponse({
+    message: 'success!',
+    metadata: await BookingCarService.PaymentPointerWalletBridge(req.body),
+  }).send(res);
+};
+
+const RefundPaymentPointerWallet = async (req, res, _next) => {
   // console.log("req.params.id::", req.params.id)
   new SuccessResponse({
     message: 'success!',
@@ -100,7 +108,7 @@ const RefundPaymentPointerWallet = async (req, res, next) => {
   }).send(res);
 };
 
-const CancelPaymentPointerWallet = async (req, res, next) => {
+const CancelPaymentPointerWallet = async (req, res, _next) => {
   console.log("req.body::", req.body)
   new SuccessResponse({
     message: 'success!',
@@ -108,7 +116,14 @@ const CancelPaymentPointerWallet = async (req, res, next) => {
   }).send(res);
 };
 
-const OneClickPaymentPointerWallet = async (req, res, next) => {
+const CancelPaymentPointerWalletBridge = async (req, res, _next) => {
+  new SuccessResponse({
+    message: 'success!',
+    metadata: await BookingCarService.CancelPaymentPointerWalletBridge(req.body),
+  }).send(res);
+};
+
+const OneClickPaymentPointerWallet = async (req, res, _next) => {
   // console.log("req.params.id::", req.params.id)
   new SuccessResponse({
     message: 'success!',
@@ -206,5 +221,9 @@ module.exports = {
   PaymentPointerWallet,
   CancelPaymentPointerWallet,
   RefundPaymentPointerWallet,
-  OneClickPaymentPointerWallet
+  OneClickPaymentPointerWallet,
+
+  // Bridge
+  PaymentPointerWalletBridge,
+  CancelPaymentPointerWalletBridge
 };

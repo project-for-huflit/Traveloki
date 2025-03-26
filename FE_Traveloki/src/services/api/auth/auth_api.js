@@ -5,20 +5,28 @@ import axios from '../../axios.customize.js';
 const loginApi = async (body) => {
   console.log(body);
   return await axios.post(
-    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/login',
+    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/login/strategy',
+    // import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/login',
     body,
     {
       withCredentials: true,
+      headers: {
+        "auth-type": "jwt"
+      }
     },
   );
 };
 
 const registerApi = async (body) => {
   return await axios.post(
-    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/register',
+    import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/register/strategy',
+    // import.meta.env.VITE_BACKEND_URL + '/api/v2/auth/register',
     body,
     {
       withCredentials: true,
+      headers: {
+        "auth-type": "jwt"
+      }
     },
   );
 };

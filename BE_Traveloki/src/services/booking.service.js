@@ -6,6 +6,9 @@ const paymentObserver = require('./observers/paymentObserver.service');
 const pointer = new Pointer(process.env.POINTER_SECRET_KEY);
 
 const { ForbidenError } = require('../middlewares/error.response')
+
+const { PaymentService, PayOSService, PressPayService } = require('../services/payment.service')
+
 class BookingCarService {
   static async PaymentPointerWallet({
     amount,
@@ -24,19 +27,19 @@ class BookingCarService {
     // get bookingId
 
     /// ===================================================
-    console.log('Nhan thong tin payment::', {
-      amount,
-      currency,
-      message,
-      userID,
-      orderID,
-      returnUrl,
-      name,
-      image,
-      description,
-      quantity,
-      price,
-    });
+    // console.log('Nhan thong tin payment::', {
+    //   amount,
+    //   currency,
+    //   message,
+    //   userID,
+    //   orderID,
+    //   returnUrl,
+    //   name,
+    //   image,
+    //   description,
+    //   quantity,
+    //   price,
+    // });
     try {
       const { url } = await pointer.createPayment({
         amount: amount,
@@ -45,7 +48,7 @@ class BookingCarService {
         userID: userID,
         orderID: orderID,
         returnUrl: returnUrl,
-        providerID: "provider_id", // Tùy chọn thêm id nhà cung cấp
+        providerID: "",
         orders: [
           {
             name: name,
@@ -56,21 +59,19 @@ class BookingCarService {
           },
         ],
       });
-      console.log(url);
-
+      // console.log(url);
       // Thông báo thanh toán thành công
-      paymentObserver.notify({
-        type: 'PAYMENT_SUCCESS',
-        data: {
-          userID,
-          orderID,
-          amount,
-          currency,
-          paymentUrl: url,
-          timestamp: new Date()
-        }
-      });
-
+      // paymentObserver.notify({
+      //   type: 'PAYMENT_SUCCESS',
+      //   data: {
+      //     userID,
+      //     orderID,
+      //     amount,
+      //     currency,
+      //     paymentUrl: url,
+      //     timestamp: new Date()
+      //   }
+      // });
       return url;
     } catch (error) {
       // Thông báo thanh toán thất bại
@@ -101,23 +102,27 @@ class BookingCarService {
   }) {
     console.log('orderID::', orderID);
     try {
-      console.log('orderID::', orderID);
-      const result = await pointer.cancelPayment(orderID);
-      console.log(result);
+      // console.log('orderID::', orderID);
+      const data = await pointer.cancelOrder(orderID);
+      // console.log(data);
 
-      // Thông báo hủy thanh toán thành công
-      paymentObserver.notify({
-        type: 'PAYMENT_CANCELLED',
-        data: {
-          userID,
-          orderID,
-          amount,
-          currency,
-          timestamp: new Date()
-        }
-      });
+      // const data = await pointer.cancelPayment(orderID);
+      // console.log(data);
 
-      return result;
+      // // Thông báo hủy thanh toán thành công
+      // paymentObserver.notify({
+      //   type: 'PAYMENT_CANCELLED',
+      //   data: {
+      //     userID,
+      //     orderID,
+      //     amount,
+      //     currency,
+      //     timestamp: new Date()
+      //   }
+      // });
+
+
+      return data;
     } catch (error) {
       // Thông báo hủy thanh toán thất bại
       paymentObserver.notify({
@@ -135,37 +140,43 @@ class BookingCarService {
     }
   }
 
-  static async RefundPaymentPointerWallet({
+  static async RefundPaymentPointerWallet({ 
     orderID,
-    userID,
-    amount,
-    currency,
-    reason
+    // userID,
+    // amount,
+    // currency,
+    // reason
   }) {
-    console.log('_id::', orderID);
+    // console.log('_id::', orderID);
     try {
-      console.log('_id::', { orderID });
-      const result = await pointer.refundPayment(orderID, {
-        amount: amount,
-        currency: currency,
-        reason: reason
-      });
-      console.log(result);
+      // console.log('_id::', { orderID });
+      const data = await pointer.refundMoney(orderID);
+      // console.log(data);
 
-      // Thông báo hoàn tiền thành công
-      paymentObserver.notify({
-        type: 'PAYMENT_REFUNDED',
-        data: {
-          userID,
-          orderID,
-          amount,
-          currency,
-          reason,
-          timestamp: new Date()
-        }
-      });
+      // const result = await pointer.refundPayment(orderID, {
+      //   amount: amount,
+      //   currency: currency,
+      //   reason: reason
+      // });
+      // console.log(result);
 
-      return result;
+      // // Thông báo hoàn tiền thành công
+      // paymentObserver.notify({
+      //   type: 'PAYMENT_REFUNDED',
+      //   data: {
+      //     userID,
+      //     orderID,
+      //     amount,
+      //     currency,
+      //     reason,
+      //     timestamp: new Date()
+      //   }
+      // });
+
+      // return result;
+
+
+      return data;
     } catch (error) {
       // Thông báo hoàn tiền thất bại
       paymentObserver.notify({
@@ -197,15 +208,15 @@ class BookingCarService {
     quantity,
     price,
   }) {
-
-    console.log('Nhan thong tin payment::', {
-      amount,
-      currency,
-      message,
-      userID,
-      orderID,
-      returnUrl
-    });
+    // console.log('Nhan thong tin payment::', {
+    //   signature,
+    //   amount,
+    //   currency,
+    //   message,
+    //   userID,
+    //   orderID,
+    //   returnUrl
+    // });
     try {
       const { url } = await pointer.createPayment({
         amount: amount,
@@ -242,21 +253,49 @@ class BookingCarService {
 
       return url;
     } catch (error) {
-      // Thông báo thanh toán nhanh thất bại
-      paymentObserver.notify({
-        type: 'ONE_CLICK_PAYMENT_FAILED',
-        data: {
-          userID,
-          orderID,
-          amount,
-          currency,
-          error: error.message,
-          timestamp: new Date()
-        }
-      });
-      throw error;
+      console.error('error return url::', error);
     }
   }
+
+  // #region Bridge Pattern - Quan
+  static async PaymentPointerWalletBridge({
+    amount,
+    currency,
+    message,
+    userID,
+    orderID,
+    returnUrl,
+    name,
+    image,
+    description,
+    quantity,
+    price,
+  }) {
+    const paymentProcessor = new PressPayService(
+      amount,
+      currency,
+      message,
+      userID,
+      orderID,
+      returnUrl,
+      name,
+      image,
+      description,
+      quantity,
+      price
+    );
+    const userChoice = new PaymentService(paymentProcessor);
+    const result =  userChoice.chooseTypeofPayment();
+    return result;
+  }
+
+  static async CancelPaymentPointerWalletBridge({ orderID }) {
+    const cancelPaymentProcessor = new PressPayService(orderID);
+    const userChoice = new PaymentService(cancelPaymentProcessor);
+    const result =  userChoice.chooseTypeofCancelPayment();
+    return result;
+  }
+  // #endregion Bridge Pattern
 }
 
 class BookingBusService {
@@ -276,19 +315,19 @@ class BookingBusService {
     // get userId
     // get bookingId
     /// ===================================================
-    console.log('Nhan thong tin payment::', {
-      amount,
-      currency,
-      message,
-      userID,
-      orderID,
-      returnUrl,
-      name,
-      image,
-      description,
-      quantity,
-      price,
-    });
+    // console.log('Nhan thong tin payment::', {
+    //   amount,
+    //   currency,
+    //   message,
+    //   userID,
+    //   orderID,
+    //   returnUrl,
+    //   name,
+    //   image,
+    //   description,
+    //   quantity,
+    //   price,
+    // });
     try {
       const { url } = await pointer.createPayment({
         amount: amount,
