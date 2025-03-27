@@ -70,7 +70,7 @@ class BookingCarService {
    * @returns { "url":"https://pointer.io.vn/payment-gateway?token={token}", "status":200 }
    */
   static async CancelPaymentPointerWallet({ orderID }) {
-    console.log('orderID::', orderID);
+    // console.log('orderID::', orderID);
     try {
       // console.log('orderID::', orderID);
       const data = await pointer.cancelOrder(orderID);

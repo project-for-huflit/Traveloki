@@ -93,6 +93,7 @@ const PaymentPointerWallet = async (req, res, _next) => {
   }).send(res);
 };
 
+// #region Bridge - Quan
 const PaymentPointerWalletBridge = async (req, res, _next) => {
   new SuccessResponse({
     message: 'success!',
@@ -109,13 +110,14 @@ const RefundPaymentPointerWallet = async (req, res, _next) => {
 };
 
 const CancelPaymentPointerWallet = async (req, res, _next) => {
-  console.log("req.body::", req.body)
+  // console.log("req.body::", req.body)
   new SuccessResponse({
     message: 'success!',
     metadata: await BookingCarService.CancelPaymentPointerWallet(req.body),
   }).send(res);
 };
 
+// #region Bridge - Quan
 const CancelPaymentPointerWalletBridge = async (req, res, _next) => {
   new SuccessResponse({
     message: 'success!',
