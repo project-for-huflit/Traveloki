@@ -9,6 +9,9 @@ const {
   CREATED,
   SuccessResponse,
 } = require('../middlewares/success.response');
+const BookingSubject = require("./observe/bookingCarSubject");
+const CustomerNotification = require("./observe/customerNotification");
+const AdminNotification = require("./observe/adminNotification");
 
 const { BookingCarService } = require('../services/booking.service')
 
@@ -37,6 +40,9 @@ const GetDatXeOto = async (req, res) => {
     res.status(500).json('Can not get booking car!');
   }
 };
+
+BookingSubject.addObserver(new CustomerNotification());
+BookingSubject.addObserver(new AdminNotification());
 
 const BookingCar = async (req, res) => {
   try {
@@ -76,6 +82,11 @@ const BookingCar = async (req, res) => {
     const newHistory = new LichSuDatXeOto({ MaKH: userId, MaDX, DiemDon: DiemSanBay, DiemTra: DiemDon_Tra });
     const resultHistoryCar = await newHistory.save();
     console.log("resultHistoryCar::", resultHistoryCar)
+
+    BookingSubject.notifyObservers({
+      message: `🚖 Đơn đặt xe ${MaDX} đã tạo thành công!`,
+      userId
+    });
 
     // console.log("Check id::", result)
     res.status(200).json(result); // Đảm bảo result chứa trường Sdt

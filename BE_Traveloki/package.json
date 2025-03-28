@@ -44,6 +44,7 @@
     "nodemon": "^3.1.4",
     "oauth-pointer": "^1.0.3",
     "pointer-wallet": "^2.0.1",
+    "socket.io": "^4.8.1",
     "sso-pointer": "^1.0.7",
     "uuid": "^10.0.0"
   },

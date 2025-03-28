@@ -9,7 +9,8 @@ const cors = require('cors');
 // const { runConsumer } = require('./config/config.kafka')
 // const { createProxyMiddleware } = require("http-proxy-middleware");
 const app = express()
-
+// const http = require("http");
+// const { Server } = require("socket.io");
 // Middewares
 // app.use(cors());
 app.use(cors({
