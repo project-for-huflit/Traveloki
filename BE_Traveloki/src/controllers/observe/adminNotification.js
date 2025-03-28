@@ -1,4 +1,4 @@
-import Observer from "./observer.js";
+const Observer = require("./observer.js");
 
 class AdminNotification extends Observer {
   update(data) {
