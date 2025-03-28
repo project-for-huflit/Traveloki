@@ -2,12 +2,6 @@ const {LichSuDatXeOto} = require("../models/lichSuDatXeOto.model");
 
 const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.response")
 
-const asyncHandler = require('../middlewares/asyncHandler.middeware')
-
-class HistoryCarController {
-
-}
-// module.exports = new HistoryCarController()
 
 const GetLichSuDatXeOto = async (req, res) => {
   try {

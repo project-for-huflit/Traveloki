@@ -1,7 +1,7 @@
 const CarFactory = require('../services/carFactory.service');
 const BusFactory = require('../services/busFactory.service');
 const TrainFactory = require('../services/trainFactory.service');
-const PhuongTienModel = require('../models/phuongtien.model');
+const PhuongTienModel = require('../models/phuongTien.model'); // Import model PhuongTienModel
 
 const carFactory = new CarFactory();
 const busFactory = new BusFactory();
