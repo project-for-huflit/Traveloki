@@ -1,6 +1,5 @@
 const { PhuongTien } = require('../models/phuongTien.model');
 const { LichChay } = require('../models/lichChay.model');
-const VehicleFactory = require('../services/vehicleFactory.service');
 
 
 
@@ -26,27 +25,63 @@ const getAllPhuongTienService = async () => {
 };
 
 // cập nhật lại hàm theo Factory Pattern
-const createPhuongTienService = async (type,data) => {
-  try{
-    const vehicleService = VehicleFactory.createVehicle(type);
-    const newvehicle = vehicleService.createVehicle(data);
+const createPhuongTienService = async (
+  parternId,
+  LoaiPT,
+  TenPhuongTien,
+  MaSoXe,
+  SoGheToiDa,
+  Image,
+  MaSB,
+) => {
+  try {
+    let newMaPT = LoaiPT === 'bus' ? 'PTB' : 'PTT';
 
-    const res = await PhuongTien.create(newvehicle);
+    const existingPhuongTien = await PhuongTien.findOne({
+      LoaiPT: LoaiPT,
+      MaSoXe: MaSoXe,
+    }).exec();
+    if (existingPhuongTien) {
+      return {
+        EC: 1,
+        EM: `Mã số xe đã tồn tại cho loại phương tiện: ${LoaiPT}`,
+        data: [],
+      };
+    }
+
+    const lastPhuongTien = await PhuongTien.findOne({ LoaiPT })
+      .sort({ MaPT: -1 })
+      .exec();
+
+    if (lastPhuongTien && lastPhuongTien.MaPT) {
+      const lastNumber = parseInt(lastPhuongTien.MaPT.slice(3), 10);
+      newMaPT = `${newMaPT}${lastNumber + 1}`;
+    } else {
+      newMaPT = `${newMaPT}1`;
+    }
+
+    const result = await PhuongTien.create({
+      parternId,
+      MaPT: newMaPT,
+      LoaiPT: LoaiPT,
+      TenPhuongTien: TenPhuongTien,
+      MaSoXe: MaSoXe,
+      SoGheToiDa: SoGheToiDa,
+      Image: Image,
+      MaSB: MaSB,
+    });
     return {
       EC: 0,
       EM: 'Tạo phương tiện thành công',
-      data: res
+      data: result,
     };
-  }
-  catch{
-    console.error(error);
+  } catch (error) {
+    console.log(error);
     return {
       EC: 1,
       EM: 'Không thể tạo phương tiện',
-      data: []
-    }
-    
-
+      data: [],
+    };
   }
 };
 

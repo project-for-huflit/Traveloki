@@ -1,20 +1,10 @@
-'use strict'
-const { CarService, BusService, TrainService } = require('./vehiclesType.service')
 
 
-class VehicleFactory{
-    static createVehicle(type){
-        switch(type){
-            case "car":
-                return new CarService()
-            case "bus":
-                return new BusService()
-            case "train":
-                return new TrainService()
-            default:
-                throw new Error("Vehicle type ${type} is not supported")
-        }
-    }
+class  VehicleFactory {
+   //VehicleFactory chứa phương thức khởi tạo xe trừu tượng (abstract)
+   createVehicle() {
+    throw new Error("Phương thức createVehicle() phải được triển khai trong lớp con");
+   }
 }
 
-module.exports = VehicleFactory
+module.exports = VehicleFactory;
