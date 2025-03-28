@@ -10,8 +10,6 @@ const {
   SuccessResponse,
 } = require('../middlewares/success.response');
 const BookingSubject = require("./observe/bookingCarSubject");
-const CustomerNotification = require("./observe/customerNotification");
-const AdminNotification = require("./observe/adminNotification");
 
 const { BookingCarService } = require('../services/booking.service')
 
@@ -40,9 +38,6 @@ const GetDatXeOto = async (req, res) => {
     res.status(500).json('Can not get booking car!');
   }
 };
-
-BookingSubject.addObserver(new CustomerNotification());
-BookingSubject.addObserver(new AdminNotification());
 
 const BookingCar = async (req, res) => {
   try {

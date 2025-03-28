@@ -1,6 +1,10 @@
+const CustomerNotification = require("./customerNotification");
+const AdminNotification = require("./adminNotification");
+
 class BookingCarSubject {
   constructor() {
     this.observers = [];
+    this.isInitialized = false;
   }
 
   addObserver(observer) {
@@ -14,6 +18,17 @@ class BookingCarSubject {
   notifyObservers(data) {
     this.observers.forEach((observer) => observer.update(data));
   }
+
+  initializeObservers() {
+    if (!this.isInitialized) {
+      this.addObserver(new CustomerNotification());
+      this.addObserver(new AdminNotification());
+      this.isInitialized = true;
+    }
+  }
 }
 
-module.exports = new BookingCarSubject();
+const bookingCarSubject = new BookingCarSubject();
+bookingCarSubject.initializeObservers();
+
+module.exports = bookingCarSubject;
