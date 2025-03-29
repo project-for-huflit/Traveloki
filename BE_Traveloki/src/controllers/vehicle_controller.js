@@ -1,7 +1,7 @@
 const CarFactory = require('../services/carFactory.service');
 const BusFactory = require('../services/busFactory.service');
 const TrainFactory = require('../services/trainFactory.service');
-const PhuongTienModel = require('../models/phuongTien.model'); // Import model PhuongTienModel
+const {PhuongTien} = require('../models/phuongTien.model'); // Import model PhuongTienModel
 
 const carFactory = new CarFactory();
 const busFactory = new BusFactory();
@@ -39,7 +39,7 @@ const createVehicle = async (req, res) => {
         });
 
         // Lưu vào MongoDB
-        const savedVehicle = await PhuongTienModel.create(newVehicle);
+        const savedVehicle = await PhuongTien.create(newVehicle);
         
         res.status(201).json({
             message: "Phương tiện đã được tạo thành công",

@@ -8,7 +8,7 @@ class BookingHistoryFacade {
     this.services = {
       tau: new BookingHistoryService(LichSuDatTau),
       oto: new BookingHistoryService(LichSuDatXeOto),
-      bus: new BookingHistoryService(LichSuDatXeBus),
+      bus: new BookingHistoryService(LichSuDatXeBus), 
     };
   }
 

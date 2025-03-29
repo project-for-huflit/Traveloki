@@ -12,7 +12,7 @@ const PhuongTienSchema = new Schema(
     LoaiPT: {
       type: String,
       required: true,
-      enum: ['bus', 'train'],
+      enum: ['car','bus', 'train'],
       maxlength: 100,
     },
     MaSoXe: { type: String, maxlength: 20 },

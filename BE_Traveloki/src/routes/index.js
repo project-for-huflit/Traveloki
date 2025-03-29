@@ -33,9 +33,11 @@ router.use('/api', require('./auth/auth.js'));
 
 router.use('/api', require('./customers/account-routes.js'));
 
-router.use('api',require('./history/facadeHistory-routes.js'))
+router.use('/api',require('./history/facadeHistory-routes.js'))
 // router.use('/api', require('./driver/driver-routes.js'));
 router.use('/api', require('./vehicles/vehicle-routes.js'));
+
+router.use('/api', require('./driver/driver-routes.js'));
 
 
 // ================================================================ 2

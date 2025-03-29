@@ -1,4 +1,4 @@
-class Vehicle {
+    class Vehicle {
     constructor({ parternId, MaPT, LoaiPT, MaSoXe, TenPhuongTien, SoGheToiDa, Image, MaSB }) {
         if (new.target === Vehicle) {
             throw new Error("Không thể khởi tạo đối tượng từ lớp Vehicle");
@@ -17,6 +17,7 @@ class Vehicle {
     info() {
         throw new Error("Phương thức info() phải được triển khai trong lớp con")
     }
+
 
    
 }
