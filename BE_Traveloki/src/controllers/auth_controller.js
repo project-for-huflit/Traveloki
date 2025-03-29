@@ -5,6 +5,8 @@
 const {
   AuthSSOService,
   AuthJWTService,
+  AuthJWTServiceStrategy,
+  AuthSSOServiceStrategy
 } = require('../services/authen.service');
 
 const {
@@ -13,6 +15,7 @@ const {
   SuccessResponse,
 } = require('../middlewares/success.response');
 
+const authStrategyMiddleware = require('../middlewares/authStrategy.middleware');
 class AuthController {
   //region JWT
   register = async (req, res, next) => {
@@ -84,7 +87,57 @@ class AuthController {
   };
 }
 
-module.exports = new AuthController();
+class AuthControllerStrategy {
+  // registerJWT = async (req, res, next) => {
+  //   new CREATED({
+  //     message: 'Register OK!',
+  //     metadata: await AuthJWTServiceStrategy.register(req),
+  //   }).send(res);
+  // };
+
+  // loginJWT = async (req, res, next) => {
+  //   new SuccessResponse({
+  //     metadata: await AuthJWTServiceStrategy.login(req),
+  //   }).send(res);
+  // };
+
+  // loginPointer = async (req, res, next) => {
+  //   new SuccessResponse({
+  //     message: ' success!',
+  //     metadata: await AuthSSOServiceStrategy.login(req),
+  //   }).send(res);
+  // };
+
+  // registerPointer = async (req, res, next) => {
+  //   new CREATED({
+  //     message: 'Register with pointer OK!',
+  //     metadata: await AuthSSOServiceStrategy.register(req),
+  //   }).send(res);
+  // };
+
+  // authStrategyMiddleware = async (req, res, next) => {
+  //   new SuccessResponse({
+  //     message: 'Register with pointer OK!',
+  //     metadata: await AuthSSOServiceStrategy.register(req),
+  //   }).send(res);
+  // };
+  login = async (req, res, next) => {
+    new SuccessResponse({
+      metadata: await req.authContext.login(req)
+    }).send(res);
+  };
+
+  register = async (req, res, next) => {
+    new CREATED({
+      message: 'Register OK!',
+      metadata: await req.authContext.register(req),
+    }).send(res);
+  };
+}
+module.exports = {
+  AuthController: new AuthController(),
+  AuthControllerStrategy: new AuthControllerStrategy()
+};
 
 // const login = async (req, res, next) => {
 //   const { username, password } = req.body;

@@ -1,10 +1,17 @@
 'use strict';
-require('dotenv').config()
+require('dotenv').config();
 const { Pointer } = require('pointer-wallet');
 
 const pointer = new Pointer(process.env.POINTER_SECRET_KEY);
 
-const { ForbidenError } = require('../middlewares/error.response')
+const { ForbidenError } = require('../middlewares/error.response');
+
+const {
+  PaymentService,
+  PayOSService,
+  PressPayService,
+} = require('../services/payment.service');
+
 class BookingCarService {
   static async PaymentPointerWallet({
     amount,
@@ -44,7 +51,7 @@ class BookingCarService {
         userID: userID,
         orderID: orderID,
         returnUrl: returnUrl,
-        providerID: "provider_id", // Tùy chọn thêm id nhà cung cấp
+        providerID: 'provider_id', // Tùy chọn thêm id nhà cung cấp
         orders: [
           {
             name: name,
@@ -61,7 +68,6 @@ class BookingCarService {
       console.error('error return url::', error);
     }
   }
-
   /**
    * @param transactionID: _id
    * @returns { "url":"https://pointer.io.vn/payment-gateway?token={token}", "status":200 }
@@ -75,7 +81,7 @@ class BookingCarService {
       return data;
     } catch (error) {
       console.error('error the Transaction has expired::', error);
-      throw new ForbidenError('The Transaction has expired')
+      throw new ForbidenError('The Transaction has expired');
     }
   }
 
@@ -88,20 +94,18 @@ class BookingCarService {
       return data;
     } catch (error) {
       console.error('error:: RefundPaymentPointerWallet', error);
-      throw new ForbidenError('The Transaction has expired')
+      throw new ForbidenError('The Transaction has expired');
     }
   }
 
   static async OneClickPaymentPointerWallet({
-    signature,
     amount,
     currency,
     message,
     userID,
     orderID,
-    returnUrl
+    returnUrl,
   }) {
-
     console.log('Nhan thong tin payment::', {
       signature,
       amount,
@@ -109,7 +113,7 @@ class BookingCarService {
       message,
       userID,
       orderID,
-      returnUrl
+      returnUrl,
     });
     try {
       const response = await pointer.connectedPayment({
@@ -119,15 +123,54 @@ class BookingCarService {
         message: message,
         userID: userID,
         orderID: orderID,
-        providerID: "provider_id",
-        returnUrl: returnUrl
+        providerID: 'provider_id',
+        returnUrl: returnUrl,
       });
-      console.log("response::", response);
-      return response;
+      return url;
     } catch (error) {
       console.error('error return url::', error);
     }
   }
+
+  // #region Bridge Pattern - Quan
+  static async PaymentPointerWalletBridge({
+    amount,
+    currency,
+    message,
+    userID,
+    orderID,
+    returnUrl,
+    name,
+    image,
+    description,
+    quantity,
+    price,
+  }) {
+    const paymentProcessor = new PressPayService(
+      amount,
+      currency,
+      message,
+      userID,
+      orderID,
+      returnUrl,
+      name,
+      image,
+      description,
+      quantity,
+      price
+    );
+    const userChoice = new PaymentService(paymentProcessor);
+    const result = userChoice.chooseTypeofPayment();
+    return result;
+  }
+
+  static async CancelPaymentPointerWalletBridge({ orderID }) {
+    const cancelPaymentProcessor = new PressPayService(orderID);
+    const userChoice = new PaymentService(cancelPaymentProcessor);
+    const result = userChoice.chooseTypeofCancelPayment();
+    return result;
+  }
+  // #endregion Bridge Pattern
 }
 
 class BookingBusService {
@@ -147,19 +190,19 @@ class BookingBusService {
     // get userId
     // get bookingId
     /// ===================================================
-    console.log('Nhan thong tin payment::', {
-      amount,
-      currency,
-      message,
-      userID,
-      orderID,
-      returnUrl,
-      name,
-      image,
-      description,
-      quantity,
-      price,
-    });
+    // console.log('Nhan thong tin payment::', {
+    //   amount,
+    //   currency,
+    //   message,
+    //   userID,
+    //   orderID,
+    //   returnUrl,
+    //   name,
+    //   image,
+    //   description,
+    //   quantity,
+    //   price,
+    // });
     try {
       const { url } = await pointer.createPayment({
         amount: amount,
@@ -181,18 +224,18 @@ class BookingBusService {
       console.log(url);
       return url;
     } catch (error) {
-      console.error("error return url::", error)
+      console.error('error return url::', error);
     }
   }
 
   /**
-    * @param transactionID: _id
-    * @returns { "url":"https://pointer.io.vn/payment-gateway?token={token}", "status":200 }
-    */
+   * @param transactionID: _id
+   * @returns { "url":"https://pointer.io.vn/payment-gateway?token={token}", "status":200 }
+   */
   static async CancelPaymentPointerWallet({ _id }) {
     const data = await pointer.cancelOrder(_id);
     console.log(data);
-    return data
+    return data;
   }
 }
 
@@ -247,18 +290,18 @@ class BookingTrainService {
       console.log(url);
       return url;
     } catch (error) {
-      console.error("error return url::", error)
+      console.error('error return url::', error);
     }
   }
 
   /**
-    * @param transactionID: _id
-    * @returns { "url":"https://pointer.io.vn/payment-gateway?token={token}", "status":200 }
-    */
+   * @param transactionID: _id
+   * @returns { "url":"https://pointer.io.vn/payment-gateway?token={token}", "status":200 }
+   */
   static async CancelPaymentPointerWallet({ _id }) {
     const data = await pointer.cancelOrder(_id);
     console.log(data);
-    return data
+    return data;
   }
 }
 

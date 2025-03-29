@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../../redux/slice/authSlice.js';
@@ -91,6 +90,7 @@ const Login = () => {
       console.log(roles);
       // Redirect or perform other actions upon successful login
       if (response.data.status == 200) {
+        alert('Đăng nhập thành công')
         navigate('/home');
       } else {
         throw new Error('Response was not ok');

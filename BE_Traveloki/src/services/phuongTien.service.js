@@ -1,6 +1,8 @@
 const { PhuongTien } = require('../models/phuongTien.model');
 const { LichChay } = require('../models/lichChay.model');
 
+
+
 const getAllPhuongTienService = async () => {
   try {
     const result = await PhuongTien.find()
@@ -22,6 +24,7 @@ const getAllPhuongTienService = async () => {
   }
 };
 
+// cập nhật lại hàm theo Factory Pattern
 const createPhuongTienService = async (
   parternId,
   LoaiPT,
@@ -67,7 +70,6 @@ const createPhuongTienService = async (
       Image: Image,
       MaSB: MaSB,
     });
-
     return {
       EC: 0,
       EM: 'Tạo phương tiện thành công',

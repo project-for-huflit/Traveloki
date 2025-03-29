@@ -25,6 +25,38 @@ const Role = {
 
 const SECRET_POINTER = process.env.SECRET_KEY_POINTER;
 
+class AuthStrategy {
+  // async authenticate(req) {
+  //   throw new AuthFailureError("authenticate method must be implemented");
+  // }
+
+  async login(req) {
+    throw new AuthFailureError("login method must be implemented");
+  }
+
+  async register(req) {
+    throw new AuthFailureError("register method must be implemented");
+  }
+}
+
+class AuthContext {
+  constructor(strategy) {
+    this.strategy = strategy;
+  }
+
+  setStrategy(strategy) {
+    this.strategy = strategy;
+  }
+
+  async login(req) {
+    return this.strategy.login(req);
+  }
+
+  async register(req) {
+    return this.strategy.register(req);
+  }
+}
+
 class AuthJWTService {
   static handleRefreshToken = async ({ keyStore, user, refreshToken }) => {
     const { userId, email } = user;
@@ -445,8 +477,208 @@ class AuthSSOService {
 }
 
 //=============================================================================
+// #region Strategy - Quan
+class AuthJWTServiceStrategy
+extends AuthStrategy {
+  async login(req) {
+    const { email, password, refreshToken = null } = req.body;
+    const foundUser = await UserService.findByEmail({ email });
+    if (!foundUser) throw new BadRequestError('User not registered!');
+
+    const match = bcrypt.compare(password, foundUser.password);
+    if (!match) throw new AuthFailureError('Authentication error!');
+
+    const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+      modulusLength: 2048,
+      publicKeyEncoding: {
+        type: 'pkcs1',
+        format: 'pem',
+      },
+      privateKeyEncoding: {
+        type: 'pkcs1',
+        format: 'pem',
+      },
+    });
+
+    const { _id: userId, roles } = foundUser;
+    const tokens = await createTokenPair(
+      { userId: userId, email },
+      publicKey,
+      privateKey,
+    );
+
+    await KeyTokenService.createKeyTokenForUser({
+      refreshToken: tokens.refreshToken,
+      userId: userId,
+      privateKey,
+      publicKey,
+    });
+
+    return {
+      user: getInfoData({
+        fields: ['_id', 'name', 'email', 'roles'],
+        object: foundUser,
+      }),
+      tokens,
+    };
+  }
+
+  async register(req) {
+    const { name, email, phone, password } = req.body;
+    try {
+      const modelUser = await Account.findOne({ email }).lean();
+      if (modelUser) throw new BadRequestError('Error: Shop already registered!');
+
+      const passwordHash = await bcrypt.hash(password, 10);
+
+      const newUser = await Account.create({
+        name,
+        email,
+        password: passwordHash,
+        phone,
+        roles: [Role.USER],
+      });
+
+      if (newUser) {
+        const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+          modulusLength: 2048,
+          publicKeyEncoding: { type: 'pkcs1', format: 'pem' },
+          privateKeyEncoding: { type: 'pkcs1', format: 'pem' },
+        });
+
+        console.log({ privateKey, publicKey });
+
+        const publicKeyString = await KeyTokenService.createKeyTokenForUser({
+          userId: newUser._id,
+          publicKey,
+          privateKey,
+        });
+
+        if (!publicKeyString) {
+          return {
+            code: 'xxx',
+            message: 'publicKeyString error!',
+          };
+        }
+        console.log(`publicKeyString::`, publicKeyString);
+
+        const publicKeyObject = crypto.createPublicKey(publicKeyString);
+        console.log(`publicKeyObject::`, publicKeyObject);
+
+        const tokens = await createTokenPair(
+          { userId: newUser._id, email },
+          publicKeyObject,
+          privateKey,
+        );
+        console.log(`created tokens success!::`, tokens);
+
+        return {
+          code: 201,
+          metadata: {
+            user: getInfoData({
+              fields: ['_id', 'name', 'email'],
+              object: newUser,
+            }),
+            tokens,
+          },
+        };
+      }
+      return {
+        code: 200,
+        metadata: null,
+      };
+    } catch (error) {
+      return {
+        code: 'xxx',
+        message: error.message,
+        status: 'error',
+      };
+    }
+  }
+}
+
+class AuthSSOServiceStrategy
+extends AuthStrategy {
+  async login(req) {
+    const { code } = req.body;
+    console.log(`Received code::${code}`);
+    if (!code) throw new NotFoundError('Authorization code is required!');
+
+    try {
+      const { accessToken, user } = await getAccessToken(code); // { accessToken, email, id }
+      console.log({ accessToken, user })
+      const partner = await getUserProfile(accessToken);
+      console.log("getUserProfile::", partner)
+
+      // 3. check if isUser, if user isn't exist then create profile
+      const isPartner = await PartnerService.findOrCreatePartner(partner.email);
+
+      // 4. create token jwt
+      if (isPartner) {
+        const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+          modulusLength: 2048,
+          publicKeyEncoding: { type: 'pkcs1', format: 'pem' },
+          privateKeyEncoding: { type: 'pkcs1', format: 'pem' },
+        });
+        console.log({ privateKey, publicKey });
+
+        const publicKeyString = await KeyTokenService.createKeyTokenForPartner({
+          partnerId: isPartner._id,
+          publicKey,
+          privateKey,
+        });
+
+        if (!publicKeyString) {
+          return {
+            code: '400',
+            message: 'Bad Request: publicKeyString error! - line 113',
+          };
+        }
+        console.log(`publicKeyString::`, publicKeyString);
+
+        const publicKeyObject = crypto.createPublicKey(publicKeyString);
+        console.log(`publicKeyObject::`, publicKeyObject);
+
+        const tokens = await createTokenPair(
+          { partnerId: isPartner._id, email: partner.email },
+          publicKeyObject,
+          privateKey,
+        );
+        console.log(`create tokens pair success::`, tokens);
+      }
+
+        return {
+          code: 201,
+          // metadata: {
+          //   partner: getInfoData({
+          //     fields: ['_id', 'name', 'email'],
+          //     object: isPartner,
+          //   }),
+          //   tokens,
+          // },
+          partner: user,
+          tokens: accessToken,
+          partnerEmail: partner.email,
+          partnerId: partner._id,
+        };
+      }
+    catch (error) {
+      return {
+        code: '500',
+        message: error.message,
+        status: 'error',
+      };
+    }
+  }
+  async register(req) {
+    return this.login(req);
+  }
+}
 
 module.exports = {
   AuthJWTService,
   AuthSSOService,
+  AuthJWTServiceStrategy,
+  AuthSSOServiceStrategy,
+  AuthContext
 };

@@ -4,10 +4,7 @@ const { OK, CREATED, SuccessResponse  } = require("../middlewares/success.respon
 
 const asyncHandler = require('../middlewares/asyncHandler.middeware')
 
-class HistoryBusController {
 
-}
-// module.exports = new HistoryBusController()
 
 
 const GetLichSuXeBus = async (req, res) => {

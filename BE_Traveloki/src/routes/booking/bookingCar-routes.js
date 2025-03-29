@@ -12,7 +12,10 @@ const {
   PaymentPointerWallet,
   CancelPaymentPointerWallet,
   RefundPaymentPointerWallet,
-  OneClickPaymentPointerWallet
+  OneClickPaymentPointerWallet,
+
+  PaymentPointerWalletBridge,
+  CancelPaymentPointerWalletBridge
 } = require("../../controllers/bookingCar_controller");
 
 route.get("/GetDatXeOto", GetDatXeOto);
@@ -23,6 +26,9 @@ route.post("/payment/pointer-wallet/car/refund", asyncHandler(RefundPaymentPoint
 route.post("/payment/pointer-wallet/car/cancel", asyncHandler(CancelPaymentPointerWallet))
 route.post("/payment/pointer-wallet/car/one-click", asyncHandler(OneClickPaymentPointerWallet))
 
+// #region Bridge
+route.post("/payment/pointer-wallet/car/bridge", asyncHandler(PaymentPointerWalletBridge))
+route.post("/payment/pointer-wallet/car/bridge/cancel", asyncHandler(CancelPaymentPointerWalletBridge))
 
 route.get("/FindBookingCarID/:id", FindBookingCarID);
 route.get("/FindBookingCarMaDX", FindBookingCarMaDX);

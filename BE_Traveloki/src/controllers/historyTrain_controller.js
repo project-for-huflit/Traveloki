@@ -4,9 +4,6 @@ const { LichSuDatTau } = require('../models/lichSuDatTau.model');
 
 const asyncHandler = require('../middlewares/asyncHandler.middeware');
 
-class HistoryTrainController {}
-// module.exports = HistoryTrainController()
-
 const GetLichSuDatTau = async (req, res) => {
   try {
     const lichSuDatTau = await LichSuDatTau.find(req.query);
