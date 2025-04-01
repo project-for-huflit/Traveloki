@@ -5,7 +5,7 @@ class CarFactory extends VehicleFactory {
     //Phương thức khởi tạo xe hơi
     createVehicle(options) {
         // Tạo một đối tượng Car mới với các thuộc tính được truyền vào từ options
-        return new Car(options);
+        return new Car(options, LoaiPT="Car", SoGheToiDa=5);
     }
 }
 

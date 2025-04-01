@@ -6,7 +6,7 @@ class Car extends Vehicle {
     }
 
     info(){
-        console.log(`${this.tenPhuongTien} (${this.maSoXe}) - ${this.soGheToiDa}`);
+        console.log(`${this.tenPhuongTien} (${this.maSoXe}) `);
     }
 }
 

@@ -6,7 +6,7 @@ class Bus extends Vehicle {
     }
 
     info(){
-        console.log(`${this.tenPhuongTien} (${this.maSoXe}) - ${this.soGheToiDa} chỗ - ${this.maSB}`);
+        console.log(`${this.tenPhuongTien} (${this.maSoXe}) `);
     }
 }
 

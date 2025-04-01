@@ -7,33 +7,73 @@ const carFactory = new CarFactory();
 const busFactory = new BusFactory();
 const trainFactory = new TrainFactory();
 
-const createVehicle = async (req, res) => {
-    try {
-        const { parternId, MaPT, LoaiPT, MaSoXe, TenPhuongTien, SoGheToiDa, Image, MaSB } = req.body;
 
-        let factory;
-        switch (LoaiPT.toLowerCase()) {
-            case 'car':
-                factory = carFactory;
-                break;
-            case 'bus':
-                factory = busFactory;
-                break;
-            case 'train':
-                factory = trainFactory;
-                break;
-            default:
-                return res.status(400).json({ message: "Loại phương tiện không hợp lệ" });
-        }
+
+const CreateTrain = async (req, res) => {
+    try {
+        const { parternId, MaPT, MaSoXe, TenPhuongTien,  Image, MaSB } = req.body;
 
         // Tạo phương tiện từ Factory Pattern
-        const newVehicle = factory.createVehicle({
+        const newVehicle = trainFactory.createVehicle({
             parternId,
             MaPT,
-            LoaiPT,
             MaSoXe,
             TenPhuongTien,
-            SoGheToiDa,
+            Image,
+            MaSB
+        });
+
+        // Lưu vào MongoDB
+        const savedVehicle = await PhuongTien.create(newVehicle);
+        
+        res.status(201).json({
+            message: "Phương tiện đã được tạo thành công",
+            data: savedVehicle
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+const CreateCar = async (req, res) => {
+    try {
+        const { parternId, MaPT, MaSoXe, TenPhuongTien,  Image, MaSB } = req.body;
+
+        // Tạo phương tiện từ Factory Pattern
+        const newVehicle = carFactory.createVehicle({
+            parternId,
+            MaPT,
+            MaSoXe,
+            TenPhuongTien,
+            Image,
+            MaSB
+        });
+
+        // Lưu vào MongoDB
+        const savedVehicle = await PhuongTien.create(newVehicle);
+        
+        res.status(201).json({
+            message: "Phương tiện đã được tạo thành công",
+            data: savedVehicle
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+const CreateBus = async (req, res) => {
+    try {
+        const { parternId, MaPT, MaSoXe, TenPhuongTien,  Image, MaSB } = req.body;
+
+        // Tạo phương tiện từ Factory Pattern
+        const newVehicle = busFactory.createVehicle({
+            parternId,
+            MaPT,
+            MaSoXe,
+            TenPhuongTien,
             Image,
             MaSB
         });
@@ -53,5 +93,7 @@ const createVehicle = async (req, res) => {
 };
 
 module.exports = {
-    createVehicle
+    CreateTrain,
+    CreateCar,
+    CreateBus
 };
